@@ -83,6 +83,11 @@ function DashboardLayoutContent({ children }) {
 
   const [unreadCount, setUnreadCount] = useState(0);
 
+  // Auto-close sidebar on mobile when page route changes
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [pathname, searchParams]);
+
   useEffect(() => {
     if (isLoading) {
       return;
@@ -309,6 +314,19 @@ function DashboardLayoutContent({ children }) {
       ],
     },
     {
+      name: "Staff Augmentation",
+      href: "/admin/staffing",
+      icon: Briefcase,
+      children: [
+        { name: "Staffing Hub", href: "/admin/staffing", icon: Home },
+        { name: "Clients", href: "/admin/staffing/clients", icon: Building2 },
+        { name: "Requirements", href: "/admin/staffing/requirements", icon: ListTodo },
+        { name: "Talent Pool", href: "/admin/staffing/talent-pool", icon: Users },
+        { name: "AI Matching", href: "/admin/staffing/matching", icon: Target },
+        { name: "Hiring Pipeline", href: "/admin/staffing/submissions", icon: GitGraph },
+      ],
+    },
+    {
       name: t("financeAccounting"),
       href: "/admin/finance",
       icon: CreditCard,
@@ -388,6 +406,22 @@ function DashboardLayoutContent({ children }) {
     { name: "System Logs", href: "/super-admin/audit-logs", icon: List },
   ];
 
+  const recruiterNavigation = [
+    { name: "Staffing Hub", href: "/admin/staffing", icon: Home },
+    {
+      name: "Staff Augmentation",
+      href: "/admin/staffing",
+      icon: Briefcase,
+      children: [
+        { name: "Clients", href: "/admin/staffing/clients", icon: Building2 },
+        { name: "Requirements", href: "/admin/staffing/requirements", icon: ListTodo },
+        { name: "Talent Pool", href: "/admin/staffing/talent-pool", icon: Users },
+        { name: "AI Matching", href: "/admin/staffing/matching", icon: Target },
+        { name: "Hiring Pipeline", href: "/admin/staffing/submissions", icon: GitGraph },
+      ],
+    },
+  ];
+
   // Define mapping of permissions to navigation items
   // You can extend this map to include any other permissions and their corresponding routes
   const PERMISSION_NAV_MAP = {
@@ -422,6 +456,8 @@ function DashboardLayoutContent({ children }) {
     navigation = isEmployeePath ? employeeNavigation : adminNavigation;
   } else if (role === "employee") {
     navigation = employeeNavigation;
+  } else if (role === "recruiter") {
+    navigation = recruiterNavigation;
   } else if (role === "attendance_only") {
     navigation = attendanceOnlyNavigation;
   } else {
@@ -452,7 +488,7 @@ function DashboardLayoutContent({ children }) {
     <div className="min-h-screen bg-slate-50">
       <div
         className={`${sidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } fixed inset-y-0 left-0 z-50 w-80 bg-white shadow-xl border-r border-indigo-100 transition-transform duration-300 ease-in-out lg:translate-x-0 flex flex-col h-screen`}
+          } fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-xl border-r border-indigo-100 transition-transform duration-300 ease-in-out lg:translate-x-0 flex flex-col h-screen`}
       >
         <div className="flex-shrink-0 p-6 border-b border-indigo-50 bg-white">
           <div className="flex items-center space-x-3 justify-center">
@@ -578,7 +614,7 @@ function DashboardLayoutContent({ children }) {
         </div>
       </div>
 
-      <div className="lg:ml-80">
+      <div className="lg:ml-64">
         <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md shadow-sm border-b border-indigo-100">
           <div className="px-6 py-4">
             <div className="flex items-center justify-between">
@@ -610,7 +646,7 @@ function DashboardLayoutContent({ children }) {
                   </div>
                 </div>
               </div>
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-2 sm:space-x-4">
                 <DropdownMenu>
                   <DropdownMenuTrigger className="p-2 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-colors flex items-center gap-2 outline-none">
                     <Languages className="w-5 h-5" />
@@ -618,27 +654,29 @@ function DashboardLayoutContent({ children }) {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-40 bg-white border border-slate-200 shadow-xl rounded-xl p-1 mt-2">
                     <DropdownMenuItem onClick={() => changeLanguage("en")}>English</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => changeLanguage("hi")}>à¤¹à¤¿à¤‚à¤¦à¥€ (Hindi)</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => changeLanguage("mr")}>à¤®à¤°à¤¾à¤ à¥€ (Marathi)</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => changeLanguage("kn")}>à²•à²¨à³à²¨à²¡ (Kannada)</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => changeLanguage("ta")}>à®¤à®®à®¿à®´à¯ (Tamil)</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => changeLanguage("hi")}>हिन्दी (Hindi)</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => changeLanguage("mr")}>मराठी (Marathi)</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => changeLanguage("kn")}>ಕನ್ನಡ (Kannada)</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => changeLanguage("ta")}>தமிழ் (Tamil)</DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
 
-                <button
-                  onClick={() => router.push('/admin/notifications')}
-                  className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-colors relative"
-                  aria-label="Notifications"
-                >
-                  <Bell className={`w-5 h-5 ${unreadCount > 0 ? 'text-indigo-600' : ''}`} />
-                  {unreadCount > 0 && (
-                    <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border border-white animate-pulse">
-                      <span className="absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75 animate-ping"></span>
-                    </span>
-                  )}
-                </button>
+                {role !== "recruiter" && (
+                  <button
+                    onClick={() => router.push('/admin/notifications')}
+                    className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-colors relative"
+                    aria-label="Notifications"
+                  >
+                    <Bell className={`w-5 h-5 ${unreadCount > 0 ? 'text-indigo-600' : ''}`} />
+                    {unreadCount > 0 && (
+                      <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border border-white animate-pulse">
+                        <span className="absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75 animate-ping"></span>
+                      </span>
+                    )}
+                  </button>
+                )}
 
-                <div className="flex items-center space-x-3 pl-4 border-l border-slate-200">
+                <div className="flex items-center space-x-1.5 sm:space-x-3 pl-2 sm:pl-4 border-l border-slate-200">
                   <DropdownMenu>
                     <DropdownMenuTrigger className="flex items-center space-x-3 outline-none group">
                       <div className="text-right hidden sm:block">

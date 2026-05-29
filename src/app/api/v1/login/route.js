@@ -274,11 +274,13 @@ export async function POST(req) {
       }
       */
 
-      // Create token with role as "employee"
+      // Create token with the actual role from DB (employee or recruiter)
+      const tokenRole = employee.role || 'employee';
+
       const token = jwt.sign(
         {
           id: employee._id.toString(),
-          role: 'employee',
+          role: tokenRole,
           organizationId: employee.jobDetails?.organizationId?.toString() || null,
           designation: employee.jobDetails.designation,
           department: employee.jobDetails.department
@@ -297,7 +299,7 @@ export async function POST(req) {
         user: {
           id: employee._id.toString(),
           email: employee.personalDetails.email,
-          role: 'employee',
+          role: tokenRole,
           designation: employee.jobDetails.designation,
           department: employee.jobDetails.department,
           personalDetails: {

@@ -82,6 +82,11 @@ function DashboardLayoutContent({ children }) {
 
   const [unreadCount, setUnreadCount] = useState(0);
 
+  // Auto-close sidebar on mobile when page route changes
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [pathname, searchParams]);
+
   useEffect(() => {
     if (isLoading) {
       return;
@@ -459,7 +464,7 @@ function DashboardLayoutContent({ children }) {
       <div
         className={`${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } fixed inset-y-0 left-0 z-50 w-80 bg-white shadow-xl border-r border-indigo-100 transition-transform duration-300 ease-in-out lg:translate-x-0 flex flex-col h-screen`}
+        } fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-xl border-r border-indigo-100 transition-transform duration-300 ease-in-out lg:translate-x-0 flex flex-col h-screen`}
       >
         <div className="flex-shrink-0 p-6 border-b border-indigo-50 bg-white">
           <div className="flex items-center space-x-3 justify-center">
@@ -585,7 +590,7 @@ function DashboardLayoutContent({ children }) {
         </div>
       </div>
 
-      <div className="lg:ml-80">
+      <div className="lg:ml-64">
         <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md shadow-sm border-b border-indigo-100">
           <div className="px-6 py-4">
             <div className="flex items-center justify-between">
@@ -617,7 +622,7 @@ function DashboardLayoutContent({ children }) {
                   </div>
                 </div>
               </div>
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-2 sm:space-x-4">
                 <DropdownMenu>
                   <DropdownMenuTrigger className="p-2 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-colors flex items-center gap-2 outline-none">
                     <Languages className="w-5 h-5" />
@@ -645,7 +650,7 @@ function DashboardLayoutContent({ children }) {
                   )}
                 </button>
 
-                <div className="flex items-center space-x-3 pl-4 border-l border-slate-200">
+                <div className="flex items-center space-x-1.5 sm:space-x-3 pl-2 sm:pl-4 border-l border-slate-200">
                   <DropdownMenu>
                     <DropdownMenuTrigger className="flex items-center space-x-3 outline-none group">
                       <div className="text-right hidden sm:block">

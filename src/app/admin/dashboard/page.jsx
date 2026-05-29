@@ -154,7 +154,7 @@ export default function DashboardPage() {
         {/* Enhanced Header */}
         <div className="bg-white border-b border-slate-200">
           <div className="max-w-7xl mx-auto px-6 py-6">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div className="flex items-center space-x-4">
                 <div className="w-11 h-11 bg-indigo-500 rounded-xl flex items-center justify-center shadow-sm">
                   <BarChart3 className="w-6 h-6 text-white" />
@@ -165,10 +165,10 @@ export default function DashboardPage() {
                 </div>
               </div>
 
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-3 self-end sm:self-auto">
                 <button
                   onClick={fetchStats}
-                  className="p-2.5 text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+                  className="p-2.5 text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors border border-slate-200 sm:border-0"
                 >
                   <RefreshCw className="h-5 w-5" />
                 </button>

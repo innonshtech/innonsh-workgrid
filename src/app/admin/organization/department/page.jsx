@@ -1380,14 +1380,14 @@ export default function DepartmentsPage() {
 
           {/* Controls Skeleton */}
           <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
-            <div className="flex justify-between mb-6">
+            <div className="flex flex-col sm:flex-row justify-between gap-4 mb-6">
               <Skeleton className="h-8 w-48" />
-              <Skeleton className="h-10 w-32" />
+              <Skeleton className="h-10 w-32 self-end sm:self-auto" />
             </div>
-            <div className="grid grid-cols-12 gap-4">
-              <div className="col-span-6"><Skeleton className="h-10 w-full" /></div>
-              <div className="col-span-4"><Skeleton className="h-10 w-full" /></div>
-              <div className="col-span-2"><Skeleton className="h-10 w-full" /></div>
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+              <div className="col-span-1 md:col-span-6"><Skeleton className="h-10 w-full" /></div>
+              <div className="col-span-1 md:col-span-4"><Skeleton className="h-10 w-full" /></div>
+              <div className="col-span-1 md:col-span-2"><Skeleton className="h-10 w-full" /></div>
             </div>
           </div>
 
@@ -1423,9 +1423,9 @@ export default function DepartmentsPage() {
       {/* Header */}
       <div className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-6 py-6">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center space-x-4">
-              <div className="w-11 h-11 bg-indigo-500 rounded-xl flex items-center justify-center shadow-sm">
+              <div className="w-11 h-11 bg-indigo-500 rounded-xl flex items-center justify-center shadow-sm shrink-0">
                 <Layers className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -1440,7 +1440,7 @@ export default function DepartmentsPage() {
                   resetForm();
                   setView('create');
                 }}
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg font-medium transition-colors shadow-sm"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg font-medium transition-colors shadow-sm self-end sm:self-auto"
               >
                 <Plus className="w-4 h-4" />
                 Add Department
@@ -1530,8 +1530,8 @@ export default function DepartmentsPage() {
               </div>
 
               {/* Search and Filters */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-                <div className="lg:col-span-6">
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+                <div className="col-span-1 md:col-span-6">
                   <label className="block text-sm font-medium text-slate-700 mb-2">Search Departments</label>
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
@@ -1540,12 +1540,12 @@ export default function DepartmentsPage() {
                       placeholder="Search by department name"
                       value={searchTerm}
                       onChange={handleSearchChange}
-                      className="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                      className="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors bg-white"
                     />
                   </div>
                 </div>
 
-                <div className="lg:col-span-4">
+                <div className="col-span-1 md:col-span-4">
                   <label className="block text-sm font-medium text-slate-700 mb-2">Status</label>
                   <select
                     value={statusFilter}
@@ -1558,7 +1558,7 @@ export default function DepartmentsPage() {
                   </select>
                 </div>
 
-                <div className="lg:col-span-2 flex items-end">
+                <div className="col-span-1 md:col-span-2 flex items-end">
                   {hasActiveFilters && (
                     <button
                       onClick={async () => {
@@ -1566,7 +1566,7 @@ export default function DepartmentsPage() {
                         setStatusFilter('all');
                         await fetchDepartments({ page: 1 });
                       }}
-                      className="w-full px-4 py-2.5 text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg flex items-center justify-center transition-colors font-medium"
+                      className="w-full px-4 py-2.5 text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg flex items-center justify-center transition-colors font-medium border border-slate-200 md:border-0"
                       title="Clear all filters"
                     >
                       <FilterX className="w-4 h-4 mr-2" />

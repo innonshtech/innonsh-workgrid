@@ -2060,6 +2060,7 @@ export default function EmployeeForm({ employeeData, isEdit = false }) {
                             { value: "employee", label: "Employee" },
                             { value: "attendance_only", label: "Attendance Only" },
                             { value: "admin", label: "Admin" },
+                            { value: "recruiter", label: "HR Recruiter" },
                           ]}
                           placeholder="Select Role"
                         />

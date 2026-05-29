@@ -14,6 +14,10 @@ import '@/lib/db/models/crm/Department/department';
 import '@/lib/db/models/crm/employee/EmployeeCategory';
 import '@/lib/db/models/crm/employee/EmployeeType';
 import '@/lib/db/models/DemoRequest';
+import '@/lib/db/models/staffing/StaffingClient';
+import '@/lib/db/models/staffing/StaffingRequirement';
+import '@/lib/db/models/staffing/StaffingCandidate';
+import '@/lib/db/models/staffing/StaffingSubmission';
 
 const MONGODB_URI = process.env.MONGODB_URI;
 

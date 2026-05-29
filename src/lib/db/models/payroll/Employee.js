@@ -186,7 +186,7 @@ const employeeSchema = new mongoose.Schema(
     // NEW FIELD: Role (Resticted Access)
     role: {
       type: String,
-      enum: ["employee", "attendance_only", "admin"],
+      enum: ["employee", "attendance_only", "admin", "recruiter"],
       default: "employee"
     },
     // NEW FIELD: Compliance Status

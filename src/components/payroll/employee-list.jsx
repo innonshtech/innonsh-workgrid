@@ -612,9 +612,9 @@ export default function EmployeeList() {
       {/* Header */}
       <div className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-6 py-6">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="flex items-center space-x-4">
-              <div className="w-11 h-11 bg-indigo-600 rounded-xl flex items-center justify-center shadow-sm shadow-indigo-200">
+              <div className="w-11 h-11 bg-indigo-600 rounded-xl flex items-center justify-center shadow-sm shadow-indigo-200 shrink-0">
                 <Users className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -623,7 +623,7 @@ export default function EmployeeList() {
               </div>
             </div>
 
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 self-end md:self-auto">
               <button
                 onClick={handleExport}
                 disabled={exportLoading || employees.length === 0}
@@ -1025,8 +1025,8 @@ export default function EmployeeList() {
                   </>
                 ) : (
                   <>
-                    <div className="overflow-hidden rounded-xl border border-slate-200">
-                      <table className="w-full">
+                    <div className="overflow-x-auto block w-full rounded-xl border border-slate-200">
+                      <table className="w-full min-w-[800px]">
                         <thead className="bg-slate-50 border-b border-slate-200">
                           <tr>
                             <th className="text-left py-4 px-6 font-semibold text-slate-600 text-xs uppercase tracking-wider">Employee</th>
@@ -1173,7 +1173,7 @@ export default function EmployeeList() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Effective Date</label>
                   <input

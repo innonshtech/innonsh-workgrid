@@ -497,74 +497,76 @@ export async function PUT(request) {
     const endOfDay = new Date(attendanceDate);
     endOfDay.setHours(23, 59, 59, 999);
 
-    let updatedAttendance;
+    const existingRecord = await Attendance.findOne({
+      employee,
+      date: { $gte: startOfDay, $lte: endOfDay },
+    });
 
-    // Check if this is a check-out update
-    if (checkOut) {
-      const existingRecord = await Attendance.findOne({
-        employee,
-        date: {
-          $gte: startOfDay,
-          $lte: endOfDay,
-        },
-      });
-
-      if (existingRecord && existingRecord.checkIn) {
-        // Calculate total hours
-        const checkInTime = new Date(existingRecord.checkIn);
-        const checkOutTime = new Date(checkOut);
-        const diffMs = checkOutTime - checkInTime;
-        const totalHours = parseFloat((diffMs / (1000 * 60 * 60)).toFixed(2));
-
-        updatedAttendance = await Attendance.findOneAndUpdate(
-          {
-            employee,
-            date: { $gte: startOfDay, $lte: endOfDay },
-          },
-          {
-            $set: {
-              checkOut: checkOutTime,
-              totalHours: totalHours,
-              status: status || "Present",
-            },
-          },
-          { new: true }
-        );
-      }
-    } else {
-      // Regular update
-      const updateData = {};
-      if (checkIn) updateData.checkIn = new Date(checkIn);
-      if (status) updateData.status = status;
-      if (overtimeHours !== undefined) updateData.overtimeHours = overtimeHours;
-      if (notes !== undefined) updateData.notes = notes;
-      if (location) updateData.location = location;
-
-      // Recalculate total hours if both times are present
-      const existingRecord = await Attendance.findOne({
-        employee,
-        date: { $gte: startOfDay, $lte: endOfDay },
-      });
-
-      if (existingRecord) {
-        const newCheckIn = checkIn ? new Date(checkIn) : existingRecord.checkIn;
-        const newCheckOut = existingRecord.checkOut;
-
-        if (newCheckIn && newCheckOut) {
-          const diffMs = new Date(newCheckOut) - new Date(newCheckIn);
-          updateData.totalHours = parseFloat((diffMs / (1000 * 60 * 60)).toFixed(2));
-        }
-      }
-
-      updatedAttendance = await Attendance.findOneAndUpdate(
-        {
-          employee,
-          date: { $gte: startOfDay, $lte: endOfDay },
-        },
-        { $set: updateData },
-        { new: true }
+    if (!existingRecord) {
+      return NextResponse.json(
+        { success: false, error: "Attendance record not found" },
+        { status: 404 }
       );
     }
+
+    // Unified update data preparation
+    const updateData = {};
+    let finalCheckIn = existingRecord.checkIn;
+    let finalCheckOut = existingRecord.checkOut;
+
+    // Handle check-in time update
+    if (checkIn !== undefined) {
+      if (checkIn === null || checkIn === "") {
+        updateData.checkIn = null;
+        finalCheckIn = null;
+      } else {
+        const checkInTime = new Date(checkIn);
+        updateData.checkIn = checkInTime;
+        finalCheckIn = checkInTime;
+      }
+    }
+
+    // Handle check-out time update
+    if (checkOut !== undefined) {
+      if (checkOut === null || checkOut === "") {
+        updateData.checkOut = null;
+        finalCheckOut = null;
+      } else {
+        const checkOutTime = new Date(checkOut);
+        updateData.checkOut = checkOutTime;
+        finalCheckOut = checkOutTime;
+      }
+    }
+
+    if (status) {
+      updateData.status = status;
+    }
+    if (overtimeHours !== undefined) {
+      updateData.overtimeHours = overtimeHours;
+    }
+    if (notes !== undefined) {
+      updateData.notes = notes;
+    }
+    if (location) {
+      updateData.location = location;
+    }
+
+    // Recalculate total hours if both check-in and check-out times are present
+    if (finalCheckIn && finalCheckOut) {
+      const diffMs = new Date(finalCheckOut) - new Date(finalCheckIn);
+      updateData.totalHours = parseFloat((diffMs / (1000 * 60 * 60)).toFixed(2));
+    } else {
+      updateData.totalHours = 0;
+    }
+
+    const updatedAttendance = await Attendance.findOneAndUpdate(
+      {
+        employee,
+        date: { $gte: startOfDay, $lte: endOfDay },
+      },
+      { $set: updateData },
+      { new: true }
+    );
 
     if (!updatedAttendance) {
       return NextResponse.json(

@@ -64,3 +64,23 @@ export async function PUT(request) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }
+
+export async function DELETE(request) {
+    try {
+        await dbConnect();
+        const authUser = await getAuthUser();
+        authorize(authUser, ["admin", "super_admin"]);
+
+        const { searchParams } = new URL(request.url);
+        const id = searchParams.get('id');
+
+        if (!id) return NextResponse.json({ error: "Invoice ID is required" }, { status: 400 });
+
+        const invoice = await VendorInvoice.findByIdAndDelete(id);
+        if (!invoice) return NextResponse.json({ error: "Invoice not found" }, { status: 404 });
+
+        return NextResponse.json({ message: "Invoice deleted successfully" });
+    } catch (error) {
+        return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+}

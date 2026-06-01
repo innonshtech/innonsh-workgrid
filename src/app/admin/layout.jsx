@@ -275,11 +275,6 @@ function DashboardLayoutContent({ children }) {
           icon: ShieldCheck,
         },
         {
-          name: t("myPortal"),
-          href: "/employee/dashboard",
-          icon: Eye,
-        },
-        {
           name: t("talentManagement"),
           href: "/admin/talent",
           icon: Award,

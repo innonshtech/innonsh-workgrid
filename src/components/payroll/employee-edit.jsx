@@ -540,8 +540,42 @@ function PayslipStructureSection({
   errors = {},
   employeeGender = "",
   pfApplicable = "",
+  workState = "Maharashtra",
+  isCompliant = true
 }) {
   const [selectedMonth, setSelectedMonth] = useState("");
+  const [statutoryConfigs, setStatutoryConfigs] = useState([]);
+
+  useEffect(() => {
+    const fetchStatutoryConfigs = async () => {
+      try {
+        const res = await fetch("/api/v1/admin/payroll/settings/statutory");
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          setStatutoryConfigs(data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch statutory configs on client side", error);
+      }
+    };
+    fetchStatutoryConfigs();
+  }, []);
+
+  // Synchronize isCompliant prop with the checkbox enabled state
+  useEffect(() => {
+    const ptIndex = payslipStructure.deductions.findIndex(
+      (d) => d.name === "Professional Tax"
+    );
+    if (ptIndex !== -1) {
+      const currentPT = payslipStructure.deductions[ptIndex];
+      const shouldBeEnabled = isCompliant !== undefined ? isCompliant : true;
+      if (currentPT.enabled !== shouldBeEnabled) {
+        const updatedDeductions = [...payslipStructure.deductions];
+        updatedDeductions[ptIndex] = { ...currentPT, enabled: shouldBeEnabled };
+        onStructureChange({ ...payslipStructure, deductions: updatedDeductions });
+      }
+    }
+  }, [isCompliant]);
 
   const addEarning = () => {
     const newEarning = {
@@ -617,7 +651,38 @@ function PayslipStructureSection({
   };
 
   const calculatePT = () => {
+    // If Professional Tax deduction is unchecked/disabled, return 0
+    const ptDeduction = payslipStructure.deductions.find(d => d.name === "Professional Tax");
+    if (ptDeduction && !ptDeduction.enabled) {
+      return 0;
+    }
+
     const grossSalary = calculateTotalEarnings();
+    const activeState = workState || "Maharashtra";
+
+    // Find statutory configuration for the state (case-insensitive)
+    const stateConfig = statutoryConfigs.find(
+      (c) => c.state.toLowerCase() === activeState.toLowerCase() && c.isEnabled && c.ptApplicable
+    );
+
+    if (stateConfig && Array.isArray(stateConfig.ptSlabs) && stateConfig.ptSlabs.length > 0) {
+      const currentMonthNum = selectedMonth
+        ? ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"].indexOf(selectedMonth) + 1
+        : new Date().getMonth() + 1;
+
+      const slab = stateConfig.ptSlabs.find(
+        (s) => grossSalary >= s.minSalary && grossSalary <= s.maxSalary
+      );
+      if (slab) {
+        if (slab.exceptionMonth === currentMonthNum && slab.exceptionTaxAmount !== null) {
+          return slab.exceptionTaxAmount;
+        }
+        return slab.taxAmount;
+      }
+      return 0;
+    }
+
+    // Fallback to hardcoded validation utility
     return calculateProfessionalTax(grossSalary, employeeGender, selectedMonth);
   };
 
@@ -3588,6 +3653,8 @@ export default function EmployeeEdit({ employeeId }) {
               errors={errors}
               employeeGender={formData.personalDetails.gender}
               pfApplicable={formData.pfApplicable}
+              workState={formData.jobDetails.workState}
+              isCompliant={formData.isCompliant}
             />
           </div>
         </div>

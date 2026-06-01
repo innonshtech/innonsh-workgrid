@@ -3213,6 +3213,7 @@ export default function EmployeeForm({ employeeData, isEdit = false }) {
                       esicApplicable={formData.esicApplicable}
                       isTdsApplicable={formData.isTDSApplicable}
                       isCompliant={formData.isCompliant}
+                      workState={formData.jobDetails.workState}
                     />
                   </div>
                 </div>

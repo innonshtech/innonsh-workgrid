@@ -623,7 +623,7 @@ import { useState, useEffect } from 'react';
 import {
   Save, X, Calculator, User, FileText, TrendingUp, Percent, DollarSign,
   Plus, Trash2, ArrowLeft, AlertCircle, CheckCircle, Building, Calendar,
-  Loader2, Shield, Home, Heart, Book
+  Loader2, Shield, Home, Heart, Book, Info
 } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -786,7 +786,7 @@ export default function TaxCalculator() {
               d.name.toLowerCase() === searchName.toLowerCase() ||
               d.name.toLowerCase().includes(searchName.toLowerCase())
             );
-            if (!component) return 0;
+            if (!component || component.enabled === false) return 0;
             if (component.calculationType === 'percentage') {
               return (basicSalary * (component.percentage || 0)) / 100;
             }

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/db/connect';
+import mongoose from 'mongoose';
 import StaffingClient from '@/lib/db/models/staffing/StaffingClient';
 import StaffingRequirement from '@/lib/db/models/staffing/StaffingRequirement';
 import StaffingCandidate from '@/lib/db/models/staffing/StaffingCandidate';
@@ -45,7 +46,7 @@ export async function GET(request) {
       Employee.find({ role: "recruiter", "jobDetails.organizationId": authUser.organizationId }, 'personalDetails.firstName personalDetails.lastName personalDetails.email jobDetails.designation').lean(),
       User.find({ role: "recruiter", organizationId: authUser.organizationId }, 'name email').lean(),
       StaffingCandidate.aggregate([
-        { $match: { organizationId: authUser.organizationId, uploadedBy: { $ne: null } } },
+        { $match: { organizationId: new mongoose.Types.ObjectId(authUser.organizationId), uploadedBy: { $ne: null } } },
         { $group: { _id: "$uploadedBy", count: { $sum: 1 } } }
       ])
     ]);
@@ -86,7 +87,8 @@ export async function GET(request) {
     const recruitersCount = recruitersList.length;
 
     // Resolve uploader names dynamically for recentCandidates
-    const uploaderIds = [...new Set(recentCandidates.map(c => c.uploadedBy).filter(Boolean))];
+    const isValidObjectId = (id) => id && /^[0-9a-fA-F]{24}$/.test(id.toString());
+    const uploaderIds = [...new Set(recentCandidates.map(c => c.uploadedBy).filter(isValidObjectId).map(id => id.toString()))];
     const uploaderMap = new Map();
 
     if (uploaderIds.length > 0) {

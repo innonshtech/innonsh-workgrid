@@ -37,7 +37,8 @@ export async function GET(request) {
     const candidates = await StaffingCandidate.find(query).sort({ createdAt: -1 });
 
     // Resolve uploader names dynamically
-    const uploaderIds = [...new Set(candidates.map(c => c.uploadedBy).filter(Boolean))];
+    const isValidObjectId = (id) => id && /^[0-9a-fA-F]{24}$/.test(id.toString());
+    const uploaderIds = [...new Set(candidates.map(c => c.uploadedBy).filter(isValidObjectId).map(id => id.toString()))];
     const uploaderMap = new Map();
 
     if (uploaderIds.length > 0) {
@@ -92,6 +93,13 @@ export async function POST(request) {
       return NextResponse.json({ success: false, error: "No resume file provided" }, { status: 400 });
     }
 
+    if (!process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_SECRET) {
+      return NextResponse.json({
+        success: false,
+        error: "Cloudinary credentials are not configured. Please add CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET in your Vercel Project Environment Variables."
+      }, { status: 500 });
+    }
+
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
@@ -111,14 +119,27 @@ export async function POST(request) {
       throw parseError; // Re-throw generic errors to catch block below
     }
 
+    // If AI parsing completely fails, we gracefully fallback so the upload isn't blocked
     if (!parsedData) {
-      return NextResponse.json({ success: false, error: "AI failed to parse the resume document." }, { status: 500 });
+      console.warn("AI failed to parse the resume document. Falling back to basic file upload.");
+      parsedData = {
+        name: file.name.split('.')[0],
+        email: `no-email-${Date.now()}@placeholder.com`,
+        phone: "",
+        skills: [],
+        experience: [],
+        education: [],
+        summary: "AI Parsing Failed or Unavailable.",
+        totalExperienceYears: 0,
+        currentRole: "",
+        currentCompany: ""
+      };
     }
 
     const orgId = authUser.organizationId;
     let email = (parsedData.email || '').toLowerCase().trim();
 
-    // Fallback if AI misses the email
+    // Fallback if AI misses the email specifically
     if (!email) {
       email = `no-email-${Date.now()}@placeholder.com`;
       console.warn("AI missed email. Using placeholder: ", email);

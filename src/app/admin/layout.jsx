@@ -439,17 +439,16 @@ function DashboardLayoutContent({ children }) {
   ];
 
   const recruiterNavigation = [
-    { name: "Staffing Hub", href: "/admin/staffing", icon: Home },
     {
       name: "Staff Augmentation",
-      href: "/admin/staffing",
+      href: "/hr_recurter/staffing/clients",
       icon: Briefcase,
       children: [
-        { name: "Clients", href: "/admin/staffing/clients", icon: Building2 },
-        { name: "Requirements", href: "/admin/staffing/requirements", icon: ListTodo },
-        { name: "Talent Pool", href: "/admin/staffing/talent-pool", icon: Users },
-        { name: "AI Matching", href: "/admin/staffing/matching", icon: Target },
-        { name: "Hiring Pipeline", href: "/admin/staffing/submissions", icon: GitGraph },
+        { name: "Clients", href: "/hr_recurter/staffing/clients", icon: Building2 },
+        { name: "Requirements", href: "/hr_recurter/staffing/requirements", icon: ListTodo },
+        { name: "Talent Pool", href: "/hr_recurter/staffing/talent-pool", icon: Users },
+        { name: "AI Matching", href: "/hr_recurter/staffing/matching", icon: Target },
+        { name: "Hiring Pipeline", href: "/hr_recurter/staffing/submissions", icon: GitGraph },
       ],
     },
   ];

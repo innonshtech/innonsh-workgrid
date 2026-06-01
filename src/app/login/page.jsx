@@ -96,7 +96,7 @@ const LoginPage = () => {
         const userRole = response.user?.role || formData.role;
         if (userRole === "super_admin") router.push("/super-admin/dashboard");
         else if (userRole === "admin" || userRole === "company_admin" || userRole === "hr") router.push("/admin/dashboard");
-        else if (userRole === "recruiter") router.push("/admin/staffing");
+        else if (userRole === "recruiter") router.push("/hr_recurter/staffing/clients");
         else if (userRole === "employee") router.push("/employee/dashboard");
         else if (userRole === "attendance_only") router.push("/attendance");
         else router.push("/");

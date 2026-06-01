@@ -16,6 +16,7 @@ import {
   Clock,
   Sparkles,
   Check,
+  X,
 } from "lucide-react";
 import { toast } from "sonner";
 import StaffingStepper from "./StaffingStepper";

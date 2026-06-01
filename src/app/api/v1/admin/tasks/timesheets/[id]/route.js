@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/db/connect';
 import Timesheet from '@/lib/db/models/tasks/Timesheet';
+import Notification from '@/lib/db/models/notifications/NotificationConfig';
 import { logActivity } from '@/lib/logger';
 import { getAuthUser } from '@/lib/auth-util';
 
@@ -38,7 +39,7 @@ export async function PUT(request, { params }) {
         }
 
         const body = await request.json();
-        const { status, adminNotes, approvedBy } = body;
+        const { status, adminNotes, approvedBy, rejectionReason } = body;
 
         const timesheet = await Timesheet.findOne({
             _id: id,
@@ -48,12 +49,44 @@ export async function PUT(request, { params }) {
 
         if (status) timesheet.status = status;
         if (adminNotes !== undefined) timesheet.adminNotes = adminNotes;
+        if (rejectionReason !== undefined) timesheet.rejectionReason = rejectionReason;
+
         if (status === 'Approved') {
-            timesheet.approvedBy = approvedBy;
+            timesheet.approvedBy = approvedBy || authUser.id;
             timesheet.approvedAt = new Date();
         }
 
         await timesheet.save();
+
+        // Send a notification to the employee
+        try {
+            const formattedDate = new Date(timesheet.weekStartDate).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+
+            const statusText = status === 'Approved' ? 'Approved' : 'Rejected';
+
+            const notification = new Notification({
+                type: 'system',
+                title: `Timesheet ${statusText}`,
+                message: `Your timesheet for the week of ${formattedDate} has been ${statusText.toLowerCase()}${status === 'Rejected' && rejectionReason ? `: "${rejectionReason}"` : '.'}`,
+                priority: status === 'Approved' ? 'medium' : 'high',
+                audienceType: 'individual',
+                employee: timesheet.employee,
+                organization: timesheet.organizationId,
+                details: {
+                    timesheetId: timesheet._id,
+                    status: status,
+                    weekStartDate: timesheet.weekStartDate,
+                    rejectionReason: rejectionReason || ''
+                }
+            });
+            await notification.save();
+        } catch (notiError) {
+            console.error('Failed to send timesheet status update notification:', notiError);
+        }
 
         await logActivity({
             action: status.toLowerCase(),

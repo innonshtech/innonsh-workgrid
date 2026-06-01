@@ -7,10 +7,10 @@ import {
   ChevronRight, Plus, RefreshCw, Settings, PieChart, LineChart, Building2, Container, Timer,
   Boxes, CheckCircle2, AlertCircle, Star, Award, List, Users, Truck, Package, AlertTriangle,
   Clock, ShoppingCart, DollarSign, Globe, MapPin, Shield, Factory, Warehouse, BarChart3,
-  UserCheck, ClipboardList, BarChart, Users2, Eye, Filter, Briefcase, Banknote
+  UserCheck, ClipboardList, BarChart, Users2, Eye, Filter, Briefcase, Banknote,
+  ArrowRight, Cpu, UserPlus
 } from 'lucide-react';
 import ResourceUtilization from '@/components/tasks/ResourceUtilization';
-import { Badge } from '@/components/ui/badge';
 import { useSession } from '@/context/SessionContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { useRouter } from 'next/navigation';
@@ -81,8 +81,11 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-slate-50">
-        <div className="text-slate-700 font-semibold">{t("loadingDashboard")}</div>
+      <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
+        <div className="relative w-12 h-12">
+          <div className="absolute top-0 left-0 w-full h-full rounded-full border-4 border-indigo-100 border-t-indigo-600 animate-spin"></div>
+        </div>
+        <p className="text-slate-500 font-medium text-sm">{t("loadingDashboard")}</p>
       </div>
     );
   }
@@ -94,36 +97,32 @@ export default function DashboardPage() {
         title: t("totalEmployees"),
         value: stats.totalEmployees.toString(),
         icon: Users,
-        color: 'text-blue-600',
-        bgColor: 'bg-slate-50',
-        borderColor: 'border-blue-200',
+        color: "from-blue-500 to-indigo-600",
+        description: "Active workforce directory",
         href: '/admin/employees'
       },
       {
         title: t("activeProjects"),
         value: stats.activeProjects.toString(),
         icon: Briefcase,
-        color: 'text-indigo-600',
-        bgColor: 'bg-indigo-50',
-        borderColor: 'border-indigo-200',
+        color: "from-indigo-500 to-violet-600",
+        description: "Client projects tracking",
         href: '/admin/tasks/projects'
       },
       {
         title: t("activeTasks"),
         value: (stats.totalTasks - stats.completedTasks).toString(),
         icon: CheckSquare,
-        color: 'text-rose-600',
-        bgColor: 'bg-rose-50',
-        borderColor: 'border-rose-200',
+        color: "from-rose-500 to-pink-600",
+        description: "Pending operational tasks",
         href: '/admin/tasks'
       },
       {
         title: t("pendingApprovals"),
         value: stats.pendingTimesheets.toString(),
         icon: Clock,
-        color: 'text-amber-600',
-        bgColor: 'bg-amber-50',
-        borderColor: 'border-amber-200',
+        color: "from-amber-500 to-orange-600",
+        description: "Timesheets awaiting review",
         href: '/admin/tasks/approvals'
       }
     ];
@@ -133,210 +132,264 @@ export default function DashboardPage() {
         title: t("createNewProject"),
         icon: Plus,
         href: "/admin/tasks/projects",
-        color: "bg-indigo-500"
+        color: "bg-indigo-500",
+        description: "Initiate new client milestone"
       },
       {
         title: t("employeeDirectory"),
         icon: Users,
         href: "/admin/employees",
-        color: "bg-blue-500"
+        color: "bg-blue-500",
+        description: "Manage system user profiles"
       },
       {
         title: t("payrollRun"),
         icon: Banknote,
         href: "/admin/payroll/run",
-        color: "bg-emerald-500"
+        color: "bg-emerald-500",
+        description: "Execute monthly payroll batch"
       }
     ];
 
     return (
-      <div className="min-h-screen bg-slate-50">
-        {/* Enhanced Header */}
-        <div className="bg-white border-b border-slate-200">
-          <div className="max-w-7xl mx-auto px-6 py-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div className="flex items-center space-x-4">
-                <div className="w-11 h-11 bg-indigo-500 rounded-xl flex items-center justify-center shadow-sm">
-                  <BarChart3 className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h1 className="text-2xl font-bold text-slate-900">{t("adminDashboard")}</h1>
-                  <p className="text-slate-600 text-sm mt-0.5">{t("hrDashboardDesc")}</p>
-                </div>
+      <div className="max-w-7xl mx-auto space-y-6 sm:space-y-8 animate-fade-in p-4 sm:p-6">
+        {/* Header Banner Section (Staffing Hub Style) */}
+        <div className="relative overflow-hidden bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-xl shadow-indigo-950/20 border border-slate-800">
+          <div className="absolute -right-16 -top-16 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl"></div>
+          <div className="absolute -left-16 -bottom-16 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl"></div>
+          
+          <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div className="space-y-2">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                <Cpu className="w-3.5 h-3.5 animate-pulse" /> {t("adminDashboard")} Suite v1.0
               </div>
+              <h1 className="text-xl sm:text-3xl font-extrabold text-white tracking-tight">
+                Enterprise Operations & HR Hub
+              </h1>
+              <p className="text-slate-400 text-xs sm:text-sm max-w-xl">
+                Manage your organizational workforce, track project timelines, execute precise automated payroll processes, and review regulatory statutory compliance.
+              </p>
+            </div>
 
-              <div className="flex items-center space-x-3 self-end sm:self-auto">
-                <button
-                  onClick={fetchStats}
-                  className="p-2.5 text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors border border-slate-200 sm:border-0"
-                >
-                  <RefreshCw className="h-5 w-5" />
-                </button>
-              </div>
+            <div className="flex flex-wrap gap-3">
+              <button
+                onClick={() => router.push("/admin/employees/new")}
+                className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs sm:text-sm px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl shadow-lg shadow-indigo-600/35 transition-all active:scale-[0.98]"
+              >
+                <UserPlus className="w-4 h-4" /> Add Employee
+              </button>
+              <button
+                onClick={fetchStats}
+                className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-indigo-400 hover:text-white font-semibold text-xs sm:text-sm px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl border border-slate-700 transition-all active:scale-[0.98]"
+                title="Refresh statistics"
+              >
+                <RefreshCw className="w-4 h-4 animate-spin-slow" /> Refresh Stats
+              </button>
             </div>
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
-          {/* Admin KPIs */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {adminStats.map((stat, index) => (
-              <Link key={index} href={stat.href}>
-                <div className={`group bg-white rounded-2xl border ${stat.borderColor} p-6 hover:shadow-xl transition-all duration-300 ${stat.bgColor} hover:-translate-y-1`}>
-                  <div className="flex items-center justify-between mb-4">
-                    <div className={`p-3 rounded-xl ${stat.bgColor} border ${stat.borderColor} shadow-sm group-hover:bg-white transition-colors`}>
-                      <stat.icon className={`h-6 w-6 ${stat.color}`} />
-                    </div>
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-slate-500 mb-1">{stat.title}</p>
-                    <p className="text-3xl font-black text-slate-900 group-hover:text-indigo-600 transition-colors tracking-tight">
-                      {stat.value}
-                    </p>
-                  </div>
+        {/* KPI Cards Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          {adminStats.map((card) => (
+            <div
+              key={card.title}
+              onClick={() => router.push(card.href)}
+              className="group relative bg-white hover:bg-slate-50/50 rounded-2xl p-5 border border-slate-100 shadow-sm hover:shadow-md transition-all cursor-pointer overflow-hidden active:scale-[0.99]"
+            >
+              <div className="space-y-4">
+                <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${card.color} text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform`}>
+                  <card.icon className="w-5 h-5" />
                 </div>
-              </Link>
-            ))}
-          </div>
+                <div>
+                  <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">{card.title}</p>
+                  <p className="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight mt-1">{card.value}</p>
+                </div>
+                <p className="text-xs font-medium text-slate-500 leading-tight">{card.description}</p>
+              </div>
+              {/* Hover arrow */}
+              <div className="absolute right-4 bottom-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all">
+                <ArrowRight className="w-4 h-4 text-slate-400" />
+              </div>
+            </div>
+          ))}
+        </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Quick Actions */}
-            <div className="lg:col-span-1 space-y-6">
-              <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-                <h3 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
-                  <Zap className="w-5 h-5 text-indigo-600" />
-                  {t("quickActions")}
-                </h3>
-                <div className="grid grid-cols-1 gap-3">
-                  {quickActions.map((action, i) => (
-                    <Link key={i} href={action.href}>
-                      <div className="flex items-center gap-3 p-3 rounded-xl border border-slate-100 hover:border-indigo-200 hover:bg-indigo-50 transition-all group cursor-pointer shadow-sm hover:shadow-md">
-                        <div className={`w-10 h-10 ${action.color} rounded-lg flex items-center justify-center text-white`}>
-                          <action.icon className="w-5 h-5" />
-                        </div>
-                        <span className="font-bold text-slate-700 group-hover:text-indigo-700">{action.title}</span>
-                        <ChevronRight className="w-4 h-4 ml-auto text-slate-400 group-hover:text-indigo-500" />
-                      </div>
-                    </Link>
-                  ))}
+        {/* Quick Access & Operations Dashboard Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Main Area: Feeds and Widgets */}
+          <div className="lg:col-span-2 space-y-6 sm:space-y-8">
+            {/* Recent Activity Feed */}
+            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 space-y-6">
+              <div className="flex items-center justify-between border-b border-slate-50 pb-4">
+                <div className="space-y-1">
+                  <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
+                    <Activity className="w-5 h-5 text-indigo-600 animate-pulse" /> {t("recentActivity")}
+                  </h3>
+                  <p className="text-xs font-medium text-slate-400">Newly recorded audit and workforce modifications</p>
                 </div>
               </div>
 
-              <div className="bg-gradient-to-br from-indigo-600 to-violet-700 rounded-2xl p-6 text-white shadow-lg overflow-hidden relative group cursor-pointer" onClick={() => router.push('/admin/tasks/projects')}>
-                <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform">
-                  <Briefcase className="w-32 h-32" />
-                </div>
-                <h4 className="text-xl font-black mb-1">{t("projectTracking")}</h4>
-                <p className="text-indigo-100 text-sm mb-4 leading-relaxed">{t("hrDashboardDesc")}</p>
-                <div className="inline-flex items-center gap-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg backdrop-blur-md text-sm font-bold border border-white/20 transition-all">
-                  {t("viewDetails")} <ChevronRight className="w-4 h-4" />
-                </div>
+              <div className="space-y-4 max-h-[320px] overflow-y-auto pr-2 no-scrollbar">
+                {stats.recentActivity.length > 0 ? (
+                  stats.recentActivity.map((log, i) => (
+                    <div key={i} className="flex gap-4 p-3 rounded-xl hover:bg-slate-50 transition-colors border-l-4 border-indigo-500 bg-indigo-50/10">
+                      <div className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 ${
+                        log.action === 'created' ? 'bg-green-100 text-green-600' :
+                        log.action === 'updated' ? 'bg-blue-100 text-blue-600' :
+                        log.action === 'deleted' ? 'bg-red-100 text-red-600' :
+                        'bg-slate-100 text-slate-600'
+                      }`}>
+                        <Zap className="w-4.5 h-4.5" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex justify-between items-start">
+                          <p className="text-sm font-bold text-slate-900 capitalize">{log.entity} {log.action}</p>
+                          <span className="text-[10px] text-slate-400 font-medium">{new Date(log.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                        </div>
+                        <p className="text-xs text-slate-600 mt-1 line-clamp-1">{log.description}</p>
+                        <p className="text-[10px] text-slate-500 mt-1">By {log.performedBy?.name || 'System'}</p>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-center py-10">
+                    <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <CheckCircle2 className="w-8 h-8 text-slate-300" />
+                    </div>
+                    <p className="text-slate-500 font-medium">No recent activity found.</p>
+                  </div>
+                )}
               </div>
             </div>
 
-            {/* Recent Activity */}
-            <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-              <div className="p-6 border-b border-slate-200 bg-slate-50/50 flex items-center justify-between">
-                <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                  <Activity className="w-5 h-5 text-indigo-600" />
-                  {t("recentActivity")}
-                </h3>
+            {/* Active Projects Tracker */}
+            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 space-y-6">
+              <div className="flex items-center justify-between border-b border-slate-50 pb-4">
+                <div className="space-y-1">
+                  <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
+                    <Briefcase className="w-5 h-5 text-indigo-600" /> {t("activeProjects")}
+                  </h3>
+                  <p className="text-xs font-medium text-slate-400">Current active customer milestones and progress</p>
+                </div>
+                <Link href="/admin/tasks/projects" className="text-xs font-bold text-indigo-600 hover:text-indigo-500 flex items-center gap-1 group">
+                  {t("viewAll")} <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+                </Link>
               </div>
-              <div className="p-6 space-y-4">
-                <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 no-scrollbar">
-                  {stats.recentActivity.length > 0 ? (
-                    stats.recentActivity.map((log, i) => (
-                      <div key={i} className="flex gap-4 p-3 rounded-xl hover:bg-slate-50 transition-colors border-l-4 border-indigo-500 bg-indigo-50/10">
-                        <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${
-                          log.action === 'created' ? 'bg-green-100 text-green-600' :
-                          log.action === 'updated' ? 'bg-blue-100 text-blue-600' :
-                          log.action === 'deleted' ? 'bg-red-100 text-red-600' :
-                          'bg-slate-100 text-slate-600'
-                        }`}>
-                          <Zap className="w-5 h-5" />
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex justify-between items-start">
-                            <p className="text-sm font-bold text-slate-900 capitalize">{log.entity} {log.action}</p>
-                            <span className="text-[10px] text-slate-400 font-medium">{new Date(log.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                          </div>
-                          <p className="text-xs text-slate-600 mt-1 line-clamp-1">{log.description}</p>
-                          <p className="text-[10px] text-slate-500 mt-1">By {log.performedBy.name || 'System'}</p>
-                        </div>
+
+              <div className="space-y-3.5">
+                {stats.topProjects.map((project, idx) => (
+                  <div key={idx} className="bg-slate-50 hover:bg-slate-100/70 border border-slate-100 rounded-2xl p-4 flex items-center justify-between transition-all duration-200">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center border border-slate-200/50 shadow-sm">
+                        <Briefcase className="w-5 h-5 text-indigo-600" />
                       </div>
-                    ))
-                  ) : (
-                    <div className="text-center py-10">
-                      <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-3">
-                        <CheckCircle2 className="w-8 h-8 text-slate-300" />
+                      <div>
+                        <p className="text-sm font-bold text-slate-900">{project.name}</p>
+                        <p className="text-xs text-slate-500 mt-0.5">Manager: {project.projectManager ? `${project.projectManager.personalDetails.firstName} ${project.projectManager.personalDetails.lastName}` : 'N/A'}</p>
                       </div>
-                      <p className="text-slate-500 font-medium">No recent activity found.</p>
                     </div>
-                  )}
-                </div>
-
-                <div className="pt-4 border-t border-slate-100">
-                  <div className="flex items-center justify-between mb-4">
-                    <h4 className="font-bold text-slate-800">{t("activeProjects")}</h4>
-                    <Link href="/admin/tasks/projects" className="text-xs font-bold text-indigo-600 hover:underline">{t("viewAll")}</Link>
-                  </div>
-                  <div className="space-y-3">
-                    {stats.topProjects.map((project, idx) => (
-                      <div key={idx} className="bg-slate-50 rounded-xl p-4 flex items-center justify-between hover:bg-slate-100 transition-colors">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-sm">
-                            <Briefcase className="w-5 h-5 text-indigo-500" />
-                          </div>
-                          <div>
-                            <p className="text-sm font-bold text-slate-900">{project.name}</p>
-                            <p className="text-xs text-slate-500">In-Charge: {project.projectManager ? `${project.projectManager.personalDetails.firstName} ${project.projectManager.personalDetails.lastName}` : 'N/A'}</p>
-                          </div>
-                        </div>
-                        <div className="flex flex-col items-end gap-1.5 w-1/3">
-                          <div className="flex justify-between w-full text-[10px] font-bold text-slate-600">
-                            <span>Process</span>
-                            <span>{project.progress}%</span>
-                          </div>
-                          <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
-                            <div className="bg-indigo-600 h-full rounded-full" style={{ width: `${project.progress}%` }}></div>
-                          </div>
-                        </div>
+                    <div className="flex flex-col items-end gap-1.5 w-1/3">
+                      <div className="flex justify-between w-full text-[10px] font-black text-slate-600">
+                        <span>PROGRESS</span>
+                        <span>{project.progress}%</span>
                       </div>
-                    ))}
-                    {stats.topProjects.length === 0 && (
-                      <p className="text-center py-4 text-sm text-slate-400">No active projects found.</p>
-                    )}
-                  </div>
-                </div>
-
-                <div className="mb-8 p-6 bg-slate-50/50 rounded-2xl border border-slate-100">
-                  <ResourceUtilization />
-                </div>
-
-                <div className="pt-6 border-t border-slate-100">
-                  <h4 className="font-bold text-slate-800 mb-4">Team Contributions (Top 5)</h4>
-                  <div className="space-y-3">
-                    {stats.topContributors.map((contributor, idx) => (
-                      <div key={idx} className="flex items-center justify-between text-sm">
-                        <div className="flex items-center gap-2">
-                          <div className="w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-[10px] font-bold">
-                            {contributor.name.charAt(0)}
-                          </div>
-                          <span className="text-slate-600 font-medium">{contributor.name}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span className="text-slate-900 font-bold">{contributor.hours.toFixed(1)}h</span>
-                          <div className="w-24 h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                            <div 
-                              className="bg-blue-500 h-full rounded-full" 
-                              style={{ width: `${Math.min((contributor.hours / 160) * 100, 100)}%` }}
-                            ></div>
-                          </div>
-                        </div>
+                      <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                        <div className="bg-indigo-600 h-full rounded-full transition-all duration-500" style={{ width: `${project.progress}%` }}></div>
                       </div>
-                    ))}
+                    </div>
                   </div>
-                </div>
+                ))}
+                {stats.topProjects.length === 0 && (
+                  <p className="text-center py-6 text-sm text-slate-400 font-medium">No active projects found.</p>
+                )}
+              </div>
+            </div>
+
+            {/* Resource Utilization Widget */}
+            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 overflow-hidden">
+              <div className="border-b border-slate-50 pb-4 mb-6">
+                <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
+                  <BarChart3 className="w-5 h-5 text-indigo-600" /> Resource Management
+                </h3>
+                <p className="text-xs font-medium text-slate-400">Total workforce workload allocation levels</p>
+              </div>
+              <ResourceUtilization />
+            </div>
+          </div>
+
+          {/* Right Sidebar: Controls and Feeds */}
+          <div className="space-y-6 sm:space-y-8">
+            {/* Quick Actions Panel */}
+            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 space-y-4">
+              <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
+                <Zap className="w-5 h-5 text-indigo-600" /> {t("quickActions")}
+              </h3>
+              <div className="grid grid-cols-1 gap-3">
+                {quickActions.map((action, i) => (
+                  <Link key={i} href={action.href}>
+                    <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 hover:border-indigo-200 hover:bg-indigo-50/50 transition-all group cursor-pointer shadow-sm hover:shadow-md active:scale-[0.99]">
+                      <div className={`w-10 h-10 ${action.color} rounded-lg flex items-center justify-center text-white`}>
+                        <action.icon className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <span className="font-bold text-slate-800 group-hover:text-indigo-700 transition-colors text-sm">{action.title}</span>
+                        <p className="text-[10px] text-slate-400 mt-0.5">{action.description}</p>
+                      </div>
+                      <ChevronRight className="w-4 h-4 ml-auto text-slate-400 group-hover:text-indigo-500 transition-all group-hover:translate-x-0.5" />
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            {/* Team Contributions Card */}
+            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 space-y-6">
+              <div className="border-b border-slate-50 pb-4">
+                <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
+                  <Users className="w-5 h-5 text-indigo-600" /> Team Contributions
+                </h3>
+                <p className="text-xs font-medium text-slate-400">Top 5 workforce members by logged timesheet hours</p>
+              </div>
+
+              <div className="space-y-4">
+                {stats.topContributors.map((contributor, idx) => (
+                  <div key={idx} className="flex flex-col gap-2">
+                    <div className="flex items-center justify-between text-xs">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-6.5 h-6.5 bg-gradient-to-br from-indigo-500 to-indigo-600 text-white rounded-full flex items-center justify-center text-[10px] font-black uppercase shadow-sm">
+                          {contributor.name.charAt(0)}
+                        </div>
+                        <span className="text-slate-700 font-bold">{contributor.name}</span>
+                      </div>
+                      <span className="text-slate-900 font-black">{contributor.hours.toFixed(1)}h</span>
+                    </div>
+                    <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                      <div 
+                        className="bg-indigo-600 h-full rounded-full transition-all duration-500" 
+                        style={{ width: `${Math.min((contributor.hours / 160) * 100, 100)}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                ))}
+                {stats.topContributors.length === 0 && (
+                  <p className="text-center py-4 text-xs text-slate-400 font-medium">No team timesheet data found.</p>
+                )}
+              </div>
+            </div>
+
+            {/* Operations ATS Integration Promo Banner */}
+            <div 
+              className="bg-gradient-to-br from-indigo-600 to-violet-700 rounded-2xl p-6 text-white shadow-lg overflow-hidden relative group cursor-pointer" 
+              onClick={() => router.push('/admin/recruitment')}
+            >
+              <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform">
+                <Briefcase className="w-32 h-32" />
+              </div>
+              <h4 className="text-lg font-black mb-1">{t("recruitment")} Suite</h4>
+              <p className="text-indigo-100 text-xs mb-4 leading-relaxed">Launch recruitments, monitor candidates, schedule evaluations and automate employee onboarding pipelines.</p>
+              <div className="inline-flex items-center gap-1.5 bg-white/20 hover:bg-white/30 px-3.5 py-2 rounded-lg backdrop-blur-md text-xs font-bold border border-white/20 transition-all">
+                {t("viewDetails")} <ChevronRight className="w-3.5 h-3.5" />
               </div>
             </div>
           </div>

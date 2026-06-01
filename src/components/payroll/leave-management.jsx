@@ -28,6 +28,8 @@ import {
   CalendarRange,
   Edit3,
   Info,
+  Cpu,
+  ArrowRight,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
@@ -896,152 +898,164 @@ export default function LeaveManagement() {
     searchQuery,
   ]);
 
-  const renderLeaveRow = (leave) => (
-    <tr key={leave._id} className="hover:bg-slate-50 transition-colors">
-      <td className="px-6 py-4">
-        <div>
-          <p className="text-sm font-semibold text-slate-900">
-            {leave.employeeName}
-          </p>
-          <p className="text-xs text-slate-500">{leave.employeeCode}</p>
-        </div>
-      </td>
-      {!groupByOrganization && (
-        <td className="px-6 py-4">
-          <p className="text-sm text-slate-700">{leave.organizationType}</p>
-        </td>
-      )}
-      <td className="px-6 py-4">
-        <p className="text-sm text-slate-700">{leave.department}</p>
-      </td>
-      <td className="px-6 py-4 text-center">
-        {editingLeaveId === leave._id ? (
-          <input
-            type="number"
-            step="1"
-            min="0"
-            value={editValues.paid}
-            onChange={(e) => setEditValues(prev => ({ ...prev, paid: parseInt(e.target.value) || 0 }))}
-            className="w-16 text-center border rounded px-1 py-1 text-sm"
-          />
-        ) : (
-          <span className="inline-flex items-center justify-center min-w-[2.5rem] px-2 py-1 bg-green-50 text-green-700 rounded-lg font-semibold text-sm border border-green-200">
-            {(
-              (leave.summary.paidLeaves || 0) +
-              (leave.summary.halfDayPaidLeaves || 0) * 0.5
-            ).toFixed(1)}
-          </span>
-        )}
-      </td>
-      <td className="px-6 py-4 text-center">
-        {editingLeaveId === leave._id ? (
-          <input
-            type="number"
-            step="1"
-            min="0"
-            value={editValues.unpaid}
-            onChange={(e) => setEditValues(prev => ({ ...prev, unpaid: parseInt(e.target.value) || 0 }))}
-            className="w-16 text-center border rounded px-1 py-1 text-sm"
-          />
-        ) : (
-          <span className="inline-flex items-center justify-center min-w-[2.5rem] px-2 py-1 bg-red-50 text-red-700 rounded-lg font-semibold text-sm border border-red-200">
-            {(
-              (leave.summary.unpaidLeaves || 0) +
-              (leave.summary.halfDayUnpaidLeaves || 0) * 0.5
-            ).toFixed(1)}
-          </span>
-        )}
-      </td>
-      <td className="px-6 py-4 text-center">
-        <span className="inline-flex items-center justify-center min-w-[2.5rem] px-2 py-1 bg-slate-50 text-blue-700 rounded-lg font-semibold text-sm border border-blue-200">
-          {editingLeaveId === leave._id
-            ? (editValues.paid + editValues.unpaid).toFixed(1)
-            : (leave.summary.totalDays || 0).toFixed(1)}
-        </span>
-      </td>
-      <td className="px-6 py-4 text-center">
-        <div className="text-sm">
-          {/* MAIN DISPLAY: Always show remaining balance prominently */}
-          <div className="mb-2">
-            <p className={`text-lg font-bold ${(leave.annualLeaveBalance.remaining || 0) < 5
-              ? 'text-red-600'
-              : (leave.annualLeaveBalance.remaining || 0) < 10
-                ? 'text-orange-600'
-                : 'text-green-600'
-              }`}>
-              {editingLeaveId === leave._id
-                ? Math.max(0, (leave.annualLeaveBalance.balanceAtMonthStart || 0) - editValues.unpaid).toFixed(1)
-                : (leave.annualLeaveBalance.remaining || 0).toFixed(1)
-              }
-            </p>
-            <p className="text-xs text-slate-500 font-medium">
-              Remaining
-            </p>
-          </div>
+  const renderLeaveRow = (leave) => {
+    // Generate simple initials avatar bubble
+    const getInitials = (name) => {
+      if (!name) return "EE";
+      return name.split(" ").map(n => n[0]).slice(0, 2).join("").toUpperCase();
+    };
 
-          {/* Detailed breakdown */}
-          <div className="space-y-0.5 pt-2 border-t border-slate-200">
-            <div className="flex items-center justify-between text-xs">
-              <span className="text-slate-500">Monthly:</span>
-              <span className="font-semibold text-slate-700">{leave.annualLeaveBalance.totalEntitled || payrollConfig?.annualPaidLeaveQuota || 31}</span>
+    return (
+      <tr key={leave._id} className="hover:bg-slate-50/50 transition-colors group/row">
+        <td className="px-6 py-4">
+          <div className="flex items-center gap-3.5">
+            <div className="w-9 h-9 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center text-white text-xs font-bold shadow-md shadow-indigo-500/10 group-hover/row:scale-105 transition-transform">
+              {getInitials(leave.employeeName)}
             </div>
-            <div className="flex items-center justify-between text-xs">
-              <span className="text-slate-500">Used YTD:</span>
-              <span className="font-semibold text-red-600">{(leave.annualLeaveBalance.used || 0).toFixed(1)}</span>
+            <div>
+              <p className="text-sm font-extrabold text-slate-800 tracking-tight">
+                {leave.employeeName}
+              </p>
+              <span className="inline-flex px-1.5 py-0.5 bg-slate-100 border border-slate-200 rounded text-[9px] font-bold text-slate-500 uppercase mt-0.5 tracking-wider">
+                ID: {leave.employeeCode}
+              </span>
             </div>
-            {(leave.annualLeaveBalance.thisMonthUnpaid || 0) > 0 && (
-              <div className="flex items-center justify-between text-xs">
-                <span className="text-slate-500">This Month:</span>
-                <span className="font-semibold text-orange-600">{(leave.annualLeaveBalance.thisMonthUnpaid || 0).toFixed(1)}</span>
+          </div>
+        </td>
+        {!groupByOrganization && (
+          <td className="px-6 py-4">
+            <span className="inline-flex px-2 py-0.5 bg-slate-50 border border-slate-100 rounded-lg text-xs font-bold text-slate-650">
+              {leave.organizationType}
+            </span>
+          </td>
+        )}
+        <td className="px-6 py-4">
+          <span className="text-xs font-semibold text-slate-655">
+            {leave.department}
+          </span>
+        </td>
+        <td className="px-6 py-4 text-center">
+          {editingLeaveId === leave._id ? (
+            <input
+              type="number"
+              step="1"
+              min="0"
+              value={editValues.paid}
+              onChange={(e) => setEditValues(prev => ({ ...prev, paid: parseInt(e.target.value) || 0 }))}
+              className="w-16 text-center bg-slate-50 border border-slate-200 rounded-xl px-1.5 py-1 text-xs text-slate-800 outline-none focus:ring-2 focus:ring-indigo-500/20"
+            />
+          ) : (
+            <span className="inline-flex items-center justify-center min-w-[2.5rem] px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-xl font-bold text-xs border border-emerald-100 shadow-inner">
+              {(
+                (leave.summary.paidLeaves || 0) +
+                (leave.summary.halfDayPaidLeaves || 0) * 0.5
+              ).toFixed(1)}
+            </span>
+          )}
+        </td>
+        <td className="px-6 py-4 text-center">
+          {editingLeaveId === leave._id ? (
+            <input
+              type="number"
+              step="1"
+              min="0"
+              value={editValues.unpaid}
+              onChange={(e) => setEditValues(prev => ({ ...prev, unpaid: parseInt(e.target.value) || 0 }))}
+              className="w-16 text-center bg-slate-50 border border-slate-200 rounded-xl px-1.5 py-1 text-xs text-slate-800 outline-none focus:ring-2 focus:ring-indigo-500/20"
+            />
+          ) : (
+            <span className="inline-flex items-center justify-center min-w-[2.5rem] px-2.5 py-1 bg-rose-50 text-rose-700 rounded-xl font-bold text-xs border border-rose-100 shadow-inner">
+              {(
+                (leave.summary.unpaidLeaves || 0) +
+                (leave.summary.halfDayUnpaidLeaves || 0) * 0.5
+              ).toFixed(1)}
+            </span>
+          )}
+        </td>
+        <td className="px-6 py-4 text-center">
+          <span className="inline-flex items-center justify-center min-w-[2.5rem] px-2.5 py-1 bg-indigo-50 text-indigo-700 rounded-xl font-bold text-xs border border-indigo-100 shadow-inner">
+            {editingLeaveId === leave._id
+              ? (editValues.paid + editValues.unpaid).toFixed(1)
+              : (leave.summary.totalDays || 0).toFixed(1)}
+          </span>
+        </td>
+        <td className="px-6 py-4 text-center">
+          <div className="inline-flex flex-col items-center justify-center bg-slate-50/50 border border-slate-100 rounded-xl p-2 min-w-[5.5rem] shadow-sm">
+            <div>
+              <p className={`text-base font-extrabold tracking-tight ${(leave.annualLeaveBalance.remaining || 0) < 5
+                ? 'text-rose-600'
+                : (leave.annualLeaveBalance.remaining || 0) < 10
+                  ? 'text-amber-600'
+                  : 'text-emerald-600'
+                }`}>
+                {editingLeaveId === leave._id
+                  ? Math.max(0, (leave.annualLeaveBalance.balanceAtMonthStart || 0) - editValues.unpaid).toFixed(1)
+                  : (leave.annualLeaveBalance.remaining || 0).toFixed(1)
+                }
+              </p>
+            </div>
+            <span className="text-[9px] font-bold text-slate-400 uppercase mt-0.5 tracking-wider">Remaining</span>
+  
+            {/* Detailed breakdown */}
+            <div className="space-y-0.5 pt-1.5 border-t border-slate-100 w-full mt-1.5">
+              <div className="flex items-center justify-between text-[9px] font-bold text-slate-500">
+                <span>Quota:</span>
+                <span>{leave.annualLeaveBalance.totalEntitled || payrollConfig?.annualPaidLeaveQuota || 31}</span>
               </div>
+              <div className="flex items-center justify-between text-[9px] font-bold">
+                <span className="text-slate-500">YTD Used:</span>
+                <span className="text-rose-500">{(leave.annualLeaveBalance.used || 0).toFixed(1)}</span>
+              </div>
+            </div>
+          </div>
+        </td>
+        <td className="px-6 py-4 text-center">
+          {getStatusBadge(leave.status)}
+        </td>
+        <td className="px-6 py-4 text-right">
+          <div className="flex items-center justify-end gap-1.5">
+            {editingLeaveId === leave._id ? (
+              <>
+                <button
+                  onClick={handleSaveInline}
+                  className="p-2 text-emerald-600 hover:bg-emerald-50 rounded-xl transition-all shadow-inner border border-emerald-100"
+                  title="Save"
+                >
+                  <Check className="w-3.5 h-3.5" />
+                </button>
+                <button
+                  onClick={() => setEditingLeaveId(null)}
+                  className="p-2 text-rose-600 hover:bg-rose-50 rounded-xl transition-all shadow-inner border border-rose-100"
+                  title="Cancel"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={() => handleEditLeave(leave._id)}
+                  className="p-2 text-slate-400 hover:text-indigo-650 hover:bg-indigo-50 rounded-xl transition-all border border-transparent hover:border-indigo-100"
+                  title="Edit"
+                >
+                  <Edit className="w-3.5 h-3.5" />
+                </button>
+                {!leave._id.toString().startsWith('temp-') && (
+                  <button
+                    onClick={() => handleDeleteLeave(leave._id)}
+                    className="p-2 text-slate-400 hover:text-rose-650 hover:bg-rose-50 rounded-xl transition-all border border-transparent hover:border-rose-100"
+                    title="Delete"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
+                )}
+              </>
             )}
           </div>
-        </div>
-      </td>
-      <td className="px-6 py-4 text-center">{getStatusBadge(leave.status)}</td>
-      <td className="px-6 py-4 text-right">
-        <div className="flex items-center justify-end gap-1">
-          {editingLeaveId === leave._id ? (
-            <>
-              <button
-                onClick={handleSaveInline}
-                className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
-                title="Save"
-              >
-                <Check className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => setEditingLeaveId(null)}
-                className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                title="Cancel"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </>
-          ) : (
-            <>
-              <button
-                onClick={() => handleEditLeave(leave._id)}
-                className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
-                title="Edit"
-              >
-                <Edit className="w-4 h-4" />
-              </button>
-              {!leave._id.toString().startsWith('temp-') && (
-                <button
-                  onClick={() => handleDeleteLeave(leave._id)}
-                  className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                  title="Delete"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
-              )}
-            </>
-          )}
-        </div>
-      </td>
-    </tr>
-  );
+        </td>
+      </tr>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -1639,101 +1653,111 @@ export default function LeaveManagement() {
         </div>
       )}
 
-      {/* Header */}
-      <div className="bg-white border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-6 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <div className="w-11 h-11 bg-indigo-500 rounded-xl flex items-center justify-center shadow-sm">
-                <Calendar className="w-6 h-6 text-white" />
+      <div className="max-w-7xl mx-auto p-4 sm:p-6 space-y-6 sm:space-y-8 animate-fade-in">
+        {/* Header Banner */}
+        <div className="relative overflow-hidden bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-xl shadow-indigo-950/20 border border-slate-800">
+          <div className="absolute -right-16 -top-16 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl"></div>
+          <div className="absolute -left-16 -bottom-16 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl"></div>
+          
+          <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div className="space-y-2">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                <Cpu className="w-3.5 h-3.5 animate-pulse" /> Operations & Leave Intelligence
               </div>
-              <div>
-                <h1 className="text-2xl font-bold text-slate-900">
-                  Leave Management
-                </h1>
-                <p className="text-slate-600 text-sm mt-0.5">
-                  Track employee leaves with monthly quota ({payrollConfig?.annualPaidLeaveQuota || 0} days)
-                </p>
-              </div>
+              <h1 className="text-xl sm:text-3xl font-extrabold text-white tracking-tight">
+                Leave & Quota Operations
+              </h1>
+              <p className="text-slate-400 text-xs sm:text-sm max-w-xl">
+                Track employee leaves with monthly quota ({payrollConfig?.annualPaidLeaveQuota || 0} days), manage paid and unpaid adjustments, and organize multi-organization team scheduling.
+              </p>
             </div>
-            <button
-              onClick={handleAddLeave}
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg font-medium transition-colors shadow-sm"
-            >
-              <Plus className="w-4 h-4" />
-              Add Leave Record
-            </button>
+
+            <div className="flex flex-wrap gap-3">
+              <button
+                onClick={handleAddLeave}
+                className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm px-5 py-3 rounded-xl shadow-lg shadow-indigo-600/35 transition-all active:scale-[0.98]"
+              >
+                <Plus className="w-4 h-4" /> Add Leave Record
+              </button>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-6 space-y-6">
         {/* Statistics Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm border-l-4 border-l-indigo-500">
-            <div className="flex items-center justify-between">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+          {/* Card 1 */}
+          <div className="group relative bg-white hover:bg-slate-50/50 rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-all cursor-pointer overflow-hidden active:scale-[0.99]">
+            <div className="space-y-4">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                <Users className="w-5 h-5" />
+              </div>
               <div>
-                <p className="text-sm font-medium text-slate-600">
-                  Total Employees
-                </p>
-                <p className="text-2xl font-bold text-slate-900 mt-2">
+                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Employees</p>
+                <p className="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight mt-1">
                   {stats.totalEmployees}
                 </p>
-                <p className="text-xs text-slate-500 mt-1">
-                  Monthly quota tracking
-                </p>
               </div>
-              <div className="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center border border-indigo-100">
-                <Users className="w-6 h-6 text-indigo-600" />
-              </div>
+              <p className="text-xs font-medium text-slate-500 leading-tight">Monthly quota tracking</p>
+            </div>
+            <div className="absolute right-4 bottom-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all">
+              <ArrowRight className="w-4 h-4 text-slate-400" />
             </div>
           </div>
-          <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm border-l-4 border-l-green-500">
-            <div className="flex items-center justify-between">
+
+          {/* Card 2 */}
+          <div className="group relative bg-white hover:bg-slate-50/50 rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-all cursor-pointer overflow-hidden active:scale-[0.99]">
+            <div className="space-y-4">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                <CheckCircle className="w-5 h-5" />
+              </div>
               <div>
-                <p className="text-sm font-medium text-slate-600">
-                  Paid Leaves
-                </p>
-                <p className="text-2xl font-bold text-slate-900 mt-2">
+                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Paid Leaves</p>
+                <p className="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight mt-1">
                   {stats.totalPaidLeaves.toFixed(1)}
                 </p>
-                <p className="text-xs text-slate-500 mt-1">This month</p>
               </div>
-              <div className="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center border border-green-100">
-                <CheckCircle className="w-6 h-6 text-green-600" />
-              </div>
+              <p className="text-xs font-medium text-slate-500 leading-tight">Paid leaves taken this month</p>
+            </div>
+            <div className="absolute right-4 bottom-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all">
+              <ArrowRight className="w-4 h-4 text-slate-400" />
             </div>
           </div>
-          <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm border-l-4 border-l-red-500">
-            <div className="flex items-center justify-between">
+
+          {/* Card 3 */}
+          <div className="group relative bg-white hover:bg-slate-50/50 rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-all cursor-pointer overflow-hidden active:scale-[0.99]">
+            <div className="space-y-4">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-rose-500 to-pink-600 text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                <AlertCircle className="w-5 h-5" />
+              </div>
               <div>
-                <p className="text-sm font-medium text-slate-600">
-                  Unpaid Leaves
-                </p>
-                <p className="text-2xl font-bold text-slate-900 mt-2">
+                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Unpaid Leaves</p>
+                <p className="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight mt-1">
                   {stats.totalUnpaidLeaves.toFixed(1)}
                 </p>
-                <p className="text-xs text-slate-500 mt-1">This month</p>
               </div>
-              <div className="w-12 h-12 bg-red-50 rounded-xl flex items-center justify-center border border-red-100">
-                <AlertCircle className="w-6 h-6 text-red-600" />
-              </div>
+              <p className="text-xs font-medium text-slate-500 leading-tight">Unpaid leaves taken this month</p>
+            </div>
+            <div className="absolute right-4 bottom-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all">
+              <ArrowRight className="w-4 h-4 text-slate-400" />
             </div>
           </div>
-          <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm border-l-4 border-l-blue-500">
-            <div className="flex items-center justify-between">
+
+          {/* Card 4 */}
+          <div className="group relative bg-white hover:bg-slate-50/50 rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-all cursor-pointer overflow-hidden active:scale-[0.99]">
+            <div className="space-y-4">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                <Clock className="w-5 h-5" />
+              </div>
               <div>
-                <p className="text-sm font-medium text-slate-600">
-                  Total Leave Days
-                </p>
-                <p className="text-2xl font-bold text-slate-900 mt-2">
+                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Leave Days</p>
+                <p className="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight mt-1">
                   {stats.totalDays.toFixed(1)}
                 </p>
-                <p className="text-xs text-slate-500 mt-1">This month</p>
               </div>
-              <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center border border-blue-100">
-                <Clock className="w-6 h-6 text-blue-600" />
-              </div>
+              <p className="text-xs font-medium text-slate-500 leading-tight">Total days recorded this month</p>
+            </div>
+            <div className="absolute right-4 bottom-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all">
+              <ArrowRight className="w-4 h-4 text-slate-400" />
             </div>
           </div>
         </div>
@@ -1741,58 +1765,55 @@ export default function LeaveManagement() {
         {/* Organization Grouping Toggle */}
         {organizationTypes.length > 1 && (
           <div
-            className={`bg-white rounded-xl border-2 transition-all ${groupByOrganization
-              ? "border-yellow-200 bg-gradient-to-r from-yellow-50 to-orange-50"
-              : "border-slate-200"
+            className={`bg-white rounded-2xl border transition-all ${groupByOrganization
+              ? "border-indigo-200 bg-gradient-to-r from-indigo-50/40 via-blue-50/20 to-slate-50/10"
+              : "border-slate-100"
               } shadow-sm`}
           >
-            <div className="p-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
+            <div className="p-4 sm:p-5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="flex items-center space-x-3.5">
                   <div
-                    className={`w-10 h-10 rounded-lg flex items-center justify-center ${groupByOrganization ? "bg-yellow-500" : "bg-slate-100"
+                    className={`w-11 h-11 rounded-xl flex items-center justify-center shadow-md transition-all ${groupByOrganization ? "bg-indigo-600 text-white shadow-indigo-600/20 scale-105" : "bg-slate-50 text-slate-400 border border-slate-100"
                       }`}
                   >
-                    <Layers
-                      className={`w-5 h-5 ${groupByOrganization ? "text-white" : "text-slate-500"
-                        }`}
-                    />
+                    <Layers className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-semibold text-slate-900">
+                    <h3 className="text-sm font-extrabold text-slate-800">
                       Organization-wise Grouping
                     </h3>
-                    <p className="text-xs text-slate-600 mt-0.5">
+                    <p className="text-xs font-semibold text-slate-400 mt-0.5">
                       {groupByOrganization
-                        ? "Leaves are grouped by organization"
-                        : "Click to group leaves by organization"}
+                        ? "Active: Leaves are aggregated and grouped by Organization"
+                        : "Click switch to collapse records by Organization"}
                     </p>
                   </div>
                 </div>
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center justify-end space-x-3">
                   {groupByOrganization && (
-                    <>
+                    <div className="flex items-center gap-1.5">
                       <button
                         onClick={expandAllOrganizations}
-                        className="px-3 py-1.5 text-xs font-medium text-yellow-700 bg-yellow-100 hover:bg-yellow-200 rounded-lg transition-colors border border-yellow-200"
+                        className="px-3 py-1.5 text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 rounded-xl transition-all border border-indigo-100/60"
                       >
                         Expand All
                       </button>
                       <button
                         onClick={collapseAllOrganizations}
-                        className="px-3 py-1.5 text-xs font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors border border-slate-200"
+                        className="px-3 py-1.5 text-xs font-bold text-slate-600 bg-slate-50 hover:bg-slate-100 rounded-xl transition-all border border-slate-100"
                       >
                         Collapse All
                       </button>
-                    </>
+                    </div>
                   )}
                   <button
                     onClick={handleGroupToggle}
-                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${groupByOrganization ? "bg-yellow-500" : "bg-slate-300"
+                    className={`relative inline-flex h-6.5 w-12 shrink-0 items-center rounded-full transition-colors focus:outline-none ${groupByOrganization ? "bg-indigo-600" : "bg-slate-200"
                       }`}
                   >
                     <span
-                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${groupByOrganization ? "translate-x-6" : "translate-x-1"
+                      className={`inline-block h-4.5 w-4.5 transform rounded-full bg-white shadow-md transition-transform ${groupByOrganization ? "translate-x-6" : "translate-x-1.5"
                         }`}
                     />
                   </button>
@@ -1803,38 +1824,38 @@ export default function LeaveManagement() {
         )}
 
         {/* Filters */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
-          <div className="p-6 border-b border-slate-200">
-            <div className="flex items-center justify-between">
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm">
+          <div className="p-5 sm:p-6 border-b border-slate-50">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div className="flex items-center space-x-3">
-                <h2 className="text-xl font-semibold text-slate-900">
-                  Filter Leave Records
+                <h2 className="text-lg font-extrabold text-slate-800 tracking-tight">
+                  Operations Filter Deck
                 </h2>
                 {hasActiveFilters && (
-                  <span className="inline-flex items-center px-2.5 py-1 bg-yellow-100 text-yellow-800 text-xs font-medium rounded-full border border-yellow-200">
-                    Filtered Results
+                  <span className="inline-flex items-center px-2.5 py-0.5 bg-indigo-50 text-indigo-600 text-xs font-bold rounded-full border border-indigo-100/60">
+                    Active Filters
                   </span>
                 )}
               </div>
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center gap-3">
                 <button
                   onClick={() => fetchLeaves(true)}
                   disabled={refreshing}
-                  className="inline-flex items-center gap-2 px-4 py-2.5 text-slate-600 bg-slate-50 hover:bg-slate-100 rounded-lg border border-slate-200 disabled:opacity-50 transition-colors font-medium"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 text-slate-600 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-100 disabled:opacity-50 transition-all font-bold text-xs active:scale-95"
                 >
                   <RefreshCw
-                    className={`w-4 h-4 ${refreshing ? "animate-spin" : ""}`}
+                    className={`w-3.5 h-3.5 ${refreshing ? "animate-spin text-indigo-600" : "text-slate-400"}`}
                   />
-                  Refresh
+                  Refresh Records
                 </button>
               </div>
             </div>
           </div>
-          <div className="p-6">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+          <div className="p-5 sm:p-6 bg-slate-50/30 rounded-b-2xl">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-4 sm:gap-5">
               {organizationTypes.length > 1 && (
-                <div className="lg:col-span-2 space-y-2">
-                  <label className="block text-sm font-medium text-slate-700">
+                <div className="lg:col-span-3 space-y-1.5">
+                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">
                     Organization
                   </label>
                   <select
@@ -1845,7 +1866,7 @@ export default function LeaveManagement() {
                       fetchPayrollConfig(orgId);
                       setPagination((prev) => ({ ...prev, page: 1 }));
                     }}
-                    className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                    className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-800 placeholder-slate-400 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all cursor-pointer"
                   >
                     <option value="">All Organizations</option>
                     {organizationTypes.map((org) => (
@@ -1856,8 +1877,8 @@ export default function LeaveManagement() {
                   </select>
                 </div>
               )}
-              <div className="lg:col-span-2 space-y-2">
-                <label className="block text-sm font-medium text-slate-700">
+              <div className={`lg:col-span-2 space-y-1.5 ${organizationTypes.length > 1 ? "" : "lg:col-span-3"}`}>
+                <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">
                   Month
                 </label>
                 <select
@@ -1866,7 +1887,7 @@ export default function LeaveManagement() {
                     setSelectedMonth(parseInt(e.target.value));
                     setPagination((prev) => ({ ...prev, page: 1 }));
                   }}
-                  className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                  className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-800 placeholder-slate-400 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all cursor-pointer"
                 >
                   {months.map((month) => (
                     <option key={month.value} value={month.value}>
@@ -1875,8 +1896,8 @@ export default function LeaveManagement() {
                   ))}
                 </select>
               </div>
-              <div className="lg:col-span-2 space-y-2">
-                <label className="block text-sm font-medium text-slate-700">
+              <div className="lg:col-span-2 space-y-1.5">
+                <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">
                   Year
                 </label>
                 <select
@@ -1885,7 +1906,7 @@ export default function LeaveManagement() {
                     setSelectedYear(parseInt(e.target.value));
                     setPagination((prev) => ({ ...prev, page: 1 }));
                   }}
-                  className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                  className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-800 placeholder-slate-400 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all cursor-pointer"
                 >
                   {years.map((year) => (
                     <option key={year} value={year}>
@@ -1894,8 +1915,8 @@ export default function LeaveManagement() {
                   ))}
                 </select>
               </div>
-              <div className="lg:col-span-2 space-y-2">
-                <label className="block text-sm font-medium text-slate-700">
+              <div className="lg:col-span-2 space-y-1.5">
+                <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">
                   Status
                 </label>
                 <select
@@ -1904,7 +1925,7 @@ export default function LeaveManagement() {
                     setSelectedStatus(e.target.value);
                     setPagination((prev) => ({ ...prev, page: 1 }));
                   }}
-                  className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                  className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-800 placeholder-slate-400 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all cursor-pointer"
                 >
                   {statusOptions.map((status) => (
                     <option key={status.value} value={status.value}>
@@ -1913,12 +1934,12 @@ export default function LeaveManagement() {
                   ))}
                 </select>
               </div>
-              <div className="lg:col-span-3 space-y-2">
-                <label className="block text-sm font-medium text-slate-700">
+              <div className="lg:col-span-3 space-y-1.5">
+                <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">
                   Search Employee
                 </label>
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
+                  <Search className="absolute left-3.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
                   <input
                     type="text"
                     value={searchQuery}
@@ -1927,44 +1948,44 @@ export default function LeaveManagement() {
                       setPagination((prev) => ({ ...prev, page: 1 }));
                     }}
                     placeholder="Search by name or ID..."
-                    className="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                    className="w-full bg-white border border-slate-200 rounded-xl pl-10 pr-4 py-2 text-sm text-slate-800 placeholder-slate-400 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all"
                   />
                 </div>
               </div>
-              <div className="lg:col-span-1 flex items-end">
-                {hasActiveFilters && (
+              {hasActiveFilters && (
+                <div className="lg:col-span-1 flex items-end">
                   <button
                     onClick={clearFilters}
-                    className="w-full px-4 py-2.5 text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg flex items-center justify-center transition-colors font-medium"
+                    className="w-full flex items-center justify-center p-2.5 bg-rose-50 text-rose-600 hover:bg-rose-100 hover:text-rose-700 rounded-xl border border-rose-150 transition-all font-semibold active:scale-95 shadow-inner"
                     title="Clear all filters"
                   >
                     <FilterX className="w-4 h-4" />
                   </button>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
 
         {/* Leave Records Table */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
-          <div className="p-6 border-b border-slate-200">
-            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-              <div>
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+          <div className="p-5 sm:p-6 border-b border-slate-50 bg-slate-50/30">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div className="space-y-1">
                 <div className="flex items-center gap-3">
-                  <h2 className="text-xl font-semibold text-slate-900">
-                    {groupByOrganization ? "Organizations" : "Leave Records"} -{" "}
+                  <h2 className="text-lg font-extrabold text-slate-800 tracking-tight">
+                    {groupByOrganization ? "Organization Rollup Feeds" : "Statutory Leave Logs"} —{" "}
                     {formatMonthYear(selectedMonth, selectedYear)}
                   </h2>
-                  <div className="flex items-center gap-2 px-3 py-1 bg-slate-50 border border-blue-200 rounded-lg">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-50/60 border border-blue-100 rounded-full">
                     <Info className="w-3.5 h-3.5 text-blue-600" />
-                    <span className="text-xs font-medium text-blue-700">
-                      Balance shown is at end of {months[selectedMonth - 1].label}
+                    <span className="text-[11px] font-bold text-blue-700">
+                      End-of-month balances shown ({months[selectedMonth - 1].label})
                     </span>
                   </div>
                 </div>
-                <p className="text-sm text-slate-600 mt-1">
-                  Showing {pagination.total} employee{pagination.total !== 1 ? "s" : ""} - Monthly quota resets every month
+                <p className="text-xs font-semibold text-slate-400">
+                  Showing {pagination.total} active employee{pagination.total !== 1 ? "s" : ""} in view
                 </p>
               </div>
             </div>
@@ -2014,43 +2035,43 @@ export default function LeaveManagement() {
               )}
             </div>
           ) : groupByOrganization ? (
-            <div className="divide-y divide-slate-200">
+            <div className="divide-y divide-slate-100">
               {getGroupedLeaves().map((org) => (
-                <div key={org.name}>
+                <div key={org.name} className="overflow-hidden">
                   <div
                     onClick={() => toggleOrganization(org.name)}
-                    className="px-6 py-4 bg-gradient-to-r from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 cursor-pointer transition-colors"
+                    className="px-6 py-4.5 bg-gradient-to-r from-indigo-50/40 via-blue-50/20 to-slate-50/10 hover:from-indigo-100/30 hover:to-indigo-50/20 cursor-pointer border-b border-slate-100/50 transition-colors"
                   >
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-3">
-                        <div className="w-8 h-8 bg-slate-500 rounded-lg flex items-center justify-center">
-                          <Building2 className="w-4 h-4 text-white" />
+                      <div className="flex items-center space-x-3.5">
+                        <div className="w-10 h-10 bg-indigo-50 rounded-xl flex items-center justify-center text-indigo-600 shadow-inner">
+                          <Building2 className="w-5 h-5" />
                         </div>
                         <div>
-                          <h3 className="text-base font-semibold text-slate-900">
+                          <h3 className="font-extrabold text-slate-800 text-sm">
                             {org.name}
                           </h3>
-                          <div className="flex items-center space-x-4 mt-1">
-                            <p className="text-xs text-slate-600">
+                          <div className="flex flex-wrap items-center gap-2 mt-1.5">
+                            <span className="inline-flex px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-100 text-slate-650 border border-slate-200">
                               {org.count} employee{org.count !== 1 ? "s" : ""}
-                            </p>
-                            <span className="text-xs text-green-600 font-medium">
-                              {org.paidLeaves.toFixed(1)} paid
                             </span>
-                            <span className="text-xs text-red-600 font-medium">
-                              {org.unpaidLeaves.toFixed(1)} unpaid
+                            <span className="inline-flex px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-100">
+                              {org.paidLeaves.toFixed(1)} paid taken
                             </span>
-                            <span className="text-xs text-blue-600 font-medium">
-                              {org.totalDays.toFixed(1)} total
+                            <span className="inline-flex px-2 py-0.5 rounded-md text-[10px] font-bold bg-rose-50 text-rose-600 border border-rose-100">
+                              {org.unpaidLeaves.toFixed(1)} unpaid taken
+                            </span>
+                            <span className="inline-flex px-2 py-0.5 rounded-md text-[10px] font-bold bg-indigo-50 text-indigo-600 border border-indigo-100">
+                              {org.totalDays.toFixed(1)} total taken
                             </span>
                           </div>
                         </div>
                       </div>
                       <div className="flex items-center space-x-2">
                         {expandedOrgs[org.name] ? (
-                          <ChevronUp className="w-5 h-5 text-slate-500" />
+                          <ChevronUp className="w-5 h-5 text-slate-400" />
                         ) : (
-                          <ChevronDown className="w-5 h-5 text-slate-500" />
+                          <ChevronDown className="w-5 h-5 text-slate-400" />
                         )}
                       </div>
                     </div>
@@ -2058,35 +2079,35 @@ export default function LeaveManagement() {
                   {expandedOrgs[org.name] && (
                     <div className="overflow-x-auto">
                       <table className="w-full">
-                        <thead className="bg-slate-50 border-b border-slate-200">
+                        <thead className="bg-slate-50/50 border-b border-slate-100 text-slate-450 text-[10px] font-extrabold uppercase tracking-wider">
                           <tr>
-                            <th className="text-left px-6 py-3 text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                            <th className="text-left px-6 py-3.5 font-bold">
                               Employee
                             </th>
-                            <th className="text-left px-6 py-3 text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                            <th className="text-left px-6 py-3.5 font-bold">
                               Department
                             </th>
-                            <th className="text-center px-6 py-3 text-xs font-semibold text-slate-600 uppercase tracking-wider">
-                              Paid
+                            <th className="text-center px-6 py-3.5 font-bold">
+                              Paid Leaves
                             </th>
-                            <th className="text-center px-6 py-3 text-xs font-semibold text-slate-600 uppercase tracking-wider">
-                              Unpaid
+                            <th className="text-center px-6 py-3.5 font-bold">
+                              Unpaid Leaves
                             </th>
-                            <th className="text-center px-6 py-3 text-xs font-semibold text-slate-600 uppercase tracking-wider">
-                              Total
+                            <th className="text-center px-6 py-3.5 font-bold">
+                              Total Days
                             </th>
-                            <th className="text-center px-6 py-3 text-xs font-semibold text-slate-600 uppercase tracking-wider">
-                              Open Balance
+                            <th className="text-center px-6 py-3.5 font-bold">
+                              Opening Balance
                             </th>
-                            <th className="text-center px-6 py-3 text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                            <th className="text-center px-6 py-3.5 font-bold">
                               Status
                             </th>
-                            <th className="text-right px-6 py-3 text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                            <th className="text-right px-6 py-3.5 font-bold">
                               Actions
                             </th>
                           </tr>
                         </thead>
-                        <tbody className="bg-white divide-y divide-slate-200">
+                        <tbody className="bg-white divide-y divide-slate-100">
                           {org.leaves.map((leave) => renderLeaveRow(leave))}
                         </tbody>
                       </table>
@@ -2098,38 +2119,38 @@ export default function LeaveManagement() {
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-slate-50 border-b border-slate-200">
+                <thead className="bg-slate-50/50 border-b border-slate-100 text-slate-450 text-[10px] font-extrabold uppercase tracking-wider">
                   <tr>
-                    <th className="text-left px-6 py-4 text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                    <th className="text-left px-6 py-4 font-bold">
                       Employee
                     </th>
-                    <th className="text-left px-6 py-4 text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                    <th className="text-left px-6 py-4 font-bold">
                       Organization
                     </th>
-                    <th className="text-left px-6 py-4 text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                    <th className="text-left px-6 py-4 font-bold">
                       Department
                     </th>
-                    <th className="text-center px-6 py-4 text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                    <th className="text-center px-6 py-4 font-bold">
                       Paid Leaves
                     </th>
-                    <th className="text-center px-6 py-4 text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                    <th className="text-center px-6 py-4 font-bold">
                       Unpaid Leaves
                     </th>
-                    <th className="text-center px-6 py-4 text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                    <th className="text-center px-6 py-4 font-bold">
                       Total Days
                     </th>
-                    <th className="text-center px-6 py-4 text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                    <th className="text-center px-6 py-4 font-bold">
                       Monthly Balance
                     </th>
-                    <th className="text-center px-6 py-4 text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                    <th className="text-center px-6 py-4 font-bold">
                       Status
                     </th>
-                    <th className="text-right px-6 py-4 text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                    <th className="text-right px-6 py-4 font-bold">
                       Actions
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-slate-200">
+                <tbody className="bg-white divide-y divide-slate-100">
                   {leaves.map((leave) => renderLeaveRow(leave))}
                 </tbody>
               </table>

@@ -643,7 +643,7 @@ function ScheduleModal({ onClose, candidates, interviewers, onSuccess, prefill =
                                 </SelectValue>
                             </SelectTrigger>
                             <SelectContent className="rounded-2xl">
-                                {['Screening', 'Technical Interview', 'Managerial Interview', 'HR Interview', 'Final Round'].map(r => (
+                                {['Screening', 'Interviewing'].map(r => (
                                     <SelectItem key={r} value={r} className="rounded-xl p-3">{r}</SelectItem>
                                 ))}
                             </SelectContent>
@@ -932,7 +932,7 @@ function ActionModal({ onClose, interview, onSuccess }) {
                         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
                             <h4 className="text-sm font-black text-slate-900 uppercase tracking-widest text-center border-b pb-4">Select Next Round</h4>
                             <div className="grid grid-cols-1 gap-3">
-                                {['Screening', 'Technical Interview', 'Managerial Interview', 'HR Interview', 'Final Round'].map(round => (
+                                {['Screening', 'Interviewing'].map(round => (
                                     <button 
                                         key={round}
                                         onClick={() => handleSubmitDecision('Promoted', round)}

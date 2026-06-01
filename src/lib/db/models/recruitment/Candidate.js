@@ -38,9 +38,7 @@ const candidateSchema = new mongoose.Schema({
         enum: [
             'Applied',
             'Screening',
-            'Technical Interview',
-            'Managerial Interview',
-            'HR Interview',
+            'Interviewing',
             'Offer Sent',
             'Hired',
             'Confirmed',
@@ -49,12 +47,16 @@ const candidateSchema = new mongoose.Schema({
             'Withdrawn',
             'On Hold',
             'Draft'
-    ],
-    default: 'Applied'
-},
-interviews: [{
-    round: String,
-    interviewer: {
+        ],
+        default: 'Applied'
+    },
+    isOnHold: {
+        type: Boolean,
+        default: false
+    },
+    interviews: [{
+        round: String,
+        interviewer: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Employee'
     },

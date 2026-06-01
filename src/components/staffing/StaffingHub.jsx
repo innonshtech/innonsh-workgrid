@@ -108,9 +108,9 @@ export default function StaffingHub() {
   ];
 
   return (
-    <div className="max-w-7xl mx-auto space-y-8 animate-fade-in p-6">
+    <div className="max-w-7xl mx-auto space-y-6 sm:space-y-8 animate-fade-in p-4 sm:p-6">
       {/* Header Banner */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-3xl p-8 shadow-xl shadow-indigo-950/20 border border-slate-800">
+      <div className="relative overflow-hidden bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-xl shadow-indigo-950/20 border border-slate-800">
         <div className="absolute -right-16 -top-16 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl"></div>
         <div className="absolute -left-16 -bottom-16 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl"></div>
         
@@ -119,10 +119,10 @@ export default function StaffingHub() {
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
               <Cpu className="w-3.5 h-3.5" /> Staffing Intelligence Suite v1.0
             </div>
-            <h1 className="text-3xl font-extrabold text-white tracking-tight">
+            <h1 className="text-xl sm:text-3xl font-extrabold text-white tracking-tight">
               Recruiter & Talent Matching Workspace
             </h1>
-            <p className="text-slate-400 text-sm max-w-xl">
+            <p className="text-slate-400 text-xs sm:text-sm max-w-xl">
               Upload resumes, search candidate skills instantly across our global resume bank, and trigger AI requirement matching to deploy top professionals.
             </p>
           </div>
@@ -145,7 +145,7 @@ export default function StaffingHub() {
       </div>
 
       {/* KPI Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6">
         {statCards.map((card) => (
           <div
             key={card.title}
@@ -158,7 +158,7 @@ export default function StaffingHub() {
               </div>
               <div>
                 <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">{card.title}</p>
-                <p className="text-3xl font-extrabold text-slate-800 tracking-tight mt-1">{card.value}</p>
+                <p className="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight mt-1">{card.value}</p>
               </div>
               <p className="text-xs font-medium text-slate-500 leading-tight">{card.description}</p>
             </div>

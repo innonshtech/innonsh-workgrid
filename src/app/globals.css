@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+html {
+  font-size: 12.5px; /* System-wide layout scale: beautifully compacts typography, spacing, gaps, and elements globally */
+}
+
 @theme {
   /* Brand Colors - Blueprint Palette */
   /* Mapping the provided blues to Indigo to override current brand colors */

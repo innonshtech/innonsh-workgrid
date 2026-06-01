@@ -4,9 +4,12 @@ import EmployeeType from "@/lib/db/models/crm/employee/EmployeeType";
 import Organization from "@/lib/db/models/crm/organization/Organization";
 import Department from "@/lib/db/models/crm/Department/department";
 import mongoose from "mongoose";
+import { getAuthUser, authorize } from "@/lib/auth-util";
 
 export async function POST(request) {
   try {
+    const authUser = await getAuthUser();
+    authorize(authUser, ["admin", "hr", "company_admin", "super_admin"]);
     await dbConnect();
 
     const body = await request.json();
@@ -63,7 +66,7 @@ export async function POST(request) {
       organizationId: organization._id,
       departmentId: department._id,
       employeeType: employeeType.trim(),
-      createdBy: createdBy || "66e2f79f3b8d2e1f1a9d9c33"
+      createdBy: authUser.id
     };
 
     console.log("Creating employee type with payload:", payload);
@@ -102,6 +105,8 @@ export async function POST(request) {
 
 export async function GET(request) {
   try {
+    const authUser = await getAuthUser();
+    authorize(authUser, ["admin", "hr", "company_admin", "super_admin", "employee"]);
     await dbConnect();
 
     const { searchParams } = new URL(request.url);
@@ -112,7 +117,11 @@ export async function GET(request) {
 
     // Build query
     let query = {};
-    if (organizationId) {
+    
+    // SaaS PROTECTION: Restrict admin/hr/employees to their own org
+    if (authUser.role !== "super_admin" && authUser.organizationId) {
+      query.organizationId = authUser.organizationId;
+    } else if (organizationId) {
       try {
         query.organizationId = new mongoose.Types.ObjectId(organizationId);
       } catch (err) {

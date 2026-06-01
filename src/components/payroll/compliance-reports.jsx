@@ -13,13 +13,22 @@ export default function ComplianceReports() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [error, setError] = useState(null);
 
+  // Debounce Search Term
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 300);
+    return () => clearTimeout(handler);
+  }, [searchTerm]);
+
   useEffect(() => {
     fetchComplianceReports();
-  }, [searchTerm, typeFilter, statusFilter]);
+  }, [debouncedSearchTerm, typeFilter, statusFilter]);
 
   const fetchComplianceReports = async () => {
     try {
@@ -28,7 +37,7 @@ export default function ComplianceReports() {
       setError(null);
 
       const params = new URLSearchParams();
-      if (searchTerm) params.append('search', searchTerm);
+      if (debouncedSearchTerm) params.append('search', debouncedSearchTerm);
       if (typeFilter) params.append('reportType', typeFilter);
       if (statusFilter) params.append('status', statusFilter);
 

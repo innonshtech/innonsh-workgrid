@@ -28,7 +28,9 @@ import {
   History,
   Sparkles,
   Send,
-  XCircle
+  XCircle,
+  Cpu,
+  ArrowRight,
 } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 import AttendanceAnalytics from "./attendance/AttendanceAnalytics";
@@ -60,8 +62,8 @@ export default function AttendanceDashboard() {
   const [selectedOrganization, setSelectedOrganization] = useState("");
   const [exportLoading, setExportLoading] = useState(false);
 
-  // View mode: 'daily' or 'monthly'
-  const [viewMode, setViewMode] = useState("daily");
+  // View mode: 'weekly' or 'monthly'
+  const [viewMode, setViewMode] = useState("weekly");
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
@@ -307,7 +309,7 @@ export default function AttendanceDashboard() {
   }, [user, selectedOrganization]);
 
   useEffect(() => {
-    if (viewMode === "daily") {
+    if (viewMode === "weekly") {
       fetchAttendance();
     }
   }, [selectedDate, selectedOrganization, viewMode]);
@@ -655,7 +657,7 @@ export default function AttendanceDashboard() {
         late: employeeData.filter(e => Object.values(e.records).some(r => r.lateMinutes > 0)).length,
         missingPunches: employeeData.filter(e => Object.values(e.records).some(r => r.checkIn && !r.checkOut)).length,
         overtimeCount: employeeData.filter(e => e.stats.totalOvertime > 0).length,
-        attendancePercentage: employeeData.length > 0 ? ((totalPresent / (employeeData.length * 30)) * 100).toFixed(1) : 0
+        attendancePercentage: employeeData.length > 0 ? ((totalPresent / (employeeData.length * (viewMode === "weekly" ? 7 : 30))) * 100).toFixed(1) : 0
       };
     }
   };
@@ -664,8 +666,8 @@ export default function AttendanceDashboard() {
   const prepareTrendData = () => {
     // Last 7 days or current month days
     const data = [];
-    if (viewMode === 'daily') {
-        // Mocking some trend for daily view if not enough history
+    if (viewMode === 'weekly') {
+        // Mocking some trend for weekly view if not enough history
         return [
             { date: 'Mon', present: 45 },
             { date: 'Tue', present: 52 },
@@ -735,19 +737,18 @@ export default function AttendanceDashboard() {
       setExportLoading(true);
       let exportData = [];
 
-      if (viewMode === "daily") {
-        exportData = filteredAttendance.map((record) => ({
-          "Employee ID": record.employee?.employeeId || "N/A",
-          "Employee Name": `${record.employee?.personalDetails?.firstName || ""
-            } ${record.employee?.personalDetails?.lastName || ""}`.trim(),
-          Organization: getOrganizationName(record),
-          Department: record.employee?.jobDetails?.department || "N/A",
-          Date: new Date(record.date).toLocaleDateString(),
-          Status: record.status,
-          "Check In": formatTime(record.checkIn),
-          "Check Out": formatTime(record.checkOut),
-          "Total Hours": record.totalHours || "N/A",
-          "Overtime Hours": record.overtimeHours || "N/A",
+      if (viewMode === "weekly") {
+        const employeeData = getMonthlyAttendanceByEmployee();
+        exportData = employeeData.map((empData) => ({
+            "Employee ID": empData.employee?.employeeId || "N/A",
+            "Employee Name": `${empData.employee?.personalDetails?.firstName || ""
+              } ${empData.employee?.personalDetails?.lastName || ""}`.trim(),
+            Organization: empData.organization,
+            "Total Present": empData.stats.totalPresent,
+            "Total Absent": empData.stats.totalAbsent,
+            "Total Leave": empData.stats.totalLeave,
+            "Total Hours": empData.stats.totalHours.toFixed(2),
+            "Overtime Hours": empData.stats.totalOvertime.toFixed(2),
         }));
       } else {
         const employeeData = getMonthlyAttendanceByEmployee();
@@ -866,68 +867,68 @@ export default function AttendanceDashboard() {
     <div className="min-h-screen bg-slate-50">
       <Toaster />
       <div className="max-w-7xl mx-auto px-6 py-8">
-        {/* Header */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 mb-8">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-            {user?.role !== 'employee' ? (
-              <div className="flex items-center gap-4">
-                <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
-                  <Calendar className="w-8 h-8 text-white" />
-                </div>
-                <div>
-                  <h1 className="text-2xl font-bold text-slate-900 mb-1">
-                    Attendance Management
-                  </h1>
-                  <p className="text-slate-600">
-                    Track and manage employee attendance records
-                  </p>
-                </div>
+        {/* Header Banner */}
+        <div className="relative overflow-hidden bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-xl shadow-indigo-950/20 border border-slate-800 mb-8">
+          <div className="absolute -right-16 -top-16 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl"></div>
+          <div className="absolute -left-16 -bottom-16 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl"></div>
+          
+          <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+            <div className="space-y-2">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                <Cpu className="w-3.5 h-3.5 animate-pulse" /> Operations & Attendance Intelligence
               </div>
-            ) : (
-              <div className="flex-1" />
-            )}
+              <h1 className="text-xl sm:text-3xl font-extrabold text-white tracking-tight">
+                {user?.role !== 'employee' ? "Attendance Management" : "My Attendance Dashboard"}
+              </h1>
+              <p className="text-slate-400 text-xs sm:text-sm max-w-xl">
+                {user?.role !== 'employee' 
+                  ? "Track and manage employee attendance records, handle status corrections, and export complete statutory logs." 
+                  : "View clock-in schedules, analyze monthly hours, and submit regularization requests instantly."
+                }
+              </p>
+            </div>
+
             <div className="flex flex-wrap gap-3">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <button
                     disabled={exportLoading}
-                    className="inline-flex items-center gap-2 px-4 py-2.5 text-slate-600 bg-white hover:bg-slate-50 rounded-lg border border-slate-200 shadow-sm transition-all font-bold text-sm active:scale-95"
+                    className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-indigo-400 hover:text-white font-semibold text-sm px-5 py-3 rounded-xl border border-slate-700 transition-all active:scale-[0.98]"
                   >
                     {exportLoading ? (
-                      <Loader2 className="w-4 h-4 animate-spin text-indigo-600" />
+                      <Loader2 className="w-4 h-4 animate-spin" />
                     ) : (
-                      <Download className="w-4 h-4 text-indigo-600" />
+                      <Download className="w-4 h-4 text-indigo-400" />
                     )}
                     Export Report
                     <ChevronDown className="w-4 h-4" />
                   </button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
-                  <DropdownMenuItem onClick={() => handleExport('excel')}>Excel Format</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => handleExport('csv')}>CSV Format</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => handleExport('pdf')}>PDF Document</DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => window.print()}>Print Report</DropdownMenuItem>
+                <DropdownMenuContent align="end" className="w-48 bg-slate-900 border border-slate-800 text-slate-300">
+                  <DropdownMenuItem className="hover:bg-slate-800 hover:text-white focus:bg-slate-800 focus:text-white" onClick={() => handleExport('excel')}>Excel Format</DropdownMenuItem>
+                  <DropdownMenuItem className="hover:bg-slate-800 hover:text-white focus:bg-slate-800 focus:text-white" onClick={() => handleExport('csv')}>CSV Format</DropdownMenuItem>
+                  <DropdownMenuItem className="hover:bg-slate-800 hover:text-white focus:bg-slate-800 focus:text-white" onClick={() => handleExport('pdf')}>PDF Document</DropdownMenuItem>
+                  <DropdownMenuSeparator className="border-slate-800" />
+                  <DropdownMenuItem className="hover:bg-slate-800 hover:text-white focus:bg-slate-800 focus:text-white" onClick={() => window.print()}>Print Report</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
 
               {user?.role === "admin" && (
                 <button
                   onClick={() => router.push("/admin/attendance/import-attendance")}
-                  className="inline-flex items-center gap-2 px-4 py-2.5 text-slate-600 bg-white hover:bg-slate-50 rounded-lg border border-slate-200 shadow-sm transition-all font-bold text-sm active:scale-95"
+                  className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-indigo-400 hover:text-white font-semibold text-sm px-5 py-3 rounded-xl border border-slate-700 transition-all active:scale-[0.98]"
                 >
-                  <Upload className="w-4 h-4 text-blue-600" />
-                  Bulk Import
+                  <Upload className="w-4 h-4" /> Bulk Import
                 </button>
               )}
+
               <button
                 onClick={() =>
                   router.push(user?.role === 'employee' ? '/employee/attendance/add-attendance' : "/admin/attendance/add-attendance")
                 }
-                className="inline-flex items-center gap-2 px-6 py-2.5 text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-lg shadow-indigo-100 transition-all font-bold text-sm active:scale-95"
+                className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm px-5 py-3 rounded-xl shadow-lg shadow-indigo-600/35 transition-all active:scale-[0.98]"
               >
-                <Plus className="w-4 h-4" />
-                Add Entry
+                <Plus className="w-4 h-4" /> Add Entry
               </button>
             </div>
           </div>
@@ -942,48 +943,28 @@ export default function AttendanceDashboard() {
 
 
         {/* View Mode Toggle */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm mb-8">
-          <div className="border-b border-slate-200">
-            <div className="flex space-x-8 px-6">
-              <button
-                onClick={() => setViewMode("daily")}
-                className={`flex items-center gap-2 py-4 px-1 border-b-2 text-sm font-medium transition-colors ${viewMode === "daily"
-                  ? "border-indigo-500 text-indigo-600"
-                  : "border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300"
-                  }`}
-              >
-                <Calendar className="w-4 h-4" />
-                Daily View
-              </button>
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm mb-8 overflow-hidden">
+          <div className="border-b border-slate-50 bg-slate-50/30 p-2 sm:p-3">
+            <div className="flex flex-wrap gap-2 px-2">
               <button
                 onClick={() => setViewMode("weekly")}
-                className={`flex items-center gap-2 py-4 px-1 border-b-2 text-sm font-medium transition-colors ${viewMode === "weekly"
-                  ? "border-indigo-500 text-indigo-600"
-                  : "border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300"
+                className={`flex items-center gap-2 py-2.5 px-4 rounded-xl text-xs font-bold transition-all ${viewMode === "weekly"
+                  ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/25 scale-102"
+                  : "bg-transparent text-slate-500 hover:text-slate-700 hover:bg-slate-100/50"
                   }`}
               >
-                <Clock className="w-4 h-4" />
-                Weekly View
+                <Clock className="w-3.5 h-3.5" />
+                Weekly Rollup
               </button>
               <button
                 onClick={() => setViewMode("monthly")}
-                className={`flex items-center gap-2 py-4 px-1 border-b-2 text-sm font-medium transition-colors ${viewMode === "monthly"
-                  ? "border-indigo-500 text-indigo-600"
-                  : "border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300"
+                className={`flex items-center gap-2 py-2.5 px-4 rounded-xl text-xs font-bold transition-all ${viewMode === "monthly"
+                  ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/25 scale-102"
+                  : "bg-transparent text-slate-500 hover:text-slate-700 hover:bg-slate-100/50"
                   }`}
               >
-                <Layers className="w-4 h-4" />
-                Monthly View
-              </button>
-              <button
-                onClick={() => setViewMode("calendar")}
-                className={`flex items-center gap-2 py-4 px-1 border-b-2 text-sm font-medium transition-colors ${viewMode === "calendar"
-                  ? "border-indigo-500 text-indigo-600"
-                  : "border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300"
-                  }`}
-              >
-                <Calendar className="w-4 h-4" />
-                Calendar View
+                <Layers className="w-3.5 h-3.5" />
+                Monthly Summary
               </button>
             </div>
           </div>
@@ -995,45 +976,42 @@ export default function AttendanceDashboard() {
         {/* Organization Grouping Toggle */}
         {organizations.length > 1 && (
           <div
-            className={`bg-white rounded-xl border-2 transition-all ${groupByOrganization
-              ? "border-indigo-200 bg-gradient-to-r from-indigo-50 to-blue-50"
-              : "border-slate-200"
+            className={`bg-white rounded-2xl border transition-all ${groupByOrganization
+              ? "border-indigo-200 bg-gradient-to-r from-indigo-50/40 via-blue-50/20 to-slate-50/10"
+              : "border-slate-100"
               } shadow-sm mb-8`}
           >
-            <div className="p-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
+            <div className="p-4 sm:p-5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="flex items-center space-x-3.5">
                   <div
-                    className={`w-10 h-10 rounded-lg flex items-center justify-center ${groupByOrganization ? "bg-indigo-500" : "bg-slate-100"
+                    className={`w-11 h-11 rounded-xl flex items-center justify-center shadow-md transition-all ${groupByOrganization ? "bg-indigo-600 text-white shadow-indigo-600/20 scale-105" : "bg-slate-50 text-slate-400 border border-slate-100"
                       }`}
                   >
-                    <Layers
-                      className={`w-5 h-5 ${groupByOrganization ? "text-white" : "text-slate-500"
-                        }`}
-                    />
+                    <Layers className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-semibold text-slate-900">
-                      Organization-wise Grouping
+                    <h3 className="text-sm font-extrabold text-slate-800">
+                      Organization Grouping Rollup
                     </h3>
-                    <p className="text-xs text-slate-600 mt-0.5">
+                    <p className="text-xs font-semibold text-slate-400 mt-0.5">
                       {groupByOrganization
-                        ? "Attendance is grouped by organization"
-                        : "Click to group attendance by organization"}
+                        ? "Active: Attendance records are aggregated and grouped by Organization"
+                        : "Click switch to collapse records by Organization"}
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center justify-end space-x-3">
                   {groupByOrganization && (
-                    <>
+                    <div className="flex items-center gap-1.5">
                       <button
                         onClick={
                           viewMode === "monthly"
                             ? expandAllEmployees
                             : expandAllOrganizations
                         }
-                        className="px-3 py-1.5 text-xs font-medium text-indigo-700 bg-indigo-100 hover:bg-indigo-200 rounded-lg transition-colors border border-indigo-200"
+                        className="px-3 py-1.5 text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 rounded-xl transition-all border border-indigo-100/60"
                       >
                         Expand All
                       </button>
@@ -1043,20 +1021,20 @@ export default function AttendanceDashboard() {
                             ? collapseAllEmployees
                             : collapseAllOrganizations
                         }
-                        className="px-3 py-1.5 text-xs font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors border border-slate-200"
+                        className="px-3 py-1.5 text-xs font-bold text-slate-600 bg-slate-50 hover:bg-slate-100 rounded-xl transition-all border border-slate-100"
                       >
                         Collapse All
                       </button>
-                    </>
+                    </div>
                   )}
 
                   <button
                     onClick={handleGroupToggle}
-                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${groupByOrganization ? "bg-indigo-500" : "bg-slate-300"
+                    className={`relative inline-flex h-6.5 w-12 shrink-0 items-center rounded-full transition-colors focus:outline-none ${groupByOrganization ? "bg-indigo-600" : "bg-slate-200"
                       }`}
                   >
                     <span
-                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${groupByOrganization ? "translate-x-6" : "translate-x-1"
+                      className={`inline-block h-4.5 w-4.5 transform rounded-full bg-white shadow-md transition-transform ${groupByOrganization ? "translate-x-6" : "translate-x-1.5"
                         }`}
                     />
                   </button>

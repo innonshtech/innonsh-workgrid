@@ -602,8 +602,13 @@ function PayslipStructureSection({
     if (pfApplicable !== "yes") {
       return { employeePF: 0, employerPF: 0, totalPF: 0 };
     }
-    const employeePF = (basicSalary * 12) / 100;
-    const employerPF = (basicSalary * 13) / 100;
+    
+    const employeePFObj = payslipStructure.deductions?.find(d => d.name === "Provident Fund (Employee)");
+    const employerPFObj = payslipStructure.deductions?.find(d => d.name === "Provident Fund (Employer)");
+    
+    const employeePF = employeePFObj && employeePFObj.enabled ? calculateDeductionAmount(employeePFObj) : 0;
+    const employerPF = employerPFObj && employerPFObj.enabled ? calculateDeductionAmount(employerPFObj) : 0;
+    
     return {
       employeePF,
       employerPF,
@@ -631,9 +636,6 @@ function PayslipStructureSection({
     const basicSalary = parseFloat(payslipStructure.basicSalary) || 0;
     if (deduction.name === "Professional Tax") {
       return calculatePT();
-    }
-    if (deduction.name === "Provident Fund (Employee)") {
-      return calculatePFContributions().employeePF;
     }
     if (deduction.calculationType === "fixed") {
       return deduction.fixedAmount || 0;
@@ -769,7 +771,7 @@ function PayslipStructureSection({
         const pfDeduction = {
           name: "Provident Fund (Employee)",
           enabled: true,
-          editable: false,
+          editable: true,
           calculationType: "percentage",
           percentage: 12,
           fixedAmount: 0,
@@ -1121,8 +1123,7 @@ function PayslipStructureSection({
                       updateDeduction(index, "calculationType", e.target.value)
                     }
                     disabled={
-                      deduction.name === "Professional Tax" ||
-                      deduction.name === "Provident Fund (Employee)"
+                      deduction.name === "Professional Tax"
                     }
                     className="w-full px-3 py-2 border-2 border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-500 disabled:bg-slate-100 disabled:cursor-not-allowed"
                   >
@@ -1148,8 +1149,7 @@ function PayslipStructureSection({
                         min="0"
                         max="100"
                         disabled={
-                          deduction.name === "Professional Tax" ||
-                          deduction.name === "Provident Fund (Employee)"
+                          deduction.name === "Professional Tax"
                         }
                         className="w-full px-3 py-2 border-2 border-slate-300 rounded-lg text-sm pr-8 focus:outline-none focus:ring-2 focus:ring-red-500 disabled:bg-slate-100 disabled:cursor-not-allowed"
                       />
@@ -1174,8 +1174,7 @@ function PayslipStructureSection({
                         step="0.01"
                         min="0"
                         disabled={
-                          deduction.name === "Professional Tax" ||
-                          deduction.name === "Provident Fund (Employee)"
+                          deduction.name === "Professional Tax"
                         }
                         className="w-full pl-8 pr-3 py-2 border-2 border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-500 disabled:bg-slate-100 disabled:cursor-not-allowed"
                       />

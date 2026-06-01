@@ -307,64 +307,64 @@ function AdminHolidaysContent() {
     );
 
     return (
-        <div className="min-h-screen bg-slate-50 p-8">
+        <div className="min-h-screen bg-slate-50 p-4 sm:p-6">
             <Toaster />
             <div className="max-w-7xl mx-auto">
-                <div className="flex flex-col md:flex-row gap-8">
+                <div className="flex flex-col md:flex-row gap-6">
                     {/* Sidebar: Holiday Lists */}
-                    <div className="w-full md:w-80 space-y-6">
+                    <div className="w-full md:w-64 space-y-4 flex-shrink-0">
                         <div className="flex items-center justify-between">
-                            <h2 className="text-xl font-black text-slate-900 tracking-tight uppercase">Lists</h2>
+                            <h2 className="text-xs font-bold text-slate-500 tracking-wider uppercase">Lists</h2>
                             <button 
                                 onClick={() => handleOpenListModal()}
-                                className="p-2 bg-indigo-50 text-indigo-600 rounded-xl hover:bg-indigo-100 transition-all active:scale-95"
+                                className="p-1.5 bg-indigo-50 text-indigo-600 rounded-lg hover:bg-indigo-100 transition-all active:scale-95"
                                 title="Add New Holiday List"
                             >
-                                <Plus className="w-5 h-5" />
+                                <Plus className="w-4 h-4" />
                             </button>
                         </div>
 
-                        <div className="space-y-3">
+                        <div className="space-y-3.5">
                             {holidayLists.map(list => (
                                 <div 
                                     key={list._id}
                                     onClick={() => setSelectedListId(list._id)}
-                                    className={`group cursor-pointer p-4 rounded-2xl border transition-all ${
+                                    className={`group cursor-pointer p-3.5 rounded-xl border transition-all ${
                                         selectedListId === list._id 
-                                        ? "bg-indigo-600 border-indigo-600 shadow-lg shadow-indigo-100 ring-4 ring-indigo-50" 
-                                        : "bg-white border-slate-200 hover:border-indigo-300 hover:shadow-md"
+                                        ? "bg-indigo-600 border-indigo-600 shadow-md shadow-indigo-100 ring-2 ring-indigo-100" 
+                                        : "bg-white border-slate-200 hover:border-indigo-300 hover:shadow-sm"
                                     }`}
                                 >
                                     <div className="flex justify-between items-start mb-2">
-                                        <div className={`p-2 rounded-lg ${selectedListId === list._id ? "bg-indigo-500" : "bg-slate-50"}`}>
-                                            <CalendarDays className={`w-4 h-4 ${selectedListId === list._id ? "text-white" : "text-slate-400"}`} />
+                                        <div className={`p-1.5 rounded-lg ${selectedListId === list._id ? "bg-indigo-500" : "bg-slate-50"}`}>
+                                            <CalendarDays className={`w-3.5 h-3.5 ${selectedListId === list._id ? "text-white" : "text-slate-400"}`} />
                                         </div>
                                         <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                                             <button 
                                                 onClick={(e) => { e.stopPropagation(); handleOpenListModal(list); }}
-                                                className={`p-1.5 rounded-lg transition-colors ${selectedListId === list._id ? "text-indigo-100 hover:bg-indigo-500" : "text-slate-400 hover:bg-slate-100"}`}
+                                                className={`p-1 rounded-md transition-colors ${selectedListId === list._id ? "text-indigo-100 hover:bg-indigo-500" : "text-slate-400 hover:bg-slate-100"}`}
                                             >
-                                                <Edit2 className="w-3.5 h-3.5" />
+                                                <Edit2 className="w-3 h-3" />
                                             </button>
                                             <button 
                                                 onClick={(e) => { e.stopPropagation(); handleListDelete(list._id); }}
-                                                className={`p-1.5 rounded-lg transition-colors ${selectedListId === list._id ? "text-indigo-100 hover:bg-indigo-500" : "text-rose-400 hover:bg-rose-50"}`}
+                                                className={`p-1 rounded-md transition-colors ${selectedListId === list._id ? "text-indigo-100 hover:bg-indigo-500" : "text-rose-400 hover:bg-rose-50"}`}
                                             >
-                                                <Trash2 className="w-3.5 h-3.5" />
+                                                <Trash2 className="w-3 h-3" />
                                             </button>
                                         </div>
                                     </div>
-                                    <h3 className={`font-black tracking-tight ${selectedListId === list._id ? "text-white" : "text-slate-900"}`}>{list.name}</h3>
+                                    <h3 className={`text-sm font-bold tracking-tight ${selectedListId === list._id ? "text-white" : "text-slate-900"}`}>{list.name}</h3>
                                     <div className="flex items-center gap-2 mt-1">
-                                        <span className={`text-[10px] font-black uppercase tracking-widest ${selectedListId === list._id ? "text-indigo-200" : "text-slate-400"}`}>{list.year}</span>
-                                        {list.isDefault && <span className={`text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-widest ${selectedListId === list._id ? "bg-indigo-500 text-white" : "bg-emerald-50 text-emerald-600"}`}>Default</span>}
+                                        <span className={`text-[9px] font-bold uppercase tracking-widest ${selectedListId === list._id ? "text-indigo-200" : "text-slate-400"}`}>{list.year}</span>
+                                        {list.isDefault && <span className={`text-[8px] font-bold px-1 py-0.5 rounded uppercase tracking-widest ${selectedListId === list._id ? "bg-indigo-500 text-white" : "bg-emerald-50 text-emerald-600"}`}>Default</span>}
                                     </div>
-                                    <div className={`flex items-center gap-3 mt-3 pt-3 border-t ${selectedListId === list._id ? "border-indigo-500" : "border-slate-100"}`}>
-                                        <span className={`text-[10px] font-black uppercase tracking-widest ${selectedListId === list._id ? "text-indigo-200" : "text-slate-400"}`}>
+                                    <div className={`flex items-center gap-3 mt-2.5 pt-2.5 border-t ${selectedListId === list._id ? "border-indigo-500" : "border-slate-100"}`}>
+                                        <span className={`text-[9px] font-bold uppercase tracking-widest ${selectedListId === list._id ? "text-indigo-200" : "text-slate-400"}`}>
                                             {list.holidayCount || 0} holidays
                                         </span>
                                         {(list.restrictedCount || 0) > 0 && (
-                                            <span className={`text-[10px] font-black uppercase tracking-widest ${selectedListId === list._id ? "text-indigo-300" : "text-indigo-400"}`}>
+                                            <span className={`text-[9px] font-bold uppercase tracking-widest ${selectedListId === list._id ? "text-indigo-300" : "text-indigo-400"}`}>
                                                 {list.restrictedCount} restricted
                                             </span>
                                         )}
@@ -372,22 +372,22 @@ function AdminHolidaysContent() {
                                 </div>
                             ))}
                             {holidayLists.length === 0 && (
-                                <div className="p-8 text-center bg-white rounded-3xl border border-dashed border-slate-300">
-                                    <Layers className="w-10 h-10 text-slate-200 mx-auto mb-3" />
-                                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">No Holiday Lists</p>
+                                <div className="p-6 text-center bg-white rounded-2xl border border-dashed border-slate-300">
+                                    <Layers className="w-8 h-8 text-slate-200 mx-auto mb-2" />
+                                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">No Holiday Lists</p>
                                 </div>
                             )}
                         </div>
                     </div>
 
                     {/* Main Content: Holidays */}
-                    <div className="flex-1 space-y-8">
-                        <div className="flex justify-between items-center bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+                    <div className="flex-1 space-y-5">
+                        <div className="flex justify-between items-center bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
                             <div>
-                                <h1 className="text-3xl font-black text-slate-900 tracking-tight">
+                                <h1 className="text-xl font-bold text-slate-900 tracking-tight">
                                     {holidayLists.find(l => l._id === selectedListId)?.name || "Holidays"}
                                 </h1>
-                                <p className="text-slate-500 font-medium">
+                                <p className="text-xs text-slate-500 font-medium mt-0.5">
                                     {(() => {
                                         const sel = holidayLists.find(l => l._id === selectedListId);
                                         if (!sel) return "Select a list to manage holidays";
@@ -398,89 +398,89 @@ function AdminHolidaysContent() {
                             <button
                                 onClick={() => handleOpenModal()}
                                 disabled={!selectedListId}
-                                className="flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-2xl font-bold shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition-all hover:scale-105 active:scale-95 disabled:opacity-50 disabled:scale-100 shadow-none disabled:bg-slate-300"
+                                className="flex items-center gap-1.5 px-4 py-2 bg-indigo-600 text-white rounded-xl text-xs font-bold shadow-sm shadow-indigo-100 hover:bg-indigo-700 transition-all active:scale-95 disabled:opacity-50 disabled:scale-100 disabled:bg-slate-300 disabled:shadow-none"
                             >
-                                <Plus className="w-5 h-5" />
+                                <Plus className="w-4 h-4" />
                                 Add Holiday
                             </button>
                         </div>
 
                         <div className="relative">
-                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
+                            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
                             <input
                                 type="text"
                                 placeholder="Search holidays by name..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                className="w-full pl-12 pr-4 py-4 bg-white border border-slate-200 rounded-2xl shadow-sm focus:outline-none focus:ring-4 focus:ring-indigo-50 font-medium transition-all"
+                                className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-100 text-sm font-medium transition-all"
                             />
                         </div>
 
                         {loading ? (
-                            <div className="flex flex-col items-center justify-center py-24 bg-white rounded-3xl border border-slate-100">
-                                <Loader2 className="w-12 h-12 text-indigo-500 animate-spin mb-4" />
-                                <p className="text-slate-400 font-bold uppercase tracking-widest">Loading holidays...</p>
+                            <div className="flex flex-col items-center justify-center py-20 bg-white rounded-2xl border border-slate-100">
+                                <Loader2 className="w-10 h-10 text-indigo-500 animate-spin mb-3" />
+                                <p className="text-slate-400 text-xs font-bold uppercase tracking-widest">Loading holidays...</p>
                             </div>
                         ) : (
-                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                                 {filteredHolidays.length > 0 ? filteredHolidays.map((holiday) => (
-                                    <Card key={holiday._id} className="p-6 relative overflow-hidden group hover:border-indigo-200 transition-all duration-300">
-                                        <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-50 rounded-full -mr-12 -mt-12 group-hover:bg-indigo-100 transition-colors"></div>
-                                        <div className="relative z-10 flex gap-6">
+                                    <Card key={holiday._id} className="p-4 relative overflow-hidden group hover:border-indigo-200 transition-all duration-300">
+                                        <div className="absolute top-0 right-0 w-20 h-20 bg-indigo-50 rounded-full -mr-10 -mt-10 group-hover:bg-indigo-100 transition-colors"></div>
+                                        <div className="relative z-10 flex gap-4">
                                             <div className="flex-shrink-0">
-                                                <div className="p-4 bg-white border border-slate-100 rounded-3xl shadow-sm text-center min-w-[80px]">
-                                                    <p className="text-xs font-black uppercase text-indigo-600 tracking-widest">{format(new Date(holiday.date), 'MMM')}</p>
-                                                    <p className="text-3xl font-black text-slate-900">{format(new Date(holiday.date), 'dd')}</p>
+                                                <div className="p-2.5 bg-white border border-slate-100 rounded-2xl shadow-sm text-center min-w-[70px]">
+                                                    <p className="text-[9px] font-bold uppercase text-indigo-600 tracking-widest">{format(new Date(holiday.date), 'MMM')}</p>
+                                                    <p className="text-xl font-bold text-slate-900">{format(new Date(holiday.date), 'dd')}</p>
                                                     {holiday.endDate && holiday.endDate !== holiday.date && (
-                                                        <p className="text-[10px] font-black text-slate-400 mt-1">→ {format(new Date(holiday.endDate), 'dd MMM')}</p>
+                                                        <p className="text-[9px] font-bold text-slate-400 mt-0.5">→ {format(new Date(holiday.endDate), 'dd MMM')}</p>
                                                     )}
                                                     {(holiday.numberOfDays || 1) > 1 && (
-                                                        <div className="mt-2 px-2 py-0.5 bg-indigo-600 text-white rounded-lg text-[10px] font-black">
+                                                        <div className="mt-1.5 px-1.5 py-0.5 bg-indigo-600 text-white rounded text-[8px] font-bold">
                                                             {holiday.numberOfDays} DAYS
                                                         </div>
                                                     )}
                                                 </div>
                                             </div>
                                             <div className="flex-1 min-w-0">
-                                                <div className="flex justify-between items-start mb-2">
-                                                    <div className="flex items-center gap-2">
-                                                        <span className={`px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest border ${holiday.type === 'Public' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' :
+                                                <div className="flex justify-between items-start mb-1.5">
+                                                    <div className="flex items-center gap-1.5">
+                                                        <span className={`px-2 py-0.5 rounded text-[8px] font-bold uppercase tracking-widest border ${holiday.type === 'Public' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' :
                                                             'bg-amber-50 text-amber-600 border-amber-100'
                                                             }`}>
                                                             {holiday.type}
                                                         </span>
                                                         {holiday.isRestricted && (
-                                                            <span className="px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest border bg-indigo-50 text-indigo-600 border-indigo-100">
+                                                            <span className="px-2 py-0.5 rounded text-[8px] font-bold uppercase tracking-widest border bg-indigo-50 text-indigo-600 border-indigo-100">
                                                                 Restricted
                                                             </span>
                                                         )}
                                                     </div>
-                                                    <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                        <button onClick={() => handleOpenModal(holiday)} className="p-2 bg-indigo-50 text-indigo-600 rounded-xl hover:bg-indigo-100 transition-colors">
-                                                            <Edit2 className="w-4 h-4" />
+                                                    <div className="flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                        <button onClick={() => handleOpenModal(holiday)} className="p-1 bg-indigo-50 text-indigo-600 rounded-lg hover:bg-indigo-100 transition-colors">
+                                                            <Edit2 className="w-3.5 h-3.5" />
                                                         </button>
-                                                        <button onClick={() => handleDelete(holiday._id)} className="p-2 bg-rose-50 text-rose-600 rounded-xl hover:bg-rose-100 transition-colors">
-                                                            <Trash2 className="w-4 h-4" />
+                                                        <button onClick={() => handleDelete(holiday._id)} className="p-1 bg-rose-50 text-rose-600 rounded-lg hover:bg-rose-100 transition-colors">
+                                                            <Trash2 className="w-3.5 h-3.5" />
                                                         </button>
                                                     </div>
                                                 </div>
-                                                <h3 className="text-xl font-black text-slate-900 mb-2 truncate">{holiday.name}</h3>
-                                                <div className="flex items-center gap-2 mb-4 text-slate-400 font-bold uppercase text-[10px] tracking-widest">
-                                                    <Calendar className="w-3.5 h-3.5" />
+                                                <h3 className="text-sm font-bold text-slate-900 mb-1 truncate">{holiday.name}</h3>
+                                                <div className="flex items-center gap-1.5 mb-2 text-slate-400 font-bold uppercase text-[9px] tracking-widest">
+                                                    <Calendar className="w-3 h-3" />
                                                     {holiday.endDate && holiday.endDate !== holiday.date
                                                         ? `${format(new Date(holiday.date), 'EEE')} — ${format(new Date(holiday.endDate), 'EEE, dd MMM')}`
                                                         : format(new Date(holiday.date), 'EEEE')
                                                     }
                                                 </div>
-                                                <p className="text-sm text-slate-500 font-medium line-clamp-2">{holiday.description || "Enjoy the break!"}</p>
+                                                <p className="text-xs text-slate-500 font-medium line-clamp-2">{holiday.description || "Enjoy the break!"}</p>
                                             </div>
                                         </div>
                                     </Card>
                                 )) : (
-                                    <div className="col-span-full py-24 text-center bg-white rounded-3xl border border-slate-100 shadow-sm">
-                                        <Palmtree className="w-20 h-20 text-slate-200 mx-auto mb-6" />
-                                        <h3 className="text-xl font-bold text-slate-400 uppercase tracking-widest">No holidays found</h3>
-                                        <p className="text-slate-400 font-medium">Add holidays to populate this list.</p>
+                                    <div className="col-span-full py-20 text-center bg-white rounded-2xl border border-slate-100 shadow-sm">
+                                        <Palmtree className="w-16 h-16 text-slate-200 mx-auto mb-4" />
+                                        <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest">No holidays found</h3>
+                                        <p className="text-xs text-slate-400 font-medium mt-1">Add holidays to populate this list.</p>
                                     </div>
                                 )}
                             </div>

@@ -58,17 +58,31 @@ export async function POST(request) {
 
     // 1. Parse Resume using Gemini's native document understanding
     console.log("Parsing resume with Gemini...");
-    const parsedData = await parseResumeFromPDF(buffer, file.type || 'application/pdf');
+    let parsedData = null;
+    try {
+      parsedData = await parseResumeFromPDF(buffer, file.type || 'application/pdf');
+    } catch (parseError) {
+      if (parseError.name === 'GoogleAPIError') {
+        return NextResponse.json({ 
+          success: false, 
+          errorType: 'GOOGLE_API_KEY_ERROR', 
+          error: parseError.message 
+        }, { status: 500 });
+      }
+      throw parseError; // Re-throw generic errors to catch block below
+    }
 
     if (!parsedData) {
       return NextResponse.json({ success: false, error: "AI failed to parse the resume document." }, { status: 500 });
     }
 
     const orgId = authUser.organizationId;
-    const email = (parsedData.email || '').toLowerCase().trim();
+    let email = (parsedData.email || '').toLowerCase().trim();
 
+    // Fallback if AI misses the email
     if (!email) {
-      return NextResponse.json({ success: false, error: "Could not extract a valid email address from the resume." }, { status: 422 });
+      email = `no-email-${Date.now()}@placeholder.com`;
+      console.warn("AI missed email. Using placeholder: ", email);
     }
 
     // 2. Check for duplicate candidate
@@ -128,22 +142,33 @@ export async function POST(request) {
           analysis: fitAnalysis.analysis || "",
           strengths: fitAnalysis.strengths || [],
           gaps: fitAnalysis.gaps || [],
-          recommendation: fitAnalysis.recommendation || "Pending Review"
+          recommendation: fitAnalysis.recommendation || "Pending Review",
+          success: true
         };
       } catch (err) {
         console.error(`AI matching error for requirement ${req._id}:`, err);
-        return null;
+        return {
+          requirement: {
+            _id: req._id,
+            title: req.title,
+            clientName: req.clientId?.name
+          },
+          success: false,
+          errorType: err.name === 'GoogleAPIError' ? 'GOOGLE_API_KEY_ERROR' : 'UNKNOWN_ERROR',
+          errorMessage: err.message
+        };
       }
     });
 
-    const instantMatches = (await Promise.all(matchPromises))
-      .filter(Boolean)
-      .sort((a, b) => b.fitScore - a.fitScore);
+    const matchResults = await Promise.all(matchPromises);
+    const instantMatches = matchResults.filter(m => m.success).sort((a, b) => b.fitScore - a.fitScore);
+    const failedMatches = matchResults.filter(m => !m.success);
 
     return NextResponse.json({
       success: true,
       candidate,
       instantMatches,
+      failedMatches,
       message: "Resume uploaded, parsed, and matched successfully!"
     }, { status: 201 });
 

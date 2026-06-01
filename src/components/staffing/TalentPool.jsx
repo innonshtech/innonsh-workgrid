@@ -44,6 +44,10 @@ export default function TalentPool() {
   const [selectedReqId, setSelectedReqId] = useState("");
   const [submissionNotes, setSubmissionNotes] = useState("");
 
+  // API Error State
+  const [apiErrorModalOpen, setApiErrorModalOpen] = useState(false);
+  const [apiErrorMessage, setApiErrorMessage] = useState("");
+
   useEffect(() => {
     fetchCandidates();
     fetchRequirements();
@@ -102,6 +106,11 @@ export default function TalentPool() {
       return;
     }
 
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error("File is too large. Maximum allowed size is 10MB.");
+      return;
+    }
+
     try {
       setUploading(true);
       setUploadResult(null);
@@ -125,7 +134,12 @@ export default function TalentPool() {
         });
         fetchCandidates(); // Refresh list in background
       } else {
-        toast.error(result.error || "Failed to parse resume.");
+        if (result.errorType === 'GOOGLE_API_KEY_ERROR') {
+          setApiErrorMessage(result.error || "Google Gemini API Key quota exhausted or key is blocked.");
+          setApiErrorModalOpen(true);
+        } else {
+          toast.error(result.error || "Failed to parse resume.");
+        }
       }
     } catch (err) {
       console.error(err);
@@ -270,14 +284,14 @@ export default function TalentPool() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto space-y-6 p-6">
+    <div className="max-w-7xl mx-auto space-y-6 p-4 sm:p-6">
       <StaffingStepper currentStep={3} />
       
       {/* Header and Toggle Navigation */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold text-slate-800 tracking-tight">
-            Resume Bank & Talent Pool
+          <h1 className="text-xl sm:text-2xl font-extrabold text-slate-800 tracking-tight">
+            Global Sourcing Pool & Resume Bank
           </h1>
           <p className="text-xs font-semibold text-slate-400">
             Persistent global pool of parsed, searchable candidate CVs matching client open requirements
@@ -384,15 +398,15 @@ export default function TalentPool() {
                         </span>
                       </div>
                       
-                      <div className="flex items-center gap-4 text-xs font-semibold text-slate-500">
+                      <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs font-semibold text-slate-500">
                         <p className="truncate">{candidate.email}</p>
                         {candidate.parsedResume?.totalExperienceYears > 0 && (
-                          <p className="shrink-0 text-slate-400 border-l border-slate-200 pl-4">
+                          <p className="shrink-0 text-slate-400 sm:border-l sm:border-slate-200 sm:pl-4">
                             💼 {candidate.parsedResume.totalExperienceYears} Yrs Exp
                           </p>
                         )}
                         {candidate.parsedResume?.currentRole && (
-                          <p className="truncate text-slate-400 border-l border-slate-200 pl-4">
+                          <p className="truncate text-slate-400 sm:border-l sm:border-slate-200 sm:pl-4">
                             🏢 {candidate.parsedResume.currentRole}
                           </p>
                         )}
@@ -429,7 +443,7 @@ export default function TalentPool() {
           {/* Right Column: Detailed Candidate View Drawer */}
           <div className="lg:col-span-1">
             {selectedCandidate ? (
-              <div className="bg-white rounded-3xl border border-indigo-100 shadow-xl p-6 space-y-6 sticky top-6 max-h-[85vh] overflow-y-auto no-scrollbar">
+              <div className="bg-white rounded-3xl border border-indigo-100 shadow-xl p-4 sm:p-6 space-y-6 sticky top-6 max-h-[85vh] overflow-y-auto no-scrollbar">
                 {/* Header Profile */}
                 <div className="flex items-start justify-between border-b border-slate-50 pb-4 gap-4">
                   <div className="space-y-1.5 min-w-0">
@@ -784,6 +798,50 @@ export default function TalentPool() {
                     "Submit Candidate"
                   )}
                 </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Google API Error Modal */}
+      {apiErrorModalOpen && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-900/80 backdrop-blur-md p-4 overflow-y-auto animate-in fade-in duration-200">
+          <div className="bg-white rounded-3xl border border-red-100 shadow-2xl max-w-md w-full overflow-hidden animate-in zoom-in-95 duration-300">
+            <div className="bg-gradient-to-br from-red-500 to-rose-600 p-6 flex flex-col items-center justify-center text-center space-y-3 relative">
+              <button
+                onClick={() => setApiErrorModalOpen(false)}
+                className="absolute top-4 right-4 p-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm shadow-inner">
+                <AlertTriangle className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-extrabold text-white tracking-tight">API Quota Exhausted</h3>
+              <p className="text-red-100 text-sm font-medium">Google Gemini AI Engine Error</p>
+            </div>
+
+            <div className="p-8 space-y-6 text-center">
+              <p className="text-sm font-semibold text-slate-600 leading-relaxed">
+                The free tier Google Gemini API key used by the Staff Augmentation module has reached its rate limit, quota, or has been blocked.
+              </p>
+              
+              <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 text-left">
+                <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-1">Error Details</p>
+                <p className="text-xs font-mono font-medium text-rose-500">{apiErrorMessage}</p>
+              </div>
+
+              <div className="space-y-3">
+                <button
+                  onClick={() => setApiErrorModalOpen(false)}
+                  className="w-full bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-sm px-6 py-3.5 rounded-xl shadow-lg shadow-slate-900/20 active:scale-[0.98] transition-all"
+                >
+                  Understood
+                </button>
+                <p className="text-[10px] font-semibold text-slate-400">
+                  Please update your GOOGLE_API_KEY environment variable with a premium billing-enabled key to continue using AI parsing.
+                </p>
               </div>
             </div>
           </div>

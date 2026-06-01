@@ -16,6 +16,7 @@ export default function PayslipList() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
   const [monthFilter, setMonthFilter] = useState('');
   const [yearFilter, setYearFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
@@ -94,9 +95,17 @@ export default function PayslipList() {
     }
   };
 
+  // Debounce Search Term
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 300);
+    return () => clearTimeout(handler);
+  }, [searchTerm]);
+
   useEffect(() => {
     fetchPayslips();
-  }, [searchTerm, monthFilter, yearFilter, statusFilter, organizationFilter]);
+  }, [debouncedSearchTerm, monthFilter, yearFilter, statusFilter, organizationFilter]);
 
   const fetchPayslips = async () => {
     try {
@@ -105,7 +114,7 @@ export default function PayslipList() {
       setError(null);
 
       const params = new URLSearchParams();
-      if (searchTerm) params.append('search', searchTerm);
+      if (debouncedSearchTerm) params.append('search', debouncedSearchTerm);
       if (monthFilter) params.append('month', monthFilter);
       if (yearFilter) params.append('year', yearFilter);
       if (statusFilter) params.append('status', statusFilter);
@@ -202,7 +211,7 @@ export default function PayslipList() {
   // Reset to page 1 when filters change
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchTerm, monthFilter, yearFilter, statusFilter, organizationFilter, itemsPerPage, groupByOrganization]);
+  }, [debouncedSearchTerm, monthFilter, yearFilter, statusFilter, organizationFilter, itemsPerPage, groupByOrganization]);
 
   // Toggle organization expansion
   const toggleOrgExpansion = (orgName) => {

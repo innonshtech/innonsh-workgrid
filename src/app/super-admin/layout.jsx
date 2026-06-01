@@ -170,11 +170,11 @@ function DashboardLayoutContent({ children }) {
       children: [
         { name: t("department"), href: "/admin/organization/department", icon: Building2 },
         { name: t("employee"), href: "/admin/organization/employeeType", icon: Contact },
-        {
-          name: t("attendanceThresholds"),
-          href: "/admin/organization/attendance-thresholds",
-          icon: Target,
-        },
+        // {
+        //   name: t("attendanceThresholds"),
+        //   href: "/admin/organization/attendance-thresholds",
+        //   icon: Target,
+        // },
         { name: t("orgChart"), href: "/admin/organization/org-chart", icon: GitGraph },
         { name: t("orgSettings"), href: "/admin/organization/org-settings", icon: Settings2 },
       ],

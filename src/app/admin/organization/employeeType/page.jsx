@@ -1155,6 +1155,7 @@ export default function EmployeeTypesPage() {
               </div>
             </div>
             <div className="flex items-center gap-3">
+              {/* HIDDEN: Documents, Category, Sub-Category (Requested by User)
               <button
                 onClick={() => setShowDocumentsAddModal(true)}
                 className="inline-flex items-center gap-2 px-5 py-2.5 bg-purple-500 hover:bg-purple-600 text-white rounded-lg font-medium transition-colors shadow-sm"
@@ -1162,6 +1163,7 @@ export default function EmployeeTypesPage() {
                 <Plus className="w-4 h-4" />
                 Add Supported Documents
               </button>
+              */}
               <button
                 onClick={() => setShowCreateModal(true)}
                 className="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg font-medium transition-colors shadow-sm"
@@ -1169,6 +1171,7 @@ export default function EmployeeTypesPage() {
                 <Plus className="w-4 h-4" />
                 Add Employee Type
               </button>
+              {/*
               <button
                 onClick={() => setShowCategoryModal(true)}
                 className="inline-flex items-center gap-2 px-5 py-2.5 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium transition-colors shadow-sm"
@@ -1183,13 +1186,15 @@ export default function EmployeeTypesPage() {
                 <Layers className="w-4 h-4" />
                 Add Sub-Category
               </button>
+              */}
             </div>
           </div>
         </div>
       </div>
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-6 py-6">
-        {/* Statistics Cards */}
+        {/* Statistics Cards (HIDDEN AS REQUESTED) */}
+        {/* 
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
           <div className="bg-white rounded-xl border border-slate-200 p-4 border-l-4 border-l-indigo-500">
             <div className="flex items-center justify-between">
@@ -1247,6 +1252,7 @@ export default function EmployeeTypesPage() {
             </div>
           </div>
         </div>
+        */}
         {/* Filters and Search */}
         <div className="bg-white rounded-xl border border-slate-200 p-6 mb-6">
           <div className="flex flex-col gap-4">

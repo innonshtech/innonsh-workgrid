@@ -531,25 +531,16 @@ employeeSchema.methods.calculateSalaryComponents = async function (statutoryConf
       status: { $in: ["Approved", "Draft"] } 
     }).sort({ createdAt: -1 });
 
-    let paidLeaves = 0;
+    let explicitPaidLeaves = 0;
     if (leaveRecord && leaveRecord.summary) {
       // 1. Add explicitly marked Unpaid leaves
       const explicitlyUnpaid = (leaveRecord.summary.unpaidLeaves || 0) + (leaveRecord.summary.halfDayUnpaidLeaves || 0) * 0.5;
       lopDays += explicitlyUnpaid;
       
       // 2. Get total Paid leaves taken (Casual, Sick, etc. are mapped to 'Paid' in summary)
-      let totalPaidLeavesTaken = (leaveRecord.summary.paidLeaves || 0) + (leaveRecord.summary.halfDayPaidLeaves || 0) * 0.5;
-
-      // 3. ENFORCE MONTHLY QUOTA: If paid leaves exceed 4 days, convert excess to LOP (Automatic)
-      const monthlyQuota = 4; 
-      if (totalPaidLeavesTaken > monthlyQuota) {
-        const excessLeaves = totalPaidLeavesTaken - monthlyQuota;
-        lopDays += excessLeaves;
-        totalPaidLeavesTaken = monthlyQuota; 
-      }
-
-      paidLeaves = totalPaidLeavesTaken;
+      explicitPaidLeaves = (leaveRecord.summary.paidLeaves || 0) + (leaveRecord.summary.halfDayPaidLeaves || 0) * 0.5;
     }
+    this._tempPaidLeaves = explicitPaidLeaves;
 
     // b. Get Absent Days from Attendance (that are not covered by leaves)
     const startDate = new Date(year, month - 1, 1);
@@ -647,13 +638,11 @@ employeeSchema.methods.calculateSalaryComponents = async function (statutoryConf
       this._tempHolidayDates = new Set();
     }
 
-    lopDays += effectiveAbsentDays;
-
     // d. Get Present Days from Attendance
     const presentRecords = await Attendance.find({
       employee: empId,
       date: { $gte: startDate, $lte: endDate },
-      status: { $in: ["Present", "Half-Day"] }
+      status: { $in: ["Present", "Half-Day", "Half Day"] }
     });
     
     let actualPresentDays = 0;
@@ -701,7 +690,69 @@ employeeSchema.methods.calculateSalaryComponents = async function (statutoryConf
     
     this._tempWeeklyOffs = weeklyOffsCount;
     this._tempHolidays = effectiveHolidaysCount;
-    this._tempPaidLeaves = paidLeaves;
+    this._tempPaidLeaves = explicitPaidLeaves;
+
+    // Compute actual days worked or covered by explicit leaves
+    const actualWorkedOrLeave = actualPresentDays + explicitPaidLeaves;
+    let totalMissing = effectiveAbsentDays; // Start with attendance-recorded absents
+
+    // If attendance tracking is enabled, any missing/unmarked working days in the active employment period are also treated as absent/LOP
+    if (this.isAttending === 'yes') {
+      const joiningDate = this.personalDetails?.dateOfJoining ? new Date(this.personalDetails.dateOfJoining) : null;
+      const periodStart = new Date(year, month - 1, 1);
+      const periodEnd = new Date(year, month, 0);
+      const activeStartDate = joiningDate && joiningDate > periodStart ? joiningDate : periodStart;
+      
+      let activeWorkingDays = 0;
+      let tempDate = new Date(activeStartDate.getTime());
+      tempDate.setHours(0, 0, 0, 0);
+      const endCompare = new Date(periodEnd.getTime());
+      endCompare.setHours(23, 59, 59, 999);
+      
+      while (tempDate <= endCompare) {
+          const day = tempDate.getDay();
+          const dateStr = tempDate.toDateString();
+          const isWeeklyOff = !workingDayNumbers.includes(day);
+          const isHoliday = this._tempHolidayDates ? this._tempHolidayDates.has(dateStr) : false;
+          if (!isWeeklyOff && !isHoliday) {
+              activeWorkingDays++;
+          }
+          tempDate.setDate(tempDate.getDate() + 1);
+      }
+
+      const dynamicMissingDays = Math.max(0, activeWorkingDays - actualWorkedOrLeave);
+      // Use whichever is higher — attendance-based absents or gap-based missing days
+      totalMissing = Math.max(totalMissing, dynamicMissingDays);
+    }
+
+    // --- AUTO-LEAVE DEDUCTION & QUOTA ENFORCEMENT ---
+    try {
+      const PayrollConfigModel = mongoose.models.PayrollConfig || mongoose.model("PayrollConfig");
+      const payrollConfig = await PayrollConfigModel.findOne({ company: this.jobDetails?.organizationId });
+      const monthlyQuota = payrollConfig?.annualPaidLeaveQuota || 20;
+
+      let remainingQuota = Math.max(0, monthlyQuota - this._tempPaidLeaves);
+      
+      if (totalMissing > 0) {
+          // Auto-deduct from quota
+          const autoLeaves = Math.min(totalMissing, remainingQuota);
+          this._tempPaidLeaves += autoLeaves;
+          totalMissing -= autoLeaves;
+      }
+      
+      // Any remaining missing days become LOP
+      lopDays += totalMissing;
+      
+      // Finally, if explicit paid leaves somehow exceeded quota (before auto-deduction)
+      if (this._tempPaidLeaves > monthlyQuota) {
+          const excess = this._tempPaidLeaves - monthlyQuota;
+          lopDays += excess;
+          this._tempPaidLeaves = monthlyQuota;
+      }
+    } catch (configErr) {
+      console.error("Error applying Auto-Leave Deduction:", configErr);
+      lopDays += totalMissing;
+    }
 
   } catch (err) {
     console.error(`Error fetching leaves/attendance for ${this.employeeId}:`, err);
@@ -963,28 +1014,69 @@ employeeSchema.methods.calculateSalaryComponents = async function (statutoryConf
     );
   };
 
-  // INFOSYS/ACCENTURE STYLE PF (Restricted + Prorated Ceiling)
+  // PF CALCULATION (Respects employee's saved structure settings)
   if (this.pfApplicable === 'yes') {
-    // Remove any manually configured PF entries first
-    removeByName(['Provident Fund', 'PF']);
-    
-    // Prorate the 15,000 ceiling by attendance (MNC Standard)
-    const totalWorkingDays = workingDaysInMonth - (this._tempWeeklyOffs || 0) - (this._tempHolidays || 0);
-    const presentPlusPaidLeaves = Math.max(0, totalWorkingDays - lopDays);
-    
-    // Pro-rate the wage ceiling based on present days (Keka/Compliance Standard)
-    const pfWageLimit = 15000 * (presentPlusPaidLeaves / totalWorkingDays);
-    
-    const pfWage = Math.min(basicSalary, pfWageLimit);
-    const pfEmployee = Math.round(pfWage * 0.12);
-    const pfEmployer = Math.round(pfWage * 0.13);
+    // Check if employee has manually configured PF deductions in their payslip structure
+    const structureDeductions = structure.deductions || [];
+    const manualPFEntries = structureDeductions.filter(d => 
+      d.enabled && ['Provident Fund', 'PF', 'Provident Fund (PF)'].some(
+        kw => d.name?.toLowerCase().includes(kw.toLowerCase())
+      )
+    );
 
-    calculatedDeductions.push({
-      name: 'Provident Fund (PF)',
-      calculatedAmount: pfEmployee,
-      autoCalculated: true,
-      employerContribution: pfEmployer
-    });
+    if (manualPFEntries.length > 0) {
+      // Employee has manually configured PF — USE their settings (fixed or custom %)
+      // Remove any auto-calculated PF that was added from the generic deduction loop above
+      removeByName(['Provident Fund', 'PF']);
+
+      for (const pfEntry of manualPFEntries) {
+        let pfEmployeeAmount = 0;
+        if (pfEntry.calculationType === 'percentage') {
+          pfEmployeeAmount = Math.round((basicSalary * (pfEntry.percentage || 0)) / 100);
+        } else {
+          pfEmployeeAmount = Math.round(pfEntry.fixedAmount || 0);
+        }
+
+        // For employer contribution: check if there's a separate employer field on the entry
+        let pfEmployerAmount = 0;
+        if (pfEntry.employerContribution !== undefined && pfEntry.employerContribution !== null) {
+          pfEmployerAmount = Math.round(pfEntry.employerContribution);
+        } else if (pfEntry.employerPercentage !== undefined) {
+          pfEmployerAmount = Math.round((basicSalary * (pfEntry.employerPercentage || 0)) / 100);
+        } else if (pfEntry.employerFixedAmount !== undefined) {
+          pfEmployerAmount = Math.round(pfEntry.employerFixedAmount || 0);
+        } else {
+          // Default: employer matches employee contribution
+          pfEmployerAmount = pfEmployeeAmount;
+        }
+
+        calculatedDeductions.push({
+          name: pfEntry.name || 'Provident Fund (PF)',
+          calculatedAmount: pfEmployeeAmount,
+          autoCalculated: false,
+          employerContribution: pfEmployerAmount
+        });
+      }
+    } else {
+      // No manual PF configured — fall back to statutory 12%/13%
+      // Prorate the 15,000 ceiling by attendance (MNC Standard)
+      const totalWorkingDays = workingDaysInMonth - (this._tempWeeklyOffs || 0) - (this._tempHolidays || 0);
+      const presentPlusPaidLeaves = Math.max(0, totalWorkingDays - lopDays);
+      
+      // Pro-rate the wage ceiling based on present days (Keka/Compliance Standard)
+      const pfWageLimit = 15000 * (presentPlusPaidLeaves / totalWorkingDays);
+      
+      const pfWage = Math.min(basicSalary, pfWageLimit);
+      const pfEmployee = Math.round(pfWage * 0.12);
+      const pfEmployer = Math.round(pfWage * 0.13);
+
+      calculatedDeductions.push({
+        name: 'Provident Fund (PF)',
+        calculatedAmount: pfEmployee,
+        autoCalculated: true,
+        employerContribution: pfEmployer
+      });
+    }
   }
 
   // 2. ESIC (Only if Contracted Gross Salary <= 21,000)
@@ -1004,19 +1096,36 @@ employeeSchema.methods.calculateSalaryComponents = async function (statutoryConf
     });
   }
 
-  // 3. Professional Tax (PT)
-  const workState = this.jobDetails?.workState || 'Maharashtra';
-  const ptAmount = StatutoryCalculator.calculateProfessionalTax(grossSalary, workState, { ...statutoryConfig, month });
+  // 3. Professional Tax (PT) — Only if employee has PT in their structure
+  const structureDeductionsForPT = structure.deductions || [];
+  const hasPTInStructure = structureDeductionsForPT.some(d => 
+    d.enabled && ['Professional Tax', 'PT'].some(
+      kw => d.name?.toLowerCase().includes(kw.toLowerCase())
+    )
+  );
 
-  if (ptAmount > 0) {
-    // Remove any manually configured PT entries first
-    removeByName(['Professional Tax', 'PT']);
+  if (hasPTInStructure) {
+    // Employee has PT configured — check if they have a manual fixed/percentage entry
+    const manualPTEntry = structureDeductionsForPT.find(d => 
+      d.enabled && ['Professional Tax', 'PT'].some(
+        kw => d.name?.toLowerCase().includes(kw.toLowerCase())
+      )
+    );
 
-    calculatedDeductions.push({
-      name: 'Professional Tax (PT)',
-      calculatedAmount: ptAmount,
-      autoCalculated: true
-    });
+    // If manual entry exists with a specific amount, use it; otherwise auto-calculate by slab
+    const workState = this.jobDetails?.workState || 'Maharashtra';
+    const ptAmount = StatutoryCalculator.calculateProfessionalTax(grossSalary, workState, { ...statutoryConfig, month });
+
+    if (ptAmount > 0) {
+      // Remove manually added PT from the generic deduction loop to avoid duplicates
+      removeByName(['Professional Tax', 'PT']);
+
+      calculatedDeductions.push({
+        name: 'Professional Tax (PT)',
+        calculatedAmount: ptAmount,
+        autoCalculated: true
+      });
+    }
   }
 
   // 4. TDS (Income Tax) — Dual Regime (Keka Standard)

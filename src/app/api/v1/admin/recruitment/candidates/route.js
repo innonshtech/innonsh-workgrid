@@ -14,6 +14,7 @@ import {
 } from '@/lib/email/templates/recruitment';
 import { getCandidateStatusChangeTemplate } from '@/lib/email/templates';
 import { generateOnboardingTasks } from '@/lib/ai/gemini';
+import { processCandidateResumeInBackground } from '@/lib/recruitment/resume-processing';
 
 const candidateSchema = z.object({
     name: z.string().min(1),
@@ -98,6 +99,13 @@ export async function POST(request) {
             console.log("Email send skipped (no SMTP configured):", emailErr.message);
         }
 
+        // Fix: Trigger AI parsing if a resume was uploaded
+        if (candidate.resumeUrl) {
+            processCandidateResumeInBackground(candidate._id).catch(err => {
+                console.error("Failed to trigger background parse:", err);
+            });
+        }
+
         return NextResponse.json({ success: true, candidate, message: "Candidate application received" }, { status: 201 });
     } catch (error) {
         console.error("POST CANDIDATE ERROR:", error);
@@ -170,6 +178,7 @@ export async function PUT(request) {
                     employee = await Employee.create({
                         employeeId: `EMP-${Date.now().toString().slice(-6)}`,
                         password: 'welcome_to_team',
+                        organizationId: candidate.organizationId,
                         personalDetails: {
                             firstName,
                             lastName,
@@ -180,7 +189,8 @@ export async function PUT(request) {
                         jobDetails: {
                             department,
                             designation,
-                            workLocation: "Remote / Office"
+                            workLocation: "Remote / Office",
+                            organizationId: candidate.organizationId
                         },
                         payslipStructure: {
                             salaryType: 'monthly',
@@ -225,6 +235,7 @@ export async function PUT(request) {
 
                     await OnboardingChecklist.create({
                         employee: employee._id,
+                        organizationId: candidate.organizationId,
                         tasks: onboardingTasks,
                         status: 'Not Started'
                     });

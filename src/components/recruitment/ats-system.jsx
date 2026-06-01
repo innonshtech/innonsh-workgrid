@@ -31,9 +31,7 @@ import {
 const STAGES = [
     { id: 'Applied', label: 'Inbound', bg: 'bg-blue-50', dot: 'bg-blue-500', text: 'text-blue-700', iconBg: 'bg-blue-500/10', icon: Layers },
     { id: 'Screening', label: 'Screening', bg: 'bg-purple-50', dot: 'bg-purple-500', text: 'text-purple-700', iconBg: 'bg-purple-500/10', icon: Filter },
-    { id: 'Technical Interview', label: 'Technical', bg: 'bg-indigo-50', dot: 'bg-indigo-500', text: 'text-indigo-700', iconBg: 'bg-indigo-500/10', icon: Briefcase },
-    { id: 'Managerial Interview', label: 'Managerial', bg: 'bg-cyan-50', dot: 'bg-cyan-500', text: 'text-cyan-700', iconBg: 'bg-cyan-500/10', icon: Users },
-    { id: 'HR Interview', label: 'Culture', bg: 'bg-orange-50', dot: 'bg-orange-500', text: 'text-orange-700', iconBg: 'bg-orange-500/10', icon: HeartIcon },
+    { id: 'Interviewing', label: 'Interviewing', bg: 'bg-indigo-50', dot: 'bg-indigo-500', text: 'text-indigo-700', iconBg: 'bg-indigo-500/10', icon: Briefcase },
     { id: 'Offer Sent', label: 'Offered', bg: 'bg-rose-50', dot: 'bg-rose-500', text: 'text-rose-700', iconBg: 'bg-rose-500/10', icon: Paperclip },
     { id: 'Hired', label: 'Hired', bg: 'bg-emerald-50', dot: 'bg-emerald-500', text: 'text-emerald-700', iconBg: 'bg-emerald-500/10', icon: CheckCircle2 },
     { id: 'Rejected', label: 'Archived', bg: 'bg-slate-50', dot: 'bg-slate-500', text: 'text-slate-700', iconBg: 'bg-slate-500/10', icon: XCircle }
@@ -390,12 +388,19 @@ function CandidateCard({ candidate, onDragStart, onDragEnd, isSelected, onStatus
                                 <span className={`text-base font-black tracking-tighter uppercase ${isRejected ? 'text-slate-400' : 'text-slate-400 group-hover:text-white'}`}>{candidate.name.charAt(0)}</span>
                             </div>
                         </div>
-                        {/* AI Fit Score Badge */}
-                        {candidate.fitScore != null && (
-                            <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-black ${candidate.fitScore >= 80 ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' : candidate.fitScore >= 60 ? 'bg-amber-50 text-amber-600 border border-amber-100' : 'bg-rose-50 text-rose-600 border border-rose-100'}`}>
-                                🤖 {candidate.fitScore}% Match
-                            </div>
-                        )}
+                        {/* AI Fit Score Badge & On Hold */}
+                        <div className="flex items-center gap-2">
+                            {candidate.fitScore != null && (
+                                <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-black ${candidate.fitScore >= 80 ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' : candidate.fitScore >= 60 ? 'bg-amber-50 text-amber-600 border border-amber-100' : 'bg-rose-50 text-rose-600 border border-rose-100'}`}>
+                                    🤖 {candidate.fitScore}% Match
+                                </div>
+                            )}
+                            {candidate.isOnHold && (
+                                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-black bg-amber-100 text-amber-800 border border-amber-200">
+                                    ⏸️ On Hold
+                                </div>
+                            )}
+                        </div>
 
                         {/* Info Grid */}
                         <div className="space-y-3 bg-slate-50/30 p-5 rounded-2xl border border-slate-100 group-hover:bg-white group-hover:border-indigo-50 transition-all duration-500">
@@ -445,9 +450,31 @@ function CandidateCard({ candidate, onDragStart, onDragEnd, isSelected, onStatus
                                 {nextStage && !isHired && (
                                     <Button
                                         onClick={handlePromote}
-                                        className="h-12 flex-1 text-[11px] font-black uppercase tracking-wider bg-indigo-600 text-white hover:bg-indigo-700 shadow-lg shadow-indigo-100 border-none rounded-2xl"
+                                        className="h-12 flex-1 text-[11px] font-black uppercase tracking-wider bg-indigo-600 text-white hover:bg-indigo-700 shadow-lg shadow-indigo-100 border-none rounded-2xl px-2"
                                     >
-                                        <ArrowRight className="w-4 h-4 mr-1.5" /> Promote
+                                        <ArrowRight className="w-4 h-4 mr-1" /> Promote
+                                    </Button>
+                                )}
+                                {!isRejected && !isHired && (
+                                    <Button
+                                        onClick={async (e) => {
+                                            e.stopPropagation();
+                                            const newHoldStatus = !candidate.isOnHold;
+                                            try {
+                                                const res = await fetch(`/api/v1/admin/recruitment/candidates`, {
+                                                    method: 'PUT',
+                                                    headers: { 'Content-Type': 'application/json' },
+                                                    body: JSON.stringify({ id: candidate._id, isOnHold: newHoldStatus })
+                                                });
+                                                if(res.ok) {
+                                                    window.location.reload();
+                                                }
+                                            } catch (err) {}
+                                        }}
+                                        variant="outline"
+                                        className="h-12 flex-1 text-[11px] font-black uppercase tracking-wider bg-white text-slate-700 hover:bg-slate-50 border-slate-200 rounded-2xl px-2"
+                                    >
+                                        {candidate.isOnHold ? "Resume" : "Hold"}
                                     </Button>
                                 )}
                                 {!isRejected && !isHired && (
@@ -711,7 +738,7 @@ function ListView({ candidates, onStatusUpdate }) {
 function ScheduleModal({ onClose, candidate, interviewers, onSuccess }) {
     const [submitting, setSubmitting] = useState(false);
     const [formData, setFormData] = useState({
-        round: 'Technical Interview',
+        round: 'Interviewing',
         interviewer: '',
         date: '',
         meetingLink: '',
@@ -779,8 +806,8 @@ function ScheduleModal({ onClose, candidate, interviewers, onSuccess }) {
                                 <SelectValue />
                             </SelectTrigger>
                             <SelectContent className="rounded-2xl">
-                                {['Screening', 'Technical Interview', 'Managerial Interview', 'HR Interview', 'Final Round'].map(r => (
-                                    <SelectItem key={r} value={r} className="rounded-xl">{r}</SelectItem>
+                                {['Screening', 'Interviewing'].map(round => (
+                                    <SelectItem key={round} value={round}>{round}</SelectItem>
                                 ))}
                             </SelectContent>
                         </Select>

@@ -783,7 +783,7 @@ function CandidateDetailModal({ candidate, onClose, onRefresh, onGenerateOffer }
     const [emailMessage, setEmailMessage] = useState("");
     const [sendingEmail, setSendingEmail] = useState(false);
     const stages = [
-        'Applied', 'Screening', 'Technical Interview', 'Managerial Interview', 'HR Interview', 'Offer Sent', 'Hired', 'Rejected'
+        'Applied', 'Screening', 'Interviewing', 'Offer Sent', 'Hired', 'Rejected'
     ];
 
     const handleCalculateFitScore = async () => {

@@ -31,9 +31,13 @@ export async function POST(request) {
     // 2. Stage 1: Mongoose DB Filter (Free & Instant)
     const query = { organizationId: authUser.organizationId };
 
-    // Skill overlap filter
+    // Skill overlap filter (Loosened to allow partial matches)
     if (requirement.skillsRequired && requirement.skillsRequired.length > 0) {
-      const regexes = requirement.skillsRequired.map(skill => new RegExp(skill.trim(), 'i'));
+      // Use just the first word of the skill for broader matching (e.g. "ReactJS" -> "React")
+      const regexes = requirement.skillsRequired.map(skill => {
+        const baseWord = skill.trim().split(/[\s-]/)[0];
+        return new RegExp(baseWord, 'i');
+      });
       query["parsedResume.skills"] = { $in: regexes };
     }
 
@@ -55,6 +59,7 @@ export async function POST(request) {
     }
 
     // Cap the AI evaluations to a maximum of 25 candidates to avoid rate limits and keep it light
+    const isCapped = candidates.length > 25;
     const candidatesToScore = candidates.slice(0, 25);
     console.log(`AI Match Stage 2: Scoring ${candidatesToScore.length} candidates using Gemini...`);
 
@@ -75,23 +80,35 @@ export async function POST(request) {
           analysis: fitAnalysis.analysis || "",
           strengths: fitAnalysis.strengths || [],
           gaps: fitAnalysis.gaps || [],
-          recommendation: fitAnalysis.recommendation || "Pending Review"
+          recommendation: fitAnalysis.recommendation || "Pending Review",
+          success: true
         };
       } catch (err) {
         console.error(`AI Scoring failed for candidate ${candidate._id}:`, err);
-        return null;
+        return {
+          candidate: {
+            _id: candidate._id,
+            name: candidate.name,
+            email: candidate.email
+          },
+          success: false,
+          errorType: err.name === 'GoogleAPIError' ? 'GOOGLE_API_KEY_ERROR' : 'UNKNOWN_ERROR',
+          errorMessage: err.message
+        };
       }
     });
 
-    const matches = (await Promise.all(matchPromises))
-      .filter(Boolean)
-      .sort((a, b) => b.fitScore - a.fitScore);
+    const matchResults = await Promise.all(matchPromises);
+    const matches = matchResults.filter(m => m.success).sort((a, b) => b.fitScore - a.fitScore);
+    const failedMatches = matchResults.filter(m => !m.success);
 
     return NextResponse.json({
       success: true,
       requirement,
       matches,
-      totalScored: matches.length
+      failedMatches,
+      totalScored: matches.length,
+      cappedAt25: isCapped
     });
 
   } catch (error) {

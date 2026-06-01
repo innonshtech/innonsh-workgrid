@@ -28,6 +28,7 @@ export default function EmployeeList() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
   const [departmentFilter, setDepartmentFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [organizationFilter, setOrganizationFilter] = useState('');
@@ -68,9 +69,17 @@ export default function EmployeeList() {
   const [currentPage, setCurrentPage] = useState(1);
   const [employeesPerPage, setEmployeesPerPage] = useState(9);
 
+  // Debounce Search Term
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 300);
+    return () => clearTimeout(handler);
+  }, [searchTerm]);
+
   useEffect(() => {
     fetchEmployees();
-    }, [searchTerm, departmentFilter, statusFilter, organizationFilter, roleFilter]);
+  }, [debouncedSearchTerm, departmentFilter, statusFilter, organizationFilter, roleFilter]);
 
 
   const fetchEmployees = async () => {
@@ -80,7 +89,7 @@ export default function EmployeeList() {
       setError(null);
 
       const params = new URLSearchParams();
-      if (searchTerm) params.append('search', searchTerm);
+      if (debouncedSearchTerm) params.append('search', debouncedSearchTerm);
       if (departmentFilter) params.append('department', departmentFilter);
       if (statusFilter) params.append('status', statusFilter);
       if (organizationFilter) params.append('organization', organizationFilter);

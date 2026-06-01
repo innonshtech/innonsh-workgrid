@@ -59,23 +59,11 @@ export const getCandidateStatusChangeTemplate = ({ candidateName, jobTitle, newS
             body: `We are pleased to inform you that your application for <strong>${jobTitle}</strong> has advanced to the screening stage.`,
             color: '#6366f1'
         },
-        'Technical Interview': {
-            subject: `Interview Invitation: ${jobTitle}`,
+        'Interviewing': {
+            subject: `Next Steps: Interview Scheduled for ${jobTitle}`,
             heading: 'Interview Scheduled',
-            body: `Congratulations! Your application for <strong>${jobTitle}</strong> has been shortlisted. We will schedule a Technical Interview with you shortly.`,
+            body: `Congratulations! Your application for <strong>${jobTitle}</strong> has been shortlisted. We will schedule an Interview with you shortly.`,
             color: '#0ea5e9'
-        },
-        'Managerial Interview': {
-            subject: `Next Round: ${jobTitle}`,
-            heading: 'Moving to the Next Round',
-            body: `Great news! You have cleared the previous round for <strong>${jobTitle}</strong>. A Managerial Interview will be scheduled soon.`,
-            color: '#8b5cf6'
-        },
-        'HR Interview': {
-            subject: `Final Round: ${jobTitle}`,
-            heading: 'Final Interview Round',
-            body: `Excellent progress! You are now in the final interview stage for <strong>${jobTitle}</strong>.`,
-            color: '#10b981'
         },
         'Offer Sent': {
             subject: `Offer Letter: ${jobTitle}`,

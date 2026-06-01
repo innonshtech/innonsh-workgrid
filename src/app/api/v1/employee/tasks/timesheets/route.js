@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/db/connect';
 import Timesheet from '@/lib/db/models/tasks/Timesheet';
 import TimesheetEntry from '@/lib/db/models/tasks/TimesheetEntry';
+import Employee from '@/lib/db/models/payroll/Employee';
+import Notification from '@/lib/db/models/notifications/NotificationConfig';
 import { getAuthUser } from '@/lib/auth-util';
 import { logActivity } from '@/lib/logger';
 
@@ -27,6 +29,7 @@ export async function GET(request) {
 
         const timesheets = await Timesheet.find(query)
             .populate('employee', 'personalDetails.firstName personalDetails.lastName')
+            .populate('submittedTo', 'personalDetails.firstName personalDetails.lastName')
             .sort({ weekStartDate: -1 });
 
         // If fetching for a specific week and employee, include entries
@@ -53,7 +56,7 @@ export async function POST(request) {
         const authUser = await getAuthUser();
         await dbConnect();
         const body = await request.json();
-        const { employee, weekStartDate, entries, status = 'Draft' } = body;
+        const { employee, weekStartDate, entries, status = 'Draft', submittedTo } = body;
 
         // Security Validation
         if (authUser.role === 'employee' && employee !== authUser.id) {
@@ -75,15 +78,20 @@ export async function POST(request) {
                 employee,
                 weekStartDate: new Date(weekStartDate),
                 status,
+                submittedTo: submittedTo || null,
                 organizationId: authUser.organizationId // Ensure organizationId is saved
             });
         } else {
-            // If already submitted or approved, don't allow changes unless admin?
-            // For now, let's keep it simple.
+            // If already approved, don't allow changes
             if (timesheet.status === 'Approved') {
                 return NextResponse.json({ success: false, error: 'Cannot edit an approved timesheet' }, { status: 400 });
             }
             timesheet.status = status;
+            timesheet.submittedTo = submittedTo || null;
+        }
+
+        if (status === 'Submitted') {
+            timesheet.submittedAt = new Date();
         }
 
         // 2. Handle Entries
@@ -91,7 +99,6 @@ export async function POST(request) {
             // Calculate total hours
             const totalHours = entries.reduce((acc, entry) => acc + (parseFloat(entry.hours) || 0), 0);
             timesheet.totalHours = totalHours;
-            if (status === 'Submitted') timesheet.submittedAt = new Date();
 
             await timesheet.save();
 
@@ -113,6 +120,63 @@ export async function POST(request) {
             await TimesheetEntry.insertMany(entriesToCreate);
         } else {
             await timesheet.save();
+        }
+
+        // Create notifications on submission
+        if (status === 'Submitted') {
+            const formattedDate = new Date(weekStartDate).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+
+            const employeeDetails = await Employee.findById(employee);
+            const employeeName = employeeDetails 
+                ? `${employeeDetails.personalDetails?.firstName} ${employeeDetails.personalDetails?.lastName}`
+                : authUser.name || 'An employee';
+
+            // 1. Notify the selected manager (individual notification)
+            if (submittedTo) {
+                try {
+                    const managerNotification = new Notification({
+                        type: 'system',
+                        title: 'Timesheet Submitted for Approval',
+                        message: `${employeeName} has submitted their timesheet for the week of ${formattedDate} for your approval.`,
+                        priority: 'medium',
+                        audienceType: 'individual',
+                        employee: submittedTo,
+                        organization: authUser.organizationId,
+                        details: {
+                            timesheetId: timesheet._id,
+                            employeeId: employee,
+                            weekStartDate: weekStartDate
+                        }
+                    });
+                    await managerNotification.save();
+                } catch (notiError) {
+                    console.error('Failed to save manager timesheet notification:', notiError);
+                }
+            }
+
+            // 2. Notify the organization admins (organization audience)
+            try {
+                const adminNotification = new Notification({
+                    type: 'system',
+                    title: 'New Timesheet Submission',
+                    message: `${employeeName} has submitted their timesheet for the week of ${formattedDate}.`,
+                    priority: 'medium',
+                    audienceType: 'organization',
+                    organization: authUser.organizationId,
+                    details: {
+                        timesheetId: timesheet._id,
+                        employeeId: employee,
+                        weekStartDate: weekStartDate
+                    }
+                });
+                await adminNotification.save();
+            } catch (notiError) {
+                console.error('Failed to save admin timesheet notification:', notiError);
+            }
         }
 
         await logActivity({

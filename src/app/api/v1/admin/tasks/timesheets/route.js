@@ -17,14 +17,23 @@ export async function GET(request) {
         const employeeId = searchParams.get('employeeId');
         const weekStartDate = searchParams.get('weekStartDate');
         const status = searchParams.get('status');
+        const submittedTo = searchParams.get('submittedTo');
 
         let query = { organizationId: authUser.organizationId };
         if (employeeId) query.employee = employeeId;
         if (weekStartDate) query.weekStartDate = new Date(weekStartDate);
         if (status) query.status = status;
+        if (submittedTo) {
+            if (submittedTo === 'null') {
+                query.submittedTo = null;
+            } else {
+                query.submittedTo = submittedTo;
+            }
+        }
 
         const timesheets = await Timesheet.find(query)
             .populate('employee', 'personalDetails.firstName personalDetails.lastName')
+            .populate('submittedTo', 'personalDetails.firstName personalDetails.lastName')
             .sort({ weekStartDate: -1 });
 
         // If fetching for a specific week and employee, include entries

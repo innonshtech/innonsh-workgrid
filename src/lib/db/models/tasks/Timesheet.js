@@ -26,12 +26,18 @@ const timesheetSchema = new mongoose.Schema(
             default: 0,
         },
         submittedAt: { type: Date },
+        submittedTo: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Employee",
+            default: null,
+        },
         approvedBy: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
         },
         approvedAt: { type: Date },
         adminNotes: { type: String },
+        rejectionReason: { type: String, default: "" },
     },
     { timestamps: true }
 );

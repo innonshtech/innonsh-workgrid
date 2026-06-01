@@ -374,10 +374,13 @@ import Documents from "@/lib/db/models/crm/Documents/Documents";
 import Organization from "@/lib/db/models/crm/organization/Organization";
 import Department from "@/lib/db/models/crm/Department/department";
 import EmployeeType from "@/lib/db/models/crm/employee/EmployeeType";
+import { getAuthUser, authorize } from "@/lib/auth-util";
 
 // GET single employee category by ID
 export async function GET(request, { params }) {
   try {
+    const authUser = await getAuthUser();
+    authorize(authUser, ["admin", "hr", "company_admin", "super_admin", "employee"]);
     await dbConnect();
 
     const { id } = await params;
@@ -415,6 +418,8 @@ export async function GET(request, { params }) {
 // PUT method for updating employee category
 export async function PUT(request, { params }) {
   try {
+    const authUser = await getAuthUser();
+    authorize(authUser, ["admin", "hr", "company_admin", "super_admin"]);
     await dbConnect();
 
     const { id } = await params;
@@ -496,7 +501,7 @@ export async function PUT(request, { params }) {
       departmentId: department._id,
       employeeTypeId: employeeTypeDoc._id,
       employeeCategory: employeeCategory.trim(),
-      updatedBy: updatedBy || "66e2f79f3b8d2e1f1a9d9c33"
+      updatedBy: authUser.id
     };
 
     // Handle supported documents if provided
@@ -579,6 +584,26 @@ export async function PUT(request, { params }) {
       );
     }
 
+    return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+}
+
+export async function DELETE(request, { params }) {
+  try {
+    const authUser = await getAuthUser();
+    authorize(authUser, ["admin", "company_admin", "super_admin"]);
+    await dbConnect();
+    const { id } = await params;
+
+    const deleted = await EmployeeCategory.findByIdAndDelete(id);
+
+    if (!deleted) {
+      return NextResponse.json({ error: "Employee Category not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ message: "Employee Category deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting employee category:", error);
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
 }

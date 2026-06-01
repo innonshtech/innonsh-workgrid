@@ -21,7 +21,7 @@ export async function GET(request) {
         ]);
 
         // 1. Funnel conversion rates
-        const stages = ['Applied', 'Screening', 'Technical Interview', 'Managerial Interview', 'HR Interview', 'Offer Sent', 'Hired', 'Rejected'];
+        const stages = ['Applied', 'Screening', 'Interviewing', 'Offer Sent', 'Hired', 'Rejected'];
         const funnelData = stages.map(stage => ({
             stage,
             count: candidates.filter(c => c.status === stage).length

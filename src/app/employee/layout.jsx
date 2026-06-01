@@ -78,8 +78,6 @@ function DashboardLayoutContent({ children }) {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  console.log("User From Layout: - ", user, "IsLoading: - ", isLoading);
-
   const [unreadCount, setUnreadCount] = useState(0);
 
   // Auto-close sidebar on mobile when page route changes
@@ -181,11 +179,11 @@ function DashboardLayoutContent({ children }) {
         { name: t("orgSettings"), href: "/admin/organization/org-settings", icon: Settings2 },
         { name: t("department"), href: "/admin/organization/department", icon: Building2 },
         { name: t("employee"), href: "/admin/organization/employeeType", icon: Contact },
-        {
-          name: t("attendanceThresholds"),
-          href: "/admin/organization/attendance-thresholds",
-          icon: Target,
-        },
+        // {
+        //   name: t("attendanceThresholds"),
+        //   href: "/admin/organization/attendance-thresholds",
+        //   icon: Target,
+        // },
         { name: t("orgChart"), href: "/admin/organization/org-chart", icon: GitGraph },
       ],
     },
@@ -439,8 +437,6 @@ function DashboardLayoutContent({ children }) {
     navigation = [];
   }
 
-  console.log("Navigation :- ", navigation);
-
   const isAuthRoute =
     pathname?.startsWith("/auth") || pathname === "/login";
   if (isAuthRoute) {
@@ -592,7 +588,7 @@ function DashboardLayoutContent({ children }) {
 
       <div className="lg:ml-64">
         <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md shadow-sm border-b border-indigo-100">
-          <div className="px-6 py-4">
+          <div className="px-4 sm:px-6 py-3 sm:py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
                 <button
@@ -607,14 +603,14 @@ function DashboardLayoutContent({ children }) {
                   )}
                 </button>
 
-                <div className="hidden md:flex flex-col items-start gap-1 ml-2">
-                  <h2 className="text-xl font-bold text-slate-800 leading-none">
+                <div className="flex flex-col items-start gap-1 ml-2">
+                  <h2 className="text-base sm:text-xl font-bold text-slate-800 leading-none">
                     {{
                       '/': t("dashboard"),
                       '/employees': t("employeeManagement")
                     }[pathname] || (pathname || "").split('/').filter(Boolean).slice(-1)[0]?.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ') || t("overview")}
                   </h2>
-                  <div className="flex items-center gap-2 text-xs font-medium text-slate-500">
+                  <div className="hidden sm:flex items-center gap-2 text-xs font-medium text-slate-500">
                     <Calendar className="w-3.5 h-3.5" />
                     <span suppressHydrationWarning>
                       {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}

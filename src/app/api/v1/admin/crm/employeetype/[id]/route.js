@@ -5,8 +5,12 @@ import EmployeeType from "@/lib/db/models/crm/employee/EmployeeType";
 import Organization from "@/lib/db/models/crm/organization/Organization";
 import Department from "@/lib/db/models/crm/Department/department";
 
+import { getAuthUser, authorize } from "@/lib/auth-util";
+
 export async function GET(request, { params }) {
   try {
+    const authUser = await getAuthUser();
+    authorize(authUser, ["admin", "hr", "company_admin", "super_admin", "employee"]);
     await dbConnect();
     const { id } = await params;
     
@@ -29,6 +33,8 @@ export async function GET(request, { params }) {
 
 export async function PUT(request, { params }) {
   try {
+    const authUser = await getAuthUser();
+    authorize(authUser, ["admin", "hr", "company_admin", "super_admin"]);
     await dbConnect();
     const { id } = await params;
 
@@ -67,7 +73,7 @@ export async function PUT(request, { params }) {
     }
 
     // Add updatedBy
-    updateData.updatedBy = new mongoose.Types.ObjectId("66e2f79f3b8d2e1f1a9d9c33");
+    updateData.updatedBy = authUser.id;
 
     const updated = await EmployeeType.findByIdAndUpdate(
       id, 
@@ -103,6 +109,8 @@ export async function PUT(request, { params }) {
 
 export async function DELETE(request, { params }) {
   try {
+    const authUser = await getAuthUser();
+    authorize(authUser, ["admin", "hr", "company_admin", "super_admin"]);
     await dbConnect();
     const { id } = await params;
 

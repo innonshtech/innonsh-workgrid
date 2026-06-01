@@ -212,7 +212,7 @@ export async function GET(request) {
       }
     }
 
-    if (authUser.role === 'admin' && authUser.organizationId) {
+    if ((authUser.role === 'admin' || authUser.role === 'employee' || authUser.role === 'attendance_only') && authUser.organizationId) {
       filter['jobDetails.organizationId'] = authUser.organizationId;
     } else if (organizationId) {
       filter['jobDetails.organizationId'] = organizationId;

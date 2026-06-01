@@ -6,9 +6,12 @@ import Organization from "@/lib/db/models/crm/organization/Organization";
 import Department from "@/lib/db/models/crm/Department/department";
 import Documents from "@/lib/db/models/crm/Documents/Documents";
 import mongoose from "mongoose";
+import { getAuthUser, authorize } from "@/lib/auth-util";
 
 export async function POST(request) {
   try {
+    const authUser = await getAuthUser();
+    authorize(authUser, ["admin", "hr", "company_admin", "super_admin"]);
     await dbConnect();
 
     const body = await request.json();
@@ -114,7 +117,7 @@ export async function POST(request) {
       departmentId: department._id,
       employeeTypeId: employeeTypeDoc._id,
       employeeCategory: employeeCategory.trim(),
-      createdBy: createdBy || "66e2f79f3b8d2e1f1a9d9c33"
+      createdBy: authUser.id
     };
 
     // Add supported documents if provided
@@ -159,6 +162,8 @@ export async function POST(request) {
 
 export async function GET(request) {
   try {
+    const authUser = await getAuthUser();
+    authorize(authUser, ["admin", "hr", "company_admin", "super_admin", "employee"]);
     await dbConnect();
 
     const { searchParams } = new URL(request.url);
@@ -170,7 +175,11 @@ export async function GET(request) {
 
     // Build query
     let query = {};
-    if (organizationId) {
+    
+    // SaaS PROTECTION
+    if (authUser.role !== "super_admin" && authUser.organizationId) {
+      query.organizationId = authUser.organizationId;
+    } else if (organizationId) {
       try {
         query.organizationId = new mongoose.Types.ObjectId(organizationId);
       } catch (err) {

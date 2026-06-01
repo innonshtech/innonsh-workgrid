@@ -1420,7 +1420,7 @@ export default function EmployeeForm({ employeeData, isEdit = false }) {
               updatedDeductions.push({
                 name: "Provident Fund (Employer)",
                 enabled: true,
-                editable: false,
+                editable: true,
                 calculationType: "percentage",
                 percentage: 13,
                 fixedAmount: 0
@@ -1453,7 +1453,7 @@ export default function EmployeeForm({ employeeData, isEdit = false }) {
             updatedDeductions.push({
               name: "Provident Fund (Employee)",
               enabled: true,
-              editable: false,
+              editable: true,
               calculationType: "percentage",
               percentage: 12,
               fixedAmount: 0
@@ -1474,7 +1474,7 @@ export default function EmployeeForm({ employeeData, isEdit = false }) {
               updatedDeductions.push({
                 name: "Provident Fund (Employer)",
                 enabled: true,
-                editable: false,
+                editable: true,
                 calculationType: "percentage",
                 percentage: 13,
                 fixedAmount: 0

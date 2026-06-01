@@ -93,9 +93,7 @@ export async function POST(request) {
         // Logic to sync status with the round type
         const roundToStageMap = {
             'Screening': 'Screening',
-            'Technical Interview': 'Technical Interview',
-            'Managerial Interview': 'Managerial Interview',
-            'HR Interview': 'HR Interview'
+            'Interviewing': 'Interviewing'
         };
 
         if (roundToStageMap[interview.round]) {
@@ -188,7 +186,7 @@ export async function PUT(request) {
         // --- PIPELINE AUTOMATION LOGIC ---
         // 1. Handle Promotion (Next Stage)
         if (updateData.decision === 'Promoted') {
-            const rounds = ['Applied', 'Screening', 'Technical Interview', 'Managerial Interview', 'HR Interview', 'Offer Sent', 'Hired'];
+            const rounds = ['Applied', 'Screening', 'Interviewing', 'Offer Sent', 'Hired'];
             const currentIndex = rounds.indexOf(candidate.status);
             if (currentIndex !== -1 && currentIndex < rounds.length - 1) {
                 candidate.status = rounds[currentIndex + 1];
@@ -259,7 +257,7 @@ export async function PUT(request) {
                 console.error("CRITICAL OFFER ERROR:", err);
             }
         } else if (updateData.decision === 'On Hold') {
-            candidate.status = 'On Hold';
+            candidate.isOnHold = true;
         }
 
             // Mark as modified for Mongoose tracking

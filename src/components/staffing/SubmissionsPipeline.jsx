@@ -113,6 +113,8 @@ export default function SubmissionsPipeline() {
     { key: "client-interview", label: "Client Round", color: "border-t-amber-400 bg-amber-50/10" },
     { key: "offered", label: "Offered", color: "border-t-teal-400 bg-teal-50/10" },
     { key: "deployed", label: "Deployed", color: "border-t-emerald-500 bg-emerald-50/10" },
+    { key: "rejected", label: "Rejected", color: "border-t-rose-500 bg-rose-50/10" },
+    { key: "withdrawn", label: "Withdrawn", color: "border-t-slate-500 bg-slate-50/10" },
   ];
 
   // Group submissions by stage key for Kanban rendering
@@ -148,15 +150,15 @@ export default function SubmissionsPipeline() {
           <div className="w-8 h-8 rounded-full border-4 border-indigo-100 border-t-indigo-600 animate-spin"></div>
         </div>
       ) : (
-        /* Kanban Board Grid */
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-6 overflow-x-auto pb-4 no-scrollbar">
+        /* Kanban Board Scrollable Layout */
+        <div className="flex flex-row gap-6 overflow-x-auto pb-4 no-scrollbar min-w-full">
           {stagesList.map((stage) => {
             const stageSubs = getSubmissionsByStage(stage.key);
             
             return (
               <div
                 key={stage.key}
-                className="flex flex-col min-w-[200px] bg-slate-50 border border-slate-200/50 rounded-2xl p-4 space-y-4 max-h-[75vh]"
+                className="flex flex-col min-w-[280px] w-[280px] bg-slate-50 border border-slate-200/50 rounded-2xl p-4 space-y-4 max-h-[75vh] shrink-0"
               >
                 {/* Column Header */}
                 <div className={`border-t-4 ${stage.color} pt-2 flex items-center justify-between`}>

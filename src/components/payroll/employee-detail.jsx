@@ -917,8 +917,13 @@ function PayslipStructureSection({
     if (pfApplicable !== "yes") {
       return { employeePF: 0, employerPF: 0, totalPF: 0 };
     }
-    const employeePF = (basicSalary * 12) / 100;
-    const employerPF = (basicSalary * 13) / 100;
+    
+    const employeePFObj = payslipStructure.deductions?.find(d => d.name === "Provident Fund (Employee)");
+    const employerPFObj = payslipStructure.deductions?.find(d => d.name === "Provident Fund (Employer)");
+    
+    const employeePF = employeePFObj && employeePFObj.enabled ? calculateDeductionAmount(employeePFObj) : 0;
+    const employerPF = employerPFObj && employerPFObj.enabled ? calculateDeductionAmount(employerPFObj) : 0;
+    
     return {
       employeePF,
       employerPF,
@@ -943,9 +948,6 @@ function PayslipStructureSection({
     const basicSalary = parseFloat(payslipStructure.basicSalary) || 0;
     if (deduction.name === "Professional Tax") {
       return calculatePT();
-    }
-    if (deduction.name === "Provident Fund (Employee)") {
-      return calculatePFContributions().employeePF;
     }
     if (deduction.calculationType === "fixed") {
       return deduction.fixedAmount || 0;
@@ -2262,7 +2264,11 @@ function JobCompensationTab({ employee }) {
           </div>
           <div>
             <p className="text-sm text-slate-500 mb-1">Reports To</p>
-            <p className="font-semibold text-slate-900">{j.reportingManager || "N/A"}</p>
+            <p className="font-semibold text-slate-900">
+              {typeof j.reportingManager === 'object' && j.reportingManager !== null 
+                ? `${j.reportingManager.personalDetails?.firstName || ''} ${j.reportingManager.personalDetails?.lastName || ''}` 
+                : (j.reportingManager || "N/A")}
+            </p>
           </div>
           <div>
             <p className="text-sm text-slate-500 mb-1">Joining Date</p>

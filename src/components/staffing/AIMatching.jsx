@@ -28,6 +28,12 @@ export default function AIMatching() {
   const [loading, setLoading] = useState(false);
   const [matchingResults, setMatchingResults] = useState(null);
   const [shortlistedMap, setShortlistedMap] = useState({});
+  const [cappedWarning, setCappedWarning] = useState(false);
+  const [failedMatchesList, setFailedMatchesList] = useState([]);
+
+  // API Error State
+  const [apiErrorModalOpen, setApiErrorModalOpen] = useState(false);
+  const [apiErrorMessage, setApiErrorMessage] = useState("");
 
   useEffect(() => {
     fetchRequirements();
@@ -81,6 +87,8 @@ export default function AIMatching() {
       setLoading(true);
       setMatchingResults(null);
       setShortlistedMap({});
+      setCappedWarning(false);
+      setFailedMatchesList([]);
       
       const res = await fetch("/api/v1/admin/staffing/matching", {
         method: "POST",
@@ -91,6 +99,8 @@ export default function AIMatching() {
       const result = await res.json();
       if (result.success) {
         setMatchingResults(result.matches || []);
+        setCappedWarning(!!result.cappedAt25);
+        setFailedMatchesList(result.failedMatches || []);
       }
     } catch (err) {
       console.error("Auto match error:", err);
@@ -105,6 +115,8 @@ export default function AIMatching() {
     const found = requirements.find((r) => r._id === id);
     setSelectedReq(found || null);
     setMatchingResults(null); // Clear previous matchings
+    setCappedWarning(false);
+    setFailedMatchesList([]);
   };
 
   const handleRunAIMatch = async () => {
@@ -114,6 +126,8 @@ export default function AIMatching() {
       setLoading(true);
       setMatchingResults(null);
       setShortlistedMap({});
+      setCappedWarning(false);
+      setFailedMatchesList([]);
       
       toast.info("Gemini AI is parsing matching matrices across entire candidate bank...", { duration: 4000 });
 
@@ -126,9 +140,27 @@ export default function AIMatching() {
       const result = await res.json();
       if (result.success) {
         setMatchingResults(result.matches || []);
-        toast.success(`Successfully analyzed and ranked ${result.totalScored} candidates!`);
+        setCappedWarning(!!result.cappedAt25);
+        setFailedMatchesList(result.failedMatches || []);
+
+        if (result.failedMatches && result.failedMatches.length > 0) {
+          const firstError = result.failedMatches[0].errorType;
+          if (firstError === 'GOOGLE_API_KEY_ERROR') {
+            setApiErrorMessage(result.failedMatches[0].errorMessage || "Google Gemini API Key quota exhausted.");
+            setApiErrorModalOpen(true);
+          } else {
+            toast.warning(`Analyzed ${result.totalScored} candidates, but ${result.failedMatches.length} failed due to AI timeouts.`);
+          }
+        } else {
+          toast.success(`Successfully analyzed and ranked ${result.totalScored} candidates!`);
+        }
       } else {
-        toast.error(result.error || "Failed to calculate AI matchings.");
+        if (result.errorType === 'GOOGLE_API_KEY_ERROR') {
+          setApiErrorMessage(result.error || "Google Gemini API Key quota exhausted or key is blocked.");
+          setApiErrorModalOpen(true);
+        } else {
+          toast.error(result.error || "Failed to calculate AI matchings.");
+        }
       }
     } catch (err) {
       console.error(err);
@@ -185,13 +217,13 @@ export default function AIMatching() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto space-y-8 p-6">
+    <div className="max-w-7xl mx-auto space-y-6 sm:space-y-8 p-4 sm:p-6">
       <StaffingStepper currentStep={4} />
       
       {/* Header and selector */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-slate-100 pb-6">
         <div>
-          <h1 className="text-2xl font-extrabold text-slate-800 tracking-tight flex items-center gap-2">
+          <h1 className="text-xl sm:text-2xl font-extrabold text-slate-800 tracking-tight flex items-center gap-2">
             <Cpu className="w-6 h-6 text-indigo-600 animate-pulse" /> AI Match Workspace
           </h1>
           <p className="text-xs font-semibold text-slate-400">
@@ -200,13 +232,13 @@ export default function AIMatching() {
         </div>
 
         {/* Dropdown Select Requirement */}
-        <div className="flex flex-wrap items-center gap-3">
-          <div className="space-y-0.5 text-left shrink-0">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+          <div className="space-y-0.5 text-left flex-1">
             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Target Requirement</span>
             <select
               value={selectedReqId}
               onChange={handleReqChange}
-              className="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-800 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none w-64 md:w-80 shadow-sm"
+              className="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-800 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none w-full sm:w-64 md:w-80 shadow-sm"
             >
               {requirements.map((req) => (
                 <option key={req._id} value={req._id}>
@@ -219,7 +251,7 @@ export default function AIMatching() {
           <button
             onClick={handleRunAIMatch}
             disabled={loading || !selectedReqId}
-            className="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-300 text-white font-extrabold text-sm px-6 py-3.5 rounded-xl shadow-lg shadow-indigo-600/20 active:scale-[0.98] transition-all self-end"
+            className="w-full sm:w-auto flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-300 text-white font-extrabold text-sm px-6 py-3.5 rounded-xl shadow-lg shadow-indigo-600/20 active:scale-[0.98] transition-all self-end"
           >
             <Sparkles className="w-4 h-4 animate-spin-slow" /> Run AI Match
           </button>
@@ -312,11 +344,27 @@ export default function AIMatching() {
               </div>
             ) : (
               <div className="space-y-6">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-bold text-slate-800 flex items-center gap-1.5">
-                    <TrendingUp className="w-4 h-4 text-indigo-600" /> Matched Results ({matchingResults.length})
-                  </h3>
-                  <span className="text-xs font-bold text-slate-400">Ranked by Score</span>
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-lg font-bold text-slate-800 flex items-center gap-1.5">
+                      <TrendingUp className="w-4 h-4 text-indigo-600" /> Matched Results ({matchingResults.length})
+                    </h3>
+                    <span className="text-xs font-bold text-slate-400">Ranked by Score</span>
+                  </div>
+
+                  {cappedWarning && (
+                    <div className="bg-amber-50/80 border border-amber-200 text-amber-700 px-4 py-2.5 rounded-xl text-[11px] font-semibold flex items-center gap-2">
+                      <AlertTriangle className="w-4 h-4 shrink-0 text-amber-500" />
+                      To optimize performance and respect API limits, only the top 25 pre-filtered candidates in the sourcing pool were scored by the AI.
+                    </div>
+                  )}
+
+                  {failedMatchesList.length > 0 && (
+                    <div className="bg-rose-50/80 border border-rose-200 text-rose-700 px-4 py-2.5 rounded-xl text-[11px] font-semibold flex items-center gap-2">
+                      <AlertTriangle className="w-4 h-4 shrink-0 text-rose-500" />
+                      {failedMatchesList.length} candidate(s) were excluded because the AI engine failed to process their profiles.
+                    </div>
+                  )}
                 </div>
 
                 <div className="space-y-4">
@@ -433,6 +481,50 @@ export default function AIMatching() {
                 </div>
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Google API Error Modal */}
+      {apiErrorModalOpen && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-900/80 backdrop-blur-md p-4 overflow-y-auto animate-in fade-in duration-200">
+          <div className="bg-white rounded-3xl border border-red-100 shadow-2xl max-w-md w-full overflow-hidden animate-in zoom-in-95 duration-300">
+            <div className="bg-gradient-to-br from-red-500 to-rose-600 p-6 flex flex-col items-center justify-center text-center space-y-3 relative">
+              <button
+                onClick={() => setApiErrorModalOpen(false)}
+                className="absolute top-4 right-4 p-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm shadow-inner">
+                <AlertTriangle className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-extrabold text-white tracking-tight">API Quota Exhausted</h3>
+              <p className="text-red-100 text-sm font-medium">Google Gemini AI Engine Error</p>
+            </div>
+
+            <div className="p-8 space-y-6 text-center">
+              <p className="text-sm font-semibold text-slate-600 leading-relaxed">
+                The free tier Google Gemini API key used by the Staff Augmentation module has reached its rate limit, quota, or has been blocked.
+              </p>
+              
+              <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 text-left">
+                <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-1">Error Details</p>
+                <p className="text-xs font-mono font-medium text-rose-500">{apiErrorMessage}</p>
+              </div>
+
+              <div className="space-y-3">
+                <button
+                  onClick={() => setApiErrorModalOpen(false)}
+                  className="w-full bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-sm px-6 py-3.5 rounded-xl shadow-lg shadow-slate-900/20 active:scale-[0.98] transition-all"
+                >
+                  Understood
+                </button>
+                <p className="text-[10px] font-semibold text-slate-400">
+                  Please update your GOOGLE_API_KEY environment variable with a premium billing-enabled key to continue using AI matching.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       )}

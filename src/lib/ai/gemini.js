@@ -1,6 +1,14 @@
 // src/lib/ai/gemini.js — Central AI Service Layer (Google Gemini)
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
+class GoogleAPIError extends Error {
+    constructor(message, type) {
+        super(message);
+        this.name = 'GoogleAPIError';
+        this.type = type; // e.g. "QUOTA_EXHAUSTED", "KEY_BLOCKED"
+    }
+}
+
 let genAI = null;
 let model = null;
 
@@ -27,6 +35,18 @@ async function generateWithFallback(prompt, inlineData = null, retryCount = 0) {
         const result = await aiModel.generateContent(payload);
         return result.response.text();
     } catch (e) {
+        // Explicitly catch 429 Quota Exceeded
+        if (e.message.includes('429') || e.message.includes('Quota') || e.message.includes('quota')) {
+            console.error("🚨 GOOGLE API ERROR: Quota Exceeded (429)");
+            throw new GoogleAPIError("Google Gemini API Key quota exhausted.", "QUOTA_EXHAUSTED");
+        }
+        
+        // Explicitly catch 403 Forbidden / Key Blocked / 400 Bad Request
+        if (e.message.includes('403') || e.message.includes('API_KEY_INVALID') || e.message.includes('API key not valid')) {
+            console.error("🚨 GOOGLE API ERROR: Key Blocked or Invalid (403/400)");
+            throw new GoogleAPIError("Google Gemini API Key is invalid or blocked.", "KEY_BLOCKED");
+        }
+
         // Handle 503 Service Unavailable (High Demand) with a retry
         if (e.message.includes('503') || e.message.includes('Service Unavailable')) {
             if (retryCount < 2) {
@@ -185,6 +205,7 @@ Return your response STRICTLY as valid JSON (no markdown, no code blocks) with t
         const cleaned = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
         return JSON.parse(cleaned);
     } catch (e) {
+        if (e.name === 'GoogleAPIError') throw e; // Bubble up API quota errors
         console.error('AI Resume parse (PDF native) error:', e);
         return null;
     }
@@ -231,6 +252,7 @@ Score from 0-100 where:
         const cleaned = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
         return JSON.parse(cleaned);
     } catch (e) {
+        if (e.name === 'GoogleAPIError') throw e; // Bubble up API quota errors
         console.error('AI Fit Score parse error:', e);
         return { fitScore: 0, analysis: 'Unable to calculate', strengths: [], gaps: [], recommendation: 'Pending Review' };
     }
@@ -274,19 +296,17 @@ Make the letter professional and warm. The HTML should be email-safe with inline
  */
 export async function generateInterviewQuestions({ jobTitle, requirements, round, candidateSummary }) {
     const roundConfig = {
-        'Screening': 'basic screening questions to assess communication, motivation, and salary expectations',
-        'Technical Interview': 'in-depth technical questions to assess hands-on skills and problem-solving',
-        'Managerial Interview': 'leadership, project management, and situational judgment questions',
-        'HR Interview': 'culture fit, behavioral, career aspirations, and salary negotiation questions',
-        'Final Round': 'strategic thinking, company alignment, and vision questions'
+        'Screening': 'basic technical screening, cultural fit, and past experience overview',
+        'Interviewing': 'in-depth technical skills, problem-solving, project management, and cultural fit',
+        'Final Round': 'executive level alignment, compensation expectations, and long-term vision'
     };
 
-    const prompt = `You are a senior interviewer. Generate ${round || 'Technical Interview'} questions for this role.
+    const prompt = `You are a senior interviewer. Generate ${round || 'Interviewing'} questions for this role.
 
 Role: ${jobTitle}
 Requirements: ${(requirements || []).join(', ')}
-Round Type: ${round || 'Technical Interview'}
-Focus: ${roundConfig[round] || roundConfig['Technical Interview']}
+Round Type: ${round || 'Interviewing'}
+Focus: ${roundConfig[round] || roundConfig['Interviewing']}
 ${candidateSummary ? `Candidate Background: ${candidateSummary}` : ''}
 
 Return your response STRICTLY as valid JSON (no markdown, no code blocks):
@@ -324,7 +344,7 @@ export async function summarizeFeedback(rawNotes, candidateName, round) {
     const prompt = `You are an HR analyst. Summarize the following interviewer feedback into a structured assessment.
 
 Candidate: ${candidateName || 'Unknown'}
-Interview Round: ${round || 'Technical Interview'}
+Interview Round: ${round || 'Interviewing'}
 
 RAW FEEDBACK NOTES:
 ---

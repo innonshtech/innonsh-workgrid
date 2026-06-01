@@ -28,6 +28,14 @@ const userSchema = new mongoose.Schema(
       enum: ["super_admin", "admin", "manager", "employee", "attendance_only", "recruiter"],
       default: "admin",
     },
+    roleId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Role",
+      default: null,
+    },
+    permissions: [{
+      type: String,
+    }],
     status: {
       type: String,
       enum: ["pending", "active", "rejected", "suspended"],

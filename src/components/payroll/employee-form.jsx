@@ -157,6 +157,7 @@ export default function EmployeeForm({ employeeData, isEdit = false }) {
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [officeLocations, setOfficeLocations] = useState([]);
   const [availableShifts, setAvailableShifts] = useState([]);
+  const [roles, setRoles] = useState([]);
 
   // Wizard State
   const [currentStep, setCurrentStep] = useState(0);
@@ -388,6 +389,7 @@ export default function EmployeeForm({ employeeData, isEdit = false }) {
     password: "",
     confirmPassword: "",
     role: "employee",
+    roleId: "",
     isCompliant: false,
     isTDSApplicable: false,
 
@@ -848,11 +850,24 @@ export default function EmployeeForm({ employeeData, isEdit = false }) {
   };
 
 
+  const fetchRoles = async () => {
+    try {
+      const response = await fetch('/api/v1/admin/roles');
+      const data = await response.json();
+      if (data.success) {
+        setRoles(data.roles.map(r => ({ value: r._id, label: r.name })));
+      }
+    } catch (error) {
+      console.error("Error fetching roles:", error);
+    }
+  };
+
   // Fetch organizations on mount
   useEffect(() => {
     fetchOrganizations();
     fetchCostCenters();
     fetchShifts();
+    fetchRoles();
   }, []);
 
   // Cascade fetches
@@ -2062,7 +2077,20 @@ export default function EmployeeForm({ employeeData, isEdit = false }) {
                             { value: "admin", label: "Admin" },
                             { value: "recruiter", label: "HR Recruiter" },
                           ]}
-                          placeholder="Select Role"
+                          placeholder="Select Base Role"
+                        />
+                      </div>
+                      
+                      {/* CUSTOM ROLE DROP DOWN */}
+                      <div className="space-y-2">
+                        <label className="block text-sm font-semibold text-slate-700 flex items-center gap-2">
+                           Custom Permission Role <span className="text-xs text-slate-400 font-normal">(Optional)</span>
+                        </label>
+                        <SimpleSelect
+                          value={formData.roleId}
+                          onChange={(e) => handleSelectChange("roleId", e.target.value)}
+                          options={[ { value: "", label: "-- No Custom Role --" }, ...roles]}
+                          placeholder="Select Custom Role"
                         />
                       </div>
                     </div>

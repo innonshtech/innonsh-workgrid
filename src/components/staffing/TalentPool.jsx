@@ -410,6 +410,9 @@ export default function TalentPool() {
                             🏢 {candidate.parsedResume.currentRole}
                           </p>
                         )}
+                        <p className="shrink-0 text-indigo-600 bg-indigo-50/50 px-2 py-0.5 rounded-md border border-indigo-100/30 text-[10px] sm:border-l sm:border-slate-200 sm:pl-4 flex items-center gap-1">
+                          👤 {candidate.uploadedByName || "Uploaded by Admin"}
+                        </p>
                       </div>
 
                       {candidate.parsedResume?.skills && candidate.parsedResume.skills.length > 0 && (
@@ -509,6 +512,17 @@ export default function TalentPool() {
                     </p>
                   </div>
                 )}
+
+                {/* Sourcing Metadata */}
+                <div className="space-y-2.5 border-t border-slate-50 pt-4">
+                  <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Sourcing Metadata</h4>
+                  <div className="flex items-center gap-2 text-xs font-semibold text-slate-600">
+                    <span className="text-slate-400">Uploaded By:</span>
+                    <span className="bg-indigo-50 text-indigo-700 px-2.5 py-0.5 rounded-full border border-indigo-150 text-[11px] font-bold">
+                      {selectedCandidate.uploadedByName || "Uploaded by Admin"}
+                    </span>
+                  </div>
+                </div>
 
                 {/* Contact parameters */}
                 <div className="space-y-2.5 border-t border-slate-50 pt-4">

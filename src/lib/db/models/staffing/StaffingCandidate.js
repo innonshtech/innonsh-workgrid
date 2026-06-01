@@ -73,6 +73,10 @@ const staffingCandidateSchema = new mongoose.Schema(
       ref: "Organization",
       required: true,
     },
+    uploadedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      default: null,
+    },
   },
   {
     timestamps: true,

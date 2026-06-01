@@ -170,12 +170,21 @@ function DashboardLayoutContent({ children }) {
     return item.children.some(child => isActive(child.href));
   };
 
+  const hasAccess = (item) => {
+    if (!user) return false;
+    if (user.role === 'admin' || user.role === 'super_admin') return true;
+    if (!item.requiredPermissions) return true;
+    if (!user.permissions || !Array.isArray(user.permissions)) return false;
+    return item.requiredPermissions.some(p => user.permissions.includes(p));
+  };
+
   const adminNavigation = [
     { name: t("dashboard"), href: "/admin/dashboard", icon: Home },
     {
       name: t("crmManagement"),
       href: "/admin/organization",
       icon: Cog,
+      requiredPermissions: ['employees.view', 'employees.manage', 'settings.manage'],
       children: [
         { name: t("department"), href: "/admin/organization/department", icon: Building2 },
         { name: t("employee"), href: "/admin/organization/employeeType", icon: Contact },
@@ -186,13 +195,16 @@ function DashboardLayoutContent({ children }) {
         // },
         { name: t("orgChart"), href: "/admin/organization/org-chart", icon: GitGraph },
         { name: t("orgSettings"), href: "/admin/organization/org-settings", icon: Settings2 },
+        { name: "Roles & Permissions", href: "/admin/organization/roles", icon: Shield },
+        { name: "Document Templates", href: "/admin/organization/templates", icon: FileText },
       ],
     },
-    { name: t("employeeDirectory"), href: "/admin/employees", icon: Users },
+    { name: t("employeeDirectory"), href: "/admin/employees", icon: Users, requiredPermissions: ['employees.view', 'employees.manage'] },
     {
       name: t("payrollManagement"),
       href: "/admin/payroll",
       icon: CreditCard,
+      requiredPermissions: ['payroll.view', 'payroll.manage', 'attendance.view', 'attendance.manage', 'leaves.view', 'leaves.manage'],
       children: [
         {
           name: t("attendanceDirectory"),
@@ -360,7 +372,25 @@ function DashboardLayoutContent({ children }) {
       href: "/super-admin/audit-logs",
       icon: Clock,
     },
+    {
+      name: "Billing & Subscriptions",
+      href: "/admin/billing",
+      icon: Banknote,
+      requiredPermissions: ['finance.view', 'finance.manage', 'settings.manage']
+    }
   ];
+
+  // Filter navigation based on permissions
+  const filteredNavigation = adminNavigation
+    .map(item => {
+      // Filter parent
+      if (!hasAccess(item)) return null;
+      
+      // Filter children if they exist (we can also assign requiredPermissions to children if needed, 
+      // but for now we filter at parent level to match the modules)
+      return item;
+    })
+    .filter(Boolean);
 
   // Employee navigation with only Dashboard and My Payslip
   let employeeNavigation = [
@@ -369,11 +399,20 @@ function DashboardLayoutContent({ children }) {
     { name: t("myProjects"), href: "/admin/tasks/projects", icon: Briefcase },
     { name: t("myPayslip"), href: "/admin/payroll/my-payslip", icon: Receipt },
     { name: t("myLoans"), href: "/admin/payroll/loans", icon: BanknoteArrowUp },
-    { name: t("myAttendance"), href: "/admin/attendance", icon: UserCheck },
+    { name: t("myAttendance"), href: "/employee/attendance", icon: UserCheck },
     { name: t("exitManagement"), href: "/admin/exit", icon: LogOut },
     { name: t("hrHelpdesk"), href: "/admin/helpdesk", icon: MessageSquare },
     { name: t("employeeHandbook"), href: "/admin/handbook", icon: BookOpen },
-    { name: t("myEngagement"), href: "/admin/engagement", icon: Target },
+    {
+      name: t("myEngagement"),
+      href: "/admin/engagement",
+      icon: Target,
+      children: [
+        { name: t("engagementHub"), href: "/admin/engagement", icon: BarChart3 },
+        { name: t("socialFeed"), href: "/admin/engagement/feed", icon: GitGraph },
+        { name: t("pulseSurveys"), href: "/admin/engagement/surveys", icon: MessageSquare },
+      ],
+    },
     { name: t("notifications"), href: "/admin/notifications", icon: Bell },
   ];
 
@@ -418,25 +457,34 @@ function DashboardLayoutContent({ children }) {
   // Define mapping of permissions to navigation items
   // You can extend this map to include any other permissions and their corresponding routes
   const PERMISSION_NAV_MAP = {
-    'view_departments': { name: t("department"), href: "/admin/organization/department", icon: Building2 },
-    'manage_departments': { name: t("department"), href: "/admin/organization/department", icon: Building2 },
-    'view_organizations': { name: t("organizations"), href: "/super-admin/organizations", icon: Building2 },
-    'manage_permissions': { name: t("permissions"), href: "/admin/organization/permissions", icon: Shield },
-    'manage_employees': { name: t("employeeDirectory"), href: "/admin/employees", icon: Users },
-    'view_attendance': { name: t("attendanceDirectory"), href: "/admin/attendance", icon: UserCheck },
-    // Example for the user's request:
-    // 'add_product': { name: "Add Product", href: "/products/add", icon: Plus }, 
+    'employees.view': { name: t("employeeDirectory"), href: "/admin/employees", icon: Users },
+    'payroll.view': { name: t("payrollManagement"), href: "/admin/payroll", icon: CreditCard },
+    'attendance.view': { name: "Company Attendance", href: "/admin/attendance", icon: UserCheck },
+    'leaves.view': { name: "Leave Management", href: "/admin/payroll/leaves", icon: CalendarRange },
+    'finance.view': { name: "Billing & Subscriptions", href: "/admin/billing", icon: Banknote },
+    'settings.manage': { name: t("orgSettings"), href: "/admin/organization/org-settings", icon: Settings2 },
   };
 
   // Dynamically add items to employee navigation based on permissions
+  console.log('[RBAC DEBUG] role:', role, 'permissions:', user?.permissions);
   if (role === 'employee' && user?.permissions?.length > 0) {
     user.permissions.forEach(permSlug => {
       const navItem = PERMISSION_NAV_MAP[permSlug];
-      // Check if item exists and isn't already in the list
-      if (navItem && !employeeNavigation.some(item => item.href === navItem.href)) {
-        employeeNavigation.push(navItem);
+      console.log('[RBAC DEBUG] processing permission:', permSlug, 'navItem:', navItem);
+      if (navItem) {
+        const existingIndex = employeeNavigation.findIndex(item => item.href === navItem.href);
+        if (existingIndex >= 0) {
+          // Replace existing item (e.g. "My Attendance" becomes "Company Attendance")
+          console.log('[RBAC DEBUG] Replacing existing at index', existingIndex, employeeNavigation[existingIndex].name, '->', navItem.name);
+          employeeNavigation[existingIndex] = navItem;
+        } else {
+          // Insert near the top so it's clearly visible
+          console.log('[RBAC DEBUG] Inserting new item:', navItem.name);
+          employeeNavigation.splice(1, 0, navItem);
+        }
       }
     });
+    console.log('[RBAC DEBUG] Final employeeNavigation:', employeeNavigation.map(i => i.name));
   }
 
   let navigation = [];
@@ -446,7 +494,7 @@ function DashboardLayoutContent({ children }) {
     navigation = superAdminNavigation;
   } else if (role === "admin") {
     // If admin is visiting an employee page, show employee navigation
-    navigation = isEmployeePath ? employeeNavigation : adminNavigation;
+    navigation = isEmployeePath ? employeeNavigation : filteredNavigation;
   } else if (role === "employee") {
     navigation = employeeNavigation;
   } else if (role === "recruiter") {

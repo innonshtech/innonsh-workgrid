@@ -99,6 +99,8 @@ export default function AttendanceDashboard() {
   const [selectedRecord, setSelectedRecord] = useState(null);
 
   const { user } = useSession();
+  const isAdminView = user?.role === "admin" || user?.role === "super_admin" || user?.permissions?.includes("attendance.view");
+  const isEmployeeView = !isAdminView;
 
   const months = [
     { value: 1, label: "January" },
@@ -118,9 +120,8 @@ export default function AttendanceDashboard() {
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 5 }, (_, i) => currentYear - 2 + i);
 
-  // Fetch organizations
   const fetchOrganizations = async () => {
-    if (user?.role === 'employee') return; // Employees don't need to fetch all orgs
+    if (isEmployeeView) return; // Employees don't need to fetch all orgs
     try {
       const baseUrl = '/api/v1/admin';
 
@@ -144,9 +145,8 @@ export default function AttendanceDashboard() {
   };
 
   // Fetch employees
-  // Fetch employees
   const fetchEmployees = async () => {
-    if (user?.role === 'employee') return; // Employees don't need to fetch all employees
+    if (isEmployeeView) return; // Employees don't need to fetch all employees
     try {
       const params = new URLSearchParams({
         limit: "1000",
@@ -162,7 +162,7 @@ export default function AttendanceDashboard() {
       const data = await response.json();
 
 
-      if (user.role === "admin") {
+      if (isAdminView) {
         setEmployees(data.data || data.employees || []);
       } else {
         setEmployees([]);
@@ -208,13 +208,13 @@ export default function AttendanceDashboard() {
       }
 
       params.append("limit", "1000"); // Ensure we get all records for the month/week
-      const baseUrl = user?.role === 'employee' ? '/api/v1/employee' : '/api/v1/admin';
+      const baseUrl = isEmployeeView ? '/api/v1/employee' : '/api/v1/admin';
       const response = await fetch(
         `${baseUrl}/attendance?${params.toString()}`
       );
       const data = await response.json();
 
-      if (user?.role === "admin") {
+      if (isAdminView) {
         const filteredAttendance = data.attendance || [];
         console.log("Fetched attendance:", filteredAttendance);
         setAttendance(filteredAttendance);
@@ -878,10 +878,10 @@ export default function AttendanceDashboard() {
                 <Cpu className="w-3.5 h-3.5 animate-pulse" /> Operations & Attendance Intelligence
               </div>
               <h1 className="text-xl sm:text-3xl font-extrabold text-white tracking-tight">
-                {user?.role !== 'employee' ? "Attendance Management" : "My Attendance Dashboard"}
+                {isAdminView ? "Attendance Management" : "My Attendance Dashboard"}
               </h1>
-              <p className="text-slate-400 text-xs sm:text-sm max-w-xl">
-                {user?.role !== 'employee' 
+              <p className="text-slate-500 text-sm mt-1">
+                {isAdminView 
                   ? "Track and manage employee attendance records, handle status corrections, and export complete statutory logs." 
                   : "View clock-in schedules, analyze monthly hours, and submit regularization requests instantly."
                 }
@@ -924,7 +924,7 @@ export default function AttendanceDashboard() {
 
               <button
                 onClick={() =>
-                  router.push(user?.role === 'employee' ? '/employee/attendance/add-attendance' : "/admin/attendance/add-attendance")
+                  router.push(isEmployeeView ? '/employee/attendance/add-attendance' : "/admin/attendance/add-attendance")
                 }
                 className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm px-5 py-3 rounded-xl shadow-lg shadow-indigo-600/35 transition-all active:scale-[0.98]"
               >
@@ -935,7 +935,7 @@ export default function AttendanceDashboard() {
         </div>
 
         {/* Mark Attendance Section (Visible only for employees) */}
-        {user?.role === "employee" && (
+        {!isAdminView && (
           <div className="mb-8">
             <MarkAttendance onAttendanceMarked={fetchAttendance} />
           </div>
@@ -945,17 +945,19 @@ export default function AttendanceDashboard() {
         {/* View Mode Toggle */}
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm mb-8 overflow-hidden">
           <div className="border-b border-slate-50 bg-slate-50/30 p-2 sm:p-3">
-            <div className="flex flex-wrap gap-2 px-2">
-              <button
-                onClick={() => setViewMode("weekly")}
-                className={`flex items-center gap-2 py-2.5 px-4 rounded-xl text-xs font-bold transition-all ${viewMode === "weekly"
-                  ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/25 scale-102"
-                  : "bg-transparent text-slate-500 hover:text-slate-700 hover:bg-slate-100/50"
-                  }`}
-              >
-                <Clock className="w-3.5 h-3.5" />
-                Weekly Rollup
-              </button>
+            <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+              {isAdminView && (
+                <button
+                  onClick={() => setViewMode("weekly")}
+                  className={`flex items-center gap-2 py-2.5 px-4 rounded-xl text-xs font-bold transition-all ${viewMode === "weekly"
+                    ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/25 scale-102"
+                    : "bg-transparent text-slate-500 hover:text-slate-700 hover:bg-slate-100/50"
+                    }`}
+                >
+                  <Clock className="w-3.5 h-3.5" />
+                  Weekly Rollup
+                </button>
+              )}
               <button
                 onClick={() => setViewMode("monthly")}
                 className={`flex items-center gap-2 py-2.5 px-4 rounded-xl text-xs font-bold transition-all ${viewMode === "monthly"
@@ -971,7 +973,7 @@ export default function AttendanceDashboard() {
         </div>
 
         {/* Professional Attendance Analytics */}
-        <AttendanceAnalytics stats={stats} viewMode={viewMode} role={user?.role} />
+        <AttendanceAnalytics stats={stats} viewMode={viewMode} role={isAdminView ? "admin" : "employee"} />
 
         {/* Organization Grouping Toggle */}
         {organizations.length > 1 && (
@@ -1828,7 +1830,7 @@ export default function AttendanceDashboard() {
           </div>
         )}
 
-      {user?.role === 'employee' && (
+      {isEmployeeView && (
           <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden mb-8">
               <div className="p-6 border-b border-slate-100 flex items-center gap-3">
                   <div className="flex items-center gap-3">

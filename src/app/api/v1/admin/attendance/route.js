@@ -176,6 +176,22 @@ export async function GET(request) {
     const authUser = await getAuthUser();
     await dbConnect();
 
+    let hasAttendanceViewPermission = false;
+    if (authUser.role === "employee") {
+      try {
+        const Role = (await import("@/lib/db/models/crm/Permission/Role")).default;
+        const employeeRecord = await Employee.findById(authUser.id).lean();
+        if (employeeRecord && employeeRecord.roleId) {
+          const roleData = await Role.findById(employeeRecord.roleId).lean();
+          if (roleData && roleData.permissions && roleData.permissions.includes("attendance.view")) {
+            hasAttendanceViewPermission = true;
+          }
+        }
+      } catch (err) {
+        console.error("Error checking employee permission in attendance route:", err);
+      }
+    }
+
     const { searchParams } = new URL(request.url);
     const date = searchParams.get("date");
     const startDate = searchParams.get("startDate");
@@ -204,7 +220,7 @@ export async function GET(request) {
 
       // Fetch SaaS scoped active employees
       let orgQuery = { status: "Active" };
-      if (authUser.role === "admin" || authUser.role === "supervisor") {
+      if (authUser.role === "admin" || authUser.role === "supervisor" || (authUser.role === "employee" && hasAttendanceViewPermission)) {
         orgQuery["jobDetails.organizationId"] = authUser.organizationId;
       } else if (authUser.role === "super_admin" && organizationId) {
         orgQuery["jobDetails.organizationId"] = organizationId;
@@ -277,7 +293,7 @@ export async function GET(request) {
     let filter = {};
 
     // SaaS PROTECTION: Restrict data by organization
-    if (authUser.role === "admin" || authUser.role === "supervisor") {
+    if (authUser.role === "admin" || authUser.role === "supervisor" || (authUser.role === "employee" && hasAttendanceViewPermission)) {
       // Find all employee IDs in this organization
       const orgEmployees = await Employee.find({ 
         "jobDetails.organizationId": authUser.organizationId 
@@ -355,7 +371,7 @@ export async function GET(request) {
       const queryDate = new Date(date);
       // Find SaaS scoped active employees
       let orgQuery = { status: "Active" };
-      if (authUser.role === "admin" || authUser.role === "supervisor") {
+      if (authUser.role === "admin" || authUser.role === "supervisor" || (authUser.role === "employee" && hasAttendanceViewPermission)) {
         orgQuery["jobDetails.organizationId"] = authUser.organizationId;
       } else if (authUser.role === "super_admin" && organizationId) {
         orgQuery["jobDetails.organizationId"] = organizationId;

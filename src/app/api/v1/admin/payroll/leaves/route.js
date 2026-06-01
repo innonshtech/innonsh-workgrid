@@ -16,6 +16,22 @@ export async function GET(request) {
     const authUser = await getAuthUser();
     await dbConnect();
 
+    let hasLeavesViewPermission = false;
+    if (authUser.role === "employee") {
+      try {
+        const Role = (await import("@/lib/db/models/crm/Permission/Role")).default;
+        const employeeRecord = await Employee.findById(authUser.id).lean();
+        if (employeeRecord && employeeRecord.roleId) {
+          const roleData = await Role.findById(employeeRecord.roleId).lean();
+          if (roleData && roleData.permissions && roleData.permissions.includes("leaves.view")) {
+            hasLeavesViewPermission = true;
+          }
+        }
+      } catch (err) {
+        console.error("Error checking employee permission in leaves route:", err);
+      }
+    }
+
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get("page") || "1");
     const limit = parseInt(searchParams.get("limit") || "10");
@@ -33,7 +49,7 @@ export async function GET(request) {
     let filter = {};
 
     // SaaS PROTECTION: Restrict by organization
-    if (authUser.role === "admin" || authUser.role === "supervisor") {
+    if (authUser.role === "admin" || authUser.role === "supervisor" || (authUser.role === "employee" && hasLeavesViewPermission)) {
         const orgEmployees = await Employee.find({ 
             "jobDetails.organizationId": authUser.organizationId 
         }).distinct("_id");

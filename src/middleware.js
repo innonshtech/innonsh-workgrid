@@ -5,6 +5,8 @@ import { jwtVerify } from 'jose';
 const JWT_SECRET = process.env.JWT_SECRET;
 const secret = new TextEncoder().encode(JWT_SECRET);
 
+import { rateLimit, RateLimitConfig } from '@/lib/rate-limiter';
+
 // Public routes
 const publicRoutes = ['/login', '/auth/register', '/register'];
 
@@ -23,6 +25,12 @@ const protectedRoutes = [
   // Specific exceptions allowing any designated employee to approve team requests, evaluated before the broader /api/v1/admin block
   { path: '/api/v1/admin/tasks', roles: ['admin', 'super_admin', 'employee'], isApi: true },
   { path: '/api/v1/admin/payroll/employees', roles: ['admin', 'super_admin', 'employee'], isApi: true },
+  { path: '/api/v1/admin/employees', roles: ['admin', 'super_admin', 'employee'], isApi: true },
+  { path: '/api/v1/admin/attendance', roles: ['admin', 'super_admin', 'employee'], isApi: true },
+  { path: '/api/v1/admin/payroll/settings', roles: ['admin', 'super_admin', 'employee'], isApi: true },
+  { path: '/api/v1/admin/payroll/leaves', roles: ['admin', 'super_admin', 'employee'], isApi: true },
+  { path: '/api/v1/admin/crm/organizations', roles: ['admin', 'super_admin', 'employee'], isApi: true },
+  { path: '/api/v1/admin/organizations', roles: ['admin', 'super_admin', 'employee'], isApi: true },
   { path: '/api/v1/admin/approvals', roles: ['admin', 'super_admin', 'employee'], isApi: true },
   { path: '/api/v1/admin/payroll/leave-applications', roles: ['admin', 'super_admin', 'employee'], isApi: true },
   { path: '/api/v1/admin/payroll/overtime', roles: ['admin', 'super_admin', 'employee'], isApi: true },
@@ -46,9 +54,19 @@ export async function middleware(req) {
   const { pathname } = req.nextUrl;
   const isApiPath = pathname.startsWith('/api/');
 
+  // Apply Rate Limiting for all API routes
+  if (isApiPath) {
+    let limitConfig = RateLimitConfig.DEFAULT;
+    if (pathname.startsWith('/api/v1/login')) {
+      limitConfig = RateLimitConfig.LOGIN;
+    }
+    const rateLimitResponse = rateLimit(req, limitConfig);
+    if (rateLimitResponse) return rateLimitResponse;
+  }
+
   // Allow public routes
   if (publicRoutes.some(route => pathname.startsWith(route))) {
-    return NextResponse.next();
+    return addSecurityHeaders(NextResponse.next());
   }
 
   // Find protected route config
@@ -60,7 +78,7 @@ export async function middleware(req) {
   // but for now, we follow the existing logic of allowing it if not matched.
   if (!routeConfig) {
     // Optional: could enforce that ALL /api/v1/ routes MUST be in protectedRoutes
-    return NextResponse.next();
+    return addSecurityHeaders(NextResponse.next());
   }
 
   // Check for token in cookies
@@ -103,11 +121,12 @@ export async function middleware(req) {
     requestHeaders.set("x-user-role", payload.role || "");
     requestHeaders.set("x-user-id", payload.id || "");
 
-    return NextResponse.next({
+    const response = NextResponse.next({
       request: {
         headers: requestHeaders,
       },
     });
+    return addSecurityHeaders(response);
   } catch (error) {
     console.error(`Middleware: Token verification failed for ${pathname}:`, error.message);
     
@@ -126,3 +145,12 @@ export async function middleware(req) {
 export const config = {
   matcher: ['/((?!_next/static|_next/image|favicon.ico|_next/data).*)'],
 };
+
+function addSecurityHeaders(response) {
+  const headers = response.headers;
+  headers.set('X-Content-Type-Options', 'nosniff');
+  headers.set('X-Frame-Options', 'DENY');
+  headers.set('X-XSS-Protection', '1; mode=block');
+  headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+  return response;
+}

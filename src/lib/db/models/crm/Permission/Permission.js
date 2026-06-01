@@ -2,6 +2,11 @@ import mongoose from "mongoose";
 
 const permissionSchema = new mongoose.Schema(
   {
+    organizationId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Organization",
+      required: false, // System permissions will have null
+    },
     name: {
       type: String,
       required: true,
@@ -36,6 +41,7 @@ const permissionSchema = new mongoose.Schema(
 );
 
 permissionSchema.index({ module: 1 });
+permissionSchema.index({ slug: 1, organizationId: 1 }, { unique: true });
 permissionSchema.index({ name: "text", slug: "text", description: "text" });
 
 export default mongoose.models.Permission ||

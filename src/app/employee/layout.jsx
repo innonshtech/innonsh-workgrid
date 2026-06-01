@@ -370,7 +370,8 @@ function DashboardLayoutContent({ children }) {
       icon: Target,
       children: [
         { name: t("engagementHub"), href: "/employee/engagement", icon: BarChart3 },
-        { name: t("socialFeed"), href: "/employee/engagement/feed", icon: GitGraph }
+        { name: t("socialFeed"), href: "/employee/engagement/feed", icon: GitGraph },
+        { name: t("pulseSurveys"), href: "/employee/engagement/surveys", icon: MessageSquare },
       ]
     },
   ];
@@ -400,25 +401,35 @@ function DashboardLayoutContent({ children }) {
   // Define mapping of permissions to navigation items
   // You can extend this map to include any other permissions and their corresponding routes
   const PERMISSION_NAV_MAP = {
-    'view_departments': { name: t("department"), href: "/admin/organization/department", icon: Building2 },
-    'manage_departments': { name: t("department"), href: "/admin/organization/department", icon: Building2 },
-    'view_organizations': { name: t("organizations"), href: "/super-admin/organizations", icon: Building2 },
-    'manage_permissions': { name: t("permissions"), href: "/admin/organization/permissions", icon: Shield },
-    'manage_employees': { name: t("employeeDirectory"), href: "/admin/employees", icon: Users },
-    'view_attendance': { name: t("attendanceDirectory"), href: "/admin/attendance", icon: UserCheck },
-    // Example for the user's request:
-    // 'add_product': { name: "Add Product", href: "/products/add", icon: Plus }, 
+    'employees.view': { name: t("employeeDirectory"), href: "/admin/employees", icon: Users },
+    'payroll.view': { name: t("payrollManagement"), href: "/admin/payroll", icon: CreditCard },
+    'attendance.view': { name: "Company Attendance", href: "/admin/attendance", icon: UserCheck },
+    'leaves.view': { name: "Leave Management", href: "/admin/payroll/leaves", icon: CalendarRange },
+    'finance.view': { name: "Billing & Subscriptions", href: "/admin/billing", icon: Banknote },
+    'settings.manage': { name: t("orgSettings"), href: "/admin/organization/org-settings", icon: Settings2 },
   };
 
   // Dynamically add items to employee navigation based on permissions
+  console.log('[RBAC DEBUG EMPLOYEE] role:', role, 'permissions:', user?.permissions);
   if (role === 'employee' && user?.permissions?.length > 0) {
     user.permissions.forEach(permSlug => {
       const navItem = PERMISSION_NAV_MAP[permSlug];
-      // Check if item exists and isn't already in the list
-      if (navItem && !employeeNavigation.some(item => item.href === navItem.href)) {
-        employeeNavigation.push(navItem);
+      console.log('[RBAC DEBUG EMPLOYEE] processing permission:', permSlug, 'navItem:', navItem);
+      if (navItem) {
+        let existingIndex = employeeNavigation.findIndex(item => item.href === navItem.href);
+
+        if (existingIndex >= 0) {
+          // Replace existing item
+          console.log('[RBAC DEBUG EMPLOYEE] Replacing existing at index', existingIndex, employeeNavigation[existingIndex].name, '->', navItem.name);
+          employeeNavigation[existingIndex] = navItem;
+        } else {
+          // Insert near the top so it's clearly visible
+          console.log('[RBAC DEBUG EMPLOYEE] Inserting new item:', navItem.name);
+          employeeNavigation.splice(1, 0, navItem);
+        }
       }
     });
+    console.log('[RBAC DEBUG EMPLOYEE] Final employeeNavigation:', employeeNavigation.map(i => i.name));
   }
 
   let navigation = [];

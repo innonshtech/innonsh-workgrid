@@ -6,6 +6,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { logActivity } from '@/lib/logger';
 import EmployeeType from '@/lib/db/models/crm/employee/EmployeeType';
+import { sanitizeString } from '@/lib/sanitize';
 const JWT_SECRET = process.env.JWT_SECRET;
 const TOKEN_MAX_AGE = 2 * 60 * 60; // seconds (2 hours)
 
@@ -62,9 +63,9 @@ export async function POST(req) {
       return NextResponse.json({ message: 'Invalid JSON body' }, { status: 400 });
     }
 
-    const username = (body.username || '').toString().trim();
-    const password = (body.password || '').toString().trim();
-    const role = (body.role || '').toString().trim().toLowerCase();
+    const username = sanitizeString((body.username || '').toString().trim());
+    const password = sanitizeString((body.password || '').toString().trim());
+    const role = sanitizeString((body.role || '').toString().trim().toLowerCase());
 
     console.log('Login attempt details:', { username, role, time: new Date().toISOString() });
 
@@ -103,6 +104,11 @@ export async function POST(req) {
       if (!user.password) {
         console.error('Admin user has no password set:', emailOrUsername);
         return NextResponse.json({ message: 'Account has no password set' }, { status: 500 });
+      }
+
+      // SaaS: Check if email is verified (unless super_admin)
+      if (user.role !== 'super_admin' && user.isEmailVerified === false) {
+        return NextResponse.json({ message: 'Please verify your email address before logging in.' }, { status: 403 });
       }
 
       // SaaS: Check trial expiration

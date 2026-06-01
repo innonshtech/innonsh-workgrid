@@ -1,4 +1,6 @@
 import nodemailer from 'nodemailer';
+import CustomTemplate from '@/lib/db/models/crm/CustomTemplate';
+import { compileTemplate } from '@/lib/template-engine';
 
 const getTransporter = () => {
     if (!process.env.EMAIL_HOST || !process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
@@ -47,6 +49,48 @@ export const sendEmail = async ({ to, subject, html, attachments = [] }) => {
         return { success: true, messageId: info.messageId };
     } catch (error) {
         console.error("CRITICAL EMAIL FAILURE:", error);
+        return { success: false, error: error.message };
+    }
+};
+
+export const sendTemplatedEmail = async ({ to, organizationId, templateType, templateData, attachments = [] }) => {
+    try {
+        // Find the custom template for this org and type
+        let template = await CustomTemplate.findOne({
+            organizationId,
+            type: templateType,
+            isDefault: true
+        });
+
+        // Fallback to non-default if only one exists
+        if (!template) {
+            template = await CustomTemplate.findOne({ organizationId, type: templateType });
+        }
+
+        if (!template) {
+            console.warn(`No custom template found for ${templateType} in org ${organizationId}. Using fallback.`);
+            // A robust system would have hardcoded default HTML fallbacks here,
+            // but for now, we will return an error or a generic message.
+            return sendEmail({
+                to,
+                subject: "System Notification",
+                html: "<p>You have a new notification from the HR portal.</p>",
+                attachments
+            });
+        }
+
+        const compiledHtml = compileTemplate(template.content, templateData);
+        // We compile the subject too in case it has variables like {{candidate_name}}
+        const compiledSubject = compileTemplate(template.subject || "HR Notification", templateData);
+
+        return await sendEmail({
+            to,
+            subject: compiledSubject,
+            html: compiledHtml,
+            attachments
+        });
+    } catch (error) {
+        console.error("TEMPLATED EMAIL FAILURE:", error);
         return { success: false, error: error.message };
     }
 };

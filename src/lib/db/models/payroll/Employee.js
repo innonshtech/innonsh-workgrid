@@ -189,6 +189,11 @@ const employeeSchema = new mongoose.Schema(
       enum: ["employee", "attendance_only", "admin", "recruiter"],
       default: "employee"
     },
+    roleId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Role",
+      default: null,
+    },
     // NEW FIELD: Compliance Status
     isCompliant: {
       type: Boolean,

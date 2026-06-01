@@ -4,8 +4,11 @@ import path from 'path';
 import dbConnect from '@/lib/db/connect';
 import StaffingCandidate from '@/lib/db/models/staffing/StaffingCandidate';
 import StaffingRequirement from '@/lib/db/models/staffing/StaffingRequirement';
+import Employee from '@/lib/db/models/payroll/Employee';
+import User from '@/lib/db/models/User';
 import { getAuthUser, authorize } from '@/lib/auth-util';
 import { parseResumeFromPDF, calculateFitScore } from '@/lib/ai/gemini';
+import cloudinary from '@/lib/cloudinary';
 
 export async function GET(request) {
   try {
@@ -33,7 +36,43 @@ export async function GET(request) {
 
     const candidates = await StaffingCandidate.find(query).sort({ createdAt: -1 });
 
-    return NextResponse.json({ success: true, candidates });
+    // Resolve uploader names dynamically
+    const uploaderIds = [...new Set(candidates.map(c => c.uploadedBy).filter(Boolean))];
+    const uploaderMap = new Map();
+
+    if (uploaderIds.length > 0) {
+      const [employees, users] = await Promise.all([
+        Employee.find({ _id: { $in: uploaderIds } }, 'personalDetails.firstName personalDetails.lastName role').lean(),
+        User.find({ _id: { $in: uploaderIds } }, 'name role').lean()
+      ]);
+
+      employees.forEach(emp => {
+        const fullName = `${emp.personalDetails?.firstName || ''} ${emp.personalDetails?.lastName || ''}`.trim();
+        if (emp.role === 'recruiter') {
+          uploaderMap.set(emp._id.toString(), fullName || "Recruiter");
+        } else {
+          uploaderMap.set(emp._id.toString(), `Uploaded by Admin`);
+        }
+      });
+
+      users.forEach(usr => {
+        if (usr.role === 'recruiter') {
+          uploaderMap.set(usr._id.toString(), usr.name || "Recruiter");
+        } else {
+          uploaderMap.set(usr._id.toString(), `Uploaded by Admin`);
+        }
+      });
+    }
+
+    const candidateList = candidates.map(c => {
+      const candidateObj = c.toObject();
+      candidateObj.uploadedByName = c.uploadedBy 
+        ? (uploaderMap.get(c.uploadedBy.toString()) || "Uploaded by Admin") 
+        : "Uploaded by Admin";
+      return candidateObj;
+    });
+
+    return NextResponse.json({ success: true, candidates: candidateList });
   } catch (error) {
     console.error("GET CANDIDATES ERROR:", error);
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
@@ -95,13 +134,28 @@ export async function POST(request) {
       }, { status: 409 });
     }
 
-    // 3. Save PDF file locally
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads', 'staffing', 'resumes');
-    await fs.mkdir(uploadDir, { recursive: true });
-    const fileName = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
-    const filePath = path.join(uploadDir, fileName);
-    await fs.writeFile(filePath, buffer);
-    const resumeUrl = `/uploads/staffing/resumes/${fileName}`;
+    // 3. Save PDF file to Cloudinary
+    console.log("Uploading resume to Cloudinary...");
+    const uploadResult = await new Promise((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        { 
+          folder: "staffing/resumes",
+          resource_type: "auto",
+          public_id: `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '_').split('.')[0]}`
+        },
+        (error, result) => {
+          if (error) {
+            console.error("Cloudinary upload stream error:", error);
+            reject(error);
+          } else {
+            resolve(result);
+          }
+        }
+      );
+      stream.end(buffer);
+    });
+
+    const resumeUrl = uploadResult.secure_url;
 
     // 4. Create StaffingCandidate in DB
     const candidate = await StaffingCandidate.create({
@@ -119,7 +173,8 @@ export async function POST(request) {
         currentRole: parsedData.currentRole || "",
         currentCompany: parsedData.currentCompany || ""
       },
-      organizationId: orgId
+      organizationId: orgId,
+      uploadedBy: authUser.id
     });
 
     // 5. Run "Instant Match" against all currently open requirements

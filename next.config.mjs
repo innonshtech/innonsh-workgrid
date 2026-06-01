@@ -13,6 +13,7 @@ const projectRoot = path.dirname(fileURLToPath(import.meta.url));
 const distDir = process.env.NODE_ENV === 'production' ? '.next' : '.next-dev';
 
 const nextConfig = {
+    output: 'standalone',
     experimental: {
         lockDistDir: false,
         mcpServer: false

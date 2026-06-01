@@ -62,6 +62,7 @@ export default function StaffingHub() {
     totalCandidates: 0,
     activeSubmissions: 0,
     totalDeployments: 0,
+    recruitersCount: 0,
   };
 
   const statCards = [
@@ -84,9 +85,17 @@ export default function StaffingHub() {
     {
       title: "Global Resume Bank",
       value: stats.totalCandidates,
-      icon: Users,
+      icon: FileText,
       color: "from-emerald-500 to-teal-600",
       description: "Persistent candidate profiles",
+      link: "/admin/staffing/talent-pool",
+    },
+    {
+      title: "Active Recruiters",
+      value: stats.recruitersCount,
+      icon: Users,
+      color: "from-rose-500 to-pink-600",
+      description: "Dedicated sourcing team",
       link: "/admin/staffing/talent-pool",
     },
     {
@@ -116,7 +125,7 @@ export default function StaffingHub() {
         
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-50/10 text-indigo-400 border border-indigo-500/20">
               <Cpu className="w-3.5 h-3.5" /> Staffing Intelligence Suite v1.0
             </div>
             <h1 className="text-xl sm:text-3xl font-extrabold text-white tracking-tight">
@@ -145,7 +154,7 @@ export default function StaffingHub() {
       </div>
 
       {/* KPI Cards Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-6">
         {statCards.map((card) => (
           <div
             key={card.title}
@@ -157,10 +166,10 @@ export default function StaffingHub() {
                 <card.icon className="w-5 h-5" />
               </div>
               <div>
-                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">{card.title}</p>
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{card.title}</p>
                 <p className="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight mt-1">{card.value}</p>
               </div>
-              <p className="text-xs font-medium text-slate-500 leading-tight">{card.description}</p>
+              <p className="text-[10px] font-bold text-slate-500 leading-tight">{card.description}</p>
             </div>
             {/* Hover arrow */}
             <div className="absolute right-4 bottom-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all">
@@ -205,7 +214,12 @@ export default function StaffingHub() {
                           {candidate.status}
                         </span>
                       </div>
-                      <p className="text-xs font-medium text-slate-500 truncate">{candidate.email} • {candidate.parsedResume?.totalExperienceYears} yrs experience</p>
+                      <p className="text-xs font-medium text-slate-500 flex flex-wrap items-center gap-1.5 truncate">
+                        <span>{candidate.email} • {candidate.parsedResume?.totalExperienceYears} yrs experience</span>
+                        <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-indigo-50 text-indigo-600 border border-indigo-100/50">
+                          {candidate.uploadedByName || "Uploaded by Admin"}
+                        </span>
+                      </p>
                       <div className="flex flex-wrap gap-1.5 mt-1">
                         {candidate.parsedResume?.skills?.slice(0, 4).map((skill) => (
                           <span
@@ -350,6 +364,43 @@ export default function StaffingHub() {
                 <ArrowRight className="w-5 h-5 text-slate-400 group-hover:text-indigo-600 transition-colors" />
               </button>
             </div>
+          </div>
+
+          {/* Active Recruiting Team */}
+          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 space-y-6">
+            <div className="border-b border-slate-50 pb-4">
+              <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
+                <Users className="w-5 h-5 text-indigo-600" /> Recruiting Team
+              </h3>
+              <p className="text-xs font-medium text-slate-400 mt-0.5">Active sourcing team members</p>
+            </div>
+
+            {!data?.recruiters || data.recruiters.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-6 text-slate-400">
+                <Users className="w-8 h-8 opacity-45 mb-2" />
+                <p className="text-xs font-semibold">No recruiters configured yet</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {data.recruiters.map((recruiter) => (
+                  <div key={recruiter._id} className="flex items-center gap-3 p-3 bg-slate-50/50 hover:bg-slate-50 rounded-xl transition-all border border-slate-100/50">
+                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 text-white font-extrabold text-xs flex items-center justify-center shadow-sm shrink-0">
+                      {recruiter.name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2)}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-bold text-slate-800 truncate">{recruiter.name}</p>
+                      <p className="text-[11px] font-medium text-slate-400 truncate">{recruiter.email}</p>
+                      <p className="text-[10px] font-bold text-indigo-600 uppercase tracking-wide mt-0.5">{recruiter.designation}</p>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <span className="inline-flex items-center justify-center px-2 py-1 rounded-lg text-xs font-extrabold bg-indigo-50 text-indigo-600 border border-indigo-100/40">
+                        {recruiter.candidatesCount} Resumes
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="bg-slate-900 text-white rounded-2xl p-6 border border-slate-800 shadow-lg space-y-4">

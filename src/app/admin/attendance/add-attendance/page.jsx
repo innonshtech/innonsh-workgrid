@@ -6,6 +6,97 @@ import { Calendar, User, Clock, ArrowLeft, Save, Loader2, CheckCircle, Edit2 } f
 import { useSession } from "@/context/SessionContext";
 import toast, { Toaster } from "react-hot-toast";
 
+const formatTime12h = (time24) => {
+  if (!time24) return "—";
+  const [hourStr, minuteStr] = time24.split(":");
+  const hour = parseInt(hourStr, 10);
+  const ampm = hour >= 12 ? "PM" : "AM";
+  const hour12 = hour % 12 || 12;
+  return `${hour12.toString().padStart(2, "0")}:${minuteStr} ${ampm}`;
+};
+
+const parse24To12hParts = (time24) => {
+  if (!time24) return { hour12: "09", minute: "00", ampm: "AM" };
+  const [hourStr, minuteStr] = time24.split(":");
+  const hour = parseInt(hourStr, 10);
+  const ampm = hour >= 12 ? "PM" : "AM";
+  const h12 = hour % 12 || 12;
+  return {
+    hour12: h12.toString().padStart(2, "0"),
+    minute: (minuteStr || "00").padStart(2, "0"),
+    ampm
+  };
+};
+
+const convert12hPartsTo24 = (hour12, minute, ampm) => {
+  let hour = parseInt(hour12, 10);
+  if (ampm === "PM" && hour < 12) {
+    hour += 12;
+  } else if (ampm === "AM" && hour === 12) {
+    hour = 0;
+  }
+  const hourStr = hour.toString().padStart(2, "0");
+  const minuteStr = (minute || "00").padStart(2, "0");
+  return `${hourStr}:${minuteStr}`;
+};
+
+const TimePicker12h = ({ value, onChange }) => {
+  const { hour12, minute, ampm } = parse24To12hParts(value);
+
+  const handlePartChange = (part, partValue) => {
+    let newHour = hour12;
+    let newMinute = minute;
+    let newAmpm = ampm;
+
+    if (part === "hour") newHour = partValue;
+    else if (part === "minute") newMinute = partValue;
+    else if (part === "ampm") newAmpm = partValue;
+
+    const newValue = convert12hPartsTo24(newHour, newMinute, newAmpm);
+    onChange(newValue);
+  };
+
+  const hourOptions = Array.from({ length: 12 }, (_, i) => 
+    (i + 1).toString().padStart(2, "0")
+  );
+
+  const minuteOptions = Array.from({ length: 60 }, (_, i) => 
+    i.toString().padStart(2, "0")
+  );
+
+  return (
+    <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-200 hover:border-slate-300 rounded-xl px-3 py-1.5 shadow-sm font-semibold text-slate-800 transition-colors w-fit">
+      <select
+        value={hour12}
+        onChange={(e) => handlePartChange("hour", e.target.value)}
+        className="bg-transparent outline-none cursor-pointer text-sm w-7 py-0.5 text-center font-black appearance-none focus:text-indigo-650"
+      >
+        {hourOptions.map(h => (
+          <option key={h} value={h}>{h}</option>
+        ))}
+      </select>
+      <span className="text-slate-400 font-black leading-none">:</span>
+      <select
+        value={minute}
+        onChange={(e) => handlePartChange("minute", e.target.value)}
+        className="bg-transparent outline-none cursor-pointer text-sm w-7 py-0.5 text-center font-black appearance-none focus:text-indigo-650"
+      >
+        {minuteOptions.map(m => (
+          <option key={m} value={m}>{m}</option>
+        ))}
+      </select>
+      <select
+        value={ampm}
+        onChange={(e) => handlePartChange("ampm", e.target.value)}
+        className="bg-indigo-50 text-indigo-700 font-extrabold outline-none cursor-pointer text-[10px] px-2 py-0.5 rounded-lg border border-indigo-150 uppercase hover:bg-indigo-100 transition-colors"
+      >
+        <option value="AM">AM</option>
+        <option value="PM">PM</option>
+      </select>
+    </div>
+  );
+};
+
 export default function AddAttendance() {
   const router = useRouter();
   const { user } = useSession();
@@ -59,7 +150,7 @@ export default function AddAttendance() {
           if (empId) {
             marked[empId] = {
               _id: record._id,
-              status: record.status,
+              status: record.status === "Half Day" ? "Half-day" : record.status,
               checkIn: record.checkIn ? new Date(record.checkIn).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false }) : null,
               checkOut: record.checkOut ? new Date(record.checkOut).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false }) : null,
             };
@@ -99,10 +190,14 @@ export default function AddAttendance() {
 
   const handleEdit = (empId) => {
     const existing = markedEmployees[empId];
+    let existingStatus = existing.status || "Present";
+    if (existingStatus === "Half Day") {
+      existingStatus = "Half-day";
+    }
     setAttendanceData(prev => ({
       ...prev,
       [empId]: {
-        status: existing.status || "Present",
+        status: existingStatus,
         checkIn: existing.checkIn || "09:00",
         checkOut: existing.checkOut || "18:00"
       }
@@ -124,6 +219,11 @@ export default function AddAttendance() {
       const data = attendanceData[empId];
       const isEditing = editingEmployees[empId] && markedEmployees[empId];
       
+      let statusToSave = data.status;
+      if (statusToSave === "Half Day") {
+        statusToSave = "Half-day";
+      }
+      
       const res = await fetch("/api/v1/admin/attendance", {
         method: isEditing ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
@@ -131,11 +231,9 @@ export default function AddAttendance() {
           ...(isEditing ? { _id: markedEmployees[empId]._id } : {}),
           employee: empId,
           date: selectedDate,
-          status: data.status,
-          checkIn: data.status === "Present" || data.status === "Half Day" 
-            ? `${selectedDate}T${data.checkIn}:00` : null,
-          checkOut: data.status === "Present" || data.status === "Half Day"
-            ? `${selectedDate}T${data.checkOut}:00` : null,
+          status: statusToSave,
+          checkIn: data.checkIn ? `${selectedDate}T${data.checkIn}:00` : null,
+          checkOut: data.checkOut ? `${selectedDate}T${data.checkOut}:00` : null,
         })
       });
 
@@ -254,16 +352,17 @@ export default function AddAttendance() {
                             existingRecord.status === 'Present' ? 'bg-green-50 text-green-700 border-green-200' :
                             existingRecord.status === 'Absent' ? 'bg-red-50 text-red-700 border-red-200' :
                             existingRecord.status === 'Leave' ? 'bg-blue-50 text-blue-700 border-blue-200' :
-                            'bg-yellow-50 text-yellow-700 border-yellow-200'
+                            existingRecord.status === 'Half-day' || existingRecord.status === 'Half Day' ? 'bg-yellow-50 text-yellow-700 border-yellow-200' :
+                            'bg-slate-50 text-slate-700 border-slate-200'
                           }`}>
                             {existingRecord.status}
                           </span>
                         </td>
                         <td className="px-6 py-4 text-sm text-slate-600">
-                          {existingRecord.checkIn || '—'}
+                          {formatTime12h(existingRecord.checkIn)}
                         </td>
                         <td className="px-6 py-4 text-sm text-slate-600">
-                          {existingRecord.checkOut || '—'}
+                          {formatTime12h(existingRecord.checkOut)}
                         </td>
                         <td className="px-6 py-4">
                           <button
@@ -286,25 +385,19 @@ export default function AddAttendance() {
                             <option value="Present">Present</option>
                             <option value="Absent">Absent</option>
                             <option value="Leave">Leave</option>
-                            <option value="Half Day">Half Day</option>
+                            <option value="Half-day">Half-day</option>
                           </select>
                         </td>
                         <td className="px-6 py-4">
-                          <input 
-                            type="time" 
+                          <TimePicker12h 
                             value={attendanceData[emp._id]?.checkIn}
-                            onChange={(e) => handleTimeChange(emp._id, "checkIn", e.target.value)}
-                            disabled={attendanceData[emp._id]?.status !== "Present" && attendanceData[emp._id]?.status !== "Half Day"}
-                            className="px-3 py-1.5 border rounded-md text-sm disabled:bg-slate-100 disabled:cursor-not-allowed focus:ring-2 focus:ring-indigo-500 outline-none"
+                            onChange={(val) => handleTimeChange(emp._id, "checkIn", val)}
                           />
                         </td>
                         <td className="px-6 py-4">
-                          <input 
-                            type="time" 
+                          <TimePicker12h 
                             value={attendanceData[emp._id]?.checkOut}
-                            onChange={(e) => handleTimeChange(emp._id, "checkOut", e.target.value)}
-                            disabled={attendanceData[emp._id]?.status !== "Present" && attendanceData[emp._id]?.status !== "Half Day"}
-                            className="px-3 py-1.5 border rounded-md text-sm disabled:bg-slate-100 disabled:cursor-not-allowed focus:ring-2 focus:ring-indigo-500 outline-none"
+                            onChange={(val) => handleTimeChange(emp._id, "checkOut", val)}
                           />
                         </td>
                         <td className="px-6 py-4">

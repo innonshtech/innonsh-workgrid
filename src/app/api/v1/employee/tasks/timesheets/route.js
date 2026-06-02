@@ -106,8 +106,18 @@ export async function POST(request) {
             await TimesheetEntry.deleteMany({ timesheet: timesheet._id });
 
             const entriesToCreate = entries.map(entry => {
+                const projectId = entry.project && typeof entry.project === 'object'
+                    ? (entry.project._id || entry.project)
+                    : entry.project;
+
+                const taskId = entry.task && typeof entry.task === 'object'
+                    ? (entry.task._id || entry.task)
+                    : entry.task;
+
                 const newEntry = {
                     ...entry,
+                    project: projectId,
+                    task: taskId,
                     timesheet: timesheet._id,
                     employee
                 };

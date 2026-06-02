@@ -14,6 +14,27 @@ export default function HelpdeskPage() {
     const [loading, setLoading] = useState(true);
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     const [filterStatus, setFilterStatus] = useState("");
+    const [searchQuery, setSearchQuery] = useState("");
+
+    const [assignmentFilter, setAssignmentFilter] = useState("all");
+
+    const filteredTickets = tickets.filter((ticket) => {
+        const query = searchQuery.toLowerCase();
+        const empName = `${ticket.employee?.personalDetails?.firstName || ""} ${ticket.employee?.personalDetails?.lastName || ""}`.toLowerCase();
+        
+        const matchesSearch = 
+            ticket.subject?.toLowerCase().includes(query) ||
+            ticket.category?.toLowerCase().includes(query) ||
+            ticket.description?.toLowerCase().includes(query) ||
+            empName.includes(query);
+            
+        const ticketAssigneeId = ticket.assignedTo?._id || ticket.assignedTo;
+        const matchesAssignment = 
+            assignmentFilter === "all" || 
+            (assignmentFilter === "assigned" && ticketAssigneeId?.toString() === user?.id?.toString());
+            
+        return matchesSearch && matchesAssignment;
+    });
 
     const fetchTickets = async () => {
         try {
@@ -27,7 +48,7 @@ export default function HelpdeskPage() {
             // or we filter client side if backend returns all (not secure but quick for prototype if roles vague).
             // Actually, let's pass employeeId if we are an employee
             if (user?.role === "employee") {
-                params.append("employeeId", user.employeeId || user._id); // verify if employeeId is in session
+                params.append("employeeId", user.id || user._id || user.employeeId); // verify if employeeId is in session
             }
             if (filterStatus) params.append("status", filterStatus);
 
@@ -91,9 +112,37 @@ export default function HelpdeskPage() {
                 <div className="p-4 border-b border-slate-200 flex items-center gap-4">
                     <div className="relative flex-1 max-w-sm">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                        <input type="text" placeholder={t("searchTickets")} className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-100 focus:border-indigo-500 outline-none" />
+                        <input 
+                            type="text" 
+                            placeholder={t("searchTickets")} 
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-100 focus:border-indigo-500 outline-none" 
+                        />
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex bg-slate-100 p-1 rounded-lg shrink-0">
+                        <button
+                            onClick={() => setAssignmentFilter("all")}
+                            className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-all duration-200 ${
+                                assignmentFilter === "all"
+                                    ? "bg-white text-slate-900 shadow-sm"
+                                    : "text-slate-500 hover:text-slate-700"
+                            }`}
+                        >
+                            All Tickets
+                        </button>
+                        <button
+                            onClick={() => setAssignmentFilter("assigned")}
+                            className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-all duration-200 ${
+                                assignmentFilter === "assigned"
+                                    ? "bg-white text-slate-900 shadow-sm"
+                                    : "text-slate-500 hover:text-slate-700"
+                            }`}
+                        >
+                            Assigned to Me
+                        </button>
+                    </div>
+                    <div className="flex items-center gap-2 ml-auto">
                         <Filter size={18} className="text-slate-400" />
                         <select
                             value={filterStatus}
@@ -114,6 +163,7 @@ export default function HelpdeskPage() {
                         <thead className="bg-slate-50 text-slate-700 font-semibold border-b border-slate-200">
                             <tr>
                                 <th className="px-6 py-3">{t("subject")}</th>
+                                <th className="px-6 py-3">{t("employee") || "Employee"}</th>
                                 <th className="px-6 py-3">{t("category")}</th>
                                 <th className="px-6 py-3">{t("priority")}</th>
                                 <th className="px-6 py-3">{t("status")}</th>
@@ -123,11 +173,11 @@ export default function HelpdeskPage() {
                         </thead>
                         <tbody className="divide-y divide-slate-100">
                             {loading ? (
-                                <tr><td colSpan="6" className="p-8 text-center text-slate-500">{t("loading")}</td></tr>
-                            ) : tickets.length === 0 ? (
-                                <tr><td colSpan="6" className="p-8 text-center text-slate-500">{t("noTicketsFound")}</td></tr>
+                                <tr><td colSpan="7" className="p-8 text-center text-slate-500">{t("loading")}</td></tr>
+                            ) : filteredTickets.length === 0 ? (
+                                <tr><td colSpan="7" className="p-8 text-center text-slate-500">{t("noTicketsFound")}</td></tr>
                             ) : (
-                                tickets.map((ticket) => (
+                                filteredTickets.map((ticket) => (
                                     <tr key={ticket._id} className="hover:bg-slate-50/50 transition-colors">
                                         <td className="px-6 py-4">
                                             <div className="flex items-center gap-3">
@@ -135,6 +185,11 @@ export default function HelpdeskPage() {
                                                     <MessageSquare size={16} />
                                                 </div>
                                                 <div className="font-semibold text-slate-900">{ticket.subject}</div>
+                                            </div>
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            <div className="font-medium text-slate-900">
+                                                {ticket.employee?.personalDetails?.firstName || ""} {ticket.employee?.personalDetails?.lastName || ""}
                                             </div>
                                         </td>
                                         <td className="px-6 py-4">{ticket.category}</td>
@@ -152,7 +207,7 @@ export default function HelpdeskPage() {
                                         <td className="px-6 py-4">{new Date(ticket.createdAt).toLocaleDateString()}</td>
                                         <td className="px-6 py-4 text-right">
                                             <Link
-                                                href={`/helpdesk/${ticket._id}`}
+                                                href={`/admin/helpdesk/${ticket._id}`}
                                                 className="text-indigo-600 hover:text-indigo-700 font-medium text-sm transition-colors"
                                             >
                                                 {t("viewDetails")}
@@ -173,7 +228,7 @@ export default function HelpdeskPage() {
                     fetchTickets();
                     toast.success("Ticket raised successfully");
                 }}
-                employeeId={user?._id || user?.employeeId} // Pass correct ID
+                employeeId={user?.id || user?._id || user?.employeeId} // Pass correct ID
             />
         </div>
     );

@@ -829,6 +829,97 @@ import { Calendar, User, ArrowLeft, CheckCircle } from "lucide-react";
 import { useSession } from "@/context/SessionContext";
 import toast, { Toaster } from "react-hot-toast";
 
+const formatTime12h = (time24) => {
+  if (!time24) return "—";
+  const [hourStr, minuteStr] = time24.split(":");
+  const hour = parseInt(hourStr, 10);
+  const ampm = hour >= 12 ? "PM" : "AM";
+  const hour12 = hour % 12 || 12;
+  return `${hour12.toString().padStart(2, "0")}:${minuteStr} ${ampm}`;
+};
+
+const parse24To12hParts = (time24) => {
+  if (!time24) return { hour12: "09", minute: "00", ampm: "AM" };
+  const [hourStr, minuteStr] = time24.split(":");
+  const hour = parseInt(hourStr, 10);
+  const ampm = hour >= 12 ? "PM" : "AM";
+  const h12 = hour % 12 || 12;
+  return {
+    hour12: h12.toString().padStart(2, "0"),
+    minute: (minuteStr || "00").padStart(2, "0"),
+    ampm
+  };
+};
+
+const convert12hPartsTo24 = (hour12, minute, ampm) => {
+  let hour = parseInt(hour12, 10);
+  if (ampm === "PM" && hour < 12) {
+    hour += 12;
+  } else if (ampm === "AM" && hour === 12) {
+    hour = 0;
+  }
+  const hourStr = hour.toString().padStart(2, "0");
+  const minuteStr = (minute || "00").padStart(2, "0");
+  return `${hourStr}:${minuteStr}`;
+};
+
+const TimePicker12h = ({ value, onChange }) => {
+  const { hour12, minute, ampm } = parse24To12hParts(value);
+
+  const handlePartChange = (part, partValue) => {
+    let newHour = hour12;
+    let newMinute = minute;
+    let newAmpm = ampm;
+
+    if (part === "hour") newHour = partValue;
+    else if (part === "minute") newMinute = partValue;
+    else if (part === "ampm") newAmpm = partValue;
+
+    const newValue = convert12hPartsTo24(newHour, newMinute, newAmpm);
+    onChange(newValue);
+  };
+
+  const hourOptions = Array.from({ length: 12 }, (_, i) => 
+    (i + 1).toString().padStart(2, "0")
+  );
+
+  const minuteOptions = Array.from({ length: 60 }, (_, i) => 
+    i.toString().padStart(2, "0")
+  );
+
+  return (
+    <div className="flex items-center gap-1 bg-white border border-slate-300 rounded-md px-2 py-1 shadow-sm font-semibold text-slate-800 transition-colors w-fit mt-1">
+      <select
+        value={hour12}
+        onChange={(e) => handlePartChange("hour", e.target.value)}
+        className="bg-transparent outline-none cursor-pointer text-sm w-7 py-0.5 text-center font-bold appearance-none"
+      >
+        {hourOptions.map(h => (
+          <option key={h} value={h}>{h}</option>
+        ))}
+      </select>
+      <span className="text-slate-400 font-bold leading-none">:</span>
+      <select
+        value={minute}
+        onChange={(e) => handlePartChange("minute", e.target.value)}
+        className="bg-transparent outline-none cursor-pointer text-sm w-7 py-0.5 text-center font-bold appearance-none"
+      >
+        {minuteOptions.map(m => (
+          <option key={m} value={m}>{m}</option>
+        ))}
+      </select>
+      <select
+        value={ampm}
+        onChange={(e) => handlePartChange("ampm", e.target.value)}
+        className="bg-indigo-50 text-indigo-700 font-bold outline-none cursor-pointer text-xs px-1.5 py-0.5 rounded border border-indigo-100 uppercase hover:bg-indigo-100 transition-colors"
+      >
+        <option value="AM">AM</option>
+        <option value="PM">PM</option>
+      </select>
+    </div>
+  );
+};
+
 export default function AddAttendance() {
   const router = useRouter();
   const { user } = useSession();
@@ -939,8 +1030,8 @@ export default function AddAttendance() {
     }
 
     const { status, checkIn } = attendanceData[employeeId] || {};
-    if (status !== "Present" || !checkIn) {
-      toast.error("Select 'Present' and enter check-in time.");
+    if (!checkIn) {
+      toast.error("Please enter check-in time.");
       return;
     }
 
@@ -1126,6 +1217,7 @@ export default function AddAttendance() {
                               <option value="Present">Present</option>
                               <option value="Absent">Absent</option>
                               <option value="Leave">Leave</option>
+                              <option value="Half-day">Half-day</option>
                               <option value="Weekend">Weekend</option>
                             </select>
                           </div>
@@ -1137,20 +1229,17 @@ export default function AddAttendance() {
                             </label>
                             {isCheckInSaved ? (
                               <p className="mt-1 text-sm font-medium text-green-700">
-                                {att.checkIn}
+                                {formatTime12h(att.checkIn)}
                               </p>
                             ) : (
-                              <input
-                                type="time"
+                              <TimePicker12h
                                 value={att.checkIn}
-                                onChange={(e) =>
+                                onChange={(val) =>
                                   setAttendanceData((prev) => ({
                                     ...prev,
-                                    [empId]: { ...prev[empId], checkIn: e.target.value },
+                                    [empId]: { ...prev[empId], checkIn: val },
                                   }))
                                 }
-                                className="mt-1 block w-32 px-3 py-1.5 border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                                disabled={!isPresent}
                               />
                             )}
                           </div>
@@ -1162,20 +1251,17 @@ export default function AddAttendance() {
                             </label>
                             {isCheckOutSaved ? (
                               <p className="mt-1 text-sm font-medium text-green-700">
-                                {att.checkOut}
+                                {formatTime12h(att.checkOut)}
                               </p>
                             ) : isCheckInSaved ? (
-                              <input
-                                type="time"
+                              <TimePicker12h
                                 value={att.checkOut}
-                                onChange={(e) =>
+                                onChange={(val) =>
                                   setAttendanceData((prev) => ({
                                     ...prev,
-                                    [empId]: { ...prev[empId], checkOut: e.target.value },
+                                    [empId]: { ...prev[empId], checkOut: val },
                                   }))
                                 }
-                                className="mt-1 block w-32 px-3 py-1.5 border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                                disabled={!isPresent}
                               />
                             ) : (
                               <p className="mt-1 text-sm text-slate-400">—</p>

@@ -39,7 +39,7 @@ export default function CreateTicketModal({ isOpen, onClose, onSuccess, employee
             };
             console.log("CreateTicketModal: Payload:", payload);
 
-            const res = await fetch("/api/helpdesk", {
+            const res = await fetch("/api/v1/admin/helpdesk", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload),

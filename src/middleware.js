@@ -41,6 +41,7 @@ const protectedRoutes = [
   { path: '/api/v1/admin/crm/business-units', roles: ['admin', 'super_admin', 'employee'], isApi: true },
   { path: '/api/v1/admin/crm/teams', roles: ['admin', 'super_admin', 'employee'], isApi: true },
   { path: '/api/v1/admin/engagement', roles: ['admin', 'super_admin', 'employee'], isApi: true },
+  { path: '/api/v1/admin/helpdesk', roles: ['admin', 'super_admin', 'employee', 'attendance_only'], isApi: true },
   
   // Staff Augmentation Route Protections
   { path: '/admin/staffing', roles: ['admin', 'super_admin', 'recruiter'] },

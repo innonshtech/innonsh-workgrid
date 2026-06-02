@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
     Receipt, Plus, Search, Filter,
     CheckCircle2, XCircle, Clock,
     Download, Eye, MoreVertical,
     Wallet, TrendingUp, CreditCard, PieChart,
-    Loader2, Upload, Calendar, DollarSign, Users
+    Loader2, Upload, Calendar, DollarSign, Users, X
 } from "lucide-react";
 import { format } from "date-fns";
 import toast from "react-hot-toast";
@@ -71,6 +71,12 @@ export default function ExpenseManager({ employeeId, isAdmin = false, activeClai
     };
 
     const handleDownloadReceipt = (expense) => {
+        if (expense.receiptUrl) {
+            window.open(expense.receiptUrl, '_blank');
+            toast.success("Receipt opened in a new tab");
+            return;
+        }
+
         // Create a simple receipt text file
         const content = `
 RECEIPT / CLAIM VOUCHER
@@ -440,6 +446,9 @@ export function ExpenseFormModal({ employeeId, editData, isAdmin = false, defaul
     const [departments, setDepartments] = useState([]);
     const [teams, setTeams] = useState([]);
     const [searchEmployee, setSearchEmployee] = useState("");
+    const [uploadingReceipt, setUploadingReceipt] = useState(false);
+    const fileInputRef = useRef(null);
+
     const [formData, setFormData] = useState({
         employee: editData ? editData.employee?._id || editData.employee : (employeeId || ''),
         title: editData?.title || '',
@@ -448,6 +457,7 @@ export function ExpenseFormModal({ employeeId, editData, isAdmin = false, defaul
         maxAmount: editData?.maxAmount || 0,
         date: editData?.date ? format(new Date(editData.date), 'yyyy-MM-dd') : format(new Date(), 'yyyy-MM-dd'),
         description: editData?.description || '',
+        receiptUrl: editData?.receiptUrl || '',
         claimType: editData?.claimType || defaultClaimType,
         teamMembers: editData?.teamMembers || '',
         status: editData?.status || (isAdmin && !editData ? 'Draft' : 'Pending'),
@@ -457,6 +467,56 @@ export function ExpenseFormModal({ employeeId, editData, isAdmin = false, defaul
             isGstIncluded: true
         }
     });
+
+    const handleFileChange = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        if (file.size > 5 * 1024 * 1024) {
+            toast.error("File is too large. Please select a file smaller than 5MB.");
+            return;
+        }
+
+        try {
+            setUploadingReceipt(true);
+            const uploadFormData = new FormData();
+            uploadFormData.append('file', file);
+
+            const res = await fetch('/api/v1/admin/finance/expenses/upload', {
+                method: 'POST',
+                body: uploadFormData
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                if (data.fallbackToBase64) {
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                        setFormData(prev => ({ ...prev, receiptUrl: reader.result }));
+                        toast.success("Receipt uploaded successfully (Offline Fallback)");
+                    };
+                    reader.readAsDataURL(file);
+                } else if (data.secure_url) {
+                    setFormData(prev => ({ ...prev, receiptUrl: data.secure_url }));
+                    toast.success("Receipt uploaded successfully to Cloudinary");
+                } else {
+                    throw new Error("Invalid response");
+                }
+            } else {
+                throw new Error("Upload request failed");
+            }
+        } catch (error) {
+            console.warn("Cloudinary upload failed, falling back to base64:", error);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setFormData(prev => ({ ...prev, receiptUrl: reader.result }));
+                toast.success("Receipt uploaded successfully (Offline Fallback)");
+            };
+            reader.readAsDataURL(file);
+        } finally {
+            setUploadingReceipt(false);
+        }
+    };
 
     useEffect(() => {
         if (isAdmin) {
@@ -789,12 +849,61 @@ export function ExpenseFormModal({ employeeId, editData, isAdmin = false, defaul
                                         />
                                     </div>
                                 </div>
-
-                                <div className="flex items-center justify-center p-4 border-2 border-dashed border-slate-200 rounded-2xl group hover:border-indigo-400 transition-all cursor-pointer">
-                                    <div className="text-center">
-                                        <Upload className="w-6 h-6 text-slate-400 mx-auto mb-2 group-hover:text-indigo-600 transition-all" />
-                                        <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest group-hover:text-indigo-600 transition-all">Upload Receipt</span>
-                                    </div>
+                                                            <div>
+                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">Receipt Document</label>
+                                    <input 
+                                        type="file" 
+                                        ref={fileInputRef} 
+                                        onChange={handleFileChange} 
+                                        className="hidden" 
+                                        accept="image/*,application/pdf" 
+                                    />
+                                    
+                                    {uploadingReceipt ? (
+                                        <div className="flex items-center justify-center p-4 border-2 border-dashed border-indigo-200 rounded-2xl bg-indigo-50/20 h-[58px]">
+                                            <div className="flex items-center gap-2 text-indigo-600 text-[10px] font-black uppercase tracking-widest">
+                                                <Loader2 className="w-4 h-4 animate-spin text-indigo-600" />
+                                                Uploading...
+                                            </div>
+                                        </div>
+                                    ) : formData.receiptUrl ? (
+                                        <div className="flex items-center justify-between p-2.5 border border-indigo-100 rounded-2xl bg-indigo-50/10 h-[58px]">
+                                            <div className="flex items-center gap-2 truncate">
+                                                <div className="w-8 h-8 bg-indigo-50 rounded-xl flex items-center justify-center text-indigo-600 shrink-0">
+                                                    <Receipt className="w-4 h-4" />
+                                                </div>
+                                                <div className="truncate text-left">
+                                                    <p className="text-[10px] font-black text-slate-900 truncate">Receipt Attached</p>
+                                                    <a 
+                                                        href={formData.receiptUrl} 
+                                                        target="_blank" 
+                                                        rel="noopener noreferrer" 
+                                                        className="text-[9px] text-indigo-600 hover:text-indigo-700 font-black uppercase tracking-widest block mt-0.5"
+                                                    >
+                                                        View Receipt ↗
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <button
+                                                type="button"
+                                                onClick={() => setFormData(prev => ({ ...prev, receiptUrl: '' }))}
+                                                className="p-1.5 hover:bg-rose-50 text-slate-400 hover:text-rose-600 rounded-xl transition-all"
+                                                title="Remove Receipt"
+                                            >
+                                                <X className="w-4 h-4" />
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <div 
+                                            onClick={() => fileInputRef.current?.click()}
+                                            className="flex items-center justify-center p-4 border-2 border-dashed border-slate-200 rounded-2xl group hover:border-indigo-400 transition-all cursor-pointer h-[58px]"
+                                        >
+                                            <div className="text-center">
+                                                <Upload className="w-4 h-4 text-slate-400 mx-auto mb-1 group-hover:text-indigo-600 transition-all" />
+                                                <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest group-hover:text-indigo-600 transition-all">Upload Receipt</span>
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             </>
                         )}

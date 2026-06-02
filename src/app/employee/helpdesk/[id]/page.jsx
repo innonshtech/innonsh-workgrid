@@ -9,7 +9,7 @@ import { toast } from "sonner";
 export default function TicketDetailPage() {
     const { id } = useParams();
     const router = useRouter();
-    const { session } = useSession();
+    const { user } = useSession();
     const [ticket, setTicket] = useState(null);
     const [loading, setLoading] = useState(true);
     const [comment, setComment] = useState("");
@@ -19,7 +19,7 @@ export default function TicketDetailPage() {
 
     const fetchTicket = async () => {
         try {
-            const res = await fetch(`/api/v1/employee/helpdesk/${id}`);
+            const res = await fetch(`/api/v1/admin/helpdesk/${id}`);
             if (res.ok) {
                 const data = await res.json();
                 setTicket(data);
@@ -52,13 +52,13 @@ export default function TicketDetailPage() {
             setSending(true);
             const payload = {
                 newComment: {
-                    userId: session?.user?._id || session?.user?.id,
-                    userName: session?.user?.name || `${session?.user?.personalDetails?.firstName} ${session?.user?.personalDetails?.lastName}`,
+                    userId: user?._id || user?.id,
+                    userName: user?.name || `${user?.personalDetails?.firstName || ""} ${user?.personalDetails?.lastName || ""}`.trim() || "User",
                     message: comment
                 }
             };
 
-            const res = await fetch(`/api/v1/employee/helpdesk/${id}`, {
+            const res = await fetch(`/api/v1/admin/helpdesk/${id}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
@@ -80,7 +80,7 @@ export default function TicketDetailPage() {
     const handleStatusUpdate = async (newStatus) => {
         try {
             setUpdatingStatus(true);
-            const res = await fetch(`/api/v1/employee/helpdesk/${id}`, {
+            const res = await fetch(`/api/v1/admin/helpdesk/${id}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ status: newStatus })
@@ -112,7 +112,9 @@ export default function TicketDetailPage() {
     if (loading) return <div className="p-10 text-center text-slate-500">Loading ticket details...</div>;
     if (!ticket) return <div className="p-10 text-center text-red-500">Ticket not found</div>;
 
-    const isAdmin = session?.user?.role === "admin" || session?.user?.role === "hr";
+    const isAdmin = user?.role === "admin" || user?.role === "hr" || user?.role === "super_admin";
+    const isAssignee = (ticket.assignedTo?._id || ticket.assignedTo) === (user?._id || user?.id);
+    const canUpdateStatus = isAdmin || isAssignee;
 
     return (
         <div className="p-6 max-w-5xl mx-auto space-y-6">
@@ -145,11 +147,11 @@ export default function TicketDetailPage() {
                                 <div className="text-center text-slate-400 my-10">No comments yet. Start the conversation.</div>
                             ) : (
                                 ticket.comments.map((msg, idx) => (
-                                    <div key={idx} className={`flex gap-3 ${msg.user === (session?.user?._id || session?.user?.id) ? 'flex-row-reverse' : ''}`}>
+                                    <div key={idx} className={`flex gap-3 ${(msg.user?._id || msg.user) === (user?._id || user?.id) ? 'flex-row-reverse' : ''}`}>
                                         <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 flex-shrink-0">
                                             <User size={14} />
                                         </div>
-                                        <div className={`max-w-[80%] rounded-xl p-3 ${msg.user === (session?.user?._id || session?.user?.id)
+                                        <div className={`max-w-[80%] rounded-xl p-3 ${(msg.user?._id || msg.user) === (user?._id || user?.id)
                                             ? 'bg-indigo-600 text-white rounded-tr-none'
                                             : 'bg-white border border-slate-200 text-slate-700 rounded-tl-none'}`}>
                                             <div className="text-xs opacity-70 mb-1 flex justify-between gap-4">
@@ -217,7 +219,7 @@ export default function TicketDetailPage() {
                             </div>
                         </div>
 
-                        {isAdmin && (
+                        {canUpdateStatus && (
                             <div className="pt-4 border-t border-gray-100 space-y-3">
                                 <label className="text-xs text-slate-500 uppercase font-bold">Update Status</label>
                                 <div className="grid grid-cols-2 gap-2">

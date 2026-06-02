@@ -99,7 +99,8 @@ const vendorInvoiceSchema = new mongoose.Schema({
     paymentDetails: {
         referenceNumber: String,
         paymentDate: Date,
-        paymentMode: String
+        paymentMode: String,
+        receiptUrl: String
     }
 }, {
     timestamps: true

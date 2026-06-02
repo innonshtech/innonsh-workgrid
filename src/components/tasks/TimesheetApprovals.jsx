@@ -31,63 +31,14 @@ const TimesheetApprovals = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [statusFilter, setStatusFilter] = useState("Submitted");
     
-    // Manager/Team Filters
-    const [managersList, setManagersList] = useState([]);
-    const [currentUserEmployeeId, setCurrentUserEmployeeId] = useState(null);
-    const [showSubmittedToMe, setShowSubmittedToMe] = useState(false);
-    const [selectedManagerFilter, setSelectedManagerFilter] = useState("");
-
-    // Fetch active employees to populate managers filter dropdown
-    const fetchManagersList = async () => {
-        try {
-            const res = await fetch('/api/v1/employee/payroll/employees?status=Active&limit=1000');
-            if (res.ok) {
-                const data = await res.json();
-                if (data.employees) {
-                    setManagersList(data.employees);
-                }
-            }
-        } catch (error) {
-            console.error("Error fetching managers list:", error);
-        }
-    };
-
-    // Try to get matching Employee Profile of current user
-    const fetchCurrentUserProfile = async () => {
-        if (!user?.id) return;
-        try {
-            const res = await fetch(`/api/v1/employee/payroll/employees/${user.id}`);
-            if (res.ok) {
-                const data = await res.json();
-                if (data?._id) {
-                    setCurrentUserEmployeeId(data._id);
-                }
-            }
-        } catch (error) {
-            console.error("Error fetching current user profile:", error);
-        }
-    };
-
-    useEffect(() => {
-        fetchManagersList();
-        fetchCurrentUserProfile();
-    }, [user]);
-
     useEffect(() => {
         fetchTimesheets();
-    }, [statusFilter, showSubmittedToMe, selectedManagerFilter, currentUserEmployeeId]);
+    }, [statusFilter]);
 
     const fetchTimesheets = async () => {
         try {
             setLoading(true);
-            let url = `/api/v1/admin/tasks/timesheets?status=${statusFilter}`;
-            
-            if (showSubmittedToMe && currentUserEmployeeId) {
-                url += `&submittedTo=${currentUserEmployeeId}`;
-            } else if (selectedManagerFilter) {
-                url += `&submittedTo=${selectedManagerFilter}`;
-            }
-
+            const url = `/api/v1/admin/tasks/timesheets?status=${statusFilter}`;
             const res = await fetch(url);
             const data = await res.json();
             if (data.success) {
@@ -174,41 +125,6 @@ const TimesheetApprovals = () => {
                 </div>
 
                 <div className="flex flex-wrap items-center gap-4">
-                    {/* Team Filter checkbox */}
-                    {currentUserEmployeeId && (
-                        <label className="flex items-center gap-2 text-xs font-bold text-slate-650 cursor-pointer bg-slate-50 hover:bg-slate-100/80 px-4 py-2 rounded-xl border border-slate-200 transition-colors">
-                            <input
-                                type="checkbox"
-                                checked={showSubmittedToMe}
-                                onChange={(e) => {
-                                    setShowSubmittedToMe(e.target.checked);
-                                    if (e.target.checked) setSelectedManagerFilter("");
-                                }}
-                                className="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 border-slate-300"
-                            />
-                            <span>Submitted to Me</span>
-                        </label>
-                    )}
-
-                    {/* Manager filter dropdown */}
-                    <div className="flex items-center gap-2">
-                        <span className="text-xs text-slate-400 font-bold uppercase tracking-wider">Manager:</span>
-                        <select
-                            value={selectedManagerFilter}
-                            disabled={showSubmittedToMe}
-                            onChange={(e) => setSelectedManagerFilter(e.target.value)}
-                            className="px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-700 outline-none focus:ring-2 focus:ring-indigo-500/20 disabled:opacity-50"
-                        >
-                            <option value="">All Managers</option>
-                            {managersList.map(mgr => (
-                                <option key={mgr._id} value={mgr._id}>
-                                    {mgr.personalDetails?.firstName} {mgr.personalDetails?.lastName}
-                                </option>
-                            ))}
-                            <option value="null">Direct to Admin</option>
-                        </select>
-                    </div>
-
                     {/* Status filter dropdown */}
                     <div className="flex items-center gap-2">
                         <span className="text-xs text-slate-400 font-bold uppercase tracking-wider">Status:</span>

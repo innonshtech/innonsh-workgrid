@@ -368,6 +368,11 @@ function DashboardLayoutContent({ children }) {
       icon: LogOut,
     },
     {
+      name: t("hrHelpdesk"),
+      href: "/admin/helpdesk",
+      icon: MessageSquare,
+    },
+    {
       name: t("activityLogs"),
       href: "/super-admin/audit-logs",
       icon: Clock,

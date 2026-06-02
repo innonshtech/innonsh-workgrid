@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { 
     Plus, Search, CreditCard, Clock, 
     MoreVertical, CheckCircle2, Loader2, 
     IndianRupee, X, Save, Calendar, Landmark,
-    ArrowUpRight, Receipt
+    ArrowUpRight, Receipt, Upload
 } from "lucide-react";
 import { format } from "date-fns";
 import toast from "react-hot-toast";
@@ -17,12 +17,66 @@ export default function VendorPayments() {
     const [loading, setLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);
     const [submitting, setSubmitting] = useState(false);
+    const [uploadingReceipt, setUploadingReceipt] = useState(false);
+    const fileInputRef = useRef(null);
+
     const [formData, setFormData] = useState({
         invoiceId: "",
         paymentMode: "Bank Transfer",
         referenceNumber: "",
-        paymentDate: format(new Date(), 'yyyy-MM-dd')
+        paymentDate: format(new Date(), 'yyyy-MM-dd'),
+        receiptUrl: ""
     });
+
+    const handleFileChange = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        if (file.size > 5 * 1024 * 1024) {
+            toast.error("File is too large. Please select a file smaller than 5MB.");
+            return;
+        }
+
+        try {
+            setUploadingReceipt(true);
+            const uploadFormData = new FormData();
+            uploadFormData.append('file', file);
+
+            const res = await fetch('/api/v1/admin/finance/expenses/upload', {
+                method: 'POST',
+                body: uploadFormData
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                if (data.fallbackToBase64) {
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                        setFormData(prev => ({ ...prev, receiptUrl: reader.result }));
+                        toast.success("Receipt uploaded successfully (Offline Fallback)");
+                    };
+                    reader.readAsDataURL(file);
+                } else if (data.secure_url) {
+                    setFormData(prev => ({ ...prev, receiptUrl: data.secure_url }));
+                    toast.success("Receipt uploaded successfully to Cloudinary");
+                } else {
+                    throw new Error("Invalid response");
+                }
+            } else {
+                throw new Error("Upload request failed");
+            }
+        } catch (error) {
+            console.warn("Cloudinary upload failed, falling back to base64:", error);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setFormData(prev => ({ ...prev, receiptUrl: reader.result }));
+                toast.success("Receipt uploaded successfully (Offline Fallback)");
+            };
+            reader.readAsDataURL(file);
+        } finally {
+            setUploadingReceipt(false);
+        }
+    };
 
     useEffect(() => {
         fetchPayments();
@@ -81,7 +135,8 @@ export default function VendorPayments() {
                     paymentDetails: {
                         paymentMode: formData.paymentMode,
                         referenceNumber: formData.referenceNumber,
-                        paymentDate: new Date(formData.paymentDate)
+                        paymentDate: new Date(formData.paymentDate),
+                        receiptUrl: formData.receiptUrl
                     }
                 })
             });
@@ -105,7 +160,16 @@ export default function VendorPayments() {
                     <p className="text-slate-500 text-xs font-medium">Clear pending dues and manage payment history.</p>
                 </div>
                 <button
-                    onClick={() => setShowModal(true)}
+                    onClick={() => {
+                        setFormData({
+                            invoiceId: "",
+                            paymentMode: "Bank Transfer",
+                            referenceNumber: "",
+                            paymentDate: format(new Date(), 'yyyy-MM-dd'),
+                            receiptUrl: ""
+                        });
+                        setShowModal(true);
+                    }}
                     className="flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-[1.2rem] text-[10px] font-black uppercase tracking-widest hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100"
                 >
                     <Plus className="w-4 h-4" /> Record Payment
@@ -180,7 +244,19 @@ export default function VendorPayments() {
                                             ₹{pay.totalAmount.toLocaleString()}
                                         </td>
                                         <td className="px-8 py-6">
-                                            <button className="p-2 hover:bg-slate-100 rounded-xl text-slate-400 hover:text-indigo-600 transition-all"><Receipt className="w-5 h-5" /></button>
+                                            {pay.paymentDetails?.receiptUrl ? (
+                                                <a 
+                                                    href={pay.paymentDetails.receiptUrl} 
+                                                    target="_blank" 
+                                                    rel="noopener noreferrer"
+                                                    title="View Attached Receipt"
+                                                    className="p-2 hover:bg-indigo-50 rounded-xl text-indigo-650 hover:text-indigo-800 transition-all inline-block active:scale-95 border border-indigo-100/50"
+                                                >
+                                                    <Receipt className="w-4 h-4" />
+                                                </a>
+                                            ) : (
+                                                <span className="text-[9px] font-black uppercase text-slate-350 tracking-wider">No Receipt</span>
+                                            )}
                                         </td>
                                     </tr>
                                 ))
@@ -271,6 +347,63 @@ export default function VendorPayments() {
                                             className="w-full pl-12 pr-5 py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl text-sm font-bold outline-none focus:border-indigo-500 transition-all"
                                         />
                                     </div>
+                                </div>
+
+                                <div>
+                                    <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Upload Payment Receipt</label>
+                                    <input 
+                                        type="file" 
+                                        ref={fileInputRef} 
+                                        onChange={handleFileChange} 
+                                        className="hidden" 
+                                        accept="image/*,application/pdf" 
+                                    />
+                                    
+                                    {uploadingReceipt ? (
+                                        <div className="flex items-center justify-center p-4 border-2 border-dashed border-indigo-200 rounded-2xl bg-indigo-50/20 h-[58px]">
+                                            <div className="flex items-center gap-2 text-indigo-650 text-[10px] font-black uppercase tracking-widest">
+                                                <Loader2 className="w-4 h-4 animate-spin text-indigo-600" />
+                                                Uploading Receipt...
+                                            </div>
+                                        </div>
+                                    ) : formData.receiptUrl ? (
+                                        <div className="flex items-center justify-between p-2.5 border-2 border-indigo-100 rounded-2xl bg-indigo-50/10 h-[58px]">
+                                            <div className="flex items-center gap-2 truncate">
+                                                <div className="w-8 h-8 bg-indigo-50 rounded-xl flex items-center justify-center text-indigo-600 shrink-0">
+                                                    <Receipt className="w-4 h-4" />
+                                                </div>
+                                                <div className="truncate text-left">
+                                                    <p className="text-[10px] font-black text-slate-900 truncate">Receipt Attached</p>
+                                                    <a 
+                                                        href={formData.receiptUrl} 
+                                                        target="_blank" 
+                                                        rel="noopener noreferrer" 
+                                                        className="text-[9px] text-indigo-650 hover:text-indigo-700 font-black uppercase tracking-widest block mt-0.5"
+                                                    >
+                                                        View Receipt ↗
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <button
+                                                type="button"
+                                                onClick={() => setFormData(prev => ({ ...prev, receiptUrl: '' }))}
+                                                className="p-1.5 hover:bg-rose-50 text-slate-400 hover:text-rose-600 rounded-xl transition-all"
+                                                title="Remove Receipt"
+                                            >
+                                                <X className="w-4 h-4" />
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <div 
+                                            onClick={() => fileInputRef.current?.click()}
+                                            className="flex items-center justify-center p-4 border-2 border-dashed border-slate-200 rounded-2xl group hover:border-indigo-400 transition-all cursor-pointer h-[58px]"
+                                        >
+                                            <div className="text-center flex items-center gap-2">
+                                                <Upload className="w-4 h-4 text-slate-400 group-hover:text-indigo-600 transition-all" />
+                                                <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest group-hover:text-indigo-600 transition-all">Upload Receipt Document</span>
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 

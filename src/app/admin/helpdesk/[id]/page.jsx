@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import { ArrowLeft, Send, CheckCircle, Clock, AlertCircle, User, Loader2 } from "lucide-react";
+import { ArrowLeft, Send, CheckCircle, Clock, AlertCircle, User, Loader2, Search, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useSession } from "@/context/SessionContext";
@@ -9,13 +9,29 @@ import { toast } from "sonner";
 export default function TicketDetailPage() {
     const { id } = useParams();
     const router = useRouter();
-    const { session } = useSession();
+    const { user } = useSession();
     const [ticket, setTicket] = useState(null);
     const [loading, setLoading] = useState(true);
     const [comment, setComment] = useState("");
     const [sending, setSending] = useState(false);
     const [updatingStatus, setUpdatingStatus] = useState(false);
+    const [assignees, setAssignees] = useState([]);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [assigneeSearch, setAssigneeSearch] = useState("");
+    const dropdownRef = useRef(null);
     const bottomRef = useRef(null);
+
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setDropdownOpen(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     const fetchTicket = async () => {
         try {
@@ -34,8 +50,21 @@ export default function TicketDetailPage() {
         }
     };
 
+    const fetchAssignees = async () => {
+        try {
+            const res = await fetch(`/api/v1/admin/helpdesk?fetchUsers=true`);
+            if (res.ok) {
+                const data = await res.json();
+                setAssignees(data);
+            }
+        } catch (error) {
+            console.error("Failed to fetch assignees", error);
+        }
+    };
+
     useEffect(() => {
         fetchTicket();
+        fetchAssignees();
     }, [id]);
 
     useEffect(() => {
@@ -52,8 +81,8 @@ export default function TicketDetailPage() {
             setSending(true);
             const payload = {
                 newComment: {
-                    userId: session?.user?._id || session?.user?.id,
-                    userName: session?.user?.name || `${session?.user?.personalDetails?.firstName} ${session?.user?.personalDetails?.lastName}`,
+                    userId: user?._id || user?.id,
+                    userName: user?.name || `${user?.personalDetails?.firstName || ""} ${user?.personalDetails?.lastName || ""}`.trim() || "User",
                     message: comment
                 }
             };
@@ -99,6 +128,25 @@ export default function TicketDetailPage() {
         }
     };
 
+    const handleAssigneeUpdate = async (newAssigneeId) => {
+        try {
+            const res = await fetch(`/api/v1/admin/helpdesk/${id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ assignedTo: newAssigneeId || null })
+            });
+
+            if (res.ok) {
+                toast.success(newAssigneeId ? "Ticket assigned successfully" : "Ticket unassigned");
+                fetchTicket();
+            } else {
+                toast.error("Failed to update assignment");
+            }
+        } catch (error) {
+            toast.error("Error updating assignment");
+        }
+    };
+
     const getStatusColor = (status) => {
         switch (status) {
             case "Open": return "bg-blue-50 text-blue-700 border-blue-100";
@@ -112,7 +160,7 @@ export default function TicketDetailPage() {
     if (loading) return <div className="p-10 text-center text-slate-500">Loading ticket details...</div>;
     if (!ticket) return <div className="p-10 text-center text-red-500">Ticket not found</div>;
 
-    const isAdmin = session?.user?.role === "admin" || session?.user?.role === "hr";
+    const isAdmin = user?.role === "admin" || user?.role === "hr" || user?.role === "super_admin";
 
     return (
         <div className="p-6 max-w-5xl mx-auto space-y-6">
@@ -145,11 +193,11 @@ export default function TicketDetailPage() {
                                 <div className="text-center text-slate-400 my-10">No comments yet. Start the conversation.</div>
                             ) : (
                                 ticket.comments.map((msg, idx) => (
-                                    <div key={idx} className={`flex gap-3 ${msg.user === (session?.user?._id || session?.user?.id) ? 'flex-row-reverse' : ''}`}>
+                                    <div key={idx} className={`flex gap-3 ${(msg.user?._id || msg.user) === (user?._id || user?.id) ? 'flex-row-reverse' : ''}`}>
                                         <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 flex-shrink-0">
                                             <User size={14} />
                                         </div>
-                                        <div className={`max-w-[80%] rounded-xl p-3 ${msg.user === (session?.user?._id || session?.user?.id)
+                                        <div className={`max-w-[80%] rounded-xl p-3 ${(msg.user?._id || msg.user) === (user?._id || user?.id)
                                             ? 'bg-indigo-600 text-white rounded-tr-none'
                                             : 'bg-white border border-slate-200 text-slate-700 rounded-tl-none'}`}>
                                             <div className="text-xs opacity-70 mb-1 flex justify-between gap-4">
@@ -208,12 +256,102 @@ export default function TicketDetailPage() {
                                             <CheckCircle size={16} className="text-blue-500" />}
                                     <span className="text-slate-900">{ticket.priority}</span>
                                 </div>
-                            </div>
-                            <div>
+                            </div>                              <div>
                                 <label className="text-xs text-slate-500 uppercase font-bold">Assigned To</label>
-                                <div className="text-slate-900 mt-1">
-                                    {ticket.assignedTo?.name || "Unassigned"}
-                                </div>
+                                {isAdmin ? (
+                                    <div className="relative mt-1" ref={dropdownRef}>
+                                        <button
+                                            type="button"
+                                            onClick={() => setDropdownOpen(!dropdownOpen)}
+                                            className="w-full flex items-center justify-between px-3 py-2 border border-slate-200 rounded-lg text-sm bg-white text-slate-700 hover:border-slate-300 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none cursor-pointer font-medium transition-all"
+                                        >
+                                            <span className="truncate">
+                                                {(() => {
+                                                    const currentAssigneeId = ticket.assignedTo?._id || ticket.assignedTo || "";
+                                                    const selectedAssignee = assignees.find(a => a._id === currentAssigneeId);
+                                                    return selectedAssignee ? `${selectedAssignee.name} (${selectedAssignee.role})` : "Unassigned";
+                                                })()}
+                                            </span>
+                                            <ChevronDown size={16} className={`text-slate-400 transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} />
+                                        </button>
+
+                                        {dropdownOpen && (
+                                            <div className="absolute z-50 w-full mt-1.5 bg-white border border-slate-200 rounded-xl shadow-xl overflow-hidden animate-in fade-in slide-in-from-top-1 duration-200">
+                                                <div className="p-2 border-b border-slate-100 flex items-center gap-2 bg-slate-50/50">
+                                                    <Search size={14} className="text-slate-400 shrink-0" />
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Search assignee..."
+                                                        value={assigneeSearch}
+                                                        onChange={(e) => setAssigneeSearch(e.target.value)}
+                                                        className="w-full bg-transparent border-none text-xs outline-none text-slate-700 placeholder-slate-400 py-1"
+                                                        autoFocus
+                                                        onClick={(e) => e.stopPropagation()}
+                                                    />
+                                                </div>
+
+                                                <div className="max-h-56 overflow-y-auto py-1">
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => {
+                                                            handleAssigneeUpdate("");
+                                                            setDropdownOpen(false);
+                                                            setAssigneeSearch("");
+                                                        }}
+                                                        className={`w-full text-left px-3 py-2 text-xs font-medium transition-colors ${
+                                                            !(ticket.assignedTo?._id || ticket.assignedTo || "")
+                                                                ? 'bg-indigo-50 text-indigo-700'
+                                                                : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                                                        }`}
+                                                    >
+                                                        Unassigned
+                                                    </button>
+                                                    {(() => {
+                                                        const currentAssigneeId = ticket.assignedTo?._id || ticket.assignedTo || "";
+                                                        const filteredAssignees = assignees.filter(assignee =>
+                                                            assignee.name.toLowerCase().includes(assigneeSearch.toLowerCase()) ||
+                                                            assignee.role?.toLowerCase().includes(assigneeSearch.toLowerCase())
+                                                        );
+                                                        
+                                                        if (filteredAssignees.length === 0) {
+                                                            return (
+                                                                <div className="px-3 py-3 text-xs text-slate-400 text-center">
+                                                                    No active team members found
+                                                                </div>
+                                                            );
+                                                        }
+
+                                                        return filteredAssignees.map((assignee) => (
+                                                            <button
+                                                                key={assignee._id}
+                                                                type="button"
+                                                                onClick={() => {
+                                                                    handleAssigneeUpdate(assignee._id);
+                                                                    setDropdownOpen(false);
+                                                                    setAssigneeSearch("");
+                                                                }}
+                                                                className={`w-full flex items-center justify-between px-3 py-2 text-xs transition-colors font-medium ${
+                                                                    currentAssigneeId === assignee._id
+                                                                        ? 'bg-indigo-50 text-indigo-700'
+                                                                        : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                                                                }`}
+                                                            >
+                                                                <span className="truncate">{assignee.name}</span>
+                                                                <span className="text-[10px] uppercase font-bold opacity-60 ml-2 bg-slate-100 px-1.5 py-0.5 rounded">
+                                                                    {assignee.role}
+                                                                </span>
+                                                            </button>
+                                                        ));
+                                                    })()}
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                ) : (
+                                    <div className="text-slate-900 mt-1">
+                                        {ticket.assignedTo?.name || "Unassigned"}
+                                    </div>
+                                )}
                             </div>
                         </div>
 

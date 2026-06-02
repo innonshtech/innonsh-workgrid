@@ -14,6 +14,32 @@ export async function GET(request) {
         }
 
         const { searchParams } = new URL(request.url);
+        const fetchUsers = searchParams.get("fetchUsers");
+        if (fetchUsers) {
+            let userQuery = { isActive: true, role: { $in: ["admin", "super_admin", "hr", "manager"] } };
+            let empQuery = { status: "Active" };
+            if (authUser.role !== "super_admin") {
+                userQuery.organizationId = authUser.organizationId;
+                empQuery['jobDetails.organizationId'] = authUser.organizationId;
+            }
+            const users = await User.find(userQuery).select('name email role');
+            const employees = await Employee.find(empQuery).select('personalDetails.firstName personalDetails.lastName role');
+
+            // Format employees to look like users
+            const formattedEmployees = employees.map(emp => ({
+                _id: emp._id.toString(),
+                name: `${emp.personalDetails.firstName} ${emp.personalDetails.lastName}`,
+                role: emp.role || 'employee'
+            }));
+
+            const allAssignees = [
+                ...users.map(u => ({ _id: u._id.toString(), name: u.name, role: u.role })),
+                ...formattedEmployees
+            ];
+
+            return NextResponse.json(allAssignees);
+        }
+
         const employeeId = searchParams.get("employeeId");
         const status = searchParams.get("status");
         const pageParam = searchParams.get("page");
@@ -23,11 +49,14 @@ export async function GET(request) {
         
         // Tenant and Role Isolation Scoping
         if (authUser.role === "employee" || authUser.role === "attendance_only") {
-            const emp = await Employee.findOne({ userId: authUser.id });
+            const emp = await Employee.findById(authUser.id);
             if (!emp) {
                 return NextResponse.json([], { status: 200 });
             }
-            query.employee = emp._id;
+            query.$or = [
+                { employee: emp._id },
+                { assignedTo: emp._id }
+            ];
         } else if (authUser.role !== "super_admin") {
             const myOrgEmployees = await Employee.find({ 'jobDetails.organizationId': authUser.organizationId }).select('_id');
             const myOrgEmployeeIds = myOrgEmployees.map(e => e._id);
@@ -130,7 +159,7 @@ export async function POST(request) {
 
         // Security Check: Standard employees can only create tickets for themselves
         if (authUser.role === "employee" || authUser.role === "attendance_only") {
-            const userEmp = await Employee.findOne({ userId: authUser.id });
+            const userEmp = await Employee.findById(authUser.id);
             if (!userEmp || userEmp._id.toString() !== emp._id.toString()) {
                 return NextResponse.json({ error: "Forbidden: You can only create tickets for yourself" }, { status: 403 });
             }

@@ -42,7 +42,10 @@ export default function VendorExpenses() {
         category: "Other",
         description: "",
         totalAmount: 0,
-        status: "Pending"
+        subTotal: 0,
+        totalTax: 0,
+        status: "Pending",
+        items: []
     });
 
     useEffect(() => {
@@ -81,7 +84,10 @@ export default function VendorExpenses() {
             category: "Other",
             description: "",
             totalAmount: 0,
-            status: "Pending"
+            subTotal: 0,
+            totalTax: 0,
+            status: "Pending",
+            items: []
         });
         setIsEditing(false);
         setEditingId(null);
@@ -96,7 +102,10 @@ export default function VendorExpenses() {
             category: exp.category || "Other",
             description: exp.description || "",
             totalAmount: exp.totalAmount,
-            status: exp.status || "Pending"
+            subTotal: exp.subTotal || exp.totalAmount,
+            totalTax: exp.totalTax || 0,
+            status: exp.status || "Pending",
+            items: exp.items || []
         });
         setIsEditing(true);
         setEditingId(exp._id);
@@ -133,6 +142,71 @@ export default function VendorExpenses() {
         } catch (error) {
             toast.error(error.message);
         }
+    };
+
+    const recalculateTotals = (itemsList) => {
+        let sub = 0;
+        let tax = 0;
+        itemsList.forEach(item => {
+            const amt = (Number(item.quantity) || 0) * (Number(item.rate) || 0);
+            const txAmt = amt * ((Number(item.taxPercent) || 0) / 100);
+            sub += amt;
+            tax += txAmt;
+        });
+        return {
+            subTotal: sub,
+            totalTax: tax,
+            totalAmount: sub + tax
+        };
+    };
+
+    const handleAddItem = () => {
+        const newItem = { description: "", quantity: 1, rate: 0, taxPercent: 0, amount: 0, taxAmount: 0 };
+        const updatedItems = [...(formData.items || []), newItem];
+        const totals = recalculateTotals(updatedItems);
+        setFormData(prev => ({
+            ...prev,
+            items: updatedItems,
+            totalAmount: totals.totalAmount,
+            subTotal: totals.subTotal,
+            totalTax: totals.totalTax
+        }));
+    };
+
+    const handleRemoveItem = (index) => {
+        const updatedItems = formData.items.filter((_, i) => i !== index);
+        const totals = recalculateTotals(updatedItems);
+        setFormData(prev => ({
+            ...prev,
+            items: updatedItems,
+            totalAmount: totals.totalAmount,
+            subTotal: totals.subTotal,
+            totalTax: totals.totalTax
+        }));
+    };
+
+    const handleItemChange = (index, field, value) => {
+        const updatedItems = formData.items.map((item, i) => {
+            if (i === index) {
+                const updated = { ...item, [field]: value };
+                const quantity = field === 'quantity' ? Number(value) : Number(updated.quantity || 0);
+                const rate = field === 'rate' ? Number(value) : Number(updated.rate || 0);
+                const taxPercent = field === 'taxPercent' ? Number(value) : Number(updated.taxPercent || 0);
+                
+                updated.amount = quantity * rate;
+                updated.taxAmount = updated.amount * (taxPercent / 100);
+                return updated;
+            }
+            return item;
+        });
+        const totals = recalculateTotals(updatedItems);
+        setFormData(prev => ({
+            ...prev,
+            items: updatedItems,
+            totalAmount: totals.totalAmount,
+            subTotal: totals.subTotal,
+            totalTax: totals.totalTax
+        }));
     };
 
     const handleSubmit = async (e) => {
@@ -343,7 +417,7 @@ export default function VendorExpenses() {
             {/* Add Expense Modal */}
             {showModal && (
                 <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
-                    <div className="bg-white rounded-[2.5rem] w-full max-w-2xl overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-300 border border-slate-100">
+                    <div className="bg-white rounded-[2.5rem] w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-300 border border-slate-100">
                         <div className="p-8 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
                             <div>
                                 <h2 className="text-2xl font-black text-slate-900 flex items-center gap-3 uppercase tracking-tight">
@@ -358,7 +432,8 @@ export default function VendorExpenses() {
                             </button>
                         </div>
 
-                        <form onSubmit={handleSubmit} className="p-8 space-y-6">
+                        <form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-hidden">
+                            <div className="flex-1 overflow-y-auto p-8 space-y-6">
                             <div className="grid grid-cols-2 gap-6">
                                 <div className="col-span-2 md:col-span-1">
                                     <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Select Vendor *</label>
@@ -375,15 +450,25 @@ export default function VendorExpenses() {
                                     </select>
                                 </div>
                                 <div className="col-span-2 md:col-span-1">
-                                    <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Amount (₹) *</label>
+                                    <div className="flex justify-between items-center mb-2">
+                                        <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Amount (₹) *</label>
+                                        {formData.items && formData.items.length > 0 && (
+                                            <span className="text-[9px] font-black text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100 uppercase tracking-wider">Auto-Calculated</span>
+                                        )}
+                                    </div>
                                     <div className="relative">
                                         <span className="absolute left-5 top-1/2 -translate-y-1/2 font-black text-slate-400 text-lg">₹</span>
                                         <input
                                             required
                                             type="number"
                                             value={formData.totalAmount}
+                                            readOnly={formData.items && formData.items.length > 0}
                                             onChange={e => setFormData({ ...formData, totalAmount: Number(e.target.value) })}
-                                            className="w-full pl-12 pr-5 py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl text-sm font-black outline-none focus:border-indigo-500 transition-all"
+                                            className={`w-full pl-12 pr-5 py-4 border-2 border-slate-100 rounded-2xl text-sm font-black outline-none transition-all ${
+                                                formData.items && formData.items.length > 0
+                                                    ? 'bg-indigo-50/30 text-indigo-700 border-indigo-100 cursor-not-allowed'
+                                                    : 'bg-slate-50 focus:border-indigo-500 text-slate-900'
+                                            }`}
                                         />
                                     </div>
                                 </div>
@@ -441,6 +526,95 @@ export default function VendorExpenses() {
                                         ))}
                                     </div>
                                 </div>
+                                <div className="col-span-2 border-t border-slate-100 pt-6">
+                                    <div className="flex justify-between items-center mb-4">
+                                        <div>
+                                            <h4 className="text-xs font-black text-slate-800 uppercase tracking-widest">Daily Consumptions / Line Items</h4>
+                                            <p className="text-[10px] text-slate-400 font-bold mt-0.5">Log daily deliveries here to automatically sum totals & taxes.</p>
+                                        </div>
+                                        <button
+                                            type="button"
+                                            onClick={handleAddItem}
+                                            className="px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-650 rounded-xl text-[9px] font-black uppercase tracking-wider flex items-center gap-1 transition-all active:scale-95"
+                                        >
+                                            <Plus className="w-3.5 h-3.5" /> Add Line Log
+                                        </button>
+                                    </div>
+
+                                    {(!formData.items || formData.items.length === 0) ? (
+                                        <div className="text-center py-6 border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50/20">
+                                            <p className="text-[10px] text-slate-400 font-black uppercase tracking-wider italic">No line items logged yet.</p>
+                                            <p className="text-[9px] text-slate-400 font-bold mt-0.5">Click "Add Line Log" to start logging daily deliveries.</p>
+                                        </div>
+                                    ) : (
+                                        <div className="space-y-3 max-h-56 overflow-y-auto pr-1">
+                                            {formData.items.map((item, index) => (
+                                                <div key={index} className="flex gap-3 items-center bg-slate-50/50 p-3 rounded-2xl border border-slate-100">
+                                                    <div className="flex-1">
+                                                        <input 
+                                                            type="text"
+                                                            placeholder="Description (e.g. 02 June - 10 Teas)"
+                                                            required
+                                                            value={item.description}
+                                                            onChange={e => handleItemChange(index, 'description', e.target.value)}
+                                                            className="w-full bg-white border border-slate-200 px-3 py-2 rounded-xl text-xs font-bold outline-none focus:border-indigo-500 transition-all placeholder:text-slate-350"
+                                                        />
+                                                    </div>
+                                                    <div className="w-16">
+                                                        <input 
+                                                            type="number"
+                                                            placeholder="Qty"
+                                                            required
+                                                            min="1"
+                                                            value={item.quantity || ''}
+                                                            onChange={e => handleItemChange(index, 'quantity', e.target.value)}
+                                                            className="w-full bg-white border border-slate-200 px-3 py-2 rounded-xl text-xs font-bold text-center outline-none focus:border-indigo-500 transition-all"
+                                                        />
+                                                    </div>
+                                                    <div className="w-20">
+                                                        <input 
+                                                            type="number"
+                                                            placeholder="Rate"
+                                                            required
+                                                            min="0"
+                                                            value={item.rate || ''}
+                                                            onChange={e => handleItemChange(index, 'rate', e.target.value)}
+                                                            className="w-full bg-white border border-slate-200 px-3 py-2 rounded-xl text-xs font-bold text-center outline-none focus:border-indigo-500 transition-all"
+                                                        />
+                                                    </div>
+                                                    <div className="w-16">
+                                                        <input 
+                                                            type="number"
+                                                            placeholder="GST %"
+                                                            min="0"
+                                                            value={item.taxPercent === 0 ? '0' : (item.taxPercent || '')}
+                                                            onChange={e => handleItemChange(index, 'taxPercent', e.target.value)}
+                                                            className="w-full bg-white border border-slate-200 px-3 py-2 rounded-xl text-xs font-bold text-center outline-none focus:border-indigo-500 transition-all"
+                                                        />
+                                                    </div>
+                                                    <div className="text-right w-20">
+                                                        <p className="text-[10px] text-slate-400 font-black uppercase tracking-wider">Subtotal</p>
+                                                        <p className="text-xs font-black text-slate-800">₹{((item.quantity || 0) * (item.rate || 0)).toLocaleString()}</p>
+                                                    </div>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => handleRemoveItem(index)}
+                                                        className="p-2 hover:bg-rose-50 text-slate-400 hover:text-rose-600 rounded-xl transition-all"
+                                                        title="Remove Line Log"
+                                                    >
+                                                        <Trash2 className="w-4 h-4" />
+                                                    </button>
+                                                </div>
+                                            ))}
+                                            <div className="flex justify-between items-center px-3 py-2 bg-indigo-50/20 border border-indigo-100 rounded-2xl">
+                                                <p className="text-[10px] font-black text-indigo-700 uppercase tracking-widest">Consolidated Monthly Summary</p>
+                                                <p className="text-xs font-black text-indigo-900">
+                                                    Subtotal: ₹{(formData.subTotal || 0).toLocaleString()} • Tax: ₹{(formData.totalTax || 0).toLocaleString()} • Total Amount: ₹{(formData.totalAmount || 0).toLocaleString()}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
                                 <div className="col-span-2">
                                     <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Description</label>
                                     <textarea
@@ -453,7 +627,9 @@ export default function VendorExpenses() {
                                 </div>
                             </div>
 
-                            <div className="pt-4 flex justify-end gap-4 border-t border-slate-50">
+                            </div>
+
+                            <div className="p-8 border-t border-slate-100 flex justify-end gap-4 bg-slate-50/50">
                                 <button type="button" onClick={() => setShowModal(false)} className="px-8 py-4 text-xs font-black uppercase tracking-widest text-slate-400 hover:text-slate-900 transition-all">Cancel</button>
                                 <button
                                     type="submit"
@@ -472,7 +648,7 @@ export default function VendorExpenses() {
             {/* View Details Modal */}
             {showViewModal && selectedExpense && (
                 <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
-                    <div className="bg-white rounded-[2.5rem] w-full max-w-lg overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-300 border border-slate-100">
+                    <div className="bg-white rounded-[2.5rem] w-full max-w-lg max-h-[90vh] flex flex-col overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-300 border border-slate-100">
                         <div className="p-8 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
                             <div>
                                 <h2 className="text-xl font-black text-slate-900 tracking-tight uppercase">
@@ -484,7 +660,7 @@ export default function VendorExpenses() {
                                 <X className="w-5 h-5" />
                             </button>
                         </div>
-                        <div className="p-8 space-y-6">
+                        <div className="flex-1 overflow-y-auto p-8 space-y-6">
                             <div className="flex items-center justify-between">
                                 <div>
                                     <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Vendor</p>
@@ -516,6 +692,79 @@ export default function VendorExpenses() {
                                 <p className="text-3xl font-black text-slate-900 mt-1">₹{selectedExpense.totalAmount.toLocaleString()}</p>
                             </div>
 
+                            {selectedExpense.status === 'Paid' && selectedExpense.paymentDetails && (
+                                <div className="space-y-3 bg-emerald-50/30 p-5 rounded-2xl border border-emerald-100/50">
+                                    <p className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Payment Settlement Details</p>
+                                    <div className="grid grid-cols-2 gap-4 text-xs">
+                                        <div>
+                                            <p className="text-[9px] font-black text-slate-400 uppercase tracking-wider">Payment Mode</p>
+                                            <p className="font-bold text-slate-800 mt-0.5">{selectedExpense.paymentDetails.paymentMode || 'Bank Transfer'}</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-[9px] font-black text-slate-400 uppercase tracking-wider">Settlement Date</p>
+                                            <p className="font-bold text-slate-800 mt-0.5">
+                                                {selectedExpense.paymentDetails.paymentDate 
+                                                    ? format(new Date(selectedExpense.paymentDetails.paymentDate), 'dd MMM yyyy') 
+                                                    : 'N/A'}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <p className="text-[9px] font-black text-slate-400 uppercase tracking-wider">Reference / Transaction ID</p>
+                                            <p className="font-black text-slate-950 mt-0.5 select-all">{selectedExpense.paymentDetails.referenceNumber || 'N/A'}</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-[9px] font-black text-slate-400 uppercase tracking-wider">Payment Receipt</p>
+                                            {selectedExpense.paymentDetails.receiptUrl ? (
+                                                <a 
+                                                    href={selectedExpense.paymentDetails.receiptUrl} 
+                                                    target="_blank" 
+                                                    rel="noopener noreferrer"
+                                                    className="inline-flex items-center gap-1 text-[10px] font-black text-indigo-600 hover:text-indigo-800 uppercase tracking-widest mt-1"
+                                                >
+                                                    <Receipt className="w-3.5 h-3.5" /> View Receipt ↗
+                                                </a>
+                                            ) : (
+                                                <p className="text-slate-400 font-bold mt-0.5 italic">No receipt uploaded</p>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {selectedExpense.items && selectedExpense.items.length > 0 && (
+                                <div className="space-y-3">
+                                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Logged Line Items</p>
+                                    <div className="border border-slate-100 rounded-2xl overflow-hidden bg-slate-50/50">
+                                        <table className="w-full text-left border-collapse text-[11px]">
+                                            <thead>
+                                                <tr className="bg-slate-100/50 font-black text-slate-500 border-b border-slate-200/55 uppercase tracking-wider">
+                                                    <th className="px-4 py-2">Item / Delivery</th>
+                                                    <th className="px-4 py-2 text-center">Qty</th>
+                                                    <th className="px-4 py-2 text-center">Rate</th>
+                                                    <th className="px-4 py-2 text-right">Total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody className="divide-y divide-slate-100 font-medium text-slate-700">
+                                                {selectedExpense.items.map((item, idx) => (
+                                                    <tr key={idx}>
+                                                        <td className="px-4 py-2.5 font-bold text-slate-800">{item.description}</td>
+                                                        <td className="px-4 py-2.5 text-center">{item.quantity}</td>
+                                                        <td className="px-4 py-2.5 text-center">₹{(item.rate || 0).toLocaleString()}</td>
+                                                        <td className="px-4 py-2.5 text-right font-bold text-slate-850">₹{((item.quantity || 0) * (item.rate || 0)).toLocaleString()}</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                        {(selectedExpense.subTotal > 0 || selectedExpense.totalTax > 0) && (
+                                            <div className="p-3 bg-indigo-50/20 border-t border-slate-100 flex justify-between items-center text-[10px] font-black uppercase text-indigo-700 tracking-wider">
+                                                <span>Subtotal: ₹{selectedExpense.subTotal?.toLocaleString()}</span>
+                                                <span>Tax: ₹{selectedExpense.totalTax?.toLocaleString()}</span>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            )}
+
                             {selectedExpense.description && (
                                 <div>
                                     <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Description</p>
@@ -525,48 +774,48 @@ export default function VendorExpenses() {
                                 </div>
                             )}
 
-                            <div className="pt-6 border-t border-slate-100 flex flex-wrap gap-2 justify-end">
-                                {selectedExpense.status === 'Pending' && (
-                                    <button 
-                                        onClick={() => {
-                                            handleStatusChange(selectedExpense._id, 'Approved');
-                                            setShowViewModal(false);
-                                        }}
-                                        className="px-4 py-2.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all"
-                                    >
-                                        Approve
-                                    </button>
-                                )}
-                                {selectedExpense.status !== 'Paid' && (
-                                    <button 
-                                        onClick={() => {
-                                            handleStatusChange(selectedExpense._id, 'Paid');
-                                            setShowViewModal(false);
-                                        }}
-                                        className="px-4 py-2.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-600 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all"
-                                    >
-                                        Mark as Paid
-                                    </button>
-                                )}
+                        </div>
+                        <div className="p-6 border-t border-slate-100 bg-slate-50/50 flex flex-wrap gap-2 justify-end">
+                            {selectedExpense.status === 'Pending' && (
                                 <button 
                                     onClick={() => {
+                                        handleStatusChange(selectedExpense._id, 'Approved');
                                         setShowViewModal(false);
-                                        handleOpenEdit(selectedExpense);
                                     }}
-                                    className="px-4 py-2.5 bg-slate-50 hover:bg-slate-150 text-slate-600 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all"
+                                    className="px-4 py-2.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-660 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all"
                                 >
-                                    Edit
+                                    Approve
                                 </button>
+                            )}
+                            {selectedExpense.status !== 'Paid' && (
                                 <button 
                                     onClick={() => {
+                                        handleStatusChange(selectedExpense._id, 'Paid');
                                         setShowViewModal(false);
-                                        handleDeleteExpense(selectedExpense._id);
                                     }}
-                                    className="px-4 py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-600 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all"
+                                    className="px-4 py-2.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-600 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all"
                                 >
-                                    Delete
+                                    Mark as Paid
                                 </button>
-                            </div>
+                            )}
+                            <button 
+                                onClick={() => {
+                                    setShowViewModal(false);
+                                    handleOpenEdit(selectedExpense);
+                                }}
+                                className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all border border-slate-200/60"
+                            >
+                                Edit
+                            </button>
+                            <button 
+                                onClick={() => {
+                                    setShowViewModal(false);
+                                    handleDeleteExpense(selectedExpense._id);
+                                }}
+                                className="px-4 py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-600 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all"
+                            >
+                                Delete
+                            </button>
                         </div>
                     </div>
                 </div>

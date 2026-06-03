@@ -8,6 +8,8 @@ import { getAuthUser } from '@/lib/auth-util';
 import { logActivity } from '@/lib/logger';
 
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request) {
     try {
         const authUser = await getAuthUser();
@@ -22,7 +24,17 @@ export async function GET(request) {
             employeeId = authUser.id;
         }
 
-        let query = { organizationId: authUser.organizationId };
+        // Robust Organization ID resolution
+        let orgId = authUser.organizationId;
+        if (!orgId) {
+            const emp = await Employee.findById(authUser.id || authUser._id);
+            if (emp && emp.jobDetails?.organizationId) {
+                orgId = emp.jobDetails.organizationId.toString();
+            }
+        }
+
+        let query = {};
+        if (orgId) query.organizationId = orgId;
         if (employeeId) query.employee = employeeId;
         if (weekStartDate) query.weekStartDate = new Date(weekStartDate);
         if (status) query.status = status;
@@ -42,12 +54,25 @@ export async function GET(request) {
                 success: true,
                 timesheet: timesheets[0],
                 entries
+            }, {
+                headers: {
+                    'Cache-Control': 'no-store, max-age=0, must-revalidate'
+                }
             });
         }
 
-        return NextResponse.json({ success: true, timesheets });
+        return NextResponse.json({ success: true, timesheets }, {
+            headers: {
+                'Cache-Control': 'no-store, max-age=0, must-revalidate'
+            }
+        });
     } catch (error) {
-        return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+        return NextResponse.json({ success: false, error: error.message }, {
+            status: 500,
+            headers: {
+                'Cache-Control': 'no-store, max-age=0, must-revalidate'
+            }
+        });
     }
 }
 
@@ -67,6 +92,15 @@ export async function POST(request) {
             return NextResponse.json({ success: false, error: 'Employee and weekStartDate are required' }, { status: 400 });
         }
 
+        // Robust Organization ID resolution
+        let orgId = authUser.organizationId;
+        if (!orgId) {
+            const emp = await Employee.findById(authUser.id || authUser._id);
+            if (emp && emp.jobDetails?.organizationId) {
+                orgId = emp.jobDetails.organizationId.toString();
+            }
+        }
+
         // 1. Find or Create Timesheet
         let timesheet = await Timesheet.findOne({
             employee,
@@ -79,7 +113,7 @@ export async function POST(request) {
                 weekStartDate: new Date(weekStartDate),
                 status,
                 submittedTo: submittedTo || null,
-                organizationId: authUser.organizationId // Ensure organizationId is saved
+                organizationId: orgId // Ensure robust orgId is saved
             });
         } else {
             // If already approved, don't allow changes
@@ -88,6 +122,9 @@ export async function POST(request) {
             }
             timesheet.status = status;
             timesheet.submittedTo = submittedTo || null;
+            if (orgId) {
+                timesheet.organizationId = orgId;
+            }
         }
 
         if (status === 'Submitted') {

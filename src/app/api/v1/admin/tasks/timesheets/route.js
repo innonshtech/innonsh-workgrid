@@ -2,8 +2,11 @@ import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/db/connect';
 import Timesheet from '@/lib/db/models/tasks/Timesheet';
 import TimesheetEntry from '@/lib/db/models/tasks/TimesheetEntry';
+import Employee from '@/lib/db/models/payroll/Employee';
 import { logActivity } from '@/lib/logger';
 import { getAuthUser } from '@/lib/auth-util';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET(request) {
     try {
@@ -19,7 +22,17 @@ export async function GET(request) {
         const status = searchParams.get('status');
         const submittedTo = searchParams.get('submittedTo');
 
-        let query = { organizationId: authUser.organizationId };
+        // Robust Organization ID resolution
+        let orgId = authUser.organizationId;
+        if (!orgId) {
+            const emp = await Employee.findById(authUser.id || authUser._id);
+            if (emp && emp.jobDetails?.organizationId) {
+                orgId = emp.jobDetails.organizationId.toString();
+            }
+        }
+
+        let query = {};
+        if (orgId) query.organizationId = orgId;
         if (employeeId) query.employee = employeeId;
         if (weekStartDate) query.weekStartDate = new Date(weekStartDate);
         if (status) query.status = status;
@@ -46,12 +59,25 @@ export async function GET(request) {
                 success: true,
                 timesheet: timesheets[0],
                 entries
+            }, {
+                headers: {
+                    'Cache-Control': 'no-store, max-age=0, must-revalidate'
+                }
             });
         }
 
-        return NextResponse.json({ success: true, timesheets });
+        return NextResponse.json({ success: true, timesheets }, {
+            headers: {
+                'Cache-Control': 'no-store, max-age=0, must-revalidate'
+            }
+        });
     } catch (error) {
-        return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+        return NextResponse.json({ success: false, error: error.message }, {
+            status: 500,
+            headers: {
+                'Cache-Control': 'no-store, max-age=0, must-revalidate'
+            }
+        });
     }
 }
 
@@ -70,6 +96,15 @@ export async function POST(request) {
             return NextResponse.json({ success: false, error: 'Employee and weekStartDate are required' }, { status: 400 });
         }
 
+        // Robust Organization ID resolution
+        let orgId = authUser.organizationId;
+        if (!orgId) {
+            const emp = await Employee.findById(authUser.id || authUser._id);
+            if (emp && emp.jobDetails?.organizationId) {
+                orgId = emp.jobDetails.organizationId.toString();
+            }
+        }
+
         // 1. Find or Create Timesheet
         let timesheet = await Timesheet.findOne({
             employee,
@@ -80,7 +115,7 @@ export async function POST(request) {
             timesheet = new Timesheet({
                 employee,
                 weekStartDate: new Date(weekStartDate),
-                organizationId: authUser.organizationId,
+                organizationId: orgId,
                 status
             });
         } else {
@@ -90,6 +125,9 @@ export async function POST(request) {
                 return NextResponse.json({ success: false, error: 'Cannot edit an approved timesheet' }, { status: 400 });
             }
             timesheet.status = status;
+            if (orgId) {
+                timesheet.organizationId = orgId;
+            }
         }
 
         // 2. Handle Entries

@@ -39,7 +39,7 @@ const TimesheetApprovals = () => {
         try {
             setLoading(true);
             const url = `/api/v1/admin/tasks/timesheets?status=${statusFilter}`;
-            const res = await fetch(url);
+            const res = await fetch(url, { cache: 'no-store' });
             const data = await res.json();
             if (data.success) {
                 setTimesheets(data.timesheets);
@@ -53,7 +53,7 @@ const TimesheetApprovals = () => {
 
     const fetchDetails = async (timesheet) => {
         try {
-            const res = await fetch(`/api/v1/admin/tasks/timesheets?employeeId=${timesheet.employee._id}&weekStartDate=${timesheet.weekStartDate}`);
+            const res = await fetch(`/api/v1/admin/tasks/timesheets?employeeId=${timesheet.employee._id}&weekStartDate=${timesheet.weekStartDate}`, { cache: 'no-store' });
             const data = await res.json();
             if (data.success) {
                 setEntries(data.entries);

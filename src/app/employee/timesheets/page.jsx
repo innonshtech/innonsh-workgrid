@@ -109,7 +109,7 @@ export default function TimesheetsPage() {
     // Fetch projects
     const fetchProjects = async () => {
         try {
-            const res = await fetch('/api/v1/employee/tasks/projects?status=Active');
+            const res = await fetch('/api/v1/employee/tasks/projects?status=Active', { cache: 'no-store' });
             if (res.ok) {
                 const data = await res.json();
                 if (data.success) setProjects(data.projects);
@@ -122,7 +122,7 @@ export default function TimesheetsPage() {
     // Fetch active employees (potential managers)
     const fetchEmployeesList = async () => {
         try {
-            const res = await fetch('/api/v1/employee/payroll/employees?status=Active&limit=1000');
+            const res = await fetch('/api/v1/employee/payroll/employees?status=Active&limit=1000', { cache: 'no-store' });
             if (res.ok) {
                 const data = await res.json();
                 if (data.employees) {
@@ -137,7 +137,7 @@ export default function TimesheetsPage() {
     // Fetch current employee's details (to auto-get reporting manager)
     const fetchEmployeeProfile = async (empId) => {
         try {
-            const res = await fetch(`/api/v1/employee/payroll/employees/${empId}`);
+            const res = await fetch(`/api/v1/employee/payroll/employees/${empId}`, { cache: 'no-store' });
             if (res.ok) {
                 const data = await res.json();
                 setCurrentUserEmployee(data);
@@ -154,7 +154,7 @@ export default function TimesheetsPage() {
     // Fetch Timesheet
     const fetchTimesheet = async (empId, weekDate) => {
         try {
-            const res = await fetch(`/api/v1/employee/tasks/timesheets?employeeId=${empId}&weekStartDate=${weekDate.toISOString()}`);
+            const res = await fetch(`/api/v1/employee/tasks/timesheets?employeeId=${empId}&weekStartDate=${weekDate.toISOString()}`, { cache: 'no-store' });
             if (res.ok) {
                 const data = await res.json();
                 if (data.success) {
@@ -173,14 +173,20 @@ export default function TimesheetsPage() {
         }
     };
 
+    const [mounted, setMounted] = useState(false);
+
     useEffect(() => {
-        if (user?.id) {
+        setMounted(true);
+    }, []);
+
+    useEffect(() => {
+        if (user?.id && mounted) {
             fetchProjects();
             fetchEmployeesList();
             fetchEmployeeProfile(user.id);
             fetchTimesheet(user.id, weekStartDate);
         }
-    }, [user, weekStartDate]);
+    }, [user, weekStartDate, mounted]);
 
     const changeWeek = (offset) => {
         const newDate = new Date(weekStartDate);
@@ -279,7 +285,7 @@ export default function TimesheetsPage() {
         }
     };
 
-    if (sessionLoading || !user) {
+    if (sessionLoading || !user || !mounted) {
         return (
             <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
                 <div className="relative w-12 h-12">

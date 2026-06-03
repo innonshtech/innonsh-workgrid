@@ -122,7 +122,14 @@ function ESSDashboardContent() {
     const [attendanceList, setAttendanceList] = useState([]);
 
     const [showPolicyModal, setShowPolicyModal] = useState(false);
-    const [selectedFY, setSelectedFY] = useState("2025-26");
+    const defaultFY = (() => {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = today.getMonth() + 1;
+        const fyStart = month >= 4 ? year : year - 1;
+        return `${fyStart}-${(fyStart + 1).toString().slice(-2)}`;
+    })();
+    const [selectedFY, setSelectedFY] = useState(defaultFY);
     const [previewSlip, setPreviewSlip] = useState(null);
     const [userRoster, setUserRoster] = useState([]);
     const [otRequests, setOtRequests] = useState([]);
@@ -923,8 +930,21 @@ function ESSDashboardContent() {
                                     onChange={(e) => setSelectedFY(e.target.value)}
                                     className="text-xs font-bold bg-transparent border-none focus:ring-0 pr-8 text-slate-700"
                                 >
-                                    <option value="2025-26">FY 2025-26</option>
-                                    <option value="2024-25">FY 2024-25</option>
+                                    {(() => {
+                                        const today = new Date();
+                                        const year = today.getFullYear();
+                                        const month = today.getMonth() + 1;
+                                        const fyStart = month >= 4 ? year : year - 1;
+                                        const yearsList = [];
+                                        for (let i = 0; i < 4; i++) {
+                                            const start = fyStart - i;
+                                            const end = (start + 1).toString().slice(-2);
+                                            yearsList.push(`${start}-${end}`);
+                                        }
+                                        return yearsList.map(fy => (
+                                            <option key={fy} value={fy}>FY {fy}</option>
+                                        ));
+                                    })()}
                                 </select>
                             </div>
                         </div>

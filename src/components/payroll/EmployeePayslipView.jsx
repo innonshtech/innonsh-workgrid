@@ -102,7 +102,7 @@ export default function EmployeePayslipView() {
         ...(filters.status && { status: filters.status }),
       });
 
-      const response = await fetch(`/api/v1/admin/payroll/payslip?${queryParams}`);
+      const response = await fetch(`/api/v1/employee/payroll/payslip?${queryParams}`);
       const data = await response.json();
       if (response.ok) {
         setPayslips(data.payslips || []);

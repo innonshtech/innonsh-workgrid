@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/db/connect';
 import Timesheet from '@/lib/db/models/tasks/Timesheet';
+import Employee from '@/lib/db/models/payroll/Employee';
 import Notification from '@/lib/db/models/notifications/NotificationConfig';
 import { logActivity } from '@/lib/logger';
 import { getAuthUser } from '@/lib/auth-util';

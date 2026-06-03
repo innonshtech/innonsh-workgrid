@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import { 
   ArrowLeft, Lock, Send, FileText, CheckCircle, 
   AlertTriangle, DollarSign, Calculator, Users, Clock,
-  Download, ChevronDown, Trash2, Banknote
+  Download, ChevronDown, Trash2, Banknote, RefreshCw
 } from "lucide-react";
 import BankPayoutModal from "@/components/payroll/bank-transfer-modal";
 

@@ -21,9 +21,11 @@ const protectedRoutes = [
   
   // Enforce rigid SaaS API layer security instead of relying manually on route-level validation
   { path: '/api/v1/super-admin', roles: ['super_admin'], isApi: true },
+  { path: '/api/handbook', roles: ['admin', 'super_admin', 'employee', 'attendance_only'], isApi: true },
   
   // Specific exceptions allowing any designated employee to approve team requests, evaluated before the broader /api/v1/admin block
   { path: '/api/v1/admin/tasks', roles: ['admin', 'super_admin', 'employee'], isApi: true },
+  { path: '/api/v1/admin/payroll/loans', roles: ['admin', 'super_admin', 'employee'], isApi: true },
   { path: '/api/v1/admin/payroll/employees', roles: ['admin', 'super_admin', 'employee'], isApi: true },
   { path: '/api/v1/admin/employees', roles: ['admin', 'super_admin', 'employee'], isApi: true },
   { path: '/api/v1/admin/attendance', roles: ['admin', 'super_admin', 'employee'], isApi: true },

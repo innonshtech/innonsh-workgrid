@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/db/connect';
 import Task from '@/lib/db/models/tasks/Task';
+import User from '@/lib/db/models/User';
 import { getAuthUser, authorize } from '@/lib/auth-util';
 
 // GET — Fetch comments for a task

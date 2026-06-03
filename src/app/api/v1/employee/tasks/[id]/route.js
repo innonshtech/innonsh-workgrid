@@ -255,6 +255,7 @@ import mongoose from 'mongoose';
 import dbConnect from '@/lib/db/connect';
 import Task from '@/lib/db/models/tasks/Task';
 import User from '@/lib/db/models/User';
+import Employee from '@/lib/db/models/payroll/Employee';
 import { logActivity } from '@/lib/logger';
 
 // Helper: Transform Mongoose doc to frontend-friendly format

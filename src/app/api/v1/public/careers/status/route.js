@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/db/connect';
 import Candidate from '@/lib/db/models/recruitment/Candidate';
+import JobRequisition from '@/lib/db/models/recruitment/JobRequisition';
 
 export async function GET(request) {
     try {

@@ -373,6 +373,11 @@ function DashboardLayoutContent({ children }) {
       icon: MessageSquare,
     },
     {
+      name: t("employeeHandbook") || "Employee Handbook",
+      href: "/admin/handbook",
+      icon: BookOpen,
+    },
+    {
       name: t("activityLogs"),
       href: "/super-admin/audit-logs",
       icon: Clock,

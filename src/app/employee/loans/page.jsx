@@ -252,7 +252,10 @@ function RequestLoanModal({ isOpen, onClose, onSuccess }) {
             const res = await fetch("/api/v1/admin/payroll/loans", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formData)
+                body: JSON.stringify({
+                    ...formData,
+                    installments: formData.type === 'Advance' ? 1 : formData.installments
+                })
             });
             const data = await res.json();
             if (res.ok) {
@@ -268,6 +271,10 @@ function RequestLoanModal({ isOpen, onClose, onSuccess }) {
         }
     };
 
+    const amountVal = parseFloat(formData.amount) || 0;
+    const installmentVal = formData.type === 'Advance' ? 1 : (parseInt(formData.installments) || 1);
+    const monthlyDeduction = amountVal > 0 ? Math.round(amountVal / installmentVal) : 0;
+
     return (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
             <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden">
@@ -280,7 +287,7 @@ function RequestLoanModal({ isOpen, onClose, onSuccess }) {
                         <label className="text-sm font-medium text-slate-700">Type</label>
                         <div className="flex gap-4">
                             <label className="flex items-center gap-2 cursor-pointer">
-                                <input type="radio" name="type" value="Advance" checked={formData.type === 'Advance'} onChange={e => setFormData({ ...formData, type: e.target.value })} className="text-indigo-600 focus:ring-indigo-500" />
+                                <input type="radio" name="type" value="Advance" checked={formData.type === 'Advance'} onChange={e => setFormData({ ...formData, type: e.target.value, installments: 1 })} className="text-indigo-600 focus:ring-indigo-500" />
                                 <span className="text-sm text-slate-700">Salary Advance</span>
                             </label>
                             <label className="flex items-center gap-2 cursor-pointer">
@@ -308,12 +315,29 @@ function RequestLoanModal({ isOpen, onClose, onSuccess }) {
                             required
                             min="1"
                             max="36"
-                            value={formData.installments}
+                            disabled={formData.type === 'Advance'}
+                            value={formData.type === 'Advance' ? 1 : formData.installments}
                             onChange={(e) => setFormData({ ...formData, installments: e.target.value })}
-                            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+                            className={`w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all ${
+                                formData.type === 'Advance' ? 'bg-slate-50 text-slate-400 cursor-not-allowed' : ''
+                            }`}
                         />
-                        <p className="text-xs text-slate-500">For Salary Advance, usually 1 installment (next month).</p>
+                        <p className="text-xs text-slate-500">For Salary Advance, installments are fixed to 1 month.</p>
                     </div>
+
+                    {amountVal > 0 && (
+                        <div className="bg-indigo-50 border border-indigo-100 rounded-xl p-3 flex items-start gap-2.5">
+                            <AlertCircle size={18} className="text-indigo-600 shrink-0 mt-0.5" />
+                            <div>
+                                <p className="text-xs text-indigo-700 font-semibold uppercase tracking-wider">Estimated Repayment Preview</p>
+                                <p className="text-sm text-indigo-950 font-semibold mt-0.5">
+                                    Deduction of <span className="text-indigo-600">₹{new Intl.NumberFormat('en-IN').format(monthlyDeduction)}</span> / month for <span className="text-indigo-600">{installmentVal} {installmentVal === 1 ? 'month' : 'months'}</span>.
+                                </p>
+                                <p className="text-[11px] text-slate-500 mt-1">Deductions are automatically processed via payroll (0% interest).</p>
+                            </div>
+                        </div>
+                    )}
+
                     <div className="space-y-2">
                         <label className="text-sm font-medium text-slate-700">Reason</label>
                         <textarea

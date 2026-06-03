@@ -579,11 +579,11 @@ function ESSDashboardContent() {
         }
     };
 
-    const getMonthName = (monthNumber) => {
+    function getMonthName(monthNumber) {
         const date = new Date();
         date.setMonth(monthNumber - 1);
         return date.toLocaleString('en-US', { month: 'long' });
-    };
+    }
 
     const safeFormatDate = (year, month) => {
         if (!year || !month) return 'N/A';

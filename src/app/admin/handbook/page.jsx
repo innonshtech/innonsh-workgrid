@@ -49,6 +49,45 @@ export default function HandbookPage() {
         }
     };
 
+    const handleViewDownload = (doc) => {
+        try {
+            const fileUrl = doc.fileUrl;
+            if (!fileUrl) {
+                toast.error("No file URL available");
+                return;
+            }
+
+            if (fileUrl.startsWith("data:")) {
+                const parts = fileUrl.split(",");
+                const mime = parts[0].match(/:(.*?);/)[1];
+                const bstr = atob(parts[1]);
+                let n = bstr.length;
+                const u8arr = new Uint8Array(n);
+                while (n--) {
+                    u8arr[n] = bstr.charCodeAt(n);
+                }
+                const blob = new Blob([u8arr], { type: mime });
+                const blobUrl = URL.createObjectURL(blob);
+                
+                if (mime === "application/pdf") {
+                    window.open(blobUrl, "_blank");
+                } else {
+                    const a = document.createElement("a");
+                    a.href = blobUrl;
+                    a.download = doc.title || "document";
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                }
+            } else {
+                window.open(fileUrl, "_blank");
+            }
+        } catch (error) {
+            console.error("Error viewing document:", error);
+            toast.error("Error opening document");
+        }
+    };
+
     const isAdmin = user?.role === "admin" || user?.role === "hr";
 
     const filteredDocs = documents.filter(doc =>
@@ -118,15 +157,13 @@ export default function HandbookPage() {
                                 <p className="text-xs text-slate-400 mt-2">Added {new Date(doc.createdAt).toLocaleDateString()}</p>
                             </div>
 
-                            <a
-                                href={doc.fileUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
+                            <button
+                                onClick={() => handleViewDownload(doc)}
                                 className="mt-4 w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-50 text-slate-700 rounded-lg hover:bg-slate-100 font-medium text-sm transition-colors"
                             >
                                 <Download size={16} />
                                 {t("viewDownload")}
-                            </a>
+                            </button>
                         </div>
                     ))}
                 </div>

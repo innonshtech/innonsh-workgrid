@@ -254,6 +254,8 @@ import { NextResponse } from 'next/server';
 import mongoose from 'mongoose';
 import dbConnect from '@/lib/db/connect';
 import Task from '@/lib/db/models/tasks/Task';
+import User from '@/lib/db/models/User';
+import Employee from '@/lib/db/models/payroll/Employee';
 import { logActivity } from '@/lib/logger';
 import { getAuthUser, authorize } from '@/lib/auth-util';
 

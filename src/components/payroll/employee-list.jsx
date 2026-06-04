@@ -23,6 +23,15 @@ import {
   DropdownMenuSeparator
 } from "@/components/ui/dropdown-menu";
 
+import { EnterprisePageHeader } from "@/components/ui/enterprise/EnterprisePageHeader";
+import { EnterpriseSectionCard } from "@/components/ui/enterprise/EnterpriseSectionCard";
+import { EnterpriseButton } from "@/components/ui/enterprise/EnterpriseButton";
+import { EnterpriseKpiCard } from "@/components/ui/enterprise/EnterpriseKpiCard";
+import { EnterpriseStatusBadge } from "@/components/ui/enterprise/EnterpriseStatusBadge";
+import { EnterpriseIconContainer } from "@/components/ui/enterprise/EnterpriseIconContainer";
+import { EnterpriseTableWrapper } from "@/components/ui/enterprise/EnterpriseTableWrapper";
+import { EnterpriseEmptyState } from "@/components/ui/enterprise/EnterpriseEmptyState";
+
 export default function EmployeeList() {
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -336,14 +345,7 @@ export default function EmployeeList() {
   };
 
   const getStatusBadge = (status) => {
-    const config = getStatusConfig(status);
-
-    return (
-      <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium border ${config.bg} ${config.text} ${config.border}`}>
-        <div className={`w-1.5 h-1.5 rounded-full ${config.dot}`}></div>
-        {status}
-      </span>
-    );
+    return <EnterpriseStatusBadge status={status} activeState="Active" />;
   };
 
   const getInitials = (firstName, lastName) => {
@@ -619,46 +621,31 @@ export default function EmployeeList() {
     <div className="min-h-screen bg-slate-50">
       <Toaster />
       {/* Header */}
-      <div className="bg-white border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-6 py-6">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div className="flex items-center space-x-4">
-              <div className="w-11 h-11 bg-indigo-600 rounded-xl flex items-center justify-center shadow-sm shadow-indigo-200 shrink-0">
-                <Users className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold text-slate-900">Employee Directory</h1>
-                <p className="text-slate-600 text-sm mt-0.5">Manage your organizational workforce and team operations</p>
-              </div>
-            </div>
-
-            <div className="flex items-center space-x-2 self-end md:self-auto">
-              <button
+      <div className="max-w-7xl mx-auto px-6 pt-6">
+        <EnterprisePageHeader 
+          title="Employee Directory"
+          subtitle="Manage your organizational workforce and team operations"
+          icon={Users}
+          actions={
+            <div className="flex flex-wrap items-center gap-2">
+              <EnterpriseButton
+                variant="secondary"
                 onClick={handleExport}
                 disabled={exportLoading || employees.length === 0}
-                className="inline-flex items-center gap-2 px-4 py-2.5 text-slate-600 bg-slate-50 hover:bg-slate-100 rounded-lg border border-slate-200 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                icon={exportLoading ? Loader2 : Download}
               >
-                {exportLoading ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                ) : (
-                  <Download className="w-4 h-4" />
-                )}
                 {exportLoading ? "Exporting..." : "Export"}
-              </button>
-
+              </EnterpriseButton>
               <DropdownMenu>
-                <DropdownMenuTrigger className="inline-flex">
-                  <button
-                    type="button"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors shadow-sm shadow-indigo-200"
-                  >
-                    <Plus className="w-4 h-4" />
-                    Add Employee
-                    <ChevronDown className="w-4 h-4 opacity-90" />
-                  </button>
+                <DropdownMenuTrigger asChild>
+                  <div className="inline-flex">
+                    <EnterpriseButton icon={Plus}>
+                      Add Employee
+                      <ChevronDown className="w-4 h-4 opacity-90 ml-1" />
+                    </EnterpriseButton>
+                  </div>
                 </DropdownMenuTrigger>
-
-                <DropdownMenuContent align="end" className="min-w-[14rem]">
+                <DropdownMenuContent align="end" className="min-w-[14rem] z-50">
                   <DropdownMenuLabel>Add Employee</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={() => router.push("/admin/employees/new")}>
@@ -670,79 +657,48 @@ export default function EmployeeList() {
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
-          </div>
-        </div>
+          }
+        />
       </div>
 
       <div className="max-w-7xl mx-auto px-6 py-6 space-y-6">
         {/* Analytics Overview */}
-        {/* Analytics Overview */}
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[...Array(3)].map((_, i) => (
-              <div key={i} className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-                <div className="flex justify-between">
-                  <div className="space-y-2">
-                    <Skeleton className="h-4 w-24" />
-                    <Skeleton className="h-8 w-16" />
-                    <Skeleton className="h-3 w-20" />
-                  </div>
-                  <Skeleton className="w-12 h-12 rounded-xl" />
-                </div>
-              </div>
-            ))}
+            <Skeleton className="h-32 w-full rounded-2xl" />
+            <Skeleton className="h-32 w-full rounded-2xl" />
+            <Skeleton className="h-32 w-full rounded-2xl" />
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-slate-600">Total Employees</p>
-                  <p className="text-2xl font-bold text-slate-900 mt-2">{employees.length}</p>
-                  <p className="text-xs text-slate-500 mt-1">Active workforce</p>
-                </div>
-                <div className="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center border border-indigo-100">
-                  <Users className="w-6 h-6 text-indigo-600" />
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-slate-600">Active Staff</p>
-                  <p className="text-2xl font-bold text-slate-900 mt-2">
-                    {employees.filter(e => e.status === 'Active').length}
-                  </p>
-                  <p className="text-xs text-slate-500 mt-1">Currently working</p>
-                </div>
-                <div className="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center border border-green-100">
-                  <CheckCircle className="w-6 h-6 text-green-600" />
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-slate-600">Departments</p>
-                  <p className="text-2xl font-bold text-slate-900 mt-2">
-                    {departments.length}
-                  </p>
-                  <p className="text-xs text-slate-500 mt-1">Business units</p>
-                </div>
-                <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center border border-blue-100">
-                  <Building className="w-6 h-6 text-blue-600" />
-                </div>
-              </div>
-            </div>
+            <EnterpriseKpiCard
+              title="Total Employees"
+              value={employees.length}
+              subtitle="Active workforce"
+              icon={Users}
+              trend={{ value: "100%", label: "Total", isPositive: true }}
+            />
+            <EnterpriseKpiCard
+              title="Active Staff"
+              value={employees.filter(e => e.status === 'Active').length}
+              subtitle="Currently working"
+              icon={CheckCircle}
+              trend={{ value: "Active", label: "Status", isPositive: true }}
+            />
+            <EnterpriseKpiCard
+              title="Departments"
+              value={departments.length}
+              subtitle="Business units"
+              icon={Building}
+              trend={{ value: "Units", label: "Group", isPositive: true }}
+            />
           </div>
         )}
 
         {/* Group by Organization Toggle Box removed */}
 
         {/* Controls Panel */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+        <EnterpriseSectionCard className="p-0 overflow-hidden">
           <div className="p-6 border-b border-slate-200">
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
               <div className="flex items-center space-x-3">
@@ -757,14 +713,15 @@ export default function EmployeeList() {
               </div>
 
               <div className="flex items-center space-x-3">
-                <button
+                <EnterpriseButton
+                  variant="secondary"
                   onClick={fetchEmployees}
                   disabled={refreshing}
-                  className="inline-flex items-center gap-2 px-4 py-2.5 text-slate-600 bg-slate-50 hover:bg-slate-100 rounded-lg border border-slate-200 disabled:opacity-50 transition-colors font-medium"
+                  icon={RefreshCw}
+                  iconClassName={refreshing ? 'animate-spin' : ''}
                 >
-                  <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
                   Refresh
-                </button>
+                </EnterpriseButton>
 
                 {!groupByOrganization && (
                   <div className="flex bg-slate-100 rounded-lg p-1">
@@ -865,7 +822,8 @@ export default function EmployeeList() {
 
               <div className="lg:col-span-1 flex items-end">
                 {hasActiveFilters && (
-                  <button
+                  <EnterpriseButton
+                    variant="secondary"
                     onClick={() => {
                       setSearchTerm('');
                       setDepartmentFilter('');
@@ -873,11 +831,10 @@ export default function EmployeeList() {
                       setOrganizationFilter('');
                       setRoleFilter('');
                     }}
-                    className="w-full px-4 py-2.5 text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg flex items-center justify-center transition-colors font-medium"
+                    className="w-full justify-center"
                     title="Clear all filters"
-                  >
-                    <FilterX className="w-4 h-4" />
-                  </button>
+                    icon={FilterX}
+                  />
                 )}
               </div>
             </div>
@@ -928,43 +885,26 @@ export default function EmployeeList() {
                 ))}
               </div>
             ) : employees.length === 0 ? (
-              <div className="text-center py-16">
-                <div className="w-16 h-16 bg-slate-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <Users className="w-8 h-8 text-slate-400" />
-                </div>
-                <h3 className="text-lg font-semibold text-slate-900 mb-2">
-                  {hasActiveFilters ? 'No employees match your criteria' : 'No employees found'}
-                </h3>
-                <p className="text-slate-500 text-sm mb-6 max-w-md mx-auto">
-                  {hasActiveFilters
+              <EnterpriseEmptyState
+                icon={hasActiveFilters ? FilterX : Users}
+                title={hasActiveFilters ? 'No employees match your criteria' : 'No employees found'}
+                description={hasActiveFilters
                     ? 'Try adjusting your search terms or filters to find the employees you\'re looking for.'
-                    : 'Get started by adding your first employee to build your supply chain team directory.'
-                  }
-                </p>
-                {hasActiveFilters ? (
-                  <button
-                    onClick={() => {
+                    : 'Get started by adding your first employee to build your supply chain team directory.'}
+                action={hasActiveFilters ? {
+                  label: "Clear All Filters",
+                  onClick: () => {
                       setSearchTerm('');
                       setDepartmentFilter('');
                       setStatusFilter('');
                       setOrganizationFilter('');
                       setRoleFilter('');
-                    }}
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-50 text-indigo-700 rounded-lg hover:bg-indigo-100 border border-indigo-200 text-sm font-medium transition-colors"
-                  >
-                    <FilterX className="w-4 h-4" />
-                    Clear All Filters
-                  </button>
-                ) : (
-                  <a
-                    href="/admin/employees/new"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors shadow-sm shadow-indigo-200"
-                  >
-                    <Plus className="w-4 h-4" />
-                    Add First Employee
-                  </a>
-                )}
-              </div>
+                  }
+                } : {
+                  label: "Add First Employee",
+                  onClick: () => router.push("/admin/employees/new")
+                }}
+              />
             ) : groupByOrganization ? (
               /* ORGANIZATION-WISE GROUPED VIEW */
               <div className="space-y-4">
@@ -1034,7 +974,7 @@ export default function EmployeeList() {
                   </>
                 ) : (
                   <>
-                    <div className="overflow-x-auto block w-full rounded-xl border border-slate-200">
+                    <EnterpriseTableWrapper>
                       <table className="w-full min-w-[800px]">
                         <thead className="bg-slate-50 border-b border-slate-200">
                           <tr>
@@ -1131,14 +1071,14 @@ export default function EmployeeList() {
                           })}
                         </tbody>
                       </table>
-                    </div>
+                    </EnterpriseTableWrapper>
                     <Pagination />
                   </>
                 )}
               </>
             )}
           </div>
-        </div>
+        </EnterpriseSectionCard>
       </div>
       {/* Lifecycle Modal */}
       {lifecycleModal.isOpen && (

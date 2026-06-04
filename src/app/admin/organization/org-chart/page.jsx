@@ -10,11 +10,17 @@ import {
     Briefcase,
     Search,
     Maximize2,
-    Minimize2,
     Info,
-    User as UserIcon
+    User as UserIcon,
+    GitGraph
 } from "lucide-react";
 import { toast } from "react-hot-toast";
+
+import { EnterprisePageHeader } from "@/components/ui/enterprise/EnterprisePageHeader";
+import { EnterpriseSectionCard } from "@/components/ui/enterprise/EnterpriseSectionCard";
+import { EnterpriseButton } from "@/components/ui/enterprise/EnterpriseButton";
+import { EnterpriseEmptyState } from "@/components/ui/enterprise/EnterpriseEmptyState";
+import { EnterpriseIconContainer } from "@/components/ui/enterprise/EnterpriseIconContainer";
 
 const OrgNode = ({ node, level = 0 }) => {
     const [isExpanded, setIsExpanded] = useState(level < 2);
@@ -42,37 +48,37 @@ const OrgNode = ({ node, level = 0 }) => {
 
     return (
         <div className="flex flex-col">
-            <div className={`flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-slate-50 transition-colors group relative ${level === 0 ? 'bg-slate-50 border border-slate-200' : ''}`}>
+            <div className={`flex items-center gap-3 py-2.5 px-4 rounded-xl hover:bg-slate-50 transition-colors group relative ${level === 0 ? 'bg-slate-50 border border-slate-200 shadow-sm' : ''}`}>
                 {hasChildren ? (
                     <button
                         onClick={() => setIsExpanded(!isExpanded)}
-                        className="w-5 h-5 flex items-center justify-center rounded hover:bg-slate-200 text-slate-500 transition-colors"
+                        className="w-6 h-6 flex items-center justify-center rounded-md hover:bg-slate-200 text-slate-500 transition-colors shrink-0"
                     >
                         {isExpanded ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
                     </button>
                 ) : (
-                    <div className="w-5" />
+                    <div className="w-6 shrink-0" />
                 )}
 
-                <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 border ${getBadgeColor(node.type)}`}>
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border ${getBadgeColor(node.type)}`}>
                     {getIcon(node.type)}
                 </div>
 
                 <div className="flex flex-col min-w-0">
-                    <span className="text-sm font-semibold text-slate-900 truncate">
+                    <span className="text-sm font-bold text-slate-800 truncate">
                         {node.name}
                     </span>
                     {node.head && (
-                        <div className="flex items-center gap-1 text-[10px] text-slate-500">
-                            <UserIcon className="w-2.5 h-2.5" />
+                        <div className="flex items-center gap-1.5 mt-0.5 text-xs font-semibold text-slate-500">
+                            <UserIcon className="w-3 h-3" />
                             <span className="truncate">{node.head.name}</span>
                         </div>
                     )}
                 </div>
 
                 <div className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2">
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded-full border ${getBadgeColor(node.type)}`}>
-                        {node.type.replace(/([A-Z])/g, ' $1').toLowerCase()}
+                    <span className={`text-[10px] font-bold px-2 py-1 rounded-full border uppercase tracking-wider ${getBadgeColor(node.type)}`}>
+                        {node.type.replace(/([A-Z])/g, ' $1').trim()}
                     </span>
                 </div>
             </div>
@@ -83,7 +89,7 @@ const OrgNode = ({ node, level = 0 }) => {
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        className="ml-6 border-l border-slate-200 pl-4 mt-1 overflow-hidden"
+                        className="ml-8 border-l-2 border-slate-100 pl-4 mt-2 mb-2 overflow-hidden space-y-1"
                     >
                         {node.children.map((child, idx) => (
                             <OrgNode key={idx} node={child} level={level + 1} />
@@ -111,7 +117,6 @@ export default function OrgChartPage() {
             const result = await response.json();
             if (!response.ok) throw new Error(result.error || "Failed to fetch chart");
             
-            // The API now returns the fully formatted hierarchical tree
             setData(result.data || []);
         } catch (error) {
             console.error("Error fetching org chart:", error);
@@ -139,109 +144,100 @@ export default function OrgChartPage() {
     const displayData = searchQuery ? filterNodes(data || [], searchQuery) : data;
 
     return (
-        <div className="min-h-screen bg-slate-50/50 p-6">
-            <div className="max-w-6xl mx-auto">
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-                    <div>
-                        <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-3">
-                            <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-indigo-200">
-                                <Building className="w-6 h-6" />
-                            </div>
-                            Organization Chart
-                        </h1>
-                        <p className="text-slate-500 mt-1">
-                            Visualize your organization's hierarchical structure and reporting lines
-                        </p>
-                    </div>
+        <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8 space-y-6">
+            <EnterprisePageHeader 
+                title="Organization Chart"
+                subtitle="Visualize your organization's hierarchical structure and reporting lines"
+                icon={GitGraph}
+                actions={
+                    <EnterpriseButton variant="secondary" icon={Maximize2} onClick={fetchChartData}>
+                        Refresh Chart
+                    </EnterpriseButton>
+                }
+            />
 
-                    <div className="flex items-center gap-3">
-                        <div className="relative">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                            <input
-                                type="text"
-                                placeholder="Search entities or heads..."
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                className="pl-10 pr-4 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 w-64 shadow-sm transition-all"
-                            />
-                        </div>
-                        <button
-                            onClick={fetchChartData}
-                            className="p-2 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors shadow-sm"
-                            title="Refresh Chart"
-                        >
-                            <Maximize2 className="w-4 h-4 text-slate-600" />
-                        </button>
+            <EnterpriseSectionCard>
+                <div className="flex flex-col md:flex-row items-center gap-4 justify-between">
+                    <div className="relative w-full md:w-96">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                        <input
+                            type="text"
+                            placeholder="Search entities or heads..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="w-full pl-10 pr-4 py-2.5 border border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 bg-slate-50 transition-all"
+                        />
                     </div>
                 </div>
+            </EnterpriseSectionCard>
 
-                {loading ? (
-                    <div className="flex flex-col items-center justify-center h-64 bg-white rounded-2xl border border-dashed border-slate-300">
-                        <div className="w-12 h-12 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mb-4" />
-                        <p className="text-slate-500 font-medium">Building organization tree...</p>
-                    </div>
-                ) : !displayData || displayData.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center py-20 bg-white rounded-2xl border border-slate-200 shadow-sm">
-                        <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mb-4">
-                            <Info className="w-8 h-8 text-slate-400" />
+            {loading ? (
+                <div className="flex flex-col items-center justify-center h-64 bg-white rounded-3xl border border-slate-200 shadow-sm">
+                    <div className="w-12 h-12 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mb-4" />
+                    <p className="text-slate-500 font-bold text-sm">Building organization tree...</p>
+                </div>
+            ) : !displayData || displayData.length === 0 ? (
+                <EnterpriseEmptyState 
+                    icon={Info}
+                    title="No data found"
+                    description="We couldn't find any organization structure to display."
+                    action={
+                        <EnterpriseButton onClick={fetchChartData}>
+                            Try Again
+                        </EnterpriseButton>
+                    }
+                />
+            ) : (
+                <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div className="p-4 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-center gap-6">
+                        <div className="flex items-center gap-2">
+                            <div className="w-3 h-3 rounded bg-indigo-500 border border-indigo-600 shadow-sm" />
+                            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Company</span>
                         </div>
-                        <h3 className="text-lg font-semibold text-slate-900">No data found</h3>
-                        <p className="text-slate-500 mt-1">We couldn't find any organization structure to display.</p>
-                    </div>
-                ) : (
-                    <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-                        <div className="p-2 bg-slate-50 border-b border-slate-200 flex items-center justify-between px-6">
-                            <div className="flex items-center gap-6 py-2">
-                                <div className="flex items-center gap-2">
-                                    <div className="w-3 h-3 rounded bg-indigo-500 border border-indigo-600 shadow-sm" />
-                                    <span className="text-[10px] font-medium text-slate-600 uppercase tracking-wider">Company</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <div className="w-3 h-3 rounded bg-slate-500 border border-blue-600 shadow-sm" />
-                                    <span className="text-[10px] font-medium text-slate-600 uppercase tracking-wider">Business Unit</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <div className="w-3 h-3 rounded bg-emerald-500 border border-emerald-600 shadow-sm" />
-                                    <span className="text-[10px] font-medium text-slate-600 uppercase tracking-wider">Department</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <div className="w-3 h-3 rounded bg-amber-500 border border-amber-600 shadow-sm" />
-                                    <span className="text-[10px] font-medium text-slate-600 uppercase tracking-wider">Team</span>
-                                </div>
-                            </div>
+                        <div className="flex items-center gap-2">
+                            <div className="w-3 h-3 rounded bg-blue-500 border border-blue-600 shadow-sm" />
+                            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Business Unit</span>
                         </div>
-                        <div className="p-8">
-                            <div className="space-y-4 max-w-3xl">
-                                {displayData.map((node, idx) => (
-                                    <OrgNode key={idx} node={node} />
-                                ))}
-                            </div>
+                        <div className="flex items-center gap-2">
+                            <div className="w-3 h-3 rounded bg-emerald-500 border border-emerald-600 shadow-sm" />
+                            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Department</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <div className="w-3 h-3 rounded bg-amber-500 border border-amber-600 shadow-sm" />
+                            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Team</span>
                         </div>
                     </div>
-                )}
+                    <div className="p-6 md:p-8">
+                        <div className="space-y-4 max-w-4xl mx-auto">
+                            {displayData.map((node, idx) => (
+                                <OrgNode key={idx} node={node} />
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            )}
 
-                <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-                        <div className="flex items-center gap-3 mb-4 text-indigo-600">
-                            <Building className="w-5 h-5" />
-                            <h3 className="font-semibold">Business Units</h3>
-                        </div>
-                        <p className="text-slate-500 text-sm">Large logical divisions of a company, each with its own head and objectives.</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="flex items-center gap-3 mb-3">
+                        <EnterpriseIconContainer icon={Building} color="indigo" size="sm" />
+                        <h3 className="font-extrabold text-slate-800">Business Units</h3>
                     </div>
-                    <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-                        <div className="flex items-center gap-3 mb-4 text-emerald-600">
-                            <Users className="w-5 h-5" />
-                            <h3 className="font-semibold">Departments</h3>
-                        </div>
-                        <p className="text-slate-500 text-sm">Functional groups within a business unit focused on specific disciplines.</p>
+                    <p className="text-slate-500 text-sm font-medium leading-relaxed">Large logical divisions of a company, each with its own head and objectives.</p>
+                </div>
+                <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="flex items-center gap-3 mb-3">
+                        <EnterpriseIconContainer icon={Users} color="emerald" size="sm" />
+                        <h3 className="font-extrabold text-slate-800">Departments</h3>
                     </div>
-                    <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-                        <div className="flex items-center gap-3 mb-4 text-amber-600">
-                            <Users className="w-5 h-5" />
-                            <h3 className="font-semibold">Teams</h3>
-                        </div>
-                        <p className="text-slate-500 text-sm">Agile units within departments working together on specific products or services.</p>
+                    <p className="text-slate-500 text-sm font-medium leading-relaxed">Functional groups within a business unit focused on specific disciplines.</p>
+                </div>
+                <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="flex items-center gap-3 mb-3">
+                        <EnterpriseIconContainer icon={Users} color="amber" size="sm" />
+                        <h3 className="font-extrabold text-slate-800">Teams</h3>
                     </div>
+                    <p className="text-slate-500 text-sm font-medium leading-relaxed">Agile units within departments working together on specific products or services.</p>
                 </div>
             </div>
         </div>

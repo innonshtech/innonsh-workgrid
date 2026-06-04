@@ -56,36 +56,32 @@ export async function POST(req) {
         await dbConnect();
         const body = await req.json();
         const { assignments, assignedBy } = body;
-        let { organizationId } = body;
-
-        // SaaS PROTECTION: Admin must use their assigned organizationId
-        if (authUser.role === "admin") {
-            organizationId = authUser.organizationId;
-        }
 
         if (!assignments || !Array.isArray(assignments)) {
             return NextResponse.json({ success: false, error: "Assignments array is required" }, { status: 400 });
-        }
-
-        if (!organizationId) {
-            return NextResponse.json({ success: false, error: "Organization ID is required" }, { status: 400 });
         }
 
         const results = [];
         for (const assignment of assignments) {
             const { employeeId, date, shiftId } = assignment;
 
-            // Security check: Ensure employee belongs to the organization
+            // Security check: Ensure employee exists and get organizationId
             const employee = await Employee.findById(employeeId);
-            if (!employee || employee.jobDetails?.organizationId?.toString() !== organizationId.toString()) {
-                continue; // Skip invalid assignments
+            if (!employee) continue;
+
+            const employeeOrgId = employee.jobDetails?.organizationId;
+            if (!employeeOrgId) continue;
+
+            // SaaS PROTECTION: Admin can only assign shifts to employees within their own organization
+            if (authUser.role === "admin" && employeeOrgId.toString() !== authUser.organizationId.toString()) {
+                continue; // Skip unauthorized assignments
             }
 
             const updated = await ShiftRoster.findOneAndUpdate(
                 { employeeId, date: new Date(date) },
                 {
                     shiftId,
-                    organizationId,
+                    organizationId: employeeOrgId,
                     assignedBy: assignedBy || authUser.id,
                     status: "Published"
                 },

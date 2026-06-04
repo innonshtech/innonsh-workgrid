@@ -114,6 +114,10 @@ const leaveSchema = new mongoose.Schema(
         type: Number,
         default: 0, // Remaining monthly quota at START of this month
       },
+      carriedOverFromLastMonth: {
+        type: Number,
+        default: 0, // Unused leaves carried over from previous month
+      },
       thisMonthUnpaid: {
         type: Number,
         default: 0, // Unpaid leaves taken in this specific month only
@@ -212,27 +216,64 @@ leaveSchema.methods.updateAnnualBalance = async function () {
     // 2. Organization Policy (PayrollConfig)
     // 3. Legacy/Branch fallback
     let totalEntitled = employee?.totalLeaveEntitled;
+    let config = null;
     
     if (!totalEntitled) {
-      const config = await PayrollConfig.findOne({ company: this.organizationId });
+      config = await PayrollConfig.findOne({ company: this.organizationId });
       totalEntitled = config?.annualPaidLeaveQuota || 
                       employee?.annualLeaveBalance || 
                       employee?.payslipStructure?.totalLeaveEntitled || 
                       0;
+    } else {
+      config = await PayrollConfig.findOne({ company: this.organizationId });
     }
+    
+    // Rollover Configuration
+    const enableRollover = config?.enableLeaveRollover || false;
+    const maxRollover = config?.maxLeaveRollover || 0;
+    const resetYearly = config?.resetRolloverYearly !== false; // Default true
     
     // Get all leave records for this employee in this year
     const LeaveModel = mongoose.model("Leave");
     const allYearLeaves = await LeaveModel.find({
       employeeId: this.employeeId,
       year: this.year,
-    });
+    }).sort({ month: 1 }); // Sort by month ascending
     
     console.log(`📊 Updating monthly balances for ${this.employeeCode} in ${this.year} (Monthly Quota: ${totalEntitled})`);
     
+    // Optional: Get last month of previous year if rollover doesn't reset yearly
+    let previousYearEndBalance = 0;
+    if (enableRollover && !resetYearly) {
+      const prevYearLeave = await LeaveModel.findOne({
+        employeeId: this.employeeId,
+        year: this.year - 1,
+        month: 12
+      });
+      if (prevYearLeave) {
+        let carryOver = prevYearLeave.annualLeaveBalance.remaining;
+        if (maxRollover > 0) {
+          carryOver = Math.min(carryOver, maxRollover);
+        }
+        previousYearEndBalance = Math.max(0, carryOver);
+      }
+    }
+    
+    let previousMonthRemaining = previousYearEndBalance;
+    
     for (const monthRecord of allYearLeaves) {
-      // In monthly mode, each month starts with the full quota
-      const balanceAtMonthStart = totalEntitled;
+      let carriedOver = 0;
+      
+      // Calculate carry over for this month
+      if (enableRollover && previousMonthRemaining > 0) {
+        carriedOver = previousMonthRemaining;
+        if (maxRollover > 0) {
+          carriedOver = Math.min(carriedOver, maxRollover);
+        }
+      }
+      
+      // In monthly mode, each month starts with the full quota + carried over
+      const balanceAtMonthStart = totalEntitled + carriedOver;
       
       // Calculate total paid leaves used this month (half days count as 0.5)
       const thisMonthPaidUsed = (monthRecord.summary.paidLeaves || 0) + 
@@ -247,12 +288,16 @@ leaveSchema.methods.updateAnnualBalance = async function () {
         used: thisMonthPaidUsed, // Used this month
         remaining: balanceAtMonthEnd, // Balance at end of month
         balanceAtMonthStart: balanceAtMonthStart,
+        carriedOverFromLastMonth: carriedOver,
         thisMonthUnpaid: (monthRecord.summary.unpaidLeaves || 0) + 
                         ((monthRecord.summary.halfDayUnpaidLeaves || 0) * 0.5)
       };
       
+      // Pass the remaining balance to the next month iteration
+      previousMonthRemaining = balanceAtMonthEnd;
+      
       await monthRecord.save();
-      console.log(`   Month ${monthRecord.month}: Start=${balanceAtMonthStart}, Used=${thisMonthPaidUsed}, End=${balanceAtMonthEnd}`);
+      console.log(`   Month ${monthRecord.month}: Quota=${totalEntitled}, Carried=${carriedOver}, Used=${thisMonthPaidUsed}, End=${balanceAtMonthEnd}`);
     }
     
     console.log(`   ✅ Updated ${allYearLeaves.length} month records`);

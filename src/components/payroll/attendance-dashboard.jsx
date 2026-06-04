@@ -818,6 +818,7 @@ export default function AttendanceDashboard() {
       Leave: "bg-slate-50 text-blue-700 border-blue-200",
       Weekend: "bg-slate-50 text-slate-700 border-slate-200",
       Holiday: "bg-purple-50 text-purple-700 border-purple-200",
+      WFH: "bg-teal-50 text-teal-700 border-teal-200",
     };
 
     const color = statusConfig[status] || statusConfig.Absent;

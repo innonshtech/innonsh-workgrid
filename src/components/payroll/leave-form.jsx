@@ -21,17 +21,18 @@ import {
 } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
+import { useSession } from "@/context/SessionContext";
 
 export default function LeaveForm({ leaveId }) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { user } = useSession();
   const isEdit = !!leaveId;
 
   const [loading, setLoading] = useState(false);
   const [fetchLoading, setFetchLoading] = useState(isEdit);
   const [employees, setEmployees] = useState([]);
   const [loadingEmployees, setLoadingEmployees] = useState(false);
-  const [organizationTypes, setOrganizationTypes] = useState([]);
   const [selectedOrganization, setSelectedOrganization] = useState("");
 
   // Get initial values from URL params
@@ -102,34 +103,6 @@ export default function LeaveForm({ leaveId }) {
     { value: "Rejected", label: "Rejected", color: "red" },
   ];
 
-  // Fetch organization types
-  // Fetch organizations from Organization collection
-  const fetchOrganizationTypes = async () => {
-    try {
-      const response = await fetch("/api/v1/admin/crm/organizations?limit=1000");
-      const data = await response.json();
-
-      if (response.ok) {
-        // Map organizations with _id and name
-        const orgs = data.organizations
-          .filter((org) => org.name)
-          .map((org) => ({
-            value: org._id, // Store ObjectId for filtering employees
-            label: org.name, // Display organization name
-            name: org.name, // Keep name for reference
-          }));
-
-        setOrganizationTypes(orgs);
-
-        if (urlOrg && orgs.some((o) => o.value === urlOrg)) {
-          setSelectedOrganization(urlOrg);
-        }
-      }
-    } catch (error) {
-      console.error("Error fetching organizations:", error);
-    }
-  };
-
   // Fetch employees based on organization
   const fetchEmployees = async (orgId = "") => {
     try {
@@ -199,10 +172,12 @@ export default function LeaveForm({ leaveId }) {
     }
   };
 
-  // Initial load
+  // Set selected organization to logged in user's organizationId
   useEffect(() => {
-    fetchOrganizationTypes();
-  }, []);
+    if (user?.organizationId) {
+      setSelectedOrganization(user.organizationId);
+    }
+  }, [user?.organizationId]);
 
   useEffect(() => {
     if (isEdit) {
@@ -677,26 +652,6 @@ export default function LeaveForm({ leaveId }) {
             </div>
 
             <div className="p-6 space-y-6">
-              {!isEdit && (
-                <div className="space-y-2">
-                  <label className="block text-sm font-semibold text-slate-700">
-                    Select Organization <span className="text-red-500">*</span>
-                  </label>
-                  <select
-                    value={selectedOrganization}
-                    onChange={handleOrganizationChange}
-                    className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-colors bg-white"
-                  >
-                    <option value="">Select Organization</option>
-                    {organizationTypes.map((org) => (
-                      <option key={org.value} value={org.value}>
-                        {org.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              )}
-
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {/* Employee Selection */}
                 <div className="md:col-span-1 space-y-2">

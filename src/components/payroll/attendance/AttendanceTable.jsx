@@ -36,7 +36,8 @@ export default function AttendanceTable({
       Leave: "bg-indigo-50 text-indigo-700 border-indigo-100",
       Holiday: "bg-purple-50 text-purple-700 border-purple-100",
       "Weekly Off": "bg-slate-50 text-slate-650 border-slate-100",
-      "Missing Punch": "bg-orange-50 text-orange-700 border-orange-100"
+      "Missing Punch": "bg-orange-50 text-orange-700 border-orange-100",
+      WFH: "bg-teal-50 text-teal-700 border-teal-100"
     };
 
     const style = badgeStyleMap[status] || "bg-slate-50 text-slate-650 border-slate-100";

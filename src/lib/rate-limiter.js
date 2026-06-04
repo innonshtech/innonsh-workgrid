@@ -5,13 +5,15 @@ import { NextResponse } from 'next/server';
 // Note: This is per-process. For multi-server/serverless, use Redis (e.g., Upstash).
 const store = new Map();
 
+const isDev = process.env.NODE_ENV === 'development';
+
 /**
  * Rate limit configuration
  */
 export const RateLimitConfig = {
-  LOGIN: { windowMs: 15 * 60 * 1000, max: 5 }, // 5 requests per 15 minutes
-  API: { windowMs: 60 * 1000, max: 100 }, // 100 requests per minute
-  DEFAULT: { windowMs: 60 * 1000, max: 60 }, // 60 requests per minute
+  LOGIN: { windowMs: 15 * 60 * 1000, max: isDev ? 1000 : 5 }, // Allow 1000 in dev, 5 in prod
+  API: { windowMs: 60 * 1000, max: isDev ? 10000 : 100 },
+  DEFAULT: { windowMs: 60 * 1000, max: isDev ? 5000 : 60 },
 };
 
 /**
@@ -26,6 +28,13 @@ export function rateLimit(req, config = RateLimitConfig.DEFAULT) {
   const key = `${ip}_${path}`;
 
   const now = Date.now();
+  
+  // Scale up max requests for local or dev environments
+  const isLocal = ip === '127.0.0.1' || ip === '::1' || ip === '::ffff:127.0.0.1' || ip === 'unknown_ip';
+  const effectiveConfig = (isDev || isLocal) 
+    ? { ...config, max: Math.max(config.max, 1000) } 
+    : config;
+  
   let record = store.get(key);
 
   if (!record || now > record.resetTime) {
@@ -38,7 +47,7 @@ export function rateLimit(req, config = RateLimitConfig.DEFAULT) {
   } else {
     // Existing window
     record.count++;
-    if (record.count > config.max) {
+    if (record.count > effectiveConfig.max) {
       console.warn(`[RateLimit] Blocked request from ${ip} to ${path}`);
       return NextResponse.json(
         { 
@@ -49,7 +58,7 @@ export function rateLimit(req, config = RateLimitConfig.DEFAULT) {
           status: 429,
           headers: {
             'Retry-After': Math.ceil((record.resetTime - now) / 1000).toString(),
-            'X-RateLimit-Limit': config.max.toString(),
+            'X-RateLimit-Limit': effectiveConfig.max.toString(),
             'X-RateLimit-Remaining': '0',
             'X-RateLimit-Reset': record.resetTime.toString()
           }

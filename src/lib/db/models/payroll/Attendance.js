@@ -21,7 +21,7 @@ const attendanceSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['Present', 'Absent', 'Half-day', 'Leave', 'Holiday', 'Weekend'],
+    enum: ['Present', 'Absent', 'Half-day', 'Leave', 'Holiday', 'Weekend', 'WFH'],
     default: 'Present'
   },
   isProxy: {
@@ -92,5 +92,9 @@ const attendanceSchema = new mongoose.Schema({
 attendanceSchema.index({ employee: 1, date: 1 }, { unique: true });
 attendanceSchema.index({ date: 1 });
 attendanceSchema.index({ status: 1 });
+
+if (process.env.NODE_ENV === 'development') {
+  delete mongoose.models.Attendance;
+}
 
 export default mongoose.models.Attendance || mongoose.model('Attendance', attendanceSchema);

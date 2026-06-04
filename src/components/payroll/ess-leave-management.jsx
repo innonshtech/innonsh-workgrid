@@ -19,6 +19,19 @@ export default function ESSLeaveManagement({ employeeId, payrollConfig }) {
     // Determine leave quota from payroll config, defaulting to 20
     const leaveQuota = payrollConfig?.annualPaidLeaveQuota || 20;
     
+    // Automatic Overdraft Split (Option 1 logic)
+    const approvedPaidLeaves = applications
+        .filter(a => a.status === 'Approved' && a.leaveType !== 'Unpaid' && a.leaveCategory !== 'Unpaid')
+        .reduce((acc, curr) => acc + curr.totalDays, 0);
+
+    const approvedExplicitUnpaidLeaves = applications
+        .filter(a => a.status === 'Approved' && (a.leaveType === 'Unpaid' || a.leaveCategory === 'Unpaid'))
+        .reduce((acc, curr) => acc + curr.totalDays, 0);
+
+    const leavesTaken = Math.min(approvedPaidLeaves, leaveQuota);
+    const remainingBalance = Math.max(0, leaveQuota - approvedPaidLeaves);
+    const unpaidLeaves = approvedExplicitUnpaidLeaves + Math.max(0, approvedPaidLeaves - leaveQuota);
+    
     // New Calculation State
     const [calculationResult, setCalculationResult] = useState(null);
     const [calculating, setCalculating] = useState(false);
@@ -854,7 +867,7 @@ export default function ESSLeaveManagement({ employeeId, payrollConfig }) {
                             </div>
                             <div>
                                 <p className="text-3xl font-black text-indigo-700">
-                                    {applications.filter(a => a.status === 'Approved' && a.leaveType !== 'Unpaid').reduce((acc, curr) => acc + curr.totalDays, 0)}
+                                    {leavesTaken}
                                 </p>
                                 <p className="text-xs text-indigo-500/80 font-medium mt-1">Approved paid leaves</p>
                             </div>
@@ -869,7 +882,7 @@ export default function ESSLeaveManagement({ employeeId, payrollConfig }) {
                             </div>
                             <div>
                                 <p className="text-3xl font-black text-emerald-700">
-                                    {leaveQuota - applications.filter(a => a.status === 'Approved' && a.leaveType !== 'Unpaid').reduce((acc, curr) => acc + curr.totalDays, 0)}
+                                    {remainingBalance}
                                 </p>
                                 <p className="text-xs text-emerald-600/80 font-medium mt-1">Available to use</p>
                             </div>
@@ -884,7 +897,7 @@ export default function ESSLeaveManagement({ employeeId, payrollConfig }) {
                             </div>
                             <div>
                                 <p className="text-3xl font-black text-amber-700">
-                                    {applications.filter(a => a.status === 'Approved' && a.leaveType === 'Unpaid').reduce((acc, curr) => acc + curr.totalDays, 0)}
+                                    {unpaidLeaves}
                                 </p>
                                 <p className="text-xs text-amber-600/80 font-medium mt-1">Loss of pay days</p>
                             </div>

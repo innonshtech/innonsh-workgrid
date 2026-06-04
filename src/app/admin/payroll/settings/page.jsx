@@ -19,7 +19,7 @@ import {
     Minus,
     ArrowLeft
 } from "lucide-react";
-import { toast } from "react-hot-toast";
+import { toast } from "sonner";
 import StatutorySettings from "@/components/payroll/settings/StatutorySettings";
 
 import VariablePaySettings from "@/components/payroll/settings/VariablePaySettings";
@@ -914,6 +914,57 @@ export default function ComplianceSettingsPage() {
                                                 className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none"
                                             />
                                             <p className="text-[10px] text-slate-400 mt-2 px-1">Maximum allowed paid leaves per month.</p>
+                                        </div>
+
+                                        <div className={`col-span-1 md:col-span-2 p-5 rounded-2xl border-2 transition-all ${config?.enableLeaveRollover ? 'border-indigo-600 bg-indigo-50/30' : 'border-slate-100 bg-slate-50/50'}`}>
+                                            <div className="flex items-center justify-between mb-4">
+                                                <div>
+                                                    <p className="font-bold text-slate-900 text-base">Enable Leave Rollover</p>
+                                                    <p className="text-xs text-slate-500 font-medium mt-1">Carry forward unused leaves to the next month</p>
+                                                </div>
+                                                <button 
+                                                    type="button"
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        setConfig({ ...config, enableLeaveRollover: !config?.enableLeaveRollover });
+                                                    }}
+                                                    className={`w-14 h-7 rounded-full transition-all relative shrink-0 ${config?.enableLeaveRollover ? 'bg-indigo-600' : 'bg-slate-300'}`}
+                                                >
+                                                    <div className={`absolute top-1 w-5 h-5 bg-white rounded-full transition-all ${config?.enableLeaveRollover ? 'right-1' : 'left-1'}`} />
+                                                </button>
+                                            </div>
+                                            
+                                            {config?.enableLeaveRollover && (
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-slate-200/60 mt-2">
+                                                    <div>
+                                                        <label className="block text-sm font-bold text-slate-700 mb-2">Max Rollover Leaves</label>
+                                                        <input
+                                                            type="number"
+                                                            value={config?.maxLeaveRollover !== undefined ? config.maxLeaveRollover : 6}
+                                                            onChange={(e) => setConfig({ ...config, maxLeaveRollover: parseInt(e.target.value) || 0 })}
+                                                            className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                                        />
+                                                        <p className="text-[10px] text-slate-500 mt-1">Max leaves an employee can carry at once.</p>
+                                                    </div>
+                                                    <div className="flex items-center justify-between bg-white p-3 rounded-xl border border-slate-200">
+                                                        <div>
+                                                            <p className="font-bold text-slate-800 text-sm">Year-End Reset</p>
+                                                            <p className="text-[10px] text-slate-500 mt-0.5">Reset balance to 0 on Jan 1st</p>
+                                                        </div>
+                                                        <button 
+                                                            type="button"
+                                                            onClick={(e) => {
+                                                                e.preventDefault();
+                                                                const current = config?.resetRolloverYearly !== undefined ? config.resetRolloverYearly : true;
+                                                                setConfig({ ...config, resetRolloverYearly: !current });
+                                                            }}
+                                                            className={`w-10 h-5 rounded-full transition-all relative shrink-0 ${config?.resetRolloverYearly !== false ? 'bg-emerald-500' : 'bg-slate-300'}`}
+                                                        >
+                                                            <div className={`absolute top-0.5 w-4 h-4 bg-white rounded-full transition-all ${config?.resetRolloverYearly !== false ? 'right-0.5' : 'left-0.5'}`} />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </div>

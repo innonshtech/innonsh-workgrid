@@ -66,6 +66,18 @@ const payrollConfigSchema = new mongoose.Schema({
   annualPaidLeaveQuota: {
     type: Number,
     default: 20 // Standard SaaS default, can be overridden per Org
+  },
+  enableLeaveRollover: {
+    type: Boolean,
+    default: false
+  },
+  maxLeaveRollover: {
+    type: Number,
+    default: 6 // Capped by default based on SaaS best practices
+  },
+  resetRolloverYearly: {
+    type: Boolean,
+    default: true
   }
 }, {
   timestamps: true

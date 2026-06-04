@@ -223,11 +223,11 @@ function DashboardLayoutContent({ children }) {
           href: "/admin/payroll/run",
           icon: Banknote,
         },
-        {
-          name: t("salaryComponents"),
-          href: "/admin/payroll/components",
-          icon: CalculatorIcon,
-        },
+        // {
+        //   name: t("salaryComponents"),
+        //   href: "/admin/payroll/components",
+        //   icon: CalculatorIcon,
+        // },
         {
           name: t("loansAdvances"),
           href: "/admin/payroll/loans",
@@ -579,7 +579,7 @@ function DashboardLayoutContent({ children }) {
                   {user?.personalDetails?.firstName ||
                     (role === "admin" ? "Admin User" : "Employee User")}
                 </p>
-                <p className="text-xs text-indigo-600 font-medium capitalize bg-indigo-50 px-2 py-0.5 rounded-full w-fit mt-0.5">{role}</p>
+                <p className="text-xs text-indigo-600 font-medium capitalize bg-indigo-50 px-2 py-0.5 rounded-full w-fit mt-0.5">{user?.designation || role}</p>
               </div>
             </div>
             <button
@@ -666,7 +666,7 @@ function DashboardLayoutContent({ children }) {
                           {user?.personalDetails?.firstName ||
                             (role === "admin" ? "Admin" : "Employee")}
                         </p>
-                        <p className="text-xs text-slate-500 capitalize">{role}</p>
+                        <p className="text-xs text-slate-500 capitalize">{user?.designation || role}</p>
                       </div>
                       <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-full flex items-center justify-center shadow-md shadow-indigo-200 ring-2 ring-white group-hover:ring-indigo-100 transition-all">
                         <span className="text-white font-bold text-sm">

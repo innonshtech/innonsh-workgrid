@@ -8,8 +8,13 @@ const leaveApplicationSchema = new mongoose.Schema({
   },
   leaveType: {
     type: String,
-    enum: ['Casual', 'Sick', 'Earned', 'Maternity', 'Paternity', 'Bereavement', 'Compensatory', 'Unpaid', 'Other'],
+    enum: ['Casual', 'Sick', 'Earned', 'Maternity', 'Paternity', 'Bereavement', 'Compensatory', 'Unpaid', 'Other', 'Full Day Leave', 'Half Day', 'WFH'],
     required: true
+  },
+  leaveCategory: {
+    type: String,
+    enum: ['Casual', 'Sick', 'Earned', 'Maternity', 'Paternity', 'Bereavement', 'Compensatory', 'Unpaid', 'Other'],
+    required: false
   },
   startDate: {
     type: Date,
@@ -71,5 +76,9 @@ const leaveApplicationSchema = new mongoose.Schema({
 
 leaveApplicationSchema.index({ employee: 1, startDate: 1 });
 leaveApplicationSchema.index({ status: 1 });
+
+if (process.env.NODE_ENV === 'development') {
+  delete mongoose.models.LeaveApplication;
+}
 
 export default mongoose.models.LeaveApplication || mongoose.model('LeaveApplication', leaveApplicationSchema);

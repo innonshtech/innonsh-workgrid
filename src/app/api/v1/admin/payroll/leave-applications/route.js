@@ -96,6 +96,7 @@ export async function POST(request) {
         const {
             employeeId,
             leaveType,
+            leaveCategory,
             startDate,
             endDate,
             totalDays,
@@ -115,11 +116,18 @@ export async function POST(request) {
 
         // 1. Force Recalculate Actual Deductible Days
         const calcResult = await calculateEffectiveLeaveDays(employeeId, startDate, endDate);
-        const actualLeaveDays = calcResult.totalEffectiveDays;
+        let actualLeaveDays = calcResult.totalEffectiveDays;
+
+        if (leaveType === 'WFH') {
+            actualLeaveDays = 0;
+        } else if (leaveType === 'Half Day') {
+            actualLeaveDays = actualLeaveDays * 0.5;
+        }
 
         const application = await LeaveApplication.create({
             employee: employeeId,
             leaveType,
+            leaveCategory: leaveCategory || undefined,
             startDate: new Date(startDate),
             endDate: new Date(endDate),
             totalDays: actualLeaveDays, // Use the server-side validated calculation securely
@@ -156,7 +164,7 @@ export async function POST(request) {
         const emailContent = `
             <h2>New Leave Application Pending</h2>
             <p><strong>Employee:</strong> ${employee?.personalDetails?.firstName} ${employee?.personalDetails?.lastName}</p>
-            <p><strong>Type:</strong> ${leaveType}</p>
+            <p><strong>Type:</strong> ${leaveCategory ? `${leaveCategory} (${leaveType})` : leaveType}</p>
             <p><strong>Dates:</strong> ${new Date(startDate).toDateString()} to ${new Date(endDate).toDateString()}</p>
             <p><strong>Deductible Days:</strong> ${actualLeaveDays}</p>
             <p><strong>Reason:</strong> ${reason}</p>

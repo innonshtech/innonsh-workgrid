@@ -53,15 +53,9 @@ export async function PUT(request, { params }) {
     // Calculate summary
     leave.calculateSummary();
 
-    // Update annual balance if there are unpaid leaves or if approved
-    const hasUnpaidLeaves = body.leaves && body.leaves.some(leave => 
-      leave.leaveType === 'Unpaid' || leave.leaveType === 'Half-Day Unpaid'
-    );
-    
-    if (hasUnpaidLeaves || body.status === "Approved") {
-      console.log("📊 Updating annual balance due to unpaid leaves or approval...");
-      await leave.updateAnnualBalance();
-    }
+    // Always update annual balance on edit to keep data in sync
+    console.log("📊 Updating annual balance...");
+    await leave.updateAnnualBalance();
 
     await leave.save();
 

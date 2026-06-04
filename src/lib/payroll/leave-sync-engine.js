@@ -26,6 +26,7 @@ export async function syncLeaveApplicationToPayroll(applicationId) {
         const allApprovedApps = await LeaveApplication.find({
             employee: employeeId,
             status: { $regex: /^approved$/i }, // Case-insensitive match
+            leaveType: { $ne: 'WFH' },
             $or: [
                 { startDate: { $gte: new Date(currentYear, 0, 1) } },
                 { endDate: { $gte: new Date(currentYear, 0, 1) } }

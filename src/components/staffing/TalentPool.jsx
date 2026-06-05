@@ -485,7 +485,7 @@ export default function TalentPool() {
                   </button>
                   {selectedCandidate.resumeUrl && (
                     <a
-                      href={selectedCandidate.resumeUrl}
+                      href={selectedCandidate.resumeUrl.includes('cloudinary') ? selectedCandidate.resumeUrl.replace(/\/v\d+\//, '/v2/') : selectedCandidate.resumeUrl}
                       target="_blank"
                       rel="noreferrer"
                       className="flex items-center justify-center gap-1 px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 font-semibold text-xs hover:bg-slate-50 transition-colors shrink-0"

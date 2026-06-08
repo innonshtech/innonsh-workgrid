@@ -22,6 +22,7 @@ import {
   Loader2,
   Layers,
   ChevronUp,
+  ChevronsUpDown,
   Building2,
   User,
   RefreshCw,
@@ -53,6 +54,8 @@ export default function LeaveManagement() {
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [selectedStatus, setSelectedStatus] = useState("");
+  const [selectedDepartment, setSelectedDepartment] = useState("");
+  const [departments, setDepartments] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [stats, setStats] = useState({
     totalEmployees: 0,
@@ -309,11 +312,19 @@ export default function LeaveManagement() {
         }
       });
 
+      // Extract unique departments for the dropdown BEFORE applying filters
+      const uniqueDepts = Array.from(new Set(processedLeaves.map(l => l.department).filter(Boolean))).sort();
+      setDepartments(uniqueDepts);
+
       // Step 5: Apply filters
       if (selectedStatus) {
         processedLeaves = processedLeaves.filter(l =>
           l.status === selectedStatus || (l._id.toString().startsWith('temp-') && selectedStatus === 'Draft')
         );
+      }
+
+      if (selectedDepartment) {
+        processedLeaves = processedLeaves.filter(l => l.department === selectedDepartment);
       }
 
       if (searchQuery) {
@@ -530,12 +541,13 @@ export default function LeaveManagement() {
   const clearFilters = () => {
     setSelectedOrganization(user?.organizationId || "");
     setSelectedStatus("");
+    setSelectedDepartment("");
     setSearchQuery("");
     setPagination((prev) => ({ ...prev, page: 1 }));
   };
 
   const hasActiveFilters =
-    selectedStatus || searchQuery;
+    selectedStatus || searchQuery || selectedDepartment;
 
   const getStatusBadge = (status) => {
     const badges = {
@@ -796,10 +808,11 @@ export default function LeaveManagement() {
     selectedMonth,
     selectedYear,
     selectedStatus,
+    selectedDepartment,
     searchQuery,
   ]);
 
-  const renderLeaveRow = (leave) => {
+  const renderLeaveRow = (leave, index) => {
     // Generate simple initials avatar bubble
     const getInitials = (name) => {
       if (!name) return "EE";
@@ -808,7 +821,10 @@ export default function LeaveManagement() {
 
     return (
       <tr key={leave._id} className="hover:bg-slate-50/50 transition-colors group/row">
-        <td className="px-6 py-4">
+        <td className="px-4 py-3 text-center text-slate-500 text-xs font-medium">
+          {(pagination.page - 1) * pagination.limit + index + 1}
+        </td>
+        <td className="px-4 py-3">
           <div className="flex items-center gap-3.5">
             <div className="w-9 h-9 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center text-white text-xs font-bold group-hover/row:scale-105 transition-transform">
               {getInitials(leave.employeeName)}
@@ -824,12 +840,12 @@ export default function LeaveManagement() {
           </div>
         </td>
 
-        <td className="px-6 py-4">
+        <td className="px-4 py-3">
           <span className="text-xs font-semibold text-slate-655">
             {leave.department}
           </span>
         </td>
-        <td className="px-6 py-4 text-center">
+        <td className="px-4 py-3 text-center">
           {editingLeaveId === leave._id ? (
             <input
               type="number"
@@ -848,7 +864,7 @@ export default function LeaveManagement() {
             </span>
           )}
         </td>
-        <td className="px-6 py-4 text-center">
+        <td className="px-4 py-3 text-center">
           {editingLeaveId === leave._id ? (
             <input
               type="number"
@@ -867,14 +883,14 @@ export default function LeaveManagement() {
             </span>
           )}
         </td>
-        <td className="px-6 py-4 text-center">
+        <td className="px-4 py-3 text-center">
           <span className="inline-flex items-center justify-center min-w-[2.5rem] px-2.5 py-1 bg-indigo-50 text-indigo-700 rounded-xl font-bold text-xs border border-indigo-100">
             {editingLeaveId === leave._id
               ? (editValues.paid + editValues.unpaid).toFixed(1)
               : (leave.summary.totalDays || 0).toFixed(1)}
           </span>
         </td>
-        <td className="px-6 py-4 text-center">
+        <td className="px-4 py-3 text-center">
           <div className="inline-flex flex-col items-center justify-center bg-slate-50/50 border border-slate-100 rounded-xl p-2 min-w-[5.5rem]">
             <div>
               <p className={`text-base font-extrabold tracking-tight ${(leave.annualLeaveBalance.remaining || 0) < 5
@@ -890,7 +906,7 @@ export default function LeaveManagement() {
               </p>
             </div>
             <span className="text-[9px] font-bold text-slate-400 uppercase mt-0.5 tracking-wider">Remaining</span>
-  
+
             {/* Detailed breakdown */}
             <div className="space-y-0.5 pt-1.5 border-t border-slate-100 w-full mt-1.5">
               <div className="flex items-center justify-between text-[9px] font-bold text-slate-500">
@@ -904,10 +920,10 @@ export default function LeaveManagement() {
             </div>
           </div>
         </td>
-        <td className="px-6 py-4 text-center">
+        <td className="px-4 py-3 text-center">
           {getStatusBadge(leave.status)}
         </td>
-        <td className="px-6 py-4 text-right">
+        <td className="px-4 py-3 text-right">
           <div className="flex items-center justify-end gap-1.5">
             {editingLeaveId === leave._id ? (
               <>
@@ -1532,258 +1548,121 @@ export default function LeaveManagement() {
 
       <div className="max-w-7xl mx-auto p-4 sm:p-6 space-y-6 sm:space-y-8 animate-fade-in">
         {/* Header Banner */}
-        <div className="relative overflow-hidden bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-2xl sm:rounded-3xl p-5 sm:p-8 border border-slate-800">
-          <div className="absolute -right-16 -top-16 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl"></div>
-          <div className="absolute -left-16 -bottom-16 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl"></div>
-          
-          <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div className="space-y-2">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
-                <Cpu className="w-3.5 h-3.5 animate-pulse" /> Operations & Leave Intelligence
-              </div>
-              <h1 className="text-xl sm:text-3xl font-extrabold text-white tracking-tight">
-                Leave & Quota Operations
-              </h1>
-              <p className="text-slate-400 text-xs sm:text-sm max-w-xl">
-                Track employee leaves with monthly quota ({payrollConfig?.annualPaidLeaveQuota || 0} days), manage paid and unpaid adjustments, and organize multi-organization team scheduling.
-              </p>
-            </div>
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-14">
+          <div className="space-y-1">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+              Leave & Quota Operations
+            </h1>
+            <p className="text-slate-500 text-sm">
+              Track employee leaves with monthly quota ({payrollConfig?.annualPaidLeaveQuota || 0} days), manage paid and unpaid adjustments, and organize multi-organization team scheduling.
+            </p>
+          </div>
 
-            <div className="flex flex-wrap gap-3">
-              <button
-                onClick={handleAddLeave}
-                className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm px-5 py-3 rounded-xl transition-all active:scale-[0.98]"
+          <div className="flex flex-wrap gap-3">
+            <button
+              onClick={handleAddLeave}
+              className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm px-5 py-2.5 rounded-xl transition-all"
+            >
+              <Plus className="w-4 h-4" /> Add Leave Record
+            </button>
+          </div>
+        </div>
+
+
+
+
+
+        {/* Leave Records Table Container */}
+        <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+          {/* Table Toolbar */}
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 px-5 py-4 border-b border-slate-100 bg-white">
+            <div>
+              <h2 className="text-lg font-bold text-slate-900 tracking-tight">Leave Records</h2>
+            </div>
+            <div className="flex flex-wrap items-center gap-2 lg:gap-3">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                    setPagination((prev) => ({ ...prev, page: 1 }));
+                  }}
+                  placeholder="Search employee by name or ID..."
+                  className="w-full sm:w-[240px] bg-white border border-slate-200 rounded-lg pl-9 pr-3 py-1.5 text-xs text-slate-700 placeholder-slate-400 focus:outline-none focus:border-slate-300 transition-colors"
+                />
+              </div>
+              <select
+                value={selectedDepartment}
+                onChange={(e) => {
+                  setSelectedDepartment(e.target.value);
+                  setPagination((prev) => ({ ...prev, page: 1 }));
+                }}
+                className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs text-slate-700 focus:outline-none focus:border-slate-300 transition-colors cursor-pointer min-w-[140px]"
               >
-                <Plus className="w-4 h-4" /> Add Leave Record
+                <option value="">All Departments</option>
+                {departments.map((dept) => (
+                  <option key={dept} value={dept}>
+                    {dept}
+                  </option>
+                ))}
+              </select>
+              <select
+                value={selectedStatus}
+                onChange={(e) => {
+                  setSelectedStatus(e.target.value);
+                  setPagination((prev) => ({ ...prev, page: 1 }));
+                }}
+                className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs text-slate-700 focus:outline-none focus:border-slate-300 transition-colors cursor-pointer min-w-[120px]"
+              >
+                {statusOptions.map((status) => (
+                  <option key={status.value} value={status.value}>
+                    {status.label}
+                  </option>
+                ))}
+              </select>
+              <select
+                value={selectedMonth}
+                onChange={(e) => {
+                  setSelectedMonth(parseInt(e.target.value));
+                  setPagination((prev) => ({ ...prev, page: 1 }));
+                }}
+                className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs text-slate-700 focus:outline-none focus:border-slate-300 transition-colors cursor-pointer"
+              >
+                {months.map((month) => (
+                  <option key={month.value} value={month.value}>
+                    {month.label}
+                  </option>
+                ))}
+              </select>
+              <select
+                value={selectedYear}
+                onChange={(e) => {
+                  setSelectedYear(parseInt(e.target.value));
+                  setPagination((prev) => ({ ...prev, page: 1 }));
+                }}
+                className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs text-slate-700 focus:outline-none focus:border-slate-300 transition-colors cursor-pointer"
+              >
+                {years.map((year) => (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                ))}
+              </select>
+              <button
+                onClick={() => fetchLeaves(true)}
+                disabled={refreshing}
+                className="flex items-center justify-center gap-1.5 px-3 py-1.5 text-indigo-600 bg-white hover:bg-slate-50 rounded-lg border border-slate-200 disabled:opacity-50 transition-all font-medium text-xs"
+              >
+                <RefreshCw
+                  className={`w-3.5 h-3.5 ${refreshing ? "animate-spin text-indigo-600" : "text-slate-400"}`}
+                />
+                Refresh
               </button>
             </div>
           </div>
-        </div>
 
-        {/* Statistics Cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-          {/* Card 1 */}
-          <div className="group relative bg-white hover:bg-slate-50/50 rounded-2xl p-6 border border-slate-100  transition-all cursor-pointer overflow-hidden active:scale-[0.99]">
-            <div className="space-y-4">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center group-hover:scale-110 transition-transform">
-                <Users className="w-5 h-5" />
-              </div>
-              <div>
-                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Employees</p>
-                <p className="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight mt-1">
-                  {stats.totalEmployees}
-                </p>
-              </div>
-              <p className="text-xs font-medium text-slate-500 leading-tight">Monthly quota tracking</p>
-            </div>
-            <div className="absolute right-4 bottom-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all">
-              <ArrowRight className="w-4 h-4 text-slate-400" />
-            </div>
-          </div>
-
-          {/* Card 2 */}
-          <div className="group relative bg-white hover:bg-slate-50/50 rounded-2xl p-6 border border-slate-100  transition-all cursor-pointer overflow-hidden active:scale-[0.99]">
-            <div className="space-y-4">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center group-hover:scale-110 transition-transform">
-                <CheckCircle className="w-5 h-5" />
-              </div>
-              <div>
-                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Paid Leaves</p>
-                <p className="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight mt-1">
-                  {stats.totalPaidLeaves.toFixed(1)}
-                </p>
-              </div>
-              <p className="text-xs font-medium text-slate-500 leading-tight">Paid leaves taken this month</p>
-            </div>
-            <div className="absolute right-4 bottom-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all">
-              <ArrowRight className="w-4 h-4 text-slate-400" />
-            </div>
-          </div>
-
-          {/* Card 3 */}
-          <div className="group relative bg-white hover:bg-slate-50/50 rounded-2xl p-6 border border-slate-100  transition-all cursor-pointer overflow-hidden active:scale-[0.99]">
-            <div className="space-y-4">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-rose-500 to-pink-600 text-white flex items-center justify-center group-hover:scale-110 transition-transform">
-                <AlertCircle className="w-5 h-5" />
-              </div>
-              <div>
-                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Unpaid Leaves</p>
-                <p className="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight mt-1">
-                  {stats.totalUnpaidLeaves.toFixed(1)}
-                </p>
-              </div>
-              <p className="text-xs font-medium text-slate-500 leading-tight">Unpaid leaves taken this month</p>
-            </div>
-            <div className="absolute right-4 bottom-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all">
-              <ArrowRight className="w-4 h-4 text-slate-400" />
-            </div>
-          </div>
-
-          {/* Card 4 */}
-          <div className="group relative bg-white hover:bg-slate-50/50 rounded-2xl p-6 border border-slate-100  transition-all cursor-pointer overflow-hidden active:scale-[0.99]">
-            <div className="space-y-4">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 text-white flex items-center justify-center group-hover:scale-110 transition-transform">
-                <Clock className="w-5 h-5" />
-              </div>
-              <div>
-                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Leave Days</p>
-                <p className="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight mt-1">
-                  {stats.totalDays.toFixed(1)}
-                </p>
-              </div>
-              <p className="text-xs font-medium text-slate-500 leading-tight">Total days recorded this month</p>
-            </div>
-            <div className="absolute right-4 bottom-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all">
-              <ArrowRight className="w-4 h-4 text-slate-400" />
-            </div>
-          </div>
-        </div>
-
-
-
-        {/* Filters */}
-        <div className="bg-white rounded-2xl border border-slate-100">
-          <div className="p-5 sm:p-6 border-b border-slate-50">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div className="flex items-center space-x-3">
-                <h2 className="text-lg font-extrabold text-slate-800 tracking-tight">
-                  Operations Filter Deck
-                </h2>
-                {hasActiveFilters && (
-                  <span className="inline-flex items-center px-2.5 py-0.5 bg-indigo-50 text-indigo-600 text-xs font-bold rounded-full border border-indigo-100/60">
-                    Active Filters
-                  </span>
-                )}
-              </div>
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={() => fetchLeaves(true)}
-                  disabled={refreshing}
-                  className="inline-flex items-center gap-2 px-4 py-2.5 text-slate-600 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-100 disabled:opacity-50 transition-all font-bold text-xs active:scale-95"
-                >
-                  <RefreshCw
-                    className={`w-3.5 h-3.5 ${refreshing ? "animate-spin text-indigo-600" : "text-slate-400"}`}
-                  />
-                  Refresh Records
-                </button>
-              </div>
-            </div>
-          </div>
-          <div className="p-5 sm:p-6 bg-slate-50/30 rounded-b-2xl">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-4 sm:gap-5">
-              <div className="lg:col-span-3 space-y-1.5">
-                <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-                  Month
-                </label>
-                <select
-                  value={selectedMonth}
-                  onChange={(e) => {
-                    setSelectedMonth(parseInt(e.target.value));
-                    setPagination((prev) => ({ ...prev, page: 1 }));
-                  }}
-                  className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-800 placeholder-slate-400 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all cursor-pointer"
-                >
-                  {months.map((month) => (
-                    <option key={month.value} value={month.value}>
-                      {month.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="lg:col-span-2 space-y-1.5">
-                <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-                  Year
-                </label>
-                <select
-                  value={selectedYear}
-                  onChange={(e) => {
-                    setSelectedYear(parseInt(e.target.value));
-                    setPagination((prev) => ({ ...prev, page: 1 }));
-                  }}
-                  className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-800 placeholder-slate-400 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all cursor-pointer"
-                >
-                  {years.map((year) => (
-                    <option key={year} value={year}>
-                      {year}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="lg:col-span-2 space-y-1.5">
-                <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-                  Status
-                </label>
-                <select
-                  value={selectedStatus}
-                  onChange={(e) => {
-                    setSelectedStatus(e.target.value);
-                    setPagination((prev) => ({ ...prev, page: 1 }));
-                  }}
-                  className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-800 placeholder-slate-400 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all cursor-pointer"
-                >
-                  {statusOptions.map((status) => (
-                    <option key={status.value} value={status.value}>
-                      {status.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="lg:col-span-3 space-y-1.5">
-                <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-                  Search Employee
-                </label>
-                <div className="relative">
-                  <Search className="absolute left-3.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => {
-                      setSearchQuery(e.target.value);
-                      setPagination((prev) => ({ ...prev, page: 1 }));
-                    }}
-                    placeholder="Search by name or ID..."
-                    className="w-full bg-white border border-slate-200 rounded-xl pl-10 pr-4 py-2 text-sm text-slate-800 placeholder-slate-400 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all"
-                  />
-                </div>
-              </div>
-              {hasActiveFilters && (
-                <div className="lg:col-span-1 flex items-end">
-                  <button
-                    onClick={clearFilters}
-                    className="w-full flex items-center justify-center p-2.5 bg-rose-50 text-rose-600 hover:bg-rose-100 hover:text-rose-700 rounded-xl border border-rose-150 transition-all font-semibold active:scale-95"
-                    title="Clear all filters"
-                  >
-                    <FilterX className="w-4 h-4" />
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Leave Records Table */}
-        <div className="bg-white rounded-2xl border border-slate-100 overflow-hidden">
-          <div className="p-5 sm:p-6 border-b border-slate-50 bg-slate-50/30">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              <div className="space-y-1">
-                <div className="flex items-center gap-3">
-                  <h2 className="text-lg font-extrabold text-slate-800 tracking-tight">
-                    Statutory Leave Logs —{" "}
-                    {formatMonthYear(selectedMonth, selectedYear)}
-                  </h2>
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-50/60 border border-blue-100 rounded-full">
-                    <Info className="w-3.5 h-3.5 text-blue-600" />
-                    <span className="text-[11px] font-bold text-blue-700">
-                      End-of-month balances shown ({months[selectedMonth - 1].label})
-                    </span>
-                  </div>
-                </div>
-                <p className="text-xs font-semibold text-slate-400">
-                  Showing {pagination.total} active employee{pagination.total !== 1 ? "s" : ""} in view
-                </p>
-              </div>
-            </div>
-          </div>
 
           {loading ? (
             <div className="p-6 space-y-6">
@@ -1831,37 +1710,39 @@ export default function LeaveManagement() {
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-slate-50/50 border-b border-slate-100 text-slate-450 text-[10px] font-extrabold uppercase tracking-wider">
-                  <tr>
-                    <th className="text-left px-6 py-4 font-bold">
+                <thead className="bg-slate-50/50 border-b border-slate-100">
+                  <tr className="">
+                    <th className="text-center px-4 py-4 min-w-[40px] text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                      #
+                    </th>
+                    <th className="text-left px-4 py-4 cursor-pointer hover:bg-slate-100/50 transition-colors text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                       Employee
                     </th>
-
-                    <th className="text-left px-6 py-4 font-bold">
+                    <th className="text-left px-4 py-4 cursor-pointer hover:bg-slate-100/50 transition-colors text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                       Department
                     </th>
-                    <th className="text-center px-6 py-4 font-bold">
+                    <th className="text-center px-4 py-4 cursor-pointer hover:bg-slate-100/50 transition-colors text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                       Paid Leaves
                     </th>
-                    <th className="text-center px-6 py-4 font-bold">
+                    <th className="text-center px-4 py-4 cursor-pointer hover:bg-slate-100/50 transition-colors text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                       Unpaid Leaves
                     </th>
-                    <th className="text-center px-6 py-4 font-bold">
+                    <th className="text-center px-4 py-4 cursor-pointer hover:bg-slate-100/50 transition-colors text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                       Total Days
                     </th>
-                    <th className="text-center px-6 py-4 font-bold">
+                    <th className="text-center px-4 py-4 cursor-pointer hover:bg-slate-100/50 transition-colors text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                       Monthly Balance
                     </th>
-                    <th className="text-center px-6 py-4 font-bold">
+                    <th className="text-center px-4 py-4 cursor-pointer hover:bg-slate-100/50 transition-colors text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                       Status
                     </th>
-                    <th className="text-right px-6 py-4 font-bold">
+                    <th className="text-right px-4 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                       Actions
                     </th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-slate-100">
-                  {leaves.map((leave) => renderLeaveRow(leave))}
+                  {leaves.map((leave, index) => renderLeaveRow(leave, index))}
                 </tbody>
               </table>
             </div>
@@ -1871,3 +1752,4 @@ export default function LeaveManagement() {
     </div>
   );
 }
+

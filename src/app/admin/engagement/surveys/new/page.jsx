@@ -89,7 +89,7 @@ export default function NewSurvey() {
             </div>
 
             <div className="space-y-6">
-                <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
+                <div className="bg-white p-6 rounded-xl border border-slate-200 space-y-4">
                     <div className="space-y-2">
                         <label className="text-sm font-semibold text-slate-700">Survey Title</label>
                         <input
@@ -169,7 +169,7 @@ export default function NewSurvey() {
                     </div>
 
                     {formData.questions.map((q, index) => (
-                        <div key={index} className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm relative group">
+                        <div key={index} className="bg-white p-6 rounded-xl border border-slate-200 relative group">
                             <button
                                 type="button"
                                 onClick={() => removeQuestion(index)}
@@ -220,7 +220,7 @@ export default function NewSurvey() {
                         type="button"
                         disabled={loading}
                         onClick={() => submitSurvey("Published")}
-                        className="px-8 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 shadow-md shadow-indigo-100 disabled:opacity-50 transition-all flex items-center gap-2"
+                        className="px-8 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 disabled:opacity-50 transition-all flex items-center gap-2"
                     >
                         <Save className="w-4 h-4" />
                         {loading ? "Publishing..." : "Publish Survey"}

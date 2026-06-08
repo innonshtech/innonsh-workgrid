@@ -154,7 +154,7 @@ const KanbanBoard = ({
                                         {column}
                                     </h3>
                                 </div>
-                                <span className="text-[10px] font-black text-slate-400 bg-white/80 px-2 py-0.5 rounded-full shadow-sm">
+                                <span className="text-[10px] font-black text-slate-400 bg-white/80 px-2 py-0.5 rounded-full">
                                     {columnTasks.length}
                                 </span>
                             </div>

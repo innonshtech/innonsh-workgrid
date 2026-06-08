@@ -23,7 +23,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { useSession } from "@/context/SessionContext";
 
 const Card = ({ children, className = "" }) => (
-    <div className={`bg-white rounded-xl border border-slate-200 shadow-sm ${className}`}>
+    <div className={`bg-white rounded-xl border border-slate-200 ${className}`}>
         {children}
     </div>
 );
@@ -331,8 +331,8 @@ function AdminHolidaysContent() {
                                     onClick={() => setSelectedListId(list._id)}
                                     className={`group cursor-pointer p-3.5 rounded-xl border transition-all ${
                                         selectedListId === list._id 
-                                        ? "bg-indigo-600 border-indigo-600 shadow-md shadow-indigo-100 ring-2 ring-indigo-100" 
-                                        : "bg-white border-slate-200 hover:border-indigo-300 hover:shadow-sm"
+                                        ? "bg-indigo-600 border-indigo-600 ring-2 ring-indigo-100" 
+                                        : "bg-white border-slate-200 hover:border-indigo-300 hover:"
                                     }`}
                                 >
                                     <div className="flex justify-between items-start mb-2">
@@ -382,7 +382,7 @@ function AdminHolidaysContent() {
 
                     {/* Main Content: Holidays */}
                     <div className="flex-1 space-y-5">
-                        <div className="flex justify-between items-center bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                        <div className="flex justify-between items-center bg-white p-5 rounded-2xl border border-slate-200">
                             <div>
                                 <h1 className="text-xl font-bold text-slate-900 tracking-tight">
                                     {holidayLists.find(l => l._id === selectedListId)?.name || "Holidays"}
@@ -398,7 +398,7 @@ function AdminHolidaysContent() {
                             <button
                                 onClick={() => handleOpenModal()}
                                 disabled={!selectedListId}
-                                className="flex items-center gap-1.5 px-4 py-2 bg-indigo-600 text-white rounded-xl text-xs font-bold shadow-sm shadow-indigo-100 hover:bg-indigo-700 transition-all active:scale-95 disabled:opacity-50 disabled:scale-100 disabled:bg-slate-300 disabled:shadow-none"
+                                className="flex items-center gap-1.5 px-4 py-2 bg-indigo-600 text-white rounded-xl text-xs font-bold hover:bg-indigo-700 transition-all active:scale-95 disabled:opacity-50 disabled:scale-100 disabled:bg-slate-300 disabled:"
                             >
                                 <Plus className="w-4 h-4" />
                                 Add Holiday
@@ -412,7 +412,7 @@ function AdminHolidaysContent() {
                                 placeholder="Search holidays by name..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-100 text-sm font-medium transition-all"
+                                className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-100 text-sm font-medium transition-all"
                             />
                         </div>
 
@@ -428,7 +428,7 @@ function AdminHolidaysContent() {
                                         <div className="absolute top-0 right-0 w-20 h-20 bg-indigo-50 rounded-full -mr-10 -mt-10 group-hover:bg-indigo-100 transition-colors"></div>
                                         <div className="relative z-10 flex gap-4">
                                             <div className="flex-shrink-0">
-                                                <div className="p-2.5 bg-white border border-slate-100 rounded-2xl shadow-sm text-center min-w-[70px]">
+                                                <div className="p-2.5 bg-white border border-slate-200 rounded-2xl text-center min-w-[70px]">
                                                     <p className="text-[9px] font-bold uppercase text-indigo-600 tracking-widest">{format(new Date(holiday.date), 'MMM')}</p>
                                                     <p className="text-xl font-bold text-slate-900">{format(new Date(holiday.date), 'dd')}</p>
                                                     {holiday.endDate && holiday.endDate !== holiday.date && (
@@ -477,7 +477,7 @@ function AdminHolidaysContent() {
                                         </div>
                                     </Card>
                                 )) : (
-                                    <div className="col-span-full py-20 text-center bg-white rounded-2xl border border-slate-100 shadow-sm">
+                                    <div className="col-span-full py-20 text-center bg-white rounded-2xl border border-slate-200">
                                         <Palmtree className="w-16 h-16 text-slate-200 mx-auto mb-4" />
                                         <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest">No holidays found</h3>
                                         <p className="text-xs text-slate-400 font-medium mt-1">Add holidays to populate this list.</p>
@@ -492,7 +492,7 @@ function AdminHolidaysContent() {
             {/* Holiday Modal */}
             {showModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
-                    <div className="bg-white rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto">
+                    <div className="bg-white rounded-3xl w-full max-w-lg overflow-hidden max-h-[90vh] overflow-y-auto">
                         <div className="p-6 border-b border-slate-100 flex justify-between items-center sticky top-0 bg-white z-10">
                             <div>
                                 <h2 className="text-2xl font-black text-slate-900">{editingHoliday ? "Update Holiday" : "Add Holiday"}</h2>
@@ -551,7 +551,7 @@ function AdminHolidaysContent() {
                             </div>
                             <div className="flex gap-4 pt-2">
                                 <button type="button" onClick={() => setShowModal(false)} className="flex-1 py-3.5 bg-slate-100 text-slate-600 rounded-2xl font-bold hover:bg-slate-200 transition-all">Cancel</button>
-                                <button type="submit" className="flex-[2] py-3.5 bg-indigo-600 text-white rounded-2xl font-bold shadow-lg shadow-indigo-100 hover:bg-indigo-700 transition-all hover:scale-[1.02] active:scale-[0.98]">{editingHoliday ? "Update" : "Create"}</button>
+                                <button type="submit" className="flex-[2] py-3.5 bg-indigo-600 text-white rounded-2xl font-bold hover:bg-indigo-700 transition-all hover:scale-[1.02] active:scale-[0.98]">{editingHoliday ? "Update" : "Create"}</button>
                             </div>
                         </form>
                     </div>
@@ -561,7 +561,7 @@ function AdminHolidaysContent() {
             {/* Holiday List Modal */}
             {showListModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
-                    <div className="bg-white rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto">
+                    <div className="bg-white rounded-3xl w-full max-w-lg overflow-hidden max-h-[90vh] overflow-y-auto">
                         <div className="p-6 border-b border-slate-100 flex justify-between items-center sticky top-0 bg-white z-10">
                             <div>
                                 <h2 className="text-2xl font-black text-slate-900">{editingList ? "Update List" : "Create Holiday List"}</h2>
@@ -617,7 +617,7 @@ function AdminHolidaysContent() {
                             </div>
                             <div className="flex gap-4 pt-2">
                                 <button type="button" onClick={() => setShowListModal(false)} className="flex-1 py-3.5 bg-slate-100 text-slate-600 rounded-2xl font-bold hover:bg-slate-200 transition-all">Cancel</button>
-                                <button type="submit" className="flex-[2] py-3.5 bg-indigo-600 text-white rounded-2xl font-bold shadow-lg shadow-indigo-100 hover:bg-indigo-700 transition-all hover:scale-[1.02] active:scale-[0.98]">{editingList ? "Update List" : "Create List"}</button>
+                                <button type="submit" className="flex-[2] py-3.5 bg-indigo-600 text-white rounded-2xl font-bold hover:bg-indigo-700 transition-all hover:scale-[1.02] active:scale-[0.98]">{editingList ? "Update List" : "Create List"}</button>
                             </div>
                         </form>
                     </div>

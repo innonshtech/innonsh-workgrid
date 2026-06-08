@@ -241,7 +241,7 @@ export default function ShiftManagement() {
                     </div>
                     <button
                         onClick={() => handleOpenModal()}
-                        className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-2xl font-bold shadow-lg shadow-indigo-200 transition-all"
+                        className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-2xl font-bold transition-all"
                     >
                         <Plus size={20} /> New Shift
                     </button>
@@ -256,7 +256,7 @@ export default function ShiftManagement() {
                         {shifts.map((shift) => (
                             <div
                                 key={shift._id}
-                                className="bg-white rounded-[2.5rem] p-8 border border-slate-200 shadow-sm hover:shadow-xl transition-all relative overflow-hidden group"
+                                className="bg-white rounded-[2.5rem] p-8 border border-slate-200 hover: transition-all relative overflow-hidden group"
                             >
                                 <div
                                     className="absolute top-0 left-0 w-full h-2"
@@ -317,7 +317,7 @@ export default function ShiftManagement() {
                                         <span>Break: {shift.breakDuration} mins</span>
                                     </div>
                                     <div
-                                        className="w-4 h-4 rounded-full shadow-inner"
+                                        className="w-4 h-4 rounded-full"
                                         style={{ backgroundColor: shift.color }}
                                     />
                                 </div>
@@ -343,7 +343,7 @@ export default function ShiftManagement() {
                             <p className="text-slate-500 font-medium">Configure timings and automated thresholds for the selected shift.</p>
                         </div>
                         {shifts.length > 0 && (
-                            <div className="flex items-center gap-3 bg-white px-6 py-3 rounded-2xl border border-slate-200 shadow-sm">
+                            <div className="flex items-center gap-3 bg-white px-6 py-3 rounded-2xl border border-slate-200">
                                 <span className="text-xs font-black uppercase tracking-widest text-slate-400">Selected Shift:</span>
                                 <select
                                     value={selectedShiftId}
@@ -363,7 +363,7 @@ export default function ShiftManagement() {
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
 
                         {/* Card 2: Late Arrival Management */}
-                        <div className="bg-white rounded-[2.5rem] p-8 border border-slate-200 shadow-sm flex flex-col justify-between hover:shadow-md transition-all h-full relative group">
+                        <div className="bg-white rounded-[2.5rem] p-8 border border-slate-200 flex flex-col justify-between hover: transition-all h-full relative group">
                             <div className="space-y-6">
                                 <div className="flex justify-between items-start">
                                     <div className="flex items-center gap-3">
@@ -412,7 +412,7 @@ export default function ShiftManagement() {
                                         await handleSaveGlobalPolicy({ lateCutoffTime: globalLateTime });
                                         setEditLate(false);
                                     }}
-                                    className="w-full py-4 rounded-[1.5rem] font-bold transition-all active:scale-[0.98] mt-6 bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-100"
+                                    className="w-full py-4 rounded-[1.5rem] font-bold transition-all active:scale-[0.98] mt-6 bg-indigo-600 hover:bg-indigo-700 text-white"
                                 >
                                     Update
                                 </button>
@@ -420,7 +420,7 @@ export default function ShiftManagement() {
                         </div>
 
                         {/* Card 3: Present & Absent Management */}
-                        <div className="bg-white rounded-[2.5rem] p-8 border border-slate-200 shadow-sm flex flex-col justify-between hover:shadow-md transition-all h-full relative group">
+                        <div className="bg-white rounded-[2.5rem] p-8 border border-slate-200 flex flex-col justify-between hover: transition-all h-full relative group">
                             <div className="space-y-6">
                                 <div className="flex justify-between items-start">
                                     <div className="flex items-center gap-3">
@@ -469,7 +469,7 @@ export default function ShiftManagement() {
                                         await handleSaveGlobalPolicy({ absentCutoffTime: globalAbsentTime });
                                         setEditAbsent(false);
                                     }}
-                                    className="w-full py-4 rounded-[1.5rem] font-bold transition-all active:scale-[0.98] mt-6 bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-100"
+                                    className="w-full py-4 rounded-[1.5rem] font-bold transition-all active:scale-[0.98] mt-6 bg-indigo-600 hover:bg-indigo-700 text-white"
                                 >
                                     Update
                                 </button>
@@ -477,7 +477,7 @@ export default function ShiftManagement() {
                         </div>
 
                         {/* Card 4: Half-Day Management */}
-                        <div className="bg-white rounded-[2.5rem] p-8 border border-slate-200 shadow-sm flex flex-col justify-between hover:shadow-md transition-all h-full relative group">
+                        <div className="bg-white rounded-[2.5rem] p-8 border border-slate-200 flex flex-col justify-between hover: transition-all h-full relative group">
                             <div className="space-y-6">
                                 <div className="flex justify-between items-start">
                                     <div className="flex items-center gap-3">
@@ -542,7 +542,7 @@ export default function ShiftManagement() {
                                         });
                                         setEditHalfDay(false);
                                     }}
-                                    className="w-full py-4 rounded-[1.5rem] font-bold transition-all active:scale-[0.98] mt-6 bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-100"
+                                    className="w-full py-4 rounded-[1.5rem] font-bold transition-all active:scale-[0.98] mt-6 bg-indigo-600 hover:bg-indigo-700 text-white"
                                 >
                                     Update
                                 </button>
@@ -555,7 +555,7 @@ export default function ShiftManagement() {
             {/* Modal Form */}
             {showModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
-                    <div className="bg-white w-full max-w-xl rounded-[3rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
+                    <div className="bg-white w-full max-w-xl rounded-[3rem] overflow-hidden animate-in zoom-in-95 duration-300">
                         <div className="p-8 border-b border-slate-100 flex justify-between items-center bg-indigo-600 text-white">
                             <h2 className="text-2xl font-black">{editingShift ? 'Edit Shift' : 'New Shift'}</h2>
                             <button onClick={() => setShowModal(false)} className="p-2 hover:bg-white/20 rounded-full transition-colors">
@@ -619,7 +619,7 @@ export default function ShiftManagement() {
                                             type="button"
                                             onClick={() => handleToggleDay(day)}
                                             className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${formData.workingDays.includes(day)
-                                                    ? 'bg-indigo-600 text-white shadow-md shadow-indigo-100'
+                                                    ? 'bg-indigo-600 text-white'
                                                     : 'bg-slate-50 text-slate-400 hover:bg-slate-100'
                                                 }`}
                                         >
@@ -637,7 +637,7 @@ export default function ShiftManagement() {
                                             key={c}
                                             type="button"
                                             onClick={() => setFormData({ ...formData, color: c })}
-                                            className={`w-10 h-10 rounded-full transition-transform ${formData.color === c ? 'scale-110 ring-4 ring-indigo-100 shadow-lg' : 'hover:scale-105 opacity-60'}`}
+                                            className={`w-10 h-10 rounded-full transition-transform ${formData.color === c ? 'scale-110 ring-4 ring-indigo-100' : 'hover:scale-105 opacity-60'}`}
                                             style={{ backgroundColor: c }}
                                         />
                                     ))}
@@ -676,7 +676,7 @@ export default function ShiftManagement() {
                                 </button>
                                 <button
                                     type="submit"
-                                    className="flex-[2] py-4 bg-indigo-600 text-white rounded-[1.5rem] font-bold shadow-xl shadow-indigo-100 hover:bg-indigo-700 transition-all"
+                                    className="flex-[2] py-4 bg-indigo-600 text-white rounded-[1.5rem] font-bold hover:bg-indigo-700 transition-all"
                                 >
                                     {editingShift ? 'Save Changes' : 'Create Shift'}
                                 </button>

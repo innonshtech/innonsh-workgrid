@@ -106,10 +106,10 @@ export default function LeaveApplicationForm() {
       <Toaster />
       <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Header */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 mb-8">
+        <div className="bg-white rounded-xl border border-slate-200 p-6 mb-8">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 bg-gradient-to-br from-yellow-500 to-amber-500 rounded-2xl flex items-center justify-center shadow-lg">
+              <div className="w-16 h-16 bg-gradient-to-br from-yellow-500 to-amber-500 rounded-2xl flex items-center justify-center">
                 <FileText className="w-8 h-8 text-white" />
               </div>
               <div>
@@ -133,7 +133,7 @@ export default function LeaveApplicationForm() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Leave Application Form */}
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+            <div className="bg-white rounded-xl border border-slate-200">
               <div className="p-6 border-b border-slate-200">
                 <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                   <div className="w-8 h-8 bg-yellow-50 rounded-lg flex items-center justify-center border border-yellow-100">
@@ -362,7 +362,7 @@ export default function LeaveApplicationForm() {
           {/* Sidebar - Leave Information */}
           <div className="space-y-6">
             {/* Leave Balance Card */}
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+            <div className="bg-white rounded-xl border border-slate-200">
               <div className="p-6 border-b border-slate-200">
                 <h3 className="text-lg font-semibold text-slate-900 flex items-center gap-2">
                   <div className="w-6 h-6 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -387,7 +387,7 @@ export default function LeaveApplicationForm() {
             </div>
 
             {/* Application Summary */}
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+            <div className="bg-white rounded-xl border border-slate-200">
               <div className="p-6 border-b border-slate-200">
                 <h3 className="text-lg font-semibold text-slate-900 flex items-center gap-2">
                   <div className="w-6 h-6 bg-yellow-100 rounded-lg flex items-center justify-center">
@@ -441,7 +441,7 @@ export default function LeaveApplicationForm() {
             </div>
 
             {/* Leave Policy */}
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+            <div className="bg-white rounded-xl border border-slate-200">
               <div className="p-6 border-b border-slate-200">
                 <h3 className="text-lg font-semibold text-slate-900 flex items-center gap-2">
                   <div className="w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center">

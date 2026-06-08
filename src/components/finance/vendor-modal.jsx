@@ -95,18 +95,18 @@ export default function VendorModal({ isOpen, onClose, onVendorSaved, editData =
 
     return (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
-            <div className="bg-white rounded-[2rem] w-full max-w-4xl max-h-[90vh] overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-300 border border-slate-100">
+            <div className="bg-white rounded-[2rem] w-full max-w-4xl max-h-[90vh] overflow-hidden animate-in fade-in zoom-in duration-300 border border-slate-200">
                 <div className="p-8 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
                     <div>
                         <h2 className="text-2xl font-black text-slate-900 flex items-center gap-3">
-                            <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-100">
+                            <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center">
                                 <Building2 className="w-6 h-6 text-white" />
                             </div>
                             {editData ? "Edit Vendor Profile" : "Register New Vendor"}
                         </h2>
                         <p className="text-slate-500 text-xs font-bold uppercase tracking-widest mt-1 ml-13">Enter master details for the service provider</p>
                     </div>
-                    <button onClick={onClose} className="p-3 hover:bg-white hover:shadow-md rounded-2xl transition-all text-slate-400 hover:text-slate-900">
+                    <button onClick={onClose} className="p-3 hover:bg-white hover: rounded-2xl transition-all text-slate-400 hover:text-slate-900">
                         <X className="w-6 h-6" />
                     </button>
                 </div>
@@ -302,7 +302,7 @@ export default function VendorModal({ isOpen, onClose, onVendorSaved, editData =
                         <button
                             type="submit"
                             disabled={loading}
-                            className="px-10 py-4 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl shadow-indigo-100 flex items-center gap-2 disabled:opacity-70"
+                            className="px-10 py-4 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-black uppercase tracking-widest rounded-2xl transition-all flex items-center gap-2 disabled:opacity-70"
                         >
                             {loading ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> : <Save className="w-4 h-4" />}
                             {loading ? "Processing..." : (editData ? "Update Record" : "Register Vendor")}

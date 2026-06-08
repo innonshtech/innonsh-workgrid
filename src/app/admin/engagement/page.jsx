@@ -123,7 +123,7 @@ export default function EngagementHub() {
             )}
 
             {user?.role === 'admin' && enpsData && (
-                <section className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm">
+                <section className="bg-white p-8 rounded-2xl border border-slate-200">
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
                         <div>
                             <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
@@ -217,7 +217,7 @@ export default function EngagementHub() {
                 </div>
 
                 <div className="space-y-6">
-                    <section className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                    <section className="bg-white p-6 rounded-xl border border-slate-200">
                         <h2 className="text-lg font-semibold text-slate-800 mb-4">Engagement Tips</h2>
                         <div className="space-y-4">
                             <TipItem
@@ -242,7 +242,7 @@ export default function EngagementHub() {
 
 function StatCard({ title, value, icon: Icon, color, bgColor, subtext }) {
     return (
-        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+        <div className="bg-white p-6 rounded-xl border border-slate-200">
             <div className="flex items-center justify-between mb-2">
                 <div className={`${bgColor} ${color} p-2 rounded-lg`}>
                     <Icon className="w-5 h-5" />
@@ -287,7 +287,7 @@ function SurveyRow({ survey, role, responseCount }) {
                 ) : (
                     <Link
                         href={`/employee/engagement/take-survey/${survey._id}`}
-                        className="text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-lg shadow-sm transition-all whitespace-nowrap"
+                        className="text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-lg transition-all whitespace-nowrap"
                     >
                         Take Survey
                     </Link>

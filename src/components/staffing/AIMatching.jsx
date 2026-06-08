@@ -239,7 +239,7 @@ export default function AIMatching() {
             <select
               value={selectedReqId}
               onChange={handleReqChange}
-              className="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-800 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none w-full sm:w-64 md:w-80 shadow-sm"
+              className="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-800 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none w-full sm:w-64 md:w-80"
             >
               {requirements.map((req) => (
                 <option key={req._id} value={req._id}>
@@ -252,7 +252,7 @@ export default function AIMatching() {
           <button
             onClick={handleRunAIMatch}
             disabled={loading || !selectedReqId}
-            className="w-full sm:w-auto flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-300 text-white font-extrabold text-sm px-6 py-3.5 rounded-xl shadow-lg shadow-indigo-600/20 active:scale-[0.98] transition-all self-end"
+            className="w-full sm:w-auto flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-300 text-white font-extrabold text-sm px-6 py-3.5 rounded-xl active:scale-[0.98] transition-all self-end"
           >
             <Sparkles className="w-4 h-4 animate-spin-slow" /> Run AI Match
           </button>
@@ -262,9 +262,9 @@ export default function AIMatching() {
       {selectedReq && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
           {/* Left Column: Requirement Profile Spec Summary */}
-          <div className="lg:col-span-1 bg-white rounded-3xl border border-slate-100 p-6 space-y-6 shadow-sm">
+          <div className="lg:col-span-1 bg-white rounded-3xl border border-slate-200 p-6 space-y-6">
             <div className="flex items-center gap-3 pb-4 border-b border-slate-50">
-              <div className="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center text-amber-600 shadow-inner">
+              <div className="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center text-amber-600">
                 <Briefcase className="w-5 h-5" />
               </div>
               <div>
@@ -315,7 +315,7 @@ export default function AIMatching() {
           {/* Right Columns: AI Match Result Cards */}
           <div className="lg:col-span-2 space-y-6">
             {loading ? (
-              <div className="bg-white rounded-3xl border border-indigo-100 p-12 text-center flex flex-col items-center justify-center space-y-5 shadow-sm">
+              <div className="bg-white rounded-3xl border border-slate-200 p-12 text-center flex flex-col items-center justify-center space-y-5">
                 <div className="relative w-14 h-14">
                   <div className="absolute top-0 left-0 w-full h-full rounded-full border-4 border-indigo-100 border-t-indigo-600 animate-spin"></div>
                   <Cpu className="absolute inset-0 w-6 h-6 text-indigo-600 m-auto animate-pulse" />
@@ -336,7 +336,7 @@ export default function AIMatching() {
                 </p>
               </div>
             ) : matchingResults.length === 0 ? (
-              <div className="bg-white rounded-3xl border border-slate-100 p-12 text-center text-slate-400 shadow-sm">
+              <div className="bg-white rounded-3xl border border-slate-200 p-12 text-center text-slate-400">
                 <AlertTriangle className="w-10 h-10 text-amber-500 mx-auto mb-2" />
                 <h3 className="text-sm font-extrabold text-slate-700">No Candidates Found</h3>
                 <p className="text-xs font-semibold text-slate-400 max-w-xs mx-auto mt-1">
@@ -376,7 +376,7 @@ export default function AIMatching() {
                     return (
                       <div
                         key={cand._id}
-                        className="bg-white rounded-3xl border border-slate-150 shadow-sm p-6 space-y-4 flex flex-col justify-between hover:shadow-md transition-shadow relative overflow-hidden"
+                        className="bg-white rounded-3xl border border-slate-150 p-6 space-y-4 flex flex-col justify-between hover: transition- relative overflow-hidden"
                       >
                         {/* Rank Badge */}
                         <div className="absolute top-0 left-0 w-8 h-8 bg-slate-900 text-white rounded-br-2xl flex items-center justify-center font-black text-xs">
@@ -395,10 +395,10 @@ export default function AIMatching() {
 
                             {/* Score and Recommendation badges */}
                             <div className="flex items-center gap-2 shrink-0">
-                              <span className={`inline-flex px-3 py-1.5 rounded-xl border text-sm font-extrabold shadow-sm ${getScoreColor(match.fitScore)}`}>
+                              <span className={`inline-flex px-3 py-1.5 rounded-xl border text-sm font-extrabold ${getScoreColor(match.fitScore)}`}>
                                 Fit Score: {match.fitScore}%
                               </span>
-                              <span className={`inline-flex px-3 py-1.5 rounded-xl text-xs font-black shadow-sm ${getRecommendationBadgeColor(match.recommendation)}`}>
+                              <span className={`inline-flex px-3 py-1.5 rounded-xl text-xs font-black ${getRecommendationBadgeColor(match.recommendation)}`}>
                                 {match.recommendation}
                               </span>
                             </div>
@@ -470,7 +470,7 @@ export default function AIMatching() {
                           ) : (
                             <button
                               onClick={() => handleShortlistCandidate(cand._id, match)}
-                              className="flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-xs px-4 py-2.5 rounded-xl shadow-md shadow-indigo-600/10 active:scale-[0.98] transition-all"
+                              className="flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-xs px-4 py-2.5 rounded-xl active:scale-[0.98] transition-all"
                             >
                               Shortlist & Submit <ArrowRight className="w-3.5 h-3.5" />
                             </button>
@@ -489,7 +489,7 @@ export default function AIMatching() {
       {/* Google API Error Modal */}
       {apiErrorModalOpen && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-900/80 backdrop-blur-md p-4 overflow-y-auto animate-in fade-in duration-200">
-          <div className="bg-white rounded-3xl border border-red-100 shadow-2xl max-w-md w-full overflow-hidden animate-in zoom-in-95 duration-300">
+          <div className="bg-white rounded-3xl border border-red-100 max-w-md w-full overflow-hidden animate-in zoom-in-95 duration-300">
             <div className="bg-gradient-to-br from-red-500 to-rose-600 p-6 flex flex-col items-center justify-center text-center space-y-3 relative">
               <button
                 onClick={() => setApiErrorModalOpen(false)}
@@ -497,7 +497,7 @@ export default function AIMatching() {
               >
                 <X className="w-5 h-5" />
               </button>
-              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm shadow-inner">
+              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
                 <AlertTriangle className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-xl font-extrabold text-white tracking-tight">API Quota Exhausted</h3>
@@ -517,7 +517,7 @@ export default function AIMatching() {
               <div className="space-y-3">
                 <button
                   onClick={() => setApiErrorModalOpen(false)}
-                  className="w-full bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-sm px-6 py-3.5 rounded-xl shadow-lg shadow-slate-900/20 active:scale-[0.98] transition-all"
+                  className="w-full bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-sm px-6 py-3.5 rounded-xl active:scale-[0.98] transition-all"
                 >
                   Understood
                 </button>

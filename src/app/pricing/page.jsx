@@ -70,7 +70,7 @@ export default function PricingPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
-            className={`rounded-2xl shadow-xl overflow-hidden bg-white border-2 flex flex-col ${
+            className={`rounded-2xl overflow-hidden bg-white border-2 flex flex-col ${
               tier.popular ? 'border-indigo-600 relative scale-105 z-10' : 'border-transparent'
             }`}
           >
@@ -110,7 +110,7 @@ export default function PricingPage() {
             <div className="p-6 bg-gray-50 mt-auto">
               <Link href={tier.href}>
                 <button
-                  className={`w-full block text-center rounded-lg px-4 py-3 text-sm font-semibold transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                  className={`w-full block text-center rounded-lg px-4 py-3 text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 ${
                     tier.popular
                       ? 'bg-indigo-600 text-white hover:bg-indigo-700 focus:ring-indigo-600'
                       : 'bg-white text-indigo-600 border border-indigo-200 hover:bg-gray-50 focus:ring-indigo-500'

@@ -810,7 +810,7 @@ export default function LeaveManagement() {
       <tr key={leave._id} className="hover:bg-slate-50/50 transition-colors group/row">
         <td className="px-6 py-4">
           <div className="flex items-center gap-3.5">
-            <div className="w-9 h-9 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center text-white text-xs font-bold shadow-md shadow-indigo-500/10 group-hover/row:scale-105 transition-transform">
+            <div className="w-9 h-9 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center text-white text-xs font-bold group-hover/row:scale-105 transition-transform">
               {getInitials(leave.employeeName)}
             </div>
             <div>
@@ -840,7 +840,7 @@ export default function LeaveManagement() {
               className="w-16 text-center bg-slate-50 border border-slate-200 rounded-xl px-1.5 py-1 text-xs text-slate-800 outline-none focus:ring-2 focus:ring-indigo-500/20"
             />
           ) : (
-            <span className="inline-flex items-center justify-center min-w-[2.5rem] px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-xl font-bold text-xs border border-emerald-100 shadow-inner">
+            <span className="inline-flex items-center justify-center min-w-[2.5rem] px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-xl font-bold text-xs border border-emerald-100">
               {(
                 (leave.summary.paidLeaves || 0) +
                 (leave.summary.halfDayPaidLeaves || 0) * 0.5
@@ -859,7 +859,7 @@ export default function LeaveManagement() {
               className="w-16 text-center bg-slate-50 border border-slate-200 rounded-xl px-1.5 py-1 text-xs text-slate-800 outline-none focus:ring-2 focus:ring-indigo-500/20"
             />
           ) : (
-            <span className="inline-flex items-center justify-center min-w-[2.5rem] px-2.5 py-1 bg-rose-50 text-rose-700 rounded-xl font-bold text-xs border border-rose-100 shadow-inner">
+            <span className="inline-flex items-center justify-center min-w-[2.5rem] px-2.5 py-1 bg-rose-50 text-rose-700 rounded-xl font-bold text-xs border border-rose-100">
               {(
                 (leave.summary.unpaidLeaves || 0) +
                 (leave.summary.halfDayUnpaidLeaves || 0) * 0.5
@@ -868,14 +868,14 @@ export default function LeaveManagement() {
           )}
         </td>
         <td className="px-6 py-4 text-center">
-          <span className="inline-flex items-center justify-center min-w-[2.5rem] px-2.5 py-1 bg-indigo-50 text-indigo-700 rounded-xl font-bold text-xs border border-indigo-100 shadow-inner">
+          <span className="inline-flex items-center justify-center min-w-[2.5rem] px-2.5 py-1 bg-indigo-50 text-indigo-700 rounded-xl font-bold text-xs border border-indigo-100">
             {editingLeaveId === leave._id
               ? (editValues.paid + editValues.unpaid).toFixed(1)
               : (leave.summary.totalDays || 0).toFixed(1)}
           </span>
         </td>
         <td className="px-6 py-4 text-center">
-          <div className="inline-flex flex-col items-center justify-center bg-slate-50/50 border border-slate-100 rounded-xl p-2 min-w-[5.5rem] shadow-sm">
+          <div className="inline-flex flex-col items-center justify-center bg-slate-50/50 border border-slate-100 rounded-xl p-2 min-w-[5.5rem]">
             <div>
               <p className={`text-base font-extrabold tracking-tight ${(leave.annualLeaveBalance.remaining || 0) < 5
                 ? 'text-rose-600'
@@ -913,14 +913,14 @@ export default function LeaveManagement() {
               <>
                 <button
                   onClick={handleSaveInline}
-                  className="p-2 text-emerald-600 hover:bg-emerald-50 rounded-xl transition-all shadow-inner border border-emerald-100"
+                  className="p-2 text-emerald-600 hover:bg-emerald-50 rounded-xl transition-all border border-emerald-100"
                   title="Save"
                 >
                   <Check className="w-3.5 h-3.5" />
                 </button>
                 <button
                   onClick={() => setEditingLeaveId(null)}
-                  className="p-2 text-rose-600 hover:bg-rose-50 rounded-xl transition-all shadow-inner border border-rose-100"
+                  className="p-2 text-rose-600 hover:bg-rose-50 rounded-xl transition-all border border-rose-100"
                   title="Cancel"
                 >
                   <X className="w-3.5 h-3.5" />
@@ -959,7 +959,7 @@ export default function LeaveManagement() {
       {/* Classification Modal */}
       {showClassificationModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-2xl max-w-lg w-full">
+          <div className="bg-white rounded-xl max-w-lg w-full">
             <div className="p-6 border-b border-slate-200">
               <div className="flex items-center justify-between">
                 <h3 className="text-xl font-bold text-slate-900 flex items-center gap-3">
@@ -1090,7 +1090,7 @@ export default function LeaveManagement() {
       {/* Main Modal - keeping existing modal code */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-y-auto">
-          <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full my-8">
+          <div className="bg-white rounded-xl max-w-4xl w-full my-8">
             {/* Modal content - keeping all existing modal JSX */}
             <div className="p-6 border-b border-slate-200">
               <div className="flex items-center justify-between">
@@ -1532,7 +1532,7 @@ export default function LeaveManagement() {
 
       <div className="max-w-7xl mx-auto p-4 sm:p-6 space-y-6 sm:space-y-8 animate-fade-in">
         {/* Header Banner */}
-        <div className="relative overflow-hidden bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-xl shadow-indigo-950/20 border border-slate-800">
+        <div className="relative overflow-hidden bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-2xl sm:rounded-3xl p-5 sm:p-8 border border-slate-800">
           <div className="absolute -right-16 -top-16 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl"></div>
           <div className="absolute -left-16 -bottom-16 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl"></div>
           
@@ -1552,7 +1552,7 @@ export default function LeaveManagement() {
             <div className="flex flex-wrap gap-3">
               <button
                 onClick={handleAddLeave}
-                className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm px-5 py-3 rounded-xl shadow-lg shadow-indigo-600/35 transition-all active:scale-[0.98]"
+                className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm px-5 py-3 rounded-xl transition-all active:scale-[0.98]"
               >
                 <Plus className="w-4 h-4" /> Add Leave Record
               </button>
@@ -1563,9 +1563,9 @@ export default function LeaveManagement() {
         {/* Statistics Cards */}
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
           {/* Card 1 */}
-          <div className="group relative bg-white hover:bg-slate-50/50 rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-all cursor-pointer overflow-hidden active:scale-[0.99]">
+          <div className="group relative bg-white hover:bg-slate-50/50 rounded-2xl p-6 border border-slate-100  transition-all cursor-pointer overflow-hidden active:scale-[0.99]">
             <div className="space-y-4">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center group-hover:scale-110 transition-transform">
                 <Users className="w-5 h-5" />
               </div>
               <div>
@@ -1582,9 +1582,9 @@ export default function LeaveManagement() {
           </div>
 
           {/* Card 2 */}
-          <div className="group relative bg-white hover:bg-slate-50/50 rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-all cursor-pointer overflow-hidden active:scale-[0.99]">
+          <div className="group relative bg-white hover:bg-slate-50/50 rounded-2xl p-6 border border-slate-100  transition-all cursor-pointer overflow-hidden active:scale-[0.99]">
             <div className="space-y-4">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center group-hover:scale-110 transition-transform">
                 <CheckCircle className="w-5 h-5" />
               </div>
               <div>
@@ -1601,9 +1601,9 @@ export default function LeaveManagement() {
           </div>
 
           {/* Card 3 */}
-          <div className="group relative bg-white hover:bg-slate-50/50 rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-all cursor-pointer overflow-hidden active:scale-[0.99]">
+          <div className="group relative bg-white hover:bg-slate-50/50 rounded-2xl p-6 border border-slate-100  transition-all cursor-pointer overflow-hidden active:scale-[0.99]">
             <div className="space-y-4">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-rose-500 to-pink-600 text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-rose-500 to-pink-600 text-white flex items-center justify-center group-hover:scale-110 transition-transform">
                 <AlertCircle className="w-5 h-5" />
               </div>
               <div>
@@ -1620,9 +1620,9 @@ export default function LeaveManagement() {
           </div>
 
           {/* Card 4 */}
-          <div className="group relative bg-white hover:bg-slate-50/50 rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-all cursor-pointer overflow-hidden active:scale-[0.99]">
+          <div className="group relative bg-white hover:bg-slate-50/50 rounded-2xl p-6 border border-slate-100  transition-all cursor-pointer overflow-hidden active:scale-[0.99]">
             <div className="space-y-4">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 text-white flex items-center justify-center group-hover:scale-110 transition-transform">
                 <Clock className="w-5 h-5" />
               </div>
               <div>
@@ -1642,7 +1642,7 @@ export default function LeaveManagement() {
 
 
         {/* Filters */}
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm">
+        <div className="bg-white rounded-2xl border border-slate-100">
           <div className="p-5 sm:p-6 border-b border-slate-50">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div className="flex items-center space-x-3">
@@ -1750,7 +1750,7 @@ export default function LeaveManagement() {
                 <div className="lg:col-span-1 flex items-end">
                   <button
                     onClick={clearFilters}
-                    className="w-full flex items-center justify-center p-2.5 bg-rose-50 text-rose-600 hover:bg-rose-100 hover:text-rose-700 rounded-xl border border-rose-150 transition-all font-semibold active:scale-95 shadow-inner"
+                    className="w-full flex items-center justify-center p-2.5 bg-rose-50 text-rose-600 hover:bg-rose-100 hover:text-rose-700 rounded-xl border border-rose-150 transition-all font-semibold active:scale-95"
                     title="Clear all filters"
                   >
                     <FilterX className="w-4 h-4" />
@@ -1762,7 +1762,7 @@ export default function LeaveManagement() {
         </div>
 
         {/* Leave Records Table */}
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+        <div className="bg-white rounded-2xl border border-slate-100 overflow-hidden">
           <div className="p-5 sm:p-6 border-b border-slate-50 bg-slate-50/30">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div className="space-y-1">

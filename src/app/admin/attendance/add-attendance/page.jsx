@@ -65,7 +65,7 @@ const TimePicker12h = ({ value, onChange }) => {
   );
 
   return (
-    <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-200 hover:border-slate-300 rounded-xl px-3 py-1.5 shadow-sm font-semibold text-slate-800 transition-colors w-fit">
+    <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-200 hover:border-slate-300 rounded-xl px-3 py-1.5 font-semibold text-slate-800 transition-colors w-fit">
       <select
         value={hour12}
         onChange={(e) => handlePartChange("hour", e.target.value)}
@@ -275,7 +275,7 @@ export default function AddAttendance() {
     <div className="min-h-screen bg-slate-50 p-6">
       <Toaster />
       <div className="max-w-5xl mx-auto space-y-6">
-        <div className="flex items-center justify-between bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+        <div className="flex items-center justify-between bg-white p-6 rounded-xl border border-slate-200">
            <div className="flex items-center gap-4">
               <button onClick={() => router.back()} className="p-2 hover:bg-slate-100 rounded-full transition-colors">
                 <ArrowLeft className="w-6 h-6 text-slate-600" />
@@ -308,7 +308,7 @@ export default function AddAttendance() {
            </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+        <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
           <table className="w-full text-left">
             <thead className="bg-slate-50 border-b border-slate-200">
               <tr>

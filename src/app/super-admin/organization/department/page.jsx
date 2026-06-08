@@ -408,7 +408,7 @@
 //         <div className="max-w-7xl mx-auto px-6 py-6">
 //           <div className="flex items-center justify-between">
 //             <div className="flex items-center space-x-4">
-//               <div className="w-11 h-11 bg-yellow-500 rounded-xl flex items-center justify-center shadow-sm">
+//               <div className="w-11 h-11 bg-yellow-500 rounded-xl flex items-center justify-center">
 //                 <Layers className="w-6 h-6 text-white" />
 //               </div>
 //               <div>
@@ -423,7 +423,7 @@
 //                   resetForm();
 //                   setView('create');
 //                 }}
-//                 className="inline-flex items-center gap-2 px-5 py-2.5 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg font-medium transition-colors shadow-sm"
+//                 className="inline-flex items-center gap-2 px-5 py-2.5 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg font-medium transition-colors"
 //               >
 //                 <Plus className="w-4 h-4" />
 //                 Add Department
@@ -437,7 +437,7 @@
 //         {/* Analytics Overview */}
 //         {view === 'list' && (
 //           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-//             <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+//             <div className="bg-white p-6 rounded-xl border border-slate-200">
 //               <div className="flex items-center justify-between">
 //                 <div>
 //                   <p className="text-sm font-medium text-slate-600">Total Departments</p>
@@ -450,7 +450,7 @@
 //               </div>
 //             </div>
 
-//             <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+//             <div className="bg-white p-6 rounded-xl border border-slate-200">
 //               <div className="flex items-center justify-between">
 //                 <div>
 //                   <p className="text-sm font-medium text-slate-600">Active</p>
@@ -465,7 +465,7 @@
 //               </div>
 //             </div>
 
-//             <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+//             <div className="bg-white p-6 rounded-xl border border-slate-200">
 //               <div className="flex items-center justify-between">
 //                 <div>
 //                   <p className="text-sm font-medium text-slate-600">Organizations</p>
@@ -483,7 +483,7 @@
 //         )}
 
 //         {/* Controls Panel */}
-//         <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+//         <div className="bg-white rounded-xl border border-slate-200">
 //           {view === 'list' && (
 //             <div className="p-6 border-b border-slate-200">
 //               <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
@@ -619,7 +619,7 @@
 //                           resetForm();
 //                           setView('create');
 //                         }}
-//                         className="inline-flex items-center gap-2 px-5 py-2.5 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg font-medium transition-colors shadow-sm"
+//                         className="inline-flex items-center gap-2 px-5 py-2.5 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg font-medium transition-colors"
 //                       >
 //                         <Plus className="w-4 h-4" />
 //                         Add First Department
@@ -630,11 +630,11 @@
 //                   <>
 //                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 //                       {departments.map((dept) => (
-//                         <div key={dept._id} className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+//                         <div key={dept._id} className="bg-white rounded-xl border border-slate-200 overflow-hidden hover: transition-">
 //                           <div className="p-6">
 //                             <div className="flex items-start justify-between mb-4">
 //                               <div className="flex items-center gap-3">
-//                                 <div className="w-12 h-12 bg-yellow-500 rounded-xl flex items-center justify-center shadow-sm">
+//                                 <div className="w-12 h-12 bg-yellow-500 rounded-xl flex items-center justify-center">
 //                                   <Layers className="w-6 h-6 text-white" />
 //                                 </div>
 //                                 <div className="flex-1">
@@ -726,12 +726,12 @@
 
 //                   {view === 'view' ? (
 //                     /* VIEW DETAILS - Simplified */
-//                     <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+//                     <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
 //                       {/* Header Section */}
 //                       <div className="bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200 px-8 py-6">
 //                         <div className="flex items-center justify-between">
 //                           <div className="flex items-center gap-5">
-//                             <div className="w-16 h-16 bg-yellow-500 rounded-xl flex items-center justify-center shadow-lg">
+//                             <div className="w-16 h-16 bg-yellow-500 rounded-xl flex items-center justify-center">
 //                               <Layers className="w-7 h-7 text-white" />
 //                             </div>
 //                           </div>
@@ -740,7 +740,7 @@
 //                             <StatusPill status={selectedDepartment?.status} />
 //                             <button
 //                               onClick={() => handleEdit(selectedDepartment)}
-//                               className="inline-flex items-center gap-2 px-4 py-2.5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 rounded-xl font-medium transition-all hover:shadow-sm"
+//                               className="inline-flex items-center gap-2 px-4 py-2.5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 rounded-xl font-medium transition-all hover:"
 //                             >
 //                               <Edit2 className="w-4 h-4" />
 //                               Edit
@@ -814,11 +814,11 @@
 //                     </div>
 //                   ) : (
 //                     /* CREATE / EDIT FORM - Simplified */
-//                     <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+//                     <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
 //                       {/* Header */}
 //                       <div className="bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200 px-8 py-6">
 //                         <div className="flex items-center gap-4">
-//                           <div className="w-12 h-12 bg-yellow-500 rounded-xl flex items-center justify-center shadow-lg">
+//                           <div className="w-12 h-12 bg-yellow-500 rounded-xl flex items-center justify-center">
 //                             <Layers className="w-6 h-6 text-white" />
 //                           </div>
 //                           <div>
@@ -1365,7 +1365,7 @@ export default function DepartmentsPage() {
           {/* Analytics Skeleton */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+              <div key={i} className="bg-white p-6 rounded-xl border border-slate-200">
                 <div className="flex items-center justify-between">
                   <div>
                     <Skeleton className="h-4 w-32 mb-2" />
@@ -1379,7 +1379,7 @@ export default function DepartmentsPage() {
           </div>
 
           {/* Controls Skeleton */}
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+          <div className="bg-white rounded-xl border border-slate-200 p-6">
             <div className="flex justify-between mb-6">
               <Skeleton className="h-8 w-48" />
               <Skeleton className="h-10 w-32" />
@@ -1394,7 +1394,7 @@ export default function DepartmentsPage() {
           {/* Grid Skeleton */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden p-6">
+              <div key={i} className="bg-white rounded-xl border border-slate-200 overflow-hidden p-6">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center gap-3">
                     <Skeleton className="w-12 h-12 rounded-xl" />
@@ -1425,7 +1425,7 @@ export default function DepartmentsPage() {
         <div className="max-w-7xl mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <div className="w-11 h-11 bg-indigo-500 rounded-xl flex items-center justify-center shadow-sm">
+              <div className="w-11 h-11 bg-indigo-500 rounded-xl flex items-center justify-center">
                 <Layers className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -1440,7 +1440,7 @@ export default function DepartmentsPage() {
                   resetForm();
                   setView('create');
                 }}
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg font-medium transition-colors shadow-sm"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg font-medium transition-colors"
               >
                 <Plus className="w-4 h-4" />
                 Add Department
@@ -1454,7 +1454,7 @@ export default function DepartmentsPage() {
         {/* Analytics Overview */}
         {view === 'list' && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+            <div className="bg-white p-6 rounded-xl border border-slate-200">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-slate-600">Total Departments</p>
@@ -1467,7 +1467,7 @@ export default function DepartmentsPage() {
               </div>
             </div>
 
-            <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+            <div className="bg-white p-6 rounded-xl border border-slate-200">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-slate-600">Active</p>
@@ -1482,7 +1482,7 @@ export default function DepartmentsPage() {
               </div>
             </div>
 
-            <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+            <div className="bg-white p-6 rounded-xl border border-slate-200">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-slate-600">Organizations</p>
@@ -1500,7 +1500,7 @@ export default function DepartmentsPage() {
         )}
 
         {/* Controls Panel */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+        <div className="bg-white rounded-xl border border-slate-200">
           {view === 'list' && (
             <div className="p-6 border-b border-slate-200">
               <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
@@ -1636,7 +1636,7 @@ export default function DepartmentsPage() {
                           resetForm();
                           setView('create');
                         }}
-                        className="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg font-medium transition-colors shadow-sm"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg font-medium transition-colors"
                       >
                         <Plus className="w-4 h-4" />
                         Add First Department
@@ -1647,11 +1647,11 @@ export default function DepartmentsPage() {
                   <>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                       {departments.map((dept) => (
-                        <div key={dept._id} className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                        <div key={dept._id} className="bg-white rounded-xl border border-slate-200 overflow-hidden hover: transition-">
                           <div className="p-6">
                             <div className="flex items-start justify-between mb-4">
                               <div className="flex items-center gap-3">
-                                <div className="w-12 h-12 bg-indigo-500 rounded-xl flex items-center justify-center shadow-sm">
+                                <div className="w-12 h-12 bg-indigo-500 rounded-xl flex items-center justify-center">
                                   <Layers className="w-6 h-6 text-white" />
                                 </div>
                                 <div className="flex-1">
@@ -1741,12 +1741,12 @@ export default function DepartmentsPage() {
 
                   {view === 'view' ? (
                     /* VIEW DETAILS */
-                    <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
                       {/* Header Section */}
                       <div className="bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200 px-8 py-6">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-5">
-                            <div className="w-16 h-16 bg-indigo-500 rounded-xl flex items-center justify-center shadow-lg">
+                            <div className="w-16 h-16 bg-indigo-500 rounded-xl flex items-center justify-center">
                               <Layers className="w-7 h-7 text-white" />
                             </div>
                             <div>
@@ -1759,7 +1759,7 @@ export default function DepartmentsPage() {
                             <StatusPill status={selectedDepartment?.status} />
                             <button
                               onClick={() => handleEdit(selectedDepartment)}
-                              className="inline-flex items-center gap-2 px-4 py-2.5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 rounded-xl font-medium transition-all hover:shadow-sm"
+                              className="inline-flex items-center gap-2 px-4 py-2.5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 rounded-xl font-medium transition-all hover:"
                             >
                               <Edit2 className="w-4 h-4" />
                               Edit
@@ -1848,7 +1848,7 @@ export default function DepartmentsPage() {
                                     return (
                                       <span
                                         key={index}
-                                        className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-white border border-slate-200 text-slate-700 shadow-sm"
+                                        className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-white border border-slate-200 text-slate-700"
                                       >
                                         {permLabel}
                                       </span>
@@ -1865,11 +1865,11 @@ export default function DepartmentsPage() {
                     </div>
                   ) : (
                     /* CREATE / EDIT FORM */
-                    <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
                       {/* Header */}
                       <div className="bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200 px-8 py-6">
                         <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 bg-indigo-500 rounded-xl flex items-center justify-center shadow-lg">
+                          <div className="w-12 h-12 bg-indigo-500 rounded-xl flex items-center justify-center">
                             <Layers className="w-6 h-6 text-white" />
                           </div>
                           <div>

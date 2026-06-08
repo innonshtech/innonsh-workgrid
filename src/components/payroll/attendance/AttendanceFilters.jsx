@@ -26,7 +26,7 @@ export default function AttendanceFilters({
   role
 }) {
   return (
-    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm mb-8 overflow-visible">
+    <div className="bg-white rounded-2xl border border-slate-200 mb-8 overflow-visible">
       <div className="p-5 sm:p-6 border-b border-slate-50">
         <div className="flex items-center gap-3">
           <Filter className="w-4 h-4 text-indigo-500" />
@@ -157,7 +157,7 @@ export default function AttendanceFilters({
                 setSelectedDepartment("");
                 setSelectedStatus("");
               }}
-              className="flex items-center justify-center gap-2 w-full px-4 py-2.5 text-rose-600 bg-rose-50 hover:bg-rose-100 hover:text-rose-700 rounded-xl border border-rose-150 text-xs font-bold transition-all active:scale-95 shadow-inner"
+              className="flex items-center justify-center gap-2 w-full px-4 py-2.5 text-rose-600 bg-rose-50 hover:bg-rose-100 hover:text-rose-700 rounded-xl border border-rose-150 text-xs font-bold transition-all active:scale-95"
             >
               <X className="h-4 w-4" />
               Reset Filters

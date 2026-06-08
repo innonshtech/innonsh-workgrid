@@ -441,7 +441,7 @@ export default function PayslipView({ payslipId }) {
       <Toaster />
       <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Header */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 mb-8">
+        <div className="bg-white rounded-xl border border-slate-200 p-6 mb-8">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
             <div className="flex items-center gap-4">
               <button
@@ -451,7 +451,7 @@ export default function PayslipView({ payslipId }) {
                 <ArrowLeft className="w-5 h-5" />
               </button>
               <div className="flex items-center gap-4">
-                <div className="w-16 h-16 bg-gradient-to-br from-yellow-500 to-amber-500 rounded-2xl flex items-center justify-center shadow-lg">
+                <div className="w-16 h-16 bg-gradient-to-br from-yellow-500 to-amber-500 rounded-2xl flex items-center justify-center">
                   <Receipt className="w-8 h-8 text-white" />
                 </div>
                 <div>
@@ -490,7 +490,7 @@ export default function PayslipView({ payslipId }) {
         </div>
 
         {/* Payslip Document */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm print:shadow-none">
+        <div className="bg-white rounded-xl border border-slate-200 print:">
           {/* Document Header */}
           <div className="border-b border-slate-200 p-6">
             <div className="flex justify-between items-start">
@@ -665,7 +665,7 @@ export default function PayslipView({ payslipId }) {
             </h3>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {/* Total Days */}
-              <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4 hover:border-yellow-200 transition-colors">
+              <div className="bg-white p-4 rounded-2xl border border-slate-200 flex items-center gap-4 hover:border-yellow-200 transition-colors">
                 <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center">
                   <Calendar className="w-6 h-6 text-slate-400" />
                 </div>
@@ -676,7 +676,7 @@ export default function PayslipView({ payslipId }) {
               </div>
 
               {/* Working Days */}
-              <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4 hover:border-blue-200 transition-colors">
+              <div className="bg-white p-4 rounded-2xl border border-slate-200 flex items-center gap-4 hover:border-blue-200 transition-colors">
                 <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center">
                   <Briefcase className="w-6 h-6 text-blue-500" />
                 </div>
@@ -687,7 +687,7 @@ export default function PayslipView({ payslipId }) {
               </div>
 
               {/* Present */}
-              <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4 hover:border-green-200 transition-colors">
+              <div className="bg-white p-4 rounded-2xl border border-slate-200 flex items-center gap-4 hover:border-green-200 transition-colors">
                 <div className="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center">
                   <CheckCircle className="w-6 h-6 text-green-500" />
                 </div>
@@ -698,7 +698,7 @@ export default function PayslipView({ payslipId }) {
               </div>
 
               {/* Half Days */}
-              <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4 hover:border-amber-200 transition-colors">
+              <div className="bg-white p-4 rounded-2xl border border-slate-200 flex items-center gap-4 hover:border-amber-200 transition-colors">
                 <div className="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center">
                   <PieChart className="w-6 h-6 text-amber-500" />
                 </div>
@@ -709,7 +709,7 @@ export default function PayslipView({ payslipId }) {
               </div>
 
               {/* Weekly Offs */}
-              <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4 hover:border-indigo-200 transition-colors">
+              <div className="bg-white p-4 rounded-2xl border border-slate-200 flex items-center gap-4 hover:border-indigo-200 transition-colors">
                 <div className="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center">
                   <Coffee className="w-6 h-6 text-indigo-500" />
                 </div>
@@ -720,7 +720,7 @@ export default function PayslipView({ payslipId }) {
               </div>
 
               {/* Holidays */}
-              <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4 hover:border-orange-200 transition-colors">
+              <div className="bg-white p-4 rounded-2xl border border-slate-200 flex items-center gap-4 hover:border-orange-200 transition-colors">
                 <div className="w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center">
                   <Sun className="w-6 h-6 text-orange-500" />
                 </div>
@@ -731,7 +731,7 @@ export default function PayslipView({ payslipId }) {
               </div>
 
               {/* Paid Leaves */}
-              <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4 hover:border-sky-200 transition-colors">
+              <div className="bg-white p-4 rounded-2xl border border-slate-200 flex items-center gap-4 hover:border-sky-200 transition-colors">
                 <div className="w-12 h-12 bg-sky-50 rounded-xl flex items-center justify-center">
                   <FileText className="w-6 h-6 text-sky-500" />
                 </div>
@@ -742,7 +742,7 @@ export default function PayslipView({ payslipId }) {
               </div>
 
               {/* LWP / Unpaid */}
-              <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4 hover:border-rose-200 transition-colors">
+              <div className="bg-white p-4 rounded-2xl border border-slate-200 flex items-center gap-4 hover:border-rose-200 transition-colors">
                 <div className="w-12 h-12 bg-rose-50 rounded-xl flex items-center justify-center">
                   <AlertCircle className="w-6 h-6 text-rose-500" />
                 </div>

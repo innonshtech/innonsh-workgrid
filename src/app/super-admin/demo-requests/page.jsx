@@ -124,7 +124,7 @@ export default function DemoRequestsPage() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-6">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 bg-indigo-500 rounded-2xl flex items-center justify-center shadow-sm">
+          <div className="w-12 h-12 bg-indigo-500 rounded-2xl flex items-center justify-center">
             <MessageSquare className="w-6 h-6 text-white" />
           </div>
           <div>
@@ -137,7 +137,7 @@ export default function DemoRequestsPage() {
           <button
             onClick={() => fetchRequests(true)}
             disabled={refreshing || loading}
-            className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 disabled:opacity-50 transition-all shadow-sm"
+            className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 disabled:opacity-50 transition-all"
           >
             <RefreshCw className={`w-4 h-4 ${refreshing ? "animate-spin" : ""}`} />
             Refresh
@@ -147,7 +147,7 @@ export default function DemoRequestsPage() {
 
       {/* Analytics stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between">
+        <div className="bg-white p-6 rounded-2xl border border-slate-200 flex items-center justify-between">
           <div>
             <p className="text-sm text-slate-500 font-medium">Total Leads</p>
             <p className="text-3xl font-extrabold text-slate-900 mt-1">{totalCount}</p>
@@ -158,7 +158,7 @@ export default function DemoRequestsPage() {
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between">
+        <div className="bg-white p-6 rounded-2xl border border-slate-200 flex items-center justify-between">
           <div>
             <p className="text-sm text-slate-500 font-medium">Credentials Emailed</p>
             <p className="text-3xl font-extrabold text-green-600 mt-1">{sentCount}</p>
@@ -169,7 +169,7 @@ export default function DemoRequestsPage() {
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between">
+        <div className="bg-white p-6 rounded-2xl border border-slate-200 flex items-center justify-between">
           <div>
             <p className="text-sm text-slate-500 font-medium">Delivery Failures</p>
             <p className="text-3xl font-extrabold text-red-600 mt-1">{failedCount}</p>
@@ -182,7 +182,7 @@ export default function DemoRequestsPage() {
       </div>
 
       {/* Filter and Search Panel */}
-      <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+      <div className="bg-white p-5 rounded-2xl border border-slate-200 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
         <div className="md:col-span-6 relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
           <input
@@ -235,14 +235,14 @@ export default function DemoRequestsPage() {
       )}
 
       {loading ? (
-        <div className="bg-white rounded-2xl border border-slate-100 p-20 flex justify-center items-center shadow-sm">
+        <div className="bg-white rounded-2xl border border-slate-200 p-20 flex justify-center items-center">
           <div className="flex flex-col items-center gap-3">
             <Loader2 className="w-8 h-8 text-indigo-600 animate-spin" />
             <p className="text-slate-400 text-sm font-medium">Fetching inquiries...</p>
           </div>
         </div>
       ) : filteredRequests.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-slate-100 p-16 text-center shadow-sm">
+        <div className="bg-white rounded-2xl border border-slate-200 p-16 text-center">
           <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-slate-100 text-slate-400">
             <MessageSquare className="w-8 h-8" />
           </div>
@@ -254,7 +254,7 @@ export default function DemoRequestsPage() {
           </p>
         </div>
       ) : (
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+        <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
@@ -353,7 +353,7 @@ export default function DemoRequestsPage() {
                           <button
                             onClick={() => handleResendCredentials(req._id)}
                             disabled={resendingId === req._id}
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-indigo-600 bg-indigo-50 border border-indigo-100 rounded-lg hover:bg-indigo-100 disabled:opacity-50 transition-all shadow-sm"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-indigo-600 bg-indigo-50 border border-slate-200 rounded-lg hover:bg-indigo-100 disabled:opacity-50 transition-all"
                           >
                             {resendingId === req._id ? (
                               <Loader2 className="w-3 h-3 animate-spin" />
@@ -366,7 +366,7 @@ export default function DemoRequestsPage() {
                         <button
                           onClick={() => handleDeleteRequest(req._id, req.name)}
                           disabled={deletingId === req._id}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-red-600 bg-red-50 border border-red-100 rounded-lg hover:bg-red-100 disabled:opacity-50 transition-all shadow-sm"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-red-600 bg-red-50 border border-red-100 rounded-lg hover:bg-red-100 disabled:opacity-50 transition-all"
                         >
                           {deletingId === req._id ? (
                             <Loader2 className="w-3 h-3 animate-spin" />

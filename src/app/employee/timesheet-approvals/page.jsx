@@ -8,7 +8,7 @@ export default function TimesheetApprovalsPage() {
     return (
         <div className="max-w-7xl mx-auto space-y-8 animate-fade-in p-6 bg-slate-50/20 min-h-screen">
             {/* Header Banner */}
-            <div className="relative overflow-hidden bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-3xl p-8 shadow-xl shadow-indigo-950/20 border border-slate-800">
+            <div className="relative overflow-hidden bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-3xl p-8 border border-slate-800">
                 <div className="absolute -right-16 -top-16 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl"></div>
                 <div className="absolute -left-16 -bottom-16 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl"></div>
                 
@@ -26,7 +26,7 @@ export default function TimesheetApprovalsPage() {
             </div>
 
             {/* Render Timesheet Approvals View */}
-            <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden p-2">
+            <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden p-2">
                 <div className="animate-in fade-in slide-in-from-bottom-4 duration-300">
                     <TimesheetApprovals />
                 </div>

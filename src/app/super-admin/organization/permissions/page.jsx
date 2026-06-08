@@ -207,7 +207,7 @@ export default function PermissionsPage() {
         <div className="max-w-7xl mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <div className="w-11 h-11 bg-indigo-500 rounded-xl flex items-center justify-center shadow-sm">
+              <div className="w-11 h-11 bg-indigo-500 rounded-xl flex items-center justify-center">
                 <Shield className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -222,7 +222,7 @@ export default function PermissionsPage() {
                   resetForm();
                   setView('create');
                 }}
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg font-medium transition-colors shadow-sm"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg font-medium transition-colors"
               >
                 <Plus className="w-4 h-4" />
                 Add Permission
@@ -234,7 +234,7 @@ export default function PermissionsPage() {
 
       <div className="max-w-7xl mx-auto px-6 py-6 space-y-6">
         {view === 'list' ? (
-             <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+             <div className="bg-white rounded-xl border border-slate-200">
               <div className="p-6 border-b border-slate-200">
                   <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
                        {/* Search and Filter Controls - Similar to Department Page */}
@@ -310,7 +310,7 @@ export default function PermissionsPage() {
               </div>
              </div>
         ) : (
-             <div className="max-w-2xl mx-auto bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+             <div className="max-w-2xl mx-auto bg-white rounded-xl border border-slate-200 overflow-hidden">
                   <div className="bg-slate-50 border-b border-slate-200 px-8 py-6 flex items-center justify-between">
                      <h2 className="text-xl font-bold text-slate-900">
                          {view === 'create' ? 'Create Permission' : 'Edit Permission'}

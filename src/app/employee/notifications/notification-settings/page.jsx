@@ -137,7 +137,7 @@ export default function NotificationSettings() {
         <div className="max-w-7xl mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <div className="w-11 h-11 bg-gradient-to-br from-indigo-500 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
+              <div className="w-11 h-11 bg-gradient-to-br from-indigo-500 to-orange-500 rounded-xl flex items-center justify-center">
                 <Settings className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -166,10 +166,10 @@ export default function NotificationSettings() {
         {/* Settings Form */}
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Email Settings */}
-          <div className="bg-white rounded-xl border-2 border-slate-200 shadow-sm">
+          <div className="bg-white rounded-xl border-2 border-slate-200">
             <div className="p-6 border-b-2 border-slate-200 bg-gradient-to-r from-blue-50 to-indigo-50">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-slate-500 rounded-lg flex items-center justify-center shadow-md">
+                <div className="w-10 h-10 bg-slate-500 rounded-lg flex items-center justify-center">
                   <Mail className="h-5 w-5 text-white" />
                 </div>
                 <div>
@@ -279,10 +279,10 @@ export default function NotificationSettings() {
           </div>
 
           {/* System Settings */}
-          <div className="bg-white rounded-xl border-2 border-slate-200 shadow-sm">
+          <div className="bg-white rounded-xl border-2 border-slate-200">
             <div className="p-6 border-b-2 border-slate-200 bg-gradient-to-r from-green-50 to-emerald-50">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center shadow-md">
+                <div className="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center">
                   <Server className="h-5 w-5 text-white" />
                 </div>
                 <div>
@@ -339,10 +339,10 @@ export default function NotificationSettings() {
           </div>
 
           {/* SMTP Settings */}
-          <div className="bg-white rounded-xl border-2 border-slate-200 shadow-sm">
+          <div className="bg-white rounded-xl border-2 border-slate-200">
             <div className="p-6 border-b-2 border-slate-200 bg-gradient-to-r from-purple-50 to-violet-50">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center shadow-md">
+                <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center">
                   <Shield className="h-5 w-5 text-white" />
                 </div>
                 <div>
@@ -431,7 +431,7 @@ export default function NotificationSettings() {
             <button
               type="submit"
               disabled={saving}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-indigo-500 to-orange-500 hover:from-indigo-600 hover:to-orange-600 text-white rounded-lg font-semibold transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-indigo-500 to-orange-500 hover:from-indigo-600 hover:to-orange-600 text-white rounded-lg font-semibold transition-all hover: disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {saving ? (
                 <>
@@ -451,7 +451,7 @@ export default function NotificationSettings() {
         {/* Info Section */}
         <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl p-6">
           <div className="flex items-start gap-4">
-            <div className="w-10 h-10 bg-slate-500 rounded-lg flex items-center justify-center flex-shrink-0 shadow-md">
+            <div className="w-10 h-10 bg-slate-500 rounded-lg flex items-center justify-center flex-shrink-0">
               <Info className="h-5 w-5 text-white" />
             </div>
             <div className="flex-1">

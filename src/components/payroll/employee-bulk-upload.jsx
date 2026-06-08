@@ -114,7 +114,7 @@ export default function EmployeeBulkUpload() {
         <div className="max-w-4xl mx-auto px-6 py-6">
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-11 h-11 bg-emerald-600 rounded-xl flex items-center justify-center shadow-sm shadow-emerald-200">
+              <div className="w-11 h-11 bg-emerald-600 rounded-xl flex items-center justify-center">
                 <FileSpreadsheet className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -137,7 +137,7 @@ export default function EmployeeBulkUpload() {
       </div>
 
       <div className="max-w-4xl mx-auto px-6 py-6 space-y-6">
-        <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+        <div className="bg-white border border-slate-200 rounded-xl p-6">
           <div className="flex items-start justify-between gap-4">
             <div>
               <h2 className="text-base font-semibold text-slate-900">Template</h2>
@@ -159,7 +159,7 @@ export default function EmployeeBulkUpload() {
           </div>
         </div>
 
-        <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-4">
+        <div className="bg-white border border-slate-200 rounded-xl p-6 space-y-4">
           <div>
             <h2 className="text-base font-semibold text-slate-900">Upload Excel</h2>
             <p className="text-sm text-slate-600 mt-1">

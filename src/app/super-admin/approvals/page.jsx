@@ -84,7 +84,7 @@ export default function SuperAdminApprovals() {
       </div>
 
       {/* Main Table */}
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+      <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
         <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
           <h2 className="text-lg font-bold text-slate-900">Registration Requests</h2>
           <span className="text-xs font-bold px-2 py-1 bg-amber-100 text-amber-700 rounded-full">
@@ -180,7 +180,7 @@ export default function SuperAdminApprovals() {
                         <button
                           onClick={() => handleAction(req._id, 'approve')}
                           disabled={processingId === req._id}
-                          className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white text-xs font-bold rounded-lg hover:bg-emerald-700 shadow-lg shadow-emerald-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                          className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white text-xs font-bold rounded-lg hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                         >
                           {processingId === req._id && <Loader2 className="w-3 h-3 animate-spin" />}
                           Approve

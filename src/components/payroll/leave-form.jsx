@@ -472,7 +472,7 @@ export default function LeaveForm({ leaveId }) {
       {/* Classification Modal */}
       {showClassificationModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-2xl max-w-lg w-full">
+          <div className="bg-white rounded-xl max-w-lg w-full">
             <div className="p-6 border-b border-slate-200">
               <div className="flex items-center justify-between">
                 <h3 className="text-xl font-bold text-slate-900 flex items-center gap-3">
@@ -607,7 +607,7 @@ export default function LeaveForm({ leaveId }) {
               >
                 <ArrowLeft className="w-5 h-5" />
               </button>
-              <div className="w-11 h-11 bg-yellow-500 rounded-xl flex items-center justify-center shadow-sm">
+              <div className="w-11 h-11 bg-yellow-500 rounded-xl flex items-center justify-center">
                 <Calendar className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -638,7 +638,7 @@ export default function LeaveForm({ leaveId }) {
       <div className="max-w-7xl mx-auto px-6 py-6 space-y-6">
         <form onSubmit={handleSubmit}>
           {/* Employee Selection */}
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+          <div className="bg-white rounded-xl border border-slate-200">
             <div className="p-6 border-b border-slate-200 bg-gradient-to-r from-yellow-50 to-orange-50">
               <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                 <div className="w-8 h-8 bg-yellow-500 rounded-lg flex items-center justify-center">
@@ -791,7 +791,7 @@ export default function LeaveForm({ leaveId }) {
           </div>
 
           {/* Date Range Entry */}
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+          <div className="bg-white rounded-xl border border-slate-200">
             <div className="p-6 border-b border-slate-200 bg-gradient-to-r from-purple-50 to-pink-50">
               <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                 <div className="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center">
@@ -901,7 +901,7 @@ export default function LeaveForm({ leaveId }) {
           </div>
 
           {/* Leave Entries */}
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+          <div className="bg-white rounded-xl border border-slate-200">
             <div className="p-6 border-b border-slate-200 bg-gradient-to-r from-green-50 to-emerald-50 flex items-center justify-between">
               <div>
                 <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
@@ -1048,7 +1048,7 @@ export default function LeaveForm({ leaveId }) {
 
           {/* Summary */}
           {formData.leaves.length > 0 && (
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+            <div className="bg-white rounded-xl border border-slate-200">
               <div className="p-6 border-b border-slate-200 bg-gradient-to-r from-blue-50 to-indigo-50">
                 <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                   <div className="w-8 h-8 bg-slate-500 rounded-lg flex items-center justify-center">
@@ -1144,7 +1144,7 @@ export default function LeaveForm({ leaveId }) {
           )}
 
           {/* Additional Info */}
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+          <div className="bg-white rounded-xl border border-slate-200">
             <div className="p-6 border-b border-slate-200">
               <h2 className="text-xl font-semibold text-slate-900">
                 Additional Information
@@ -1213,7 +1213,7 @@ export default function LeaveForm({ leaveId }) {
             <button
               type="submit"
               disabled={loading}
-              className="inline-flex items-center gap-2 px-8 py-3 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg font-medium transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+              className="inline-flex items-center gap-2 px-8 py-3 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <>

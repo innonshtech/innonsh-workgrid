@@ -290,10 +290,10 @@ export default function VerifiedOrders() {
     <div className="min-h-screen bg-slate-50">
       <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Header */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 mb-8">
+        <div className="bg-white rounded-xl border border-slate-200 p-6 mb-8">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-amber-500 rounded-2xl flex items-center justify-center shadow-lg">
+              <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-amber-500 rounded-2xl flex items-center justify-center">
                 <CheckCircle className="w-8 h-8 text-white" />
               </div>
               <div>
@@ -314,7 +314,7 @@ export default function VerifiedOrders() {
 
         {/* Statistics Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+          <div className="bg-white rounded-xl border border-slate-200">
             <div className="p-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -328,7 +328,7 @@ export default function VerifiedOrders() {
               </div>
             </div>
           </div>
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+          <div className="bg-white rounded-xl border border-slate-200">
             <div className="p-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -342,7 +342,7 @@ export default function VerifiedOrders() {
               </div>
             </div>
           </div>
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+          <div className="bg-white rounded-xl border border-slate-200">
             <div className="p-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -356,7 +356,7 @@ export default function VerifiedOrders() {
               </div>
             </div>
           </div>
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+          <div className="bg-white rounded-xl border border-slate-200">
             <div className="p-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -373,7 +373,7 @@ export default function VerifiedOrders() {
         </div>
 
         {/* Filters */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 mb-8">
+        <div className="bg-white rounded-xl border border-slate-200 p-6 mb-8">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
             <div>
               <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
@@ -436,7 +436,7 @@ export default function VerifiedOrders() {
         </div>
 
         {/* Verified Orders Table */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+        <div className="bg-white rounded-xl border border-slate-200">
           <div className="px-6 py-4 border-b border-slate-200">
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-semibold text-slate-900">Verified Orders History</h2>

@@ -52,7 +52,7 @@ const ComponentModal = ({ isOpen, onClose, component, onSave }) => {
 
     return (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
-            <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden border border-slate-200">
+            <div className="bg-white rounded-2xl w-full max-w-lg overflow-hidden border border-slate-200">
                 <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50">
                     <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
                         <Calculator className="w-5 h-5 text-indigo-600" />
@@ -155,7 +155,7 @@ const ComponentModal = ({ isOpen, onClose, component, onSave }) => {
                     </button>
                     <button
                         onClick={() => onSave(formData)}
-                        className="px-6 py-2 bg-indigo-600 text-white rounded-lg text-sm font-semibold hover:bg-indigo-700 transition-shadow shadow-md hover:shadow-lg"
+                        className="px-6 py-2 bg-indigo-600 text-white rounded-lg text-sm font-semibold hover:bg-indigo-700 transition- hover:"
                     >
                         Save Component
                     </button>
@@ -244,7 +244,7 @@ export default function SalaryComponentsPage() {
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
                     <div>
                         <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-3">
-                            <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-indigo-200">
+                            <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white">
                                 <Settings2 className="w-6 h-6" />
                             </div>
                             Salary Component Master
@@ -260,12 +260,12 @@ export default function SalaryComponentsPage() {
                                 placeholder="Search components..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                className="pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500/20 w-64 outline-none shadow-sm"
+                                className="pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500/20 w-64 outline-none"
                             />
                         </div>
                         <button
                             onClick={() => { setEditingComponent(null); setIsModalOpen(true); }}
-                            className="px-4 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-semibold hover:bg-indigo-700 transition-all shadow-md hover:shadow-lg flex items-center gap-2"
+                            className="px-4 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-semibold hover:bg-indigo-700 transition-all hover: flex items-center gap-2"
                         >
                             <Plus className="w-4 h-4" />
                             New Component
@@ -285,7 +285,7 @@ export default function SalaryComponentsPage() {
                         </div>
                     ) : (
                         filteredComponents.map((comp) => (
-                            <div key={comp._id} className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm hover:shadow-md transition-shadow group relative overflow-hidden">
+                            <div key={comp._id} className="bg-white rounded-2xl border border-slate-200 p-5 hover: transition- group relative overflow-hidden">
                                 <div className={`absolute top-0 right-0 w-24 h-24 -mr-8 -mt-8 rounded-full opacity-5 ${comp.type === 'Earning' ? 'bg-emerald-500' : 'bg-red-500'}`} />
 
                                 <div className="flex items-start justify-between mb-4">

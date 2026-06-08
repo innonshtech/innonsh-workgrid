@@ -87,7 +87,7 @@ const ProjectDashboard = () => {
                     </button>
                     <div className="space-y-1">
                         <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-indigo-600 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-indigo-100">
+                            <div className="w-10 h-10 bg-indigo-600 rounded-2xl flex items-center justify-center text-white">
                                 <Briefcase className="w-6 h-6" />
                             </div>
                             <h1 className="text-4xl font-black text-slate-900 tracking-tighter">{project.name}</h1>
@@ -96,7 +96,7 @@ const ProjectDashboard = () => {
                     </div>
                 </div>
                 
-                <div className="flex items-center gap-3 bg-white p-3 rounded-2xl border border-slate-100 shadow-sm">
+                <div className="flex items-center gap-3 bg-white p-3 rounded-2xl border border-slate-200">
                     <div className="text-right">
                         <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Project Manager</p>
                         <p className="text-sm font-black text-slate-900">
@@ -145,7 +145,7 @@ const ProjectDashboard = () => {
             <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
                 {/* Left Side: Tasks & Milestones */}
                 <div className="xl:col-span-2 space-y-8">
-                    <div className="bg-white rounded-[2.5rem] p-8 border border-slate-100 shadow-xl shadow-slate-200/40">
+                    <div className="bg-white rounded-[2.5rem] p-8 border border-slate-200">
                         <div className="flex items-center justify-between mb-8">
                             <h3 className="text-xl font-black text-slate-900 flex items-center gap-3">
                                 <LayoutDashboard className="w-6 h-6 text-indigo-600" />
@@ -163,7 +163,7 @@ const ProjectDashboard = () => {
                                 </div>
                                 <div className="h-4 bg-slate-50 rounded-full overflow-hidden border border-slate-100 p-1">
                                     <div 
-                                        className="h-full bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-full transition-all duration-1000 ease-out shadow-lg shadow-indigo-200"
+                                        className="h-full bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-full transition-all duration-1000 ease-out"
                                         style={{ width: `${stats.overallProgress}%` }}
                                     ></div>
                                 </div>
@@ -187,7 +187,7 @@ const ProjectDashboard = () => {
                     </div>
 
                     {/* Member Contributions Card */}
-                    <div className="bg-white rounded-[2.5rem] p-8 border border-slate-100 shadow-xl shadow-slate-200/40">
+                    <div className="bg-white rounded-[2.5rem] p-8 border border-slate-200">
                          <h3 className="text-xl font-black text-slate-900 mb-8 flex items-center gap-3">
                             <TrendingUp className="w-6 h-6 text-emerald-600" />
                             Workload Distribution
@@ -223,7 +223,7 @@ const ProjectDashboard = () => {
                 {/* Right Side: Sidebar Info */}
                 <div className="space-y-8">
                     {/* Project Metadata */}
-                    <div className="bg-slate-900 rounded-[2.5rem] p-8 text-white shadow-2xl shadow-slate-900/40 relative overflow-hidden">
+                    <div className="bg-slate-900 rounded-[2.5rem] p-8 text-white relative overflow-hidden">
                         <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 blur-3xl -mr-16 -mt-16 rounded-full"></div>
                         <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-6 border-b border-white/10 pb-4">Project Details</h4>
                         <div className="space-y-6">
@@ -235,7 +235,7 @@ const ProjectDashboard = () => {
                     </div>
 
                     {/* Team Members List */}
-                    <div className="bg-white rounded-[2.5rem] p-8 border border-slate-100 shadow-xl shadow-slate-200/40">
+                    <div className="bg-white rounded-[2.5rem] p-8 border border-slate-200">
                          <h4 className="text-lg font-black text-slate-900 mb-6 underline decoration-indigo-500 underline-offset-8">Project Team</h4>
                          <div className="space-y-4">
                              {project.members?.map((m, i) => (
@@ -265,7 +265,7 @@ const StatCard = ({ label, value, icon, subtext, accent }) => {
         amber: 'bg-amber-50 text-amber-700 border-amber-100'
     };
     return (
-        <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-xl shadow-slate-200/20 space-y-4 transition-transform hover:-translate-y-1 duration-300 group">
+        <div className="bg-white p-6 rounded-[2rem] border border-slate-200 space-y-4 transition-transform hover:-translate-y-1 duration-300 group">
             <div className="flex items-center justify-between">
                 <div className={`p-3 rounded-2xl ${accents[accent]} group-hover:scale-110 transition-transform`}>
                     {icon}

@@ -81,7 +81,7 @@ export default function AdminLeaveApprovals() {
 
     return (
         <div className="space-y-6 animate-in fade-in duration-500">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200">
                 <div>
                     <h1 className="text-2xl font-black text-slate-900">Leave Approvals</h1>
                     <p className="text-sm text-slate-500 mt-1">Manage and review employee leave requests</p>
@@ -92,7 +92,7 @@ export default function AdminLeaveApprovals() {
                             key={status}
                             onClick={() => setFilterStatus(status)}
                             className={`px-4 py-2 text-xs font-bold rounded-lg transition-all ${filterStatus === status
-                                    ? 'bg-white text-indigo-600 shadow-sm border border-slate-200'
+                                    ? 'bg-white text-indigo-600 border border-slate-200'
                                     : 'text-slate-500 hover:text-slate-700'
                                 }`}
                         >
@@ -102,7 +102,7 @@ export default function AdminLeaveApprovals() {
                 </div>
             </div>
 
-            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
                 {loading ? (
                     <div className="p-20 flex flex-col items-center justify-center space-y-4">
                         <Loader2 className="w-8 h-8 text-indigo-600 animate-spin" />
@@ -135,7 +135,7 @@ export default function AdminLeaveApprovals() {
                                     <tr key={app._id} className="hover:bg-slate-50/30 transition-colors group">
                                         <td className="p-4">
                                             <div className="flex items-center gap-3">
-                                                <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white font-black text-xs shadow-md shadow-indigo-100">
+                                                <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white font-black text-xs">
                                                     {app.employee?.personalDetails?.firstName[0]}
                                                     {app.employee?.personalDetails?.lastName[0]}
                                                 </div>
@@ -170,7 +170,7 @@ export default function AdminLeaveApprovals() {
                                                     <button
                                                         onClick={() => handleAction(app._id, 'Approved')}
                                                         disabled={actionLoading}
-                                                        className="p-2 bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white rounded-xl transition-all border border-emerald-100 shadow-sm"
+                                                        className="p-2 bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white rounded-xl transition-all border border-emerald-100"
                                                         title="Approve"
                                                     >
                                                         <CheckCircle2 className="w-5 h-5" />
@@ -178,7 +178,7 @@ export default function AdminLeaveApprovals() {
                                                     <button
                                                         onClick={() => openRejectModal(app)}
                                                         disabled={actionLoading}
-                                                        className="p-2 bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white rounded-xl transition-all border border-rose-100 shadow-sm"
+                                                        className="p-2 bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white rounded-xl transition-all border border-rose-100"
                                                         title="Reject"
                                                     >
                                                         <XCircle className="w-5 h-5" />
@@ -206,9 +206,9 @@ export default function AdminLeaveApprovals() {
             {/* Rejection Modal */}
             {showRejectModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-300">
-                    <div className="bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden animate-in zoom-in duration-300 border border-slate-200">
+                    <div className="bg-white rounded-3xl max-w-md w-full overflow-hidden animate-in zoom-in duration-300 border border-slate-200">
                         <div className="p-8">
-                            <div className="w-16 h-16 bg-rose-50 rounded-2xl flex items-center justify-center text-rose-600 mb-6 mx-auto border border-rose-100 shadow-sm">
+                            <div className="w-16 h-16 bg-rose-50 rounded-2xl flex items-center justify-center text-rose-600 mb-6 mx-auto border border-rose-100">
                                 <AlertCircle className="w-8 h-8" />
                             </div>
                             <h3 className="text-2xl font-black text-slate-900 text-center mb-2">Reject Leave Request</h3>
@@ -235,7 +235,7 @@ export default function AdminLeaveApprovals() {
                                 <button
                                     onClick={() => handleAction(selectedApp._id, 'Rejected', rejectionReason)}
                                     disabled={!rejectionReason.trim() || actionLoading}
-                                    className="flex-[2] py-4 bg-rose-600 hover:bg-rose-700 text-white rounded-2xl text-sm font-black shadow-lg shadow-rose-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                                    className="flex-[2] py-4 bg-rose-600 hover:bg-rose-700 text-white rounded-2xl text-sm font-black transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                                 >
                                     {actionLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Confirm Rejection"}
                                 </button>

@@ -260,20 +260,20 @@ export default function VendorExpenses() {
                 </div>
                 <button
                     onClick={handleOpenCreate}
-                    className="flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-[1.2rem] text-[10px] font-black uppercase tracking-widest hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100"
+                    className="flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-[1.2rem] text-[10px] font-black uppercase tracking-widest hover:bg-indigo-700 transition-all"
                 >
                     <Plus className="w-4 h-4" /> Record New Bill
                 </button>
             </div>
 
             {/* List Table */}
-            <div className="bg-white rounded-[2rem] border border-slate-200 shadow-sm overflow-hidden">
+            <div className="bg-white rounded-[2rem] border border-slate-200 overflow-hidden">
                 <div className="p-6 border-b border-slate-50 bg-slate-50/30 flex flex-col md:flex-row gap-4 justify-between">
                     <div className="relative flex-1 max-w-md">
                         <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                         <input 
                             placeholder="Search by vendor or invoice..." 
-                            className="w-full pl-11 pr-4 py-3 bg-white border border-slate-200 rounded-2xl text-sm font-bold outline-none focus:border-indigo-500 transition-all shadow-sm"
+                            className="w-full pl-11 pr-4 py-3 bg-white border border-slate-200 rounded-2xl text-sm font-bold outline-none focus:border-indigo-500 transition-all"
                         />
                     </div>
                     <div className="flex gap-2">
@@ -417,17 +417,17 @@ export default function VendorExpenses() {
             {/* Add Expense Modal */}
             {showModal && (
                 <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
-                    <div className="bg-white rounded-[2.5rem] w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-300 border border-slate-100">
+                    <div className="bg-white rounded-[2.5rem] w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden animate-in fade-in zoom-in duration-300 border border-slate-200">
                         <div className="p-8 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
                             <div>
                                 <h2 className="text-2xl font-black text-slate-900 flex items-center gap-3 uppercase tracking-tight">
-                                    <div className="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center shadow-lg shadow-orange-100">
+                                    <div className="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center">
                                         <IndianRupee className="w-6 h-6 text-white" />
                                     </div>
                                     {isEditing ? "Modify Vendor Bill" : "Record Vendor Bill"}
                                 </h2>
                             </div>
-                            <button onClick={() => setShowModal(false)} className="p-3 hover:bg-white hover:shadow-md rounded-2xl transition-all text-slate-400 hover:text-slate-900">
+                            <button onClick={() => setShowModal(false)} className="p-3 hover:bg-white hover: rounded-2xl transition-all text-slate-400 hover:text-slate-900">
                                 <X className="w-6 h-6" />
                             </button>
                         </div>
@@ -634,7 +634,7 @@ export default function VendorExpenses() {
                                 <button
                                     type="submit"
                                     disabled={submitting}
-                                    className="px-10 py-4 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl shadow-indigo-100 flex items-center gap-2 disabled:opacity-70"
+                                    className="px-10 py-4 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-black uppercase tracking-widest rounded-2xl transition-all flex items-center gap-2 disabled:opacity-70"
                                 >
                                     {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                                     {submitting ? "Processing..." : "Save Record"}
@@ -648,7 +648,7 @@ export default function VendorExpenses() {
             {/* View Details Modal */}
             {showViewModal && selectedExpense && (
                 <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
-                    <div className="bg-white rounded-[2.5rem] w-full max-w-lg max-h-[90vh] flex flex-col overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-300 border border-slate-100">
+                    <div className="bg-white rounded-[2.5rem] w-full max-w-lg max-h-[90vh] flex flex-col overflow-hidden animate-in fade-in zoom-in duration-300 border border-slate-200">
                         <div className="p-8 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
                             <div>
                                 <h2 className="text-xl font-black text-slate-900 tracking-tight uppercase">
@@ -656,7 +656,7 @@ export default function VendorExpenses() {
                                 </h2>
                                 <p className="text-xs text-slate-500 font-bold mt-0.5">#{selectedExpense.invoiceNumber}</p>
                             </div>
-                            <button onClick={() => setShowViewModal(false)} className="p-3 hover:bg-white hover:shadow-md rounded-2xl transition-all text-slate-400 hover:text-slate-900">
+                            <button onClick={() => setShowViewModal(false)} className="p-3 hover:bg-white hover: rounded-2xl transition-all text-slate-400 hover:text-slate-900">
                                 <X className="w-5 h-5" />
                             </button>
                         </div>

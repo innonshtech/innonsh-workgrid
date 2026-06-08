@@ -74,7 +74,7 @@ export default function VendorDashboard() {
         <div className="space-y-8 animate-in fade-in duration-700">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {cards.map((card, i) => (
-                    <div key={i} className={`bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-500 group relative overflow-hidden border-l-4 ${
+                    <div key={i} className={`bg-white p-8 rounded-[2.5rem] border border-slate-200 hover: transition-all duration-500 group relative overflow-hidden border-l-4 ${
                         card.color === 'indigo' ? 'border-l-indigo-500' :
                         card.color === 'orange' ? 'border-l-orange-500' :
                         card.color === 'emerald' ? 'border-l-emerald-500' : 'border-l-rose-500'
@@ -109,14 +109,14 @@ export default function VendorDashboard() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div className="lg:col-span-2 bg-white p-8 rounded-[2.5rem] border border-slate-200 shadow-sm">
+                <div className="lg:col-span-2 bg-white p-8 rounded-[2.5rem] border border-slate-200">
                     <div className="flex justify-between items-center mb-8">
                         <h4 className="text-lg font-black text-slate-900 flex items-center gap-2 uppercase tracking-tight">
                             <Activity className="w-5 h-5 text-indigo-600" /> Expense Analysis
                         </h4>
                         <div className="flex gap-2">
                             <button className="px-4 py-2 bg-slate-50 text-[10px] font-black uppercase tracking-widest text-slate-500 rounded-xl hover:bg-slate-100 transition-all">Week</button>
-                            <button className="px-4 py-2 bg-indigo-600 text-[10px] font-black uppercase tracking-widest text-white rounded-xl shadow-lg shadow-indigo-100">Month</button>
+                            <button className="px-4 py-2 bg-indigo-600 text-[10px] font-black uppercase tracking-widest text-white rounded-xl">Month</button>
                         </div>
                     </div>
                     <div className="h-64 flex items-center justify-center border-2 border-dashed border-slate-100 rounded-3xl">
@@ -124,7 +124,7 @@ export default function VendorDashboard() {
                     </div>
                 </div>
 
-                <div className="bg-slate-900 p-8 rounded-[2.5rem] shadow-xl relative overflow-hidden text-white border border-slate-800">
+                <div className="bg-slate-900 p-8 rounded-[2.5rem] relative overflow-hidden text-white border border-slate-800">
                     <div className="absolute top-0 right-0 w-48 h-48 bg-indigo-500/10 rounded-full -mr-24 -mt-24 blur-3xl"></div>
                     <div className="relative z-10">
                         <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center mb-6 backdrop-blur-md border border-white/10">

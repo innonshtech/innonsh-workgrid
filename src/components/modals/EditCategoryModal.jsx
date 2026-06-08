@@ -621,7 +621,7 @@ export default function EditCategoryModal({
 
                 {/* Document Dropdown */}
                 {isDropdownOpen && (
-                  <div className="absolute z-50 w-full mt-1 bg-white border border-slate-200 rounded-xl shadow-lg max-h-80 overflow-y-auto">
+                  <div className="absolute z-50 w-full mt-1 bg-white border border-slate-200 rounded-xl max-h-80 overflow-y-auto">
                     {/* Loading State */}
                     {isLoadingDocuments ? (
                       <div className="flex items-center justify-center p-8">

@@ -156,7 +156,7 @@ export default function EmployeeLogsPage() {
         <div className="max-w-7xl mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <div className="w-11 h-11 bg-indigo-500 rounded-xl flex items-center justify-center shadow-sm">
+              <div className="w-11 h-11 bg-indigo-500 rounded-xl flex items-center justify-center">
                 <FileText className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -190,7 +190,7 @@ export default function EmployeeLogsPage() {
 
       <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Filters */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm mb-6">
+        <div className="bg-white rounded-xl border border-slate-200 mb-6">
           <div className="p-4 border-b border-slate-200">
             <button
               onClick={() => setShowFilters(!showFilters)}
@@ -321,7 +321,7 @@ export default function EmployeeLogsPage() {
         </div>
 
         {/* Logs Table */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+        <div className="bg-white rounded-xl border border-slate-200">
           <div className="p-4 border-b border-slate-200">
             <div className="flex items-center justify-between">
               <h2 className="font-semibold text-slate-900">

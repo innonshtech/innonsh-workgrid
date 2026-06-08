@@ -109,7 +109,7 @@ export default function SurveyStats() {
 
 function StatCard({ title, value, icon: Icon, color, bgColor }) {
     return (
-        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+        <div className="bg-white p-6 rounded-xl border border-slate-200">
             <div className={`${bgColor} ${color} w-10 h-10 rounded-lg flex items-center justify-center mb-4`}>
                 <Icon className="w-6 h-6" />
             </div>
@@ -124,7 +124,7 @@ function ResponseCard({ response, questions, isAnonymous }) {
         `${response.employeeId?.personalDetails?.firstName} ${response.employeeId?.personalDetails?.lastName}`;
 
     return (
-        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
+        <div className="bg-white p-6 rounded-xl border border-slate-200 space-y-4">
             <div className="flex justify-between items-center border-b border-slate-50 pb-4">
                 <div className="flex items-center gap-3">
                     <div className="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center text-slate-500">

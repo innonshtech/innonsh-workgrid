@@ -94,7 +94,7 @@ export default function PayrollComparisonReport() {
     return (
         <div className="space-y-6">
             {/* Header & Controls */}
-            <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="bg-white p-4 rounded-xl border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <h2 className="text-lg font-bold text-slate-900">Payroll Variance Report</h2>
                     <p className="text-sm text-slate-500">Compare payroll costs between two months</p>
@@ -105,7 +105,7 @@ export default function PayrollComparisonReport() {
                         <select
                             value={run1Id}
                             onChange={(e) => setRun1Id(e.target.value)}
-                            className="bg-white border-slate-300 text-sm rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                            className="bg-white border-slate-300 text-sm rounded-md focus:border-indigo-500 focus:ring-indigo-500"
                         >
                             <option value="">Select Run</option>
                             {runs.map(run => (
@@ -121,7 +121,7 @@ export default function PayrollComparisonReport() {
                         <select
                             value={run2Id}
                             onChange={(e) => setRun2Id(e.target.value)}
-                            className="bg-white border-slate-300 text-sm rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                            className="bg-white border-slate-300 text-sm rounded-md focus:border-indigo-500 focus:ring-indigo-500"
                         >
                             <option value="">Select Run</option>
                             {runs.map(run => (
@@ -170,7 +170,7 @@ export default function PayrollComparisonReport() {
                     </div>
 
                     {/* Detailed Breakdown */}
-                    <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
                         <div className="border-b border-slate-200">
                             <nav className="flex -mb-px">
                                 <TabButton
@@ -245,7 +245,7 @@ function VarianceCard({ title, current, previous, variance, percentage, format =
     }
 
     return (
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+        <div className="bg-white p-6 rounded-xl border border-slate-200">
             <h3 className="text-sm font-medium text-slate-500 mb-2">{title}</h3>
             <div className="flex items-baseline justify-between">
                 <span className="text-2xl font-bold text-slate-900">{format(current)}</span>

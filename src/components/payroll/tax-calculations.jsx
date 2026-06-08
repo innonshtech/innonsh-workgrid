@@ -132,7 +132,7 @@
 //         <div className="max-w-7xl mx-auto px-6 py-6">
 //           <div className="flex items-center justify-between">
 //             <div className="flex items-center space-x-4">
-//               <div className="w-11 h-11 bg-yellow-500 rounded-xl flex items-center justify-center shadow-sm">
+//               <div className="w-11 h-11 bg-yellow-500 rounded-xl flex items-center justify-center">
 //                 <Calculator className="w-6 h-6 text-white" />
 //               </div>
 //               <div>
@@ -156,7 +156,7 @@
 //       <div className="max-w-7xl mx-auto px-6 py-6 space-y-6">
 //         {/* Analytics Overview */}
 //         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-//           <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+//           <div className="bg-white p-6 rounded-xl border border-slate-200">
 //             <div className="flex items-center justify-between">
 //               <div>
 //                 <p className="text-sm font-medium text-slate-600">Total Records</p>
@@ -169,7 +169,7 @@
 //             </div>
 //           </div>
 
-//           <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+//           <div className="bg-white p-6 rounded-xl border border-slate-200">
 //             <div className="flex items-center justify-between">
 //               <div>
 //                 <p className="text-sm font-medium text-slate-600">Total Tax Amount</p>
@@ -186,7 +186,7 @@
 //         </div>
 
 //         {/* Main Data Panel */}
-//         <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+//         <div className="bg-white rounded-xl border border-slate-200">
 //           {/* Panel Header */}
 //           <div className="p-6 border-b border-slate-200">
 //             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
@@ -216,7 +216,7 @@
 
 //                 <Link
 //                   href="/payroll/tax-calculations/tax-calculator"
-//                   className="inline-flex items-center gap-2 px-5 py-2.5 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg font-medium transition-colors shadow-sm"
+//                   className="inline-flex items-center gap-2 px-5 py-2.5 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg font-medium transition-colors"
 //                 >
 //                   <Plus className="w-4 h-4" />
 //                   New Calculation
@@ -712,7 +712,7 @@ export default function TaxCalculations() {
         <div className="max-w-7xl mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <div className="w-11 h-11 bg-yellow-500 rounded-xl flex items-center justify-center shadow-sm">
+              <div className="w-11 h-11 bg-yellow-500 rounded-xl flex items-center justify-center">
                 <Calculator className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -734,7 +734,7 @@ export default function TaxCalculations() {
       <div className="max-w-7xl mx-auto px-6 py-6 space-y-6">
         {/* Analytics Overview */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+          <div className="bg-white p-6 rounded-xl border border-slate-200">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-slate-600">Total Records</p>
@@ -747,7 +747,7 @@ export default function TaxCalculations() {
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+          <div className="bg-white p-6 rounded-xl border border-slate-200">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-slate-600">Total Tax Amount</p>
@@ -764,7 +764,7 @@ export default function TaxCalculations() {
         </div>
 
         {/* Main Data Panel */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+        <div className="bg-white rounded-xl border border-slate-200">
           {/* Panel Header */}
           <div className="p-6 border-b border-slate-200">
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
@@ -797,7 +797,7 @@ export default function TaxCalculations() {
 
                 <Link
                   href="/admin/payroll/tax-calculations/tax-calculator"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg font-medium transition-colors shadow-sm"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg font-medium transition-colors"
                 >
                   <Plus className="w-4 h-4" />
                   New Calculation

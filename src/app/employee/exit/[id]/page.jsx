@@ -102,7 +102,7 @@ export default function ExitRequestDetails() {
                 <ArrowLeft size={16} className="mr-2" /> Back to List
             </Link>
 
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <div className="bg-white rounded-xl border border-slate-200 p-6">
                 <div className="flex items-start justify-between">
                     <div>
                         <h1 className="text-2xl font-bold text-slate-900">Resignation Request</h1>
@@ -146,7 +146,7 @@ export default function ExitRequestDetails() {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Approval Workflow */}
-                <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                <div className="bg-white rounded-xl border border-slate-200 p-6">
                     <h2 className="text-lg font-bold text-slate-900 mb-4">Approvals</h2>
 
                     {/* Manager Approval */}
@@ -239,7 +239,7 @@ export default function ExitRequestDetails() {
                 </div>
 
                 {/* Clearance Checklist */}
-                <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                <div className="bg-white rounded-xl border border-slate-200 p-6">
                     <h2 className="text-lg font-bold text-slate-900 mb-4">Clearance Checklist</h2>
 
                     {['it', 'finance', 'admin'].map((type) => (

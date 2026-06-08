@@ -1532,7 +1532,7 @@ export default function CreditManagementPage() {
         <div className="max-w-7xl mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-             <div className="w-11 h-11 bg-[#FB9D00] rounded-xl flex items-center justify-center shadow-sm">
+             <div className="w-11 h-11 bg-[#FB9D00] rounded-xl flex items-center justify-center">
   <CreditCard className="w-6 h-6 text-white" />
 </div>
 
@@ -1570,7 +1570,7 @@ export default function CreditManagementPage() {
 
       <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
         {/* Enhanced Tabs */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
           <div className="border-b border-slate-200">
             <div className="flex space-x-1">
               {[
@@ -1606,7 +1606,7 @@ export default function CreditManagementPage() {
             {/* Enhanced Overview Tab */}
             {activeTab === 'overview' && (
               <div className="space-y-8">
-                <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+                <div className="bg-white rounded-xl border border-slate-200">
                   <div className="p-6 border-b border-slate-200">
                     <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                       <div className="w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center border border-indigo-100">
@@ -1619,7 +1619,7 @@ export default function CreditManagementPage() {
                   
                   <div className="p-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                      <div className="group bg-white rounded-xl border border-slate-200 p-6 hover:shadow-lg transition-all duration-200 bg-slate-50 hover:scale-105">
+                      <div className="group bg-white rounded-xl border border-slate-200 p-6 hover: transition-all duration-200 bg-slate-50 hover:scale-105">
                         <div className="flex items-center justify-between mb-3">
                           <div className="p-3 rounded-xl bg-indigo-50 border border-indigo-200">
                             <Users className="h-6 w-6 text-indigo-600" />
@@ -1636,7 +1636,7 @@ export default function CreditManagementPage() {
                           </p>
                         </div>
                       </div>
-                      <div className="group bg-white rounded-xl border border-slate-200 p-6 hover:shadow-lg transition-all duration-200 bg-slate-50 hover:scale-105">
+                      <div className="group bg-white rounded-xl border border-slate-200 p-6 hover: transition-all duration-200 bg-slate-50 hover:scale-105">
                         <div className="flex items-center justify-between mb-3">
                           <div className="p-3 rounded-xl bg-green-50 border border-green-200">
                             <DollarSign className="h-6 w-6 text-green-600" />
@@ -1653,7 +1653,7 @@ export default function CreditManagementPage() {
                           </p>
                         </div>
                       </div>
-                      <div className="group bg-white rounded-xl border border-slate-200 p-6 hover:shadow-lg transition-all duration-200 bg-slate-50 hover:scale-105">
+                      <div className="group bg-white rounded-xl border border-slate-200 p-6 hover: transition-all duration-200 bg-slate-50 hover:scale-105">
                         <div className="flex items-center justify-between mb-3">
                           <div className="p-3 rounded-xl bg-yellow-50 border border-yellow-200">
                             <Clock className="h-6 w-6 text-yellow-600" />
@@ -1670,7 +1670,7 @@ export default function CreditManagementPage() {
                           </p>
                         </div>
                       </div>
-                      <div className="group bg-white rounded-xl border border-slate-200 p-6 hover:shadow-lg transition-all duration-200 bg-slate-50 hover:scale-105">
+                      <div className="group bg-white rounded-xl border border-slate-200 p-6 hover: transition-all duration-200 bg-slate-50 hover:scale-105">
                         <div className="flex items-center justify-between mb-3">
                           <div className="p-3 rounded-xl bg-red-50 border border-red-200">
                             <AlertTriangle className="h-6 w-6 text-red-600" />
@@ -1692,7 +1692,7 @@ export default function CreditManagementPage() {
                 </div>
 
                 {/* Ledger-wise Outstanding */}
-                <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+                <div className="bg-white rounded-xl border border-slate-200">
                   <div className="p-6 border-b border-slate-200">
                     <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                       <div className="w-8 h-8 bg-slate-50 rounded-lg flex items-center justify-center border border-blue-100">
@@ -1705,7 +1705,7 @@ export default function CreditManagementPage() {
                   <div className="p-6">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                       {Object.entries(ledgerWiseOutstanding).map(([ledger, amount]) => (
-                        <div key={ledger} className="group bg-white rounded-xl border border-slate-200 p-6 hover:shadow-lg transition-all duration-200 bg-slate-50 hover:scale-105">
+                        <div key={ledger} className="group bg-white rounded-xl border border-slate-200 p-6 hover: transition-all duration-200 bg-slate-50 hover:scale-105">
                           <div className="flex items-center justify-between mb-3">
                             <div className="p-3 rounded-xl bg-slate-50 border border-blue-200">
                               <FileText className="h-6 w-6 text-blue-600" />
@@ -1727,7 +1727,7 @@ export default function CreditManagementPage() {
                   </div>
                 </div>
                 {/* Risk Assessment */}
-                <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+                <div className="bg-white rounded-xl border border-slate-200">
                   <div className="p-6 border-b border-slate-200">
                     <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                       <div className="w-8 h-8 bg-purple-50 rounded-lg flex items-center justify-center border border-purple-100">
@@ -1771,7 +1771,7 @@ export default function CreditManagementPage() {
             {/* Enhanced Customers Tab */}
             {activeTab === 'customers' && (
               <div className="space-y-8">
-                <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+                <div className="bg-white rounded-xl border border-slate-200">
                   <div className="p-6 border-b border-slate-200">
                     <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                       <div className="w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center border border-indigo-100">
@@ -1919,7 +1919,7 @@ export default function CreditManagementPage() {
             {/* Enhanced Receipts Tab with TDS */}
             {activeTab === 'receipts' && (
               <div className="space-y-8">
-                <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+                <div className="bg-white rounded-xl border border-slate-200">
                   <div className="p-6 border-b border-slate-200">
                     <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                       <div className="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center border border-green-100">
@@ -2012,7 +2012,7 @@ export default function CreditManagementPage() {
             {/* Enhanced Outstanding Tab with PO Tracking */}
             {activeTab === 'outstanding' && (
               <div className="space-y-8">
-                <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+                <div className="bg-white rounded-xl border border-slate-200">
                   <div className="p-6 border-b border-slate-200">
                     <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                       <div className="w-8 h-8 bg-yellow-50 rounded-lg flex items-center justify-center border border-yellow-100">
@@ -2085,7 +2085,7 @@ export default function CreditManagementPage() {
             {/* Enhanced PDC Tab with Credit Limit Validation */}
             {activeTab === 'pdc' && (
               <div className="space-y-8">
-                <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+                <div className="bg-white rounded-xl border border-slate-200">
                   <div className="p-6 border-b border-slate-200">
                     <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                       <div className="w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center border border-indigo-100">
@@ -2193,7 +2193,7 @@ export default function CreditManagementPage() {
             {/* Collections Tab */}
             {activeTab === 'collections' && (
               <div className="space-y-8">
-                <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+                <div className="bg-white rounded-xl border border-slate-200">
                   <div className="p-6 border-b border-slate-200">
                     <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                       <div className="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center border border-green-100">
@@ -2271,7 +2271,7 @@ export default function CreditManagementPage() {
             {/* Purchase Orders Tab */}
             {activeTab === 'pos' && (
               <div className="space-y-8">
-                <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+                <div className="bg-white rounded-xl border border-slate-200">
                   <div className="p-6 border-b border-slate-200">
                     <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                       <div className="w-8 h-8 bg-slate-50 rounded-lg flex items-center justify-center border border-blue-100">
@@ -2337,7 +2337,7 @@ export default function CreditManagementPage() {
             {/* Returns Tab - Similar structure as other tabs */}
             {activeTab === 'returns' && (
               <div className="space-y-8">
-                <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+                <div className="bg-white rounded-xl border border-slate-200">
                   <div className="p-6 border-b border-slate-200">
                     <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                       <div className="w-8 h-8 bg-red-50 rounded-lg flex items-center justify-center border border-red-100">
@@ -2420,7 +2420,7 @@ export default function CreditManagementPage() {
       {/* Dialogs */}
       {isDialogOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+          <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b border-slate-200">
               <h2 className="text-xl font-semibold text-slate-900">
                 {dialogType === 'newCustomer' && 'Add New Customer'}
@@ -2478,7 +2478,7 @@ export default function CreditManagementPage() {
       {/* Customer Detail View */}
       {selectedCustomer && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-xl max-w-4xl w-full shadow-2xl">
+          <div className="bg-white rounded-xl max-w-4xl w-full">
             <div className="p-6 border-b border-slate-200">
               <div className="flex items-center gap-2">
                 <Users className="h-5 w-5 text-indigo-600" />

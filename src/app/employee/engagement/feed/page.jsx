@@ -115,28 +115,26 @@ export default function SocialFeed() {
     <div className="min-h-screen bg-slate-50 font-['Inter',sans-serif] pb-16">
       <Toaster position="top-right" richColors closeButton />
       <div className="max-w-3xl mx-auto px-6 py-8 space-y-8">
-        
-        {/* Simplified Header */}
-        <div className="bg-white rounded-3xl p-6 border border-slate-200/60 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <div className="flex items-center gap-3.5">
-            <div className="w-12 h-12 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600 shadow-sm">
-              <Megaphone className="w-6 h-6" />
-            </div>
-            <div>
-              <h1 className="text-xl font-black text-slate-900 tracking-tight">Social Feed</h1>
-              <p className="text-xs text-slate-400 font-medium">Broadcast updates and stay updated with your team.</p>
-            </div>
+                {/* Standard Hero */}
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-4 mt-2">
+              <div className="space-y-1">
+                  <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+                      Social Feed
+                  </h1>
+                  <p className="text-slate-500 text-sm mt-1 max-w-xl">
+                      Stay connected with company updates, announcements, and team celebrations.
+                  </p>
+              </div>
+              <div className="hidden lg:inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-indigo-50 border border-indigo-100 text-indigo-600 rounded-full text-[10px] font-black uppercase tracking-wider">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  Universal Channel
+              </div>
           </div>
-          <div className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-indigo-50 border border-indigo-100 text-indigo-600 rounded-full text-[10px] font-black uppercase tracking-wider">
-            <Sparkles className="w-3.5 h-3.5" />
-            Universal Channel
-          </div>
-        </div>
 
         {/* Message Creator Box */}
-        <form onSubmit={handlePostSubmit} className="bg-white rounded-[2rem] border border-slate-200/60 p-6 shadow-sm space-y-4 transition-all focus-within:shadow-md">
+        <form onSubmit={handlePostSubmit} className="bg-white rounded-[2rem] border border-slate-200/60 p-6 space-y-4 transition-all focus-within:">
           <div className="flex gap-4">
-            <div className="w-10 h-10 bg-gradient-to-tr from-indigo-500 to-violet-500 rounded-xl flex items-center justify-center text-white font-black text-sm shadow-sm shrink-0">
+            <div className="w-10 h-10 bg-gradient-to-tr from-indigo-500 to-violet-500 rounded-xl flex items-center justify-center text-white font-black text-sm shrink-0">
               {user?.personalDetails?.firstName?.[0] || <User className="w-5 h-5" />}
             </div>
             
@@ -160,7 +158,7 @@ export default function SocialFeed() {
             <button
               type="submit"
               disabled={submitting || !newPost.content.trim()}
-              className="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-xl shadow-indigo-100 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 active:scale-95 shrink-0"
+              className="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 active:scale-95 shrink-0"
             >
               {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-3.5 h-3.5" />}
               {submitting ? "Sharing..." : "Share to All"}
@@ -253,7 +251,7 @@ function PostCard({ post, user, onLike }) {
   };
 
   return (
-    <div className="bg-white rounded-3xl border border-slate-200/60 shadow-sm overflow-hidden flex flex-col hover:border-slate-300 transition-all duration-300">
+    <div className="bg-white rounded-3xl border border-slate-200/60 overflow-hidden flex flex-col hover:border-slate-300 transition-all duration-300">
       
       {/* Post Main Body */}
       <div className="p-6 space-y-4">
@@ -261,7 +259,7 @@ function PostCard({ post, user, onLike }) {
         {/* Post Author info */}
         <div className="flex justify-between items-start">
           <div className="flex gap-3">
-            <div className="w-10 h-10 bg-gradient-to-tr from-slate-100 to-slate-200 rounded-xl flex items-center justify-center text-slate-700 font-bold text-xs shadow-inner">
+            <div className="w-10 h-10 bg-gradient-to-tr from-slate-100 to-slate-200 rounded-xl flex items-center justify-center text-slate-700 font-bold text-xs">
               {getAuthorInitials(post.author)}
             </div>
             
@@ -326,10 +324,10 @@ function PostCard({ post, user, onLike }) {
             <div className="space-y-3 max-h-[300px] overflow-y-auto no-scrollbar pr-2 pt-4">
               {localComments.map((comment, idx) => (
                 <div key={idx} className="flex gap-2.5 items-start">
-                  <div className="w-7 h-7 bg-slate-100 border border-slate-200/50 rounded-lg flex items-center justify-center text-slate-600 font-bold text-[10px] shrink-0 shadow-sm">
+                  <div className="w-7 h-7 bg-slate-100 border border-slate-200/50 rounded-lg flex items-center justify-center text-slate-600 font-bold text-[10px] shrink-0">
                     {getCommentAuthorInitials(comment.author)}
                   </div>
-                  <div className="bg-white p-3 rounded-2xl border border-slate-100 flex-1 shadow-sm">
+                  <div className="bg-white p-3 rounded-2xl border border-slate-200 flex-1">
                     <div className="flex justify-between items-center mb-1">
                       <p className="text-[10px] font-black text-slate-800">
                         {comment.author ? `${comment.author.personalDetails.firstName} ${comment.author.personalDetails.lastName}` : 'Admin Team'}

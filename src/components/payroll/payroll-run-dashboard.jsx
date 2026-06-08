@@ -194,10 +194,10 @@ export default function PayrollRunDashboard() {
       </div>
 
       {/* Main Action Card */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
         <div className="p-6 border-b border-slate-100 bg-gradient-to-r from-blue-50 to-indigo-50">
           <div className="flex items-start gap-4">
-            <div className="p-3 bg-white rounded-lg shadow-sm">
+            <div className="p-3 bg-white rounded-lg">
               <PlayCircle className="w-8 h-8 text-indigo-600" />
             </div>
             <div>
@@ -219,7 +219,7 @@ export default function PayrollRunDashboard() {
                 <select
                   value={formData.month}
                   onChange={(e) => setFormData({ ...formData, month: parseInt(e.target.value) })}
-                  className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-shadow appearance-none"
+                  className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition- appearance-none"
                 >
                   {months.map((month, index) => {
                     const mValue = index + 1;
@@ -247,7 +247,7 @@ export default function PayrollRunDashboard() {
                   }
                   setFormData({ ...formData, year: newYear, month: newMonth });
                 }}
-                className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-shadow appearance-none"
+                className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition- appearance-none"
               >
                 {[...Array(3)].map((_, i) => {
                   const y = currentYear - 1 + i;
@@ -278,7 +278,7 @@ export default function PayrollRunDashboard() {
             <button
               onClick={handleGenerateBatch}
               disabled={loading || (validationResult && !validationResult.isReady)}
-              className="w-full md:w-auto flex-shrink-0 px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg shadow-sm hover:shadow transition-all disabled:opacity-70 flex items-center justify-center gap-2"
+              className="w-full md:w-auto flex-shrink-0 px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg hover: transition-all disabled:opacity-70 flex items-center justify-center gap-2"
             >
               {loading ? (
                 <>
@@ -394,7 +394,7 @@ export default function PayrollRunDashboard() {
       </div>
 
       {/* History Table */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
         <div className="p-6 border-b border-slate-100 flex justify-between items-center">
           <h2 className="text-lg font-bold text-slate-900">Recent Payroll Runs</h2>
           <button 

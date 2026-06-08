@@ -59,12 +59,12 @@ export default function EmployeeDetailsDrawer({ isOpen, onClose, record }) {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed top-0 right-0 h-full w-full md:w-[450px] bg-white shadow-2xl z-[101] flex flex-col"
+            className="fixed top-0 right-0 h-full w-full md:w-[450px] bg-white z-[101] flex flex-col"
           >
             {/* Header */}
             <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
               <div className="flex items-center gap-4">
-                <div className="h-12 w-12 rounded-2xl bg-indigo-600 flex items-center justify-center text-white shadow-lg shadow-indigo-100">
+                <div className="h-12 w-12 rounded-2xl bg-indigo-600 flex items-center justify-center text-white">
                   <User className="h-6 w-6" />
                 </div>
                 <div>
@@ -100,7 +100,7 @@ export default function EmployeeDetailsDrawer({ isOpen, onClose, record }) {
                   <Calendar className="h-4 w-4 text-indigo-600" />
                   Attendance Status
                 </h3>
-                <div className="p-4 rounded-2xl border border-slate-100 shadow-sm space-y-4">
+                <div className="p-4 rounded-2xl border border-slate-200 space-y-4">
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-medium text-slate-500">Current Status</span>
                     <Badge className="bg-green-100 text-green-700 border-green-200 px-3 py-1">{record.status}</Badge>
@@ -128,7 +128,7 @@ export default function EmployeeDetailsDrawer({ isOpen, onClose, record }) {
                 <div className="space-y-6 ml-4">
                   {timelineItems.map((item, idx) => (
                     <div key={idx} className="relative pl-8 border-l-2 border-slate-100 last:border-l-0 pb-6 last:pb-0">
-                      <div className={`absolute -left-[17px] top-0 h-8 w-8 rounded-full ${item.bg} flex items-center justify-center border-4 border-white shadow-sm`}>
+                      <div className={`absolute -left-[17px] top-0 h-8 w-8 rounded-full ${item.bg} flex items-center justify-center border-4 border-white`}>
                         <item.icon className={`h-4 w-4 ${item.color}`} />
                       </div>
                       <div className="flex items-center justify-between">
@@ -172,7 +172,7 @@ export default function EmployeeDetailsDrawer({ isOpen, onClose, record }) {
               </div>
 
               {/* Insights */}
-              <div className="p-4 rounded-2xl bg-indigo-600 text-white shadow-xl shadow-indigo-100">
+              <div className="p-4 rounded-2xl bg-indigo-600 text-white">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
                     <Timer className="h-5 w-5" />
@@ -180,7 +180,7 @@ export default function EmployeeDetailsDrawer({ isOpen, onClose, record }) {
                   </div>
                   <span className="text-xs font-bold bg-white/20 px-2 py-1 rounded-lg">Top 10%</span>
                 </div>
-                <div className="grid grid-cols-3 gap-2 text-center">
+                <div className="grid grid-cols-2 gap-2 text-center">
                   <div>
                     <p className="text-[10px] font-bold text-indigo-200 uppercase">Avg In</p>
                     <p className="text-sm font-black">09:05 AM</p>
@@ -189,10 +189,7 @@ export default function EmployeeDetailsDrawer({ isOpen, onClose, record }) {
                     <p className="text-[10px] font-bold text-indigo-200 uppercase">Total Hrs</p>
                     <p className="text-sm font-black">45.5h</p>
                   </div>
-                  <div>
-                    <p className="text-[10px] font-bold text-indigo-200 uppercase">Overtime</p>
-                    <p className="text-sm font-black">2.5h</p>
-                  </div>
+                  
                 </div>
               </div>
             </div>
@@ -205,7 +202,7 @@ export default function EmployeeDetailsDrawer({ isOpen, onClose, record }) {
               >
                 Close Drawer
               </button>
-              <button className="px-4 py-3 text-sm font-bold text-white bg-indigo-600 rounded-xl hover:bg-indigo-700 transition-all active:scale-95 shadow-lg shadow-indigo-100 flex items-center justify-center gap-2">
+              <button className="px-4 py-3 text-sm font-bold text-white bg-indigo-600 rounded-xl hover:bg-indigo-700 transition-all active:scale-95 flex items-center justify-center gap-2">
                 Export Report
                 <ArrowRight className="h-4 w-4" />
               </button>

@@ -550,8 +550,20 @@ export default function EmployeeAttendanceView() {
       <Toaster position="top-right" richColors closeButton />
       <div className="max-w-7xl mx-auto px-6 py-8 space-y-10">
 
+        {/* Module Hero */}
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-4 mt-2">
+            <div className="space-y-1">
+                <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+                    Attendance Management
+                </h1>
+                <p className="text-slate-500 text-sm mt-1 max-w-xl">
+                    Track attendance records, shift activities, regularization requests and attendance history.
+                </p>
+            </div>
+        </div>
+
         {/* Dynamic Top Navigation Tabs */}
-        <div className="flex overflow-x-auto gap-2 bg-white p-2 rounded-3xl border border-slate-200/60 shadow-sm max-w-fit no-scrollbar">
+        <div className="flex overflow-x-auto gap-2 bg-white p-2 rounded-3xl border border-slate-200/60 max-w-fit no-scrollbar">
           {[
             { id: "dashboard", label: "My Dashboard", icon: Layers },
             { id: "history", label: "History Log", icon: CalendarIcon },
@@ -563,7 +575,7 @@ export default function EmployeeAttendanceView() {
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-2.5 px-6 py-3 rounded-2xl text-xs font-black uppercase tracking-wider transition-all duration-300 ${
                 activeTab === tab.id
-                  ? "bg-indigo-600 text-white shadow-xl shadow-indigo-100"
+                  ? "bg-indigo-600 text-white"
                   : "text-slate-500 hover:text-slate-800 hover:bg-slate-100"
               }`}
             >
@@ -579,7 +591,7 @@ export default function EmployeeAttendanceView() {
             {/* Clock Widget + Quick Info */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Glass Clock Widget */}
-              <div className="lg:col-span-2 bg-gradient-to-br from-slate-900 to-indigo-950 rounded-[2.5rem] p-8 lg:p-10 text-white relative overflow-hidden shadow-2xl flex flex-col justify-between min-h-[350px]">
+              <div className="lg:col-span-2 bg-gradient-to-br from-slate-900 to-indigo-950 rounded-[2.5rem] p-8 lg:p-10 text-white relative overflow-hidden flex flex-col justify-between min-h-[350px]">
                 <div className="absolute top-0 right-0 w-80 h-80 bg-indigo-500/10 rounded-full -mr-40 -mt-40 blur-3xl"></div>
                 <div className="absolute bottom-0 left-0 w-80 h-80 bg-emerald-500/5 rounded-full -ml-40 -mb-40 blur-3xl"></div>
 
@@ -602,7 +614,7 @@ export default function EmployeeAttendanceView() {
 
                   <div className="text-right">
                     <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Logged Today</p>
-                    <p className="text-4xl font-mono font-black mt-2 text-indigo-300 drop-shadow-[0_0_15px_rgba(129,140,248,0.3)]">
+                    <p className="text-4xl font-mono font-black mt-2 text-indigo-3000_0_15px_rgba(129,140,248,0.3)]">
                       {elapsedTime}
                     </p>
                   </div>
@@ -628,7 +640,7 @@ export default function EmployeeAttendanceView() {
                       <button
                         onClick={handleClockIn}
                         disabled={clockLoading}
-                        className="px-8 py-4 bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-xl shadow-emerald-950/20 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                        className="px-8 py-4 bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                       >
                         {clockLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <UserCheck className="w-4 h-4" />}
                         Clock In
@@ -639,7 +651,7 @@ export default function EmployeeAttendanceView() {
                       <button
                         onClick={handleClockOut}
                         disabled={clockLoading}
-                        className="px-8 py-4 bg-rose-500 hover:bg-rose-600 text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-xl shadow-rose-950/20 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 animate-pulse"
+                        className="px-8 py-4 bg-rose-500 hover:bg-rose-600 text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 animate-pulse"
                       >
                         {clockLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <XCircle className="w-4 h-4" />}
                         Clock Out
@@ -656,7 +668,7 @@ export default function EmployeeAttendanceView() {
               </div>
 
               {/* Insights Card */}
-              <div className="bg-white rounded-[2.5rem] border border-slate-200/60 p-8 shadow-sm flex flex-col justify-between">
+              <div className="bg-white rounded-[2.5rem] border border-slate-200/60 p-8 flex flex-col justify-between">
                 <div>
                   <span className="px-3 py-1 bg-indigo-50 border border-indigo-100 rounded-full text-[9px] font-black uppercase text-indigo-600 tracking-wider">
                     Monthly Compliance
@@ -692,7 +704,7 @@ export default function EmployeeAttendanceView() {
                 { label: "Absents", value: metrics.absents, color: "text-rose-600", bg: "bg-rose-50", border: "border-rose-100" },
                 { label: "Late Penalties", value: metrics.lates, color: "text-red-700", bg: "bg-red-50", border: "border-red-100" }
               ].map((m, idx) => (
-                <div key={idx} className={`bg-white rounded-3xl p-5 border ${m.border} shadow-sm transition-transform hover:-translate-y-0.5`}>
+                <div key={idx} className={`bg-white rounded-3xl p-5 border ${m.border} transition-transform hover:-translate-y-0.5`}>
                   <div className="flex justify-between items-start">
                     <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">{m.label}</p>
                     <span className={`w-2.5 h-2.5 rounded-full ${m.color.replace("text-", "bg-")}`} />
@@ -703,17 +715,17 @@ export default function EmployeeAttendanceView() {
             </div>
 
             {/* Stunning Month View Calendar Grid */}
-            <div className="bg-white rounded-[2.5rem] border border-slate-200/60 p-8 shadow-sm space-y-6">
+            <div className="bg-white rounded-[2.5rem] border border-slate-200/60 p-8 space-y-6">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
                   <h3 className="text-xl font-black text-slate-900">Attendance Month-Grid</h3>
                   <p className="text-xs text-slate-400 mt-1 font-medium">Click arrows to navigate months and view status cards.</p>
                 </div>
 
-                <div className="flex items-center gap-4 bg-slate-50 p-2.5 rounded-2xl border border-slate-100 shadow-inner">
+                <div className="flex items-center gap-4 bg-slate-50 p-2.5 rounded-2xl border border-slate-200">
                   <button
                     onClick={() => handleMonthChange("prev")}
-                    className="p-2 bg-white border border-slate-200/60 text-slate-500 rounded-xl hover:bg-slate-100 hover:text-slate-800 transition-all shadow-sm active:scale-95"
+                    className="p-2 bg-white border border-slate-200/60 text-slate-500 rounded-xl hover:bg-slate-100 hover:text-slate-800 transition-all active:scale-95"
                   >
                     <ChevronLeft className="w-4 h-4" />
                   </button>
@@ -722,7 +734,7 @@ export default function EmployeeAttendanceView() {
                   </span>
                   <button
                     onClick={() => handleMonthChange("next")}
-                    className="p-2 bg-white border border-slate-200/60 text-slate-500 rounded-xl hover:bg-slate-100 hover:text-slate-800 transition-all shadow-sm active:scale-95"
+                    className="p-2 bg-white border border-slate-200/60 text-slate-500 rounded-xl hover:bg-slate-100 hover:text-slate-800 transition-all active:scale-95"
                   >
                     <ChevronRight className="w-4 h-4" />
                   </button>
@@ -807,7 +819,7 @@ export default function EmployeeAttendanceView() {
 
         {/* Tab 2: History Log */}
         {activeTab === "history" && (
-          <div className="bg-white rounded-[2.5rem] border border-slate-200/60 p-8 shadow-sm space-y-6 animate-in fade-in duration-500">
+          <div className="bg-white rounded-[2.5rem] border border-slate-200/60 p-8 space-y-6 animate-in fade-in duration-500">
             <div>
               <h3 className="text-xl font-black text-slate-900">Attendance History Log</h3>
               <p className="text-xs text-slate-400 mt-1 font-medium">View and audit all historical punches logged.</p>
@@ -863,7 +875,7 @@ export default function EmployeeAttendanceView() {
         {activeTab === "regularize" && (
           <div className="space-y-8 animate-in fade-in duration-500">
             {/* List Table */}
-            <div className="bg-white rounded-[2.5rem] border border-slate-200/60 p-8 shadow-sm space-y-6">
+            <div className="bg-white rounded-[2.5rem] border border-slate-200/60 p-8 space-y-6">
               <div className="flex justify-between items-center">
                 <div>
                   <h3 className="text-xl font-black text-slate-900">Regularization Center</h3>
@@ -872,7 +884,7 @@ export default function EmployeeAttendanceView() {
 
                 <button
                   onClick={() => setShowRegModal(true)}
-                  className="flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-xl shadow-indigo-100 hover:bg-indigo-700 active:scale-95"
+                  className="flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all hover:bg-indigo-700 active:scale-95"
                 >
                   <Plus size={16} /> Raise Request
                 </button>
@@ -927,7 +939,7 @@ export default function EmployeeAttendanceView() {
         {activeTab === "overtime" && (
           <div className="space-y-8 animate-in fade-in duration-500">
             {/* OT Log List */}
-            <div className="bg-white rounded-[2.5rem] border border-slate-200/60 p-8 shadow-sm space-y-6">
+            <div className="bg-white rounded-[2.5rem] border border-slate-200/60 p-8 space-y-6">
               <div className="flex justify-between items-center">
                 <div>
                   <h3 className="text-xl font-black text-slate-900">Overtime Log Directory</h3>
@@ -936,7 +948,7 @@ export default function EmployeeAttendanceView() {
 
                 <button
                   onClick={() => setShowOTModal(true)}
-                  className="flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-xl shadow-indigo-100 hover:bg-indigo-700 active:scale-95"
+                  className="flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all hover:bg-indigo-700 active:scale-95"
                 >
                   <Plus size={16} /> Log Overtime
                 </button>
@@ -990,7 +1002,7 @@ export default function EmployeeAttendanceView() {
       {/* Premium Modal 1: Raise Regularization Request */}
       {showRegModal && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-300 overflow-y-auto">
-          <div className="bg-white rounded-[2.5rem] w-full max-w-xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 border border-slate-200/60">
+          <div className="bg-white rounded-[2.5rem] w-full max-w-xl overflow-hidden animate-in zoom-in-95 duration-300 border border-slate-200/60">
             <div className="p-8 border-b border-slate-100 bg-slate-50/50">
               <h3 className="text-xl font-black text-slate-900">Raise Regularization</h3>
               <p className="text-xs text-slate-500 mt-1 font-medium">Correct absent markings, late punches, or missing logs.</p>
@@ -1059,7 +1071,7 @@ export default function EmployeeAttendanceView() {
                 </div>
 
                 {showApproverDropdown && (
-                  <div className="absolute z-50 w-full bg-white border border-slate-200 shadow-xl rounded-2xl max-h-[160px] overflow-y-auto mt-1 p-2 space-y-1">
+                  <div className="absolute z-50 w-full bg-white border border-slate-200 rounded-2xl max-h-[160px] overflow-y-auto mt-1 p-2 space-y-1">
                     {filteredApprovers.map((mgr) => (
                       <button
                         key={mgr._id}
@@ -1111,7 +1123,7 @@ export default function EmployeeAttendanceView() {
                 </button>
                 <button
                   type="submit"
-                  className="flex-[2] py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl text-xs font-black uppercase tracking-widest transition-all shadow-xl shadow-indigo-100"
+                  className="flex-[2] py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl text-xs font-black uppercase tracking-widest transition-all"
                 >
                   Submit Request
                 </button>
@@ -1124,7 +1136,7 @@ export default function EmployeeAttendanceView() {
       {/* Premium Modal 2: Log Overtime Request */}
       {showOTModal && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-300 overflow-y-auto">
-          <div className="bg-white rounded-[2.5rem] w-full max-w-xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 border border-slate-200/60">
+          <div className="bg-white rounded-[2.5rem] w-full max-w-xl overflow-hidden animate-in zoom-in-95 duration-300 border border-slate-200/60">
             <div className="p-8 border-b border-slate-100 bg-slate-50/50">
               <h3 className="text-xl font-black text-slate-900">Log Overtime Request</h3>
               <p className="text-xs text-slate-500 mt-1 font-medium">Log additional working hours for incentive calculation.</p>
@@ -1197,7 +1209,7 @@ export default function EmployeeAttendanceView() {
                 </button>
                 <button
                   type="submit"
-                  className="flex-[2] py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl text-xs font-black uppercase tracking-widest transition-all shadow-xl shadow-indigo-100"
+                  className="flex-[2] py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl text-xs font-black uppercase tracking-widest transition-all"
                 >
                   Log Hours
                 </button>

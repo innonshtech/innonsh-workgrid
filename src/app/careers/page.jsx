@@ -39,7 +39,7 @@ export default function CareersPage() {
             {/* Nav */}
             <nav className="fixed top-0 inset-x-0 h-20 bg-white/80 backdrop-blur-md border-b border-slate-200/50 z-40 flex items-center justify-between px-8">
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-2xl bg-indigo-600 flex items-center justify-center text-white shadow-lg shadow-indigo-200">
+                    <div className="w-10 h-10 rounded-2xl bg-indigo-600 flex items-center justify-center text-white">
                         <Terminal className="w-5 h-5" />
                     </div>
                     <span className="text-xl font-black text-slate-800 tracking-tight">Xpertance Careers</span>
@@ -73,7 +73,7 @@ export default function CareersPage() {
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             placeholder="Search by role, department, or location..."
-                            className="w-full h-16 pl-16 pr-6 rounded-[2rem] bg-white border border-slate-200 shadow-xl shadow-slate-200/50 focus:outline-none focus:ring-4 focus:ring-indigo-50 focus:border-indigo-400 text-lg transition-all"
+                            className="w-full h-16 pl-16 pr-6 rounded-[2rem] bg-white border border-slate-200 focus:outline-none focus:ring-4 focus:ring-indigo-50 focus:border-indigo-400 text-lg transition-all"
                         />
                     </motion.div>
                 </div>
@@ -96,7 +96,7 @@ export default function CareersPage() {
                         <p className="text-xs font-bold uppercase tracking-widest text-slate-400">Loading Opportunities...</p>
                     </div>
                 ) : filteredJobs.length === 0 ? (
-                    <div className="text-center py-20 bg-white rounded-3xl border border-slate-200 shadow-sm">
+                    <div className="text-center py-20 bg-white rounded-3xl border border-slate-200">
                         <Briefcase className="w-12 h-12 text-slate-300 mx-auto mb-4" />
                         <p className="text-slate-500 font-medium">No open roles found matching your search.</p>
                     </div>
@@ -109,7 +109,7 @@ export default function CareersPage() {
                                 transition={{ delay: 0.1 * idx }}
                                 key={job._id}
                                 onClick={() => setSelectedJob(job)}
-                                className="group bg-white hover:bg-slate-50 p-6 md:p-8 rounded-[32px] border border-slate-200 hover:border-indigo-200 hover:shadow-2xl hover:shadow-indigo-100/50 cursor-pointer transition-all flex flex-col md:flex-row md:items-center justify-between gap-6"
+                                className="group bg-white hover:bg-slate-50 p-6 md:p-8 rounded-[32px] border border-slate-200 hover:border-indigo-200 hover: hover: cursor-pointer transition-all flex flex-col md:flex-row md:items-center justify-between gap-6"
                             >
                                 <div>
                                     <h3 className="text-xl md:text-2xl font-black text-slate-800 tracking-tight mb-3 group-hover:text-indigo-600 transition-colors">

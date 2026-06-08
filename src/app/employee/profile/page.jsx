@@ -15,7 +15,7 @@ import { useSession } from "@/context/SessionContext";
 import { useLanguage } from "@/context/LanguageContext";
 
 const Card = ({ children, className = "" }) => (
-    <div className={`bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow duration-300 ${className}`}>
+    <div className={`bg-white rounded-2xl border border-slate-200 hover: transition- duration-300 ${className}`}>
         {children}
     </div>
 );
@@ -296,7 +296,7 @@ export default function EmployeeProfilePage() {
                         <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-32 -mt-32" />
                         <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/5 rounded-full -ml-16 -mb-16" />
                         <div className="relative flex flex-col sm:flex-row items-start sm:items-center gap-6">
-                            <div className="w-20 h-20 bg-white/20 backdrop-blur-xl rounded-2xl flex items-center justify-center border border-white/30 shadow-xl">
+                            <div className="w-20 h-20 bg-white/20 backdrop-blur-xl rounded-2xl flex items-center justify-center border border-white/30">
                                 <span className="text-white font-black text-3xl">
                                     {pd.firstName?.charAt(0)?.toUpperCase() || 'E'}
                                 </span>
@@ -554,7 +554,7 @@ export default function EmployeeProfilePage() {
                                         <button
                                             type="submit"
                                             disabled={changingPassword || !passwordData.currentPassword || !passwordData.newPassword}
-                                            className="flex items-center gap-2 px-6 py-2.5 bg-slate-900 text-white rounded-xl text-xs font-bold shadow-lg shadow-slate-200 hover:bg-black transition-all disabled:opacity-50 disabled:shadow-none"
+                                            className="flex items-center gap-2 px-6 py-2.5 bg-slate-900 text-white rounded-xl text-xs font-bold hover:bg-black transition-all disabled:opacity-50 disabled:"
                                         >
                                             {changingPassword ? <Loader2 className="w-4 h-4 animate-spin" /> : <Lock className="w-4 h-4" />}
                                             Update Password
@@ -593,7 +593,7 @@ export default function EmployeeProfilePage() {
 
                                 {/* Current Employee - "You" */}
                                 <div className="flex items-center gap-3 p-3 rounded-xl border-2 border-indigo-200 bg-indigo-50/50">
-                                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-md shadow-indigo-200">
+                                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center">
                                         <span className="text-white font-bold text-sm">
                                             {pd.firstName?.charAt(0)?.toUpperCase() || 'Y'}
                                         </span>

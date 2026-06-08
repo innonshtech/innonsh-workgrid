@@ -106,7 +106,7 @@ export default function EmployeeConfigPage() {
       )}
 
       {/* Create Form */}
-      <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md mb-8">
+      <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg mb-8">
         <h2 className="text-xl font-semibold mb-4">Create New Employee Configuration</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
@@ -190,7 +190,7 @@ export default function EmployeeConfigPage() {
       </form>
 
       {/* Employee Configs List */}
-      <div className="bg-white rounded-lg shadow-md">
+      <div className="bg-white rounded-lg">
         <h2 className="text-xl font-semibold p-6 border-b">Existing Configurations</h2>
 
         {employeeConfigs.length === 0 ? (

@@ -119,7 +119,7 @@ export default function StaffingHub() {
   return (
     <div className="max-w-7xl mx-auto space-y-6 sm:space-y-8 animate-fade-in p-4 sm:p-6">
       {/* Header Banner */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-xl shadow-indigo-950/20 border border-slate-800">
+      <div className="relative overflow-hidden bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-2xl sm:rounded-3xl p-5 sm:p-8 border border-slate-800">
         <div className="absolute -right-16 -top-16 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl"></div>
         <div className="absolute -left-16 -bottom-16 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl"></div>
         
@@ -139,7 +139,7 @@ export default function StaffingHub() {
           <div className="flex flex-wrap gap-3">
             <button
               onClick={() => router.push("/admin/staffing/talent-pool")}
-              className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm px-5 py-3 rounded-xl shadow-lg shadow-indigo-600/35 transition-all active:scale-[0.98]"
+              className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm px-5 py-3 rounded-xl transition-all active:scale-[0.98]"
             >
               <UploadCloud className="w-4 h-4" /> Upload & Parse Resume
             </button>
@@ -159,10 +159,10 @@ export default function StaffingHub() {
           <div
             key={card.title}
             onClick={() => router.push(card.link)}
-            className="group relative bg-white hover:bg-slate-50/50 rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-all cursor-pointer overflow-hidden active:scale-[0.99]"
+            className="group relative bg-white hover:bg-slate-50/50 rounded-2xl p-6 border border-slate-200 hover: transition-all cursor-pointer overflow-hidden active:scale-[0.99]"
           >
             <div className="space-y-4">
-              <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${card.color} text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform`}>
+              <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${card.color} text-white flex items-center justify-center group-hover:scale-110 transition-transform`}>
                 <card.icon className="w-5 h-5" />
               </div>
               <div>
@@ -184,7 +184,7 @@ export default function StaffingHub() {
         {/* Left Columns: Activity Feeds */}
         <div className="lg:col-span-2 space-y-8">
           {/* Recent Candidates */}
-          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 space-y-6">
+          <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-6">
             <div className="flex items-center justify-between border-b border-slate-50 pb-4">
               <div className="space-y-1">
                 <h3 className="text-lg font-bold text-slate-800">Recent Candidate Uploads</h3>
@@ -250,7 +250,7 @@ export default function StaffingHub() {
           </div>
 
           {/* Recent Submissions */}
-          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 space-y-6">
+          <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-6">
             <div className="flex items-center justify-between border-b border-slate-50 pb-4">
               <div className="space-y-1">
                 <h3 className="text-lg font-bold text-slate-800">Submissions Activity</h3>
@@ -294,7 +294,7 @@ export default function StaffingHub() {
 
         {/* Right Column: Workflow Shortcuts */}
         <div className="space-y-8">
-          <div className="bg-gradient-to-b from-indigo-50 to-indigo-100/50 rounded-2xl border border-indigo-100 shadow-sm p-6 space-y-6">
+          <div className="bg-gradient-to-b from-indigo-50 to-indigo-100/50 rounded-2xl border border-slate-200 p-6 space-y-6">
             <h3 className="text-lg font-bold text-indigo-950 flex items-center gap-2">
               <Cpu className="w-5 h-5 text-indigo-600" /> Quick Sourcing Tools
             </h3>
@@ -302,7 +302,7 @@ export default function StaffingHub() {
             <div className="space-y-4">
               <button
                 onClick={() => router.push("/admin/staffing/clients")}
-                className="w-full flex items-center justify-between p-4 bg-white hover:bg-slate-50 rounded-xl border border-indigo-100/60 shadow-sm transition-all active:scale-[0.98] group"
+                className="w-full flex items-center justify-between p-4 bg-white hover:bg-slate-50 rounded-xl border border-slate-200/60 transition-all active:scale-[0.98] group"
               >
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center">
@@ -318,7 +318,7 @@ export default function StaffingHub() {
 
               <button
                 onClick={() => router.push("/admin/staffing/requirements")}
-                className="w-full flex items-center justify-between p-4 bg-white hover:bg-slate-50 rounded-xl border border-indigo-100/60 shadow-sm transition-all active:scale-[0.98] group"
+                className="w-full flex items-center justify-between p-4 bg-white hover:bg-slate-50 rounded-xl border border-slate-200/60 transition-all active:scale-[0.98] group"
               >
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 bg-amber-50 text-amber-600 rounded-lg flex items-center justify-center">
@@ -334,7 +334,7 @@ export default function StaffingHub() {
 
               <button
                 onClick={() => router.push("/admin/staffing/talent-pool")}
-                className="w-full flex items-center justify-between p-4 bg-white hover:bg-slate-50 rounded-xl border border-indigo-100/60 shadow-sm transition-all active:scale-[0.98] group"
+                className="w-full flex items-center justify-between p-4 bg-white hover:bg-slate-50 rounded-xl border border-slate-200/60 transition-all active:scale-[0.98] group"
               >
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 bg-emerald-50 text-emerald-600 rounded-lg flex items-center justify-center">
@@ -350,7 +350,7 @@ export default function StaffingHub() {
 
               <button
                 onClick={() => router.push("/admin/staffing/matching")}
-                className="w-full flex items-center justify-between p-4 bg-white hover:bg-slate-50 rounded-xl border border-indigo-100/60 shadow-sm transition-all active:scale-[0.98] group"
+                className="w-full flex items-center justify-between p-4 bg-white hover:bg-slate-50 rounded-xl border border-slate-200/60 transition-all active:scale-[0.98] group"
               >
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 bg-purple-50 text-purple-600 rounded-lg flex items-center justify-center">
@@ -367,7 +367,7 @@ export default function StaffingHub() {
           </div>
 
           {/* Active Recruiting Team */}
-          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 space-y-6">
+          <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-6">
             <div className="border-b border-slate-50 pb-4">
               <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
                 <Users className="w-5 h-5 text-indigo-600" /> Recruiting Team
@@ -384,7 +384,7 @@ export default function StaffingHub() {
               <div className="space-y-4">
                 {data.recruiters.map((recruiter) => (
                   <div key={recruiter._id} className="flex items-center gap-3 p-3 bg-slate-50/50 hover:bg-slate-50 rounded-xl transition-all border border-slate-100/50">
-                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 text-white font-extrabold text-xs flex items-center justify-center shadow-sm shrink-0">
+                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 text-white font-extrabold text-xs flex items-center justify-center shrink-0">
                       {recruiter.name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2)}
                     </div>
                     <div className="flex-1 min-w-0">
@@ -403,7 +403,7 @@ export default function StaffingHub() {
             )}
           </div>
 
-          <div className="bg-slate-900 text-white rounded-2xl p-6 border border-slate-800 shadow-lg space-y-4">
+          <div className="bg-slate-900 text-white rounded-2xl p-6 border border-slate-800 space-y-4">
             <h4 className="text-sm font-bold uppercase tracking-wider text-indigo-400">AI Matching Tip</h4>
             <p className="text-xs text-slate-300 leading-relaxed">
               When uploading a resume, our <strong>Gemini parser</strong> automatically maps experience, skills, and contact data. 

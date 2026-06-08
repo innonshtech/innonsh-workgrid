@@ -36,7 +36,7 @@ import {
 // Aging Bucket Component
 function AgingBucket({ title, amount, count, color, percentage, trend }) {
   return (
-    <div className={`group bg-white rounded-xl border ${color.replace('text-', 'border-')}200 p-6 hover:shadow-lg transition-all duration-200 ${color.replace('text-', 'bg-')}50 hover:scale-105`}>
+    <div className={`group bg-white rounded-xl border ${color.replace('text-', 'border-')}200 p-6 hover: transition-all duration-200 ${color.replace('text-', 'bg-')}50 hover:scale-105`}>
       <div className="flex items-center justify-between mb-3">
         <div className={`p-3 rounded-xl ${color.replace('text-', 'bg-')}50 border ${color.replace('text-', 'border-')}200`}>
           <Calendar className={`h-6 w-6 ${color}`} />
@@ -121,7 +121,7 @@ function CreditDaysMonitor({ customers, timeRange }) {
   return (
     <div className="space-y-8">
       {/* Key Metrics */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+      <div className="bg-white rounded-xl border border-slate-200">
         <div className="p-6 border-b border-slate-200">
           <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
             <div className="w-8 h-8 bg-slate-50 rounded-lg flex items-center justify-center border border-blue-100">
@@ -133,7 +133,7 @@ function CreditDaysMonitor({ customers, timeRange }) {
         </div>
         <div className="p-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div className="group bg-white rounded-xl border border-blue-200 p-6 hover:shadow-lg transition-all duration-200 bg-slate-50 hover:scale-105">
+            <div className="group bg-white rounded-xl border border-blue-200 p-6 hover: transition-all duration-200 bg-slate-50 hover:scale-105">
               <div className="flex items-center justify-between mb-3">
                 <div className="p-3 rounded-xl bg-slate-50 border border-blue-200">
                   <CalendarDays className="h-6 w-6 text-blue-600" />
@@ -157,7 +157,7 @@ function CreditDaysMonitor({ customers, timeRange }) {
               </div>
             </div>
 
-            <div className="group bg-white rounded-xl border border-purple-200 p-6 hover:shadow-lg transition-all duration-200 bg-purple-50 hover:scale-105">
+            <div className="group bg-white rounded-xl border border-purple-200 p-6 hover: transition-all duration-200 bg-purple-50 hover:scale-105">
               <div className="flex items-center justify-between mb-3">
                 <div className="p-3 rounded-xl bg-purple-50 border border-purple-200">
                   <Target className="h-6 w-6 text-purple-600" />
@@ -175,7 +175,7 @@ function CreditDaysMonitor({ customers, timeRange }) {
               </div>
             </div>
 
-            <div className="group bg-white rounded-xl border border-green-200 p-6 hover:shadow-lg transition-all duration-200 bg-green-50 hover:scale-105">
+            <div className="group bg-white rounded-xl border border-green-200 p-6 hover: transition-all duration-200 bg-green-50 hover:scale-105">
               <div className="flex items-center justify-between mb-3">
                 <div className="p-3 rounded-xl bg-green-50 border border-green-200">
                   <CheckCircle className="h-6 w-6 text-green-600" />
@@ -193,7 +193,7 @@ function CreditDaysMonitor({ customers, timeRange }) {
               </div>
             </div>
 
-            <div className="group bg-white rounded-xl border border-red-200 p-6 hover:shadow-lg transition-all duration-200 bg-red-50 hover:scale-105">
+            <div className="group bg-white rounded-xl border border-red-200 p-6 hover: transition-all duration-200 bg-red-50 hover:scale-105">
               <div className="flex items-center justify-between mb-3">
                 <div className="p-3 rounded-xl bg-red-50 border border-red-200">
                   <AlertTriangle className="h-6 w-6 text-red-600" />
@@ -216,7 +216,7 @@ function CreditDaysMonitor({ customers, timeRange }) {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Distribution Chart */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+        <div className="bg-white rounded-xl border border-slate-200">
           <div className="p-6 border-b border-slate-200">
             <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
               <div className="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center border border-green-100">
@@ -248,7 +248,7 @@ function CreditDaysMonitor({ customers, timeRange }) {
         </div>
 
         {/* Trend Chart */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+        <div className="bg-white rounded-xl border border-slate-200">
           <div className="p-6 border-b border-slate-200">
             <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
               <div className="w-8 h-8 bg-purple-50 rounded-lg flex items-center justify-center border border-purple-100">
@@ -292,7 +292,7 @@ function CreditDaysMonitor({ customers, timeRange }) {
       </div>
 
       {/* Customer Performance Table */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+      <div className="bg-white rounded-xl border border-slate-200">
         <div className="p-6 border-b border-slate-200">
           <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
             <div className="w-8 h-8 bg-orange-50 rounded-lg flex items-center justify-center border border-orange-100">
@@ -408,7 +408,7 @@ function CustomerAgingDetail({ customer, onClose }) {
         </div>
       </div>
 
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+      <div className="bg-white rounded-xl border border-slate-200">
         <div className="p-6 border-b border-slate-200">
           <h3 className="text-lg font-semibold text-slate-900">Aging Breakdown</h3>
         </div>
@@ -436,7 +436,7 @@ function CustomerAgingDetail({ customer, onClose }) {
         </div>
       </div>
 
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+      <div className="bg-white rounded-xl border border-slate-200">
         <div className="p-6 border-b border-slate-200">
           <h3 className="text-lg font-semibold text-slate-900">Recent Invoices</h3>
         </div>
@@ -678,7 +678,7 @@ export default function PerformanceIndexPage() {
         <div className="max-w-7xl mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <div className="w-11 h-11 bg-[#FB9D00] rounded-xl flex items-center justify-center shadow-sm">
+              <div className="w-11 h-11 bg-[#FB9D00] rounded-xl flex items-center justify-center">
                 <BarChart3 className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -702,7 +702,7 @@ export default function PerformanceIndexPage() {
 
       <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
         {/* Key Metrics */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+        <div className="bg-white rounded-xl border border-slate-200">
           <div className="p-6 border-b border-slate-200">
             <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
               <div className="w-8 h-8 bg-slate-50 rounded-lg flex items-center justify-center border border-blue-100">
@@ -715,7 +715,7 @@ export default function PerformanceIndexPage() {
 
           <div className="p-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="group bg-white rounded-xl border border-blue-200 p-6 hover:shadow-lg transition-all duration-200 bg-slate-50 hover:scale-105">
+              <div className="group bg-white rounded-xl border border-blue-200 p-6 hover: transition-all duration-200 bg-slate-50 hover:scale-105">
                 <div className="flex items-center justify-between mb-3">
                   <div className="p-3 rounded-xl bg-slate-50 border border-blue-200">
                     <DollarSign className="h-6 w-6 text-blue-600" />
@@ -733,7 +733,7 @@ export default function PerformanceIndexPage() {
                 </div>
               </div>
 
-              <div className="group bg-white rounded-xl border border-orange-200 p-6 hover:shadow-lg transition-all duration-200 bg-orange-50 hover:scale-105">
+              <div className="group bg-white rounded-xl border border-orange-200 p-6 hover: transition-all duration-200 bg-orange-50 hover:scale-105">
                 <div className="flex items-center justify-between mb-3">
                   <div className="p-3 rounded-xl bg-orange-50 border border-orange-200">
                     <Clock className="h-6 w-6 text-orange-600" />
@@ -751,7 +751,7 @@ export default function PerformanceIndexPage() {
                 </div>
               </div>
 
-              <div className="group bg-white rounded-xl border border-red-200 p-6 hover:shadow-lg transition-all duration-200 bg-red-50 hover:scale-105">
+              <div className="group bg-white rounded-xl border border-red-200 p-6 hover: transition-all duration-200 bg-red-50 hover:scale-105">
                 <div className="flex items-center justify-between mb-3">
                   <div className="p-3 rounded-xl bg-red-50 border border-red-200">
                     <AlertTriangle className="h-6 w-6 text-red-600" />
@@ -769,7 +769,7 @@ export default function PerformanceIndexPage() {
                 </div>
               </div>
 
-              <div className="group bg-white rounded-xl border border-green-200 p-6 hover:shadow-lg transition-all duration-200 bg-green-50 hover:scale-105">
+              <div className="group bg-white rounded-xl border border-green-200 p-6 hover: transition-all duration-200 bg-green-50 hover:scale-105">
                 <div className="flex items-center justify-between mb-3">
                   <div className="p-3 rounded-xl bg-green-50 border border-green-200">
                     <Users className="h-6 w-6 text-green-600" />
@@ -791,7 +791,7 @@ export default function PerformanceIndexPage() {
         </div>
 
         {/* Tabs */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+        <div className="bg-white rounded-xl border border-slate-200">
           <div className="border-b border-slate-200">
             <div className="flex space-x-8">
               {[
@@ -825,7 +825,7 @@ export default function PerformanceIndexPage() {
             {activeTab === 'overview' && (
               <div className="space-y-8">
                 {/* Aging Buckets */}
-                <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+                <div className="bg-white rounded-xl border border-slate-200">
                   <div className="p-6 border-b border-slate-200">
                     <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                       <div className="w-8 h-8 bg-yellow-50 rounded-lg flex items-center justify-center border border-yellow-100">
@@ -852,7 +852,7 @@ export default function PerformanceIndexPage() {
                 </div>
 
                 {/* Aging Distribution Chart */}
-                <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+                <div className="bg-white rounded-xl border border-slate-200">
                   <div className="p-6 border-b border-slate-200">
                     <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                       <div className="w-8 h-8 bg-slate-50 rounded-lg flex items-center justify-center border border-blue-100">
@@ -885,7 +885,7 @@ export default function PerformanceIndexPage() {
 
                 {/* Risk Distribution */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                  <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+                  <div className="bg-white rounded-xl border border-slate-200">
                     <div className="p-6 border-b border-slate-200">
                       <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                         <div className="w-8 h-8 bg-purple-50 rounded-lg flex items-center justify-center border border-purple-100">
@@ -922,7 +922,7 @@ export default function PerformanceIndexPage() {
                     </div>
                   </div>
 
-                  <div className="lg:col-span-2 bg-white rounded-xl border border-slate-200 shadow-sm">
+                  <div className="lg:col-span-2 bg-white rounded-xl border border-slate-200">
                     <div className="p-6 border-b border-slate-200">
                       <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                         <div className="w-8 h-8 bg-red-50 rounded-lg flex items-center justify-center border border-red-100">
@@ -1001,7 +1001,7 @@ export default function PerformanceIndexPage() {
                   </div>
                 </div>
 
-                <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
                   <table className="min-w-full divide-y divide-slate-200">
                     <thead className="bg-slate-50">
                       <tr>
@@ -1087,7 +1087,7 @@ export default function PerformanceIndexPage() {
               <div className="space-y-8">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                   {/* Payment Performance */}
-                  <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+                  <div className="bg-white rounded-xl border border-slate-200">
                     <div className="p-6 border-b border-slate-200">
                       <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                         <div className="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center border border-green-100">
@@ -1123,7 +1123,7 @@ export default function PerformanceIndexPage() {
                   </div>
 
                   {/* Aging Concentration */}
-                  <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+                  <div className="bg-white rounded-xl border border-slate-200">
                     <div className="p-6 border-b border-slate-200">
                       <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                         <div className="w-8 h-8 bg-red-50 rounded-lg flex items-center justify-center border border-red-100">
@@ -1159,7 +1159,7 @@ export default function PerformanceIndexPage() {
                 </div>
 
                 {/* Customer Segmentation */}
-                <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+                <div className="bg-white rounded-xl border border-slate-200">
                   <div className="p-6 border-b border-slate-200">
                     <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                       <div className="w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center border border-indigo-100">
@@ -1206,7 +1206,7 @@ export default function PerformanceIndexPage() {
               <div className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   {/* Aging Trend */}
-                  <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+                  <div className="bg-white rounded-xl border border-slate-200">
                     <div className="p-6 border-b border-slate-200">
                       <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                         <div className="w-8 h-8 bg-slate-50 rounded-lg flex items-center justify-center border border-blue-100">
@@ -1240,7 +1240,7 @@ export default function PerformanceIndexPage() {
                   </div>
 
                   {/* Collection Effectiveness */}
-                  <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+                  <div className="bg-white rounded-xl border border-slate-200">
                     <div className="p-6 border-b border-slate-200">
                       <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                         <div className="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center border border-green-100">
@@ -1269,7 +1269,7 @@ export default function PerformanceIndexPage() {
                 </div>
 
                 {/* Performance Metrics */}
-                <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+                <div className="bg-white rounded-xl border border-slate-200">
                   <div className="p-6 border-b border-slate-200">
                     <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                       <div className="w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center border border-indigo-100">
@@ -1316,7 +1316,7 @@ export default function PerformanceIndexPage() {
       {/* Customer Detail Modal */}
       {selectedCustomer && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-lg">
+          <div className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b border-slate-200">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">

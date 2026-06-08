@@ -97,11 +97,21 @@ export default function HandbookPage() {
 
     return (
         <div className="p-6 space-y-6">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-4 mt-2">
+                <div className="space-y-1">
+                    <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+                        Employee Handbook
+                    </h1>
+                    <p className="text-slate-500 text-sm mt-1 max-w-xl">
+                        Access company policies, guidelines and employee resources.
+                    </p>
+                </div>
+            </div>
             {isAdmin && (
                 <div className="flex justify-end">
                     <button
                         onClick={() => setIsUploadModalOpen(true)}
-                        className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all font-medium shadow-sm hover:shadow-indigo-200"
+                        className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all font-medium hover:"
                     >
                         <Plus size={18} />
                         {t("uploadDocument")}
@@ -109,7 +119,7 @@ export default function HandbookPage() {
                 </div>
             )}
 
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 mb-6">
+            <div className="bg-white rounded-xl border border-slate-200 p-4 mb-6">
                 <div className="relative">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
                     <input
@@ -132,7 +142,7 @@ export default function HandbookPage() {
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {filteredDocs.map((doc) => (
-                        <div key={doc._id} className="bg-white rounded-xl border border-slate-200 hover:border-indigo-200 hover:shadow-md transition-all group p-5 flex flex-col h-full">
+                        <div key={doc._id} className="bg-white rounded-xl border border-slate-200 hover:border-indigo-200 hover: transition-all group p-5 flex flex-col h-full">
                             <div className="flex items-start justify-between mb-4">
                                 <div className="p-3 bg-indigo-50 text-indigo-600 rounded-lg group-hover:bg-indigo-600 group-hover:text-white transition-colors">
                                     <FileText size={24} />

@@ -59,7 +59,7 @@ const TabButton = ({ active, label, icon: Icon, onClick }) => (
 );
 
 const Card = ({ children, className = "" }) => (
-  <div className={`bg-white rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-all duration-300 ${className}`}>
+  <div className={`bg-white rounded-3xl border border-slate-200 hover: transition-all duration-300 ${className}`}>
     {children}
   </div>
 );
@@ -251,7 +251,7 @@ export default function MyPayslipPage() {
 
         {/* Hero Section */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 bg-gradient-to-br from-indigo-600 to-violet-700 rounded-[3rem] p-10 text-white relative overflow-hidden shadow-2xl shadow-indigo-200">
+          <div className="lg:col-span-2 bg-gradient-to-br from-indigo-600 to-violet-700 rounded-[3rem] p-10 text-white relative overflow-hidden">
             <div className="absolute top-0 right-0 w-80 h-80 bg-white/10 rounded-full -mr-40 -mt-40 blur-3xl"></div>
             <div className="absolute bottom-0 left-0 w-80 h-80 bg-indigo-400/20 rounded-full -ml-40 -mb-40 blur-3xl"></div>
 
@@ -284,7 +284,7 @@ export default function MyPayslipPage() {
           </div>
 
           {/* Quick Analysis Widget */}
-          <Card className="p-8 border-none bg-white shadow-xl shadow-indigo-100/50 flex flex-col items-center justify-center text-center">
+          <Card className="p-8 border-none bg-white flex flex-col items-center justify-center text-center">
             <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">{t("salaryBreakdown")}</h3>
             <div className="w-full h-48 flex items-center justify-center relative">
               {doughnutData ? (
@@ -318,7 +318,7 @@ export default function MyPayslipPage() {
         </div>
 
         {/* Dashboard Navigation */}
-        <div className="bg-white rounded-[2rem] border border-slate-200 shadow-sm overflow-hidden mb-8">
+        <div className="bg-white rounded-[2rem] border border-slate-200 overflow-hidden mb-8">
           <nav className="flex px-4 overflow-x-auto no-scrollbar">
             <TabButton
               active={activeTab === "overview"}
@@ -353,7 +353,7 @@ export default function MyPayslipPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {payslips.slice(0, 3).map((ps, i) => (
-                <Card key={i} className="group p-8 border-none shadow-lg shadow-indigo-100 hover:shadow-2xl hover:shadow-indigo-200 transition-all transform hover:-translate-y-1">
+                <Card key={i} className="group p-8 border-none hover: hover: transition-all transform hover:-translate-y-1">
                   <div className="flex justify-between items-start mb-6">
                     <div className="w-14 h-14 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-500">
                       <Wallet className="w-7 h-7" />
@@ -399,7 +399,7 @@ export default function MyPayslipPage() {
 
         {/* Tab: History List */}
         {activeTab === "history" && (
-          <Card className="overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-500 border-none shadow-xl shadow-indigo-100/30">
+          <Card className="overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-500 border-none">
             <div className="p-8 bg-white border-b border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-6">
               <div>
                 <h2 className="text-2xl font-black text-slate-900 tracking-tight">{t("earningsHistory")}</h2>
@@ -435,7 +435,7 @@ export default function MyPayslipPage() {
                     <tr key={i} className="group hover:bg-slate-50/50 transition-all duration-300">
                       <td className="p-6">
                         <div className="flex items-center gap-4">
-                          <div className="p-3 bg-white border border-slate-100 rounded-2xl shadow-sm group-hover:border-indigo-200 group-hover:scale-110 transition-all duration-500">
+                          <div className="p-3 bg-white border border-slate-200 rounded-2xl group-hover:border-indigo-200 group-hover:scale-110 transition-all duration-500">
                             <Calendar className="w-5 h-5 text-indigo-600" />
                           </div>
                           <div>
@@ -457,10 +457,10 @@ export default function MyPayslipPage() {
                       </td>
                       <td className="p-6 text-right">
                         <div className="flex items-center justify-end gap-2">
-                          <button onClick={() => handleViewDetails(ps)} className="p-3 bg-white border border-slate-200 rounded-2xl hover:bg-indigo-600 hover:text-white transition-all shadow-sm">
+                          <button onClick={() => handleViewDetails(ps)} className="p-3 bg-white border border-slate-200 rounded-2xl hover:bg-indigo-600 hover:text-white transition-all">
                             <Eye className="w-4 h-4" />
                           </button>
-                          <button onClick={() => handleDownloadPDF(ps)} className="p-3 bg-indigo-600 text-white rounded-2xl hover:bg-indigo-700 transition-all shadow-md shadow-indigo-100">
+                          <button onClick={() => handleDownloadPDF(ps)} className="p-3 bg-indigo-600 text-white rounded-2xl hover:bg-indigo-700 transition-all">
                             <DownloadCloud className="w-4 h-4" />
                           </button>
                         </div>
@@ -499,7 +499,7 @@ export default function MyPayslipPage() {
                 />
               </div>
             </Card>
-            <Card className="p-10 bg-gradient-to-br from-slate-900 to-indigo-950 text-white border-none shadow-2xl shadow-slate-200 relative overflow-hidden">
+            <Card className="p-10 bg-gradient-to-br from-slate-900 to-indigo-950 text-white border-none relative overflow-hidden">
               <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 rounded-full -mr-32 -mt-32 blur-3xl"></div>
               <h3 className="text-xl font-black mb-8 flex items-center gap-3">
                 <DollarSign className="w-6 h-6 text-amber-400" />
@@ -541,7 +541,7 @@ export default function MyPayslipPage() {
       {/* Premium Detail Modal */}
       {showModal && selectedPayslip && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-md p-4 overflow-hidden">
-          <div className="bg-white w-full max-w-4xl rounded-[3rem] shadow-2xl flex flex-col md:flex-row max-h-[90vh] overflow-hidden animate-in zoom-in-95 duration-500">
+          <div className="bg-white w-full max-w-4xl rounded-[3rem] flex flex-col md:flex-row max-h-[90vh] overflow-hidden animate-in zoom-in-95 duration-500">
             {/* Left Sidebar Info */}
             <div className="hidden md:flex md:w-80 bg-indigo-600 p-10 text-white flex-col justify-between">
               <div>
@@ -623,7 +623,7 @@ export default function MyPayslipPage() {
                 <button onClick={() => handleShareInfo(selectedPayslip)} className="flex-1 py-4 bg-white border border-slate-200 rounded-[1.5rem] text-sm font-black text-slate-700 hover:bg-slate-100 transition-all flex items-center justify-center gap-2">
                   <ExternalLink className="w-4 h-4" /> {t("shareInfo")}
                 </button>
-                <button onClick={() => handleDownloadPDF(selectedPayslip)} className="flex-[2] py-4 bg-indigo-600 text-white rounded-[1.5rem] text-sm font-black shadow-xl shadow-indigo-100 hover:bg-indigo-700 transition-all flex items-center justify-center gap-2">
+                <button onClick={() => handleDownloadPDF(selectedPayslip)} className="flex-[2] py-4 bg-indigo-600 text-white rounded-[1.5rem] text-sm font-black hover:bg-indigo-700 transition-all flex items-center justify-center gap-2">
                   <DownloadCloud className="w-5 h-5" /> {t("downloadPdfReport")}
                 </button>
               </div>

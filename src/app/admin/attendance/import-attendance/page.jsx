@@ -548,10 +548,10 @@ export default function ImportAttendance() {
       <Toaster />
       <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Header */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 mb-8">
+        <div className="bg-white rounded-xl border border-slate-200 p-6 mb-8">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center">
                 <Upload className="w-8 h-8 text-white" />
               </div>
               <div>
@@ -596,7 +596,7 @@ export default function ImportAttendance() {
         </div>
 
         {/* Month Selection */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 mb-8">
+        <div className="bg-white rounded-xl border border-slate-200 p-6 mb-8">
           <h2 className="text-lg font-semibold text-slate-900 mb-4">
             Select Month and Year
           </h2>
@@ -637,7 +637,7 @@ export default function ImportAttendance() {
         </div>
 
         {/* File Upload */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 mb-8">
+        <div className="bg-white rounded-xl border border-slate-200 p-6 mb-8">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-slate-900">
@@ -736,7 +736,7 @@ export default function ImportAttendance() {
 
         {/* Upload Progress */}
         {processing && uploadProgress.total > 0 && (
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 mb-8">
+          <div className="bg-white rounded-xl border border-slate-200 p-6 mb-8">
             <h3 className="text-lg font-semibold text-slate-900 mb-4">
               Upload Progress
             </h3>
@@ -776,7 +776,7 @@ export default function ImportAttendance() {
 
         {/* Preview */}
         {showPreview && preview.length > 0 && (
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 mb-8">
+          <div className="bg-white rounded-xl border border-slate-200 p-6 mb-8">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
                 <div className="bg-blue-100 p-2 rounded-lg">
@@ -813,7 +813,7 @@ export default function ImportAttendance() {
                   key={sheet}
                   onClick={() => setActiveSheet(sheet)}
                   className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all ${activeSheet === sheet
-                    ? "bg-blue-600 text-white shadow-md shadow-blue-200"
+                    ? "bg-blue-600 text-white"
                     : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 hover:border-slate-300"
                     }`}
                 >
@@ -830,7 +830,7 @@ export default function ImportAttendance() {
 
             <div className="space-y-6">
               {activeSheet && (
-                <div className="border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+                <div className="border border-slate-200 rounded-xl overflow-hidden">
                   <div className="bg-slate-50 px-4 py-3 border-b border-slate-200 flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-6 bg-slate-500 rounded-full"></div>
@@ -956,14 +956,14 @@ export default function ImportAttendance() {
             <div className="mt-6 flex justify-end gap-3 pt-6 border-t border-slate-100">
               <button
                 onClick={() => setShowPreview(false)}
-                className="px-6 py-2.5 text-slate-600 bg-white hover:bg-slate-50 rounded-xl border border-slate-200 transition-all font-medium shadow-sm hover:shadow"
+                className="px-6 py-2.5 text-slate-600 bg-white hover:bg-slate-50 rounded-xl border border-slate-200 transition-all font-medium hover:"
               >
                 Cancel Import
               </button>
               <button
                 onClick={handleUpload}
                 disabled={processing}
-                className="inline-flex items-center gap-2 px-8 py-2.5 text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 rounded-xl font-bold transition-all shadow-lg shadow-blue-200 hover:shadow-blue-300 transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="inline-flex items-center gap-2 px-8 py-2.5 text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 rounded-xl font-bold transition-all hover: transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {processing ? (
                   <Loader2 className="w-5 h-5 animate-spin" />

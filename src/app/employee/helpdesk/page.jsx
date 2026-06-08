@@ -90,17 +90,27 @@ export default function HelpdeskPage() {
 
     return (
         <div className="p-6 space-y-6">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-4 mt-2">
+                <div className="space-y-1">
+                    <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+                        HR Helpdesk
+                    </h1>
+                    <p className="text-slate-500 text-sm mt-1 max-w-xl">
+                        Raise support requests, track resolutions and communicate with HR.
+                    </p>
+                </div>
+            </div>
             <div className="flex justify-end">
                 <button
                     onClick={() => setIsCreateModalOpen(true)}
-                    className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all font-medium shadow-sm hover:shadow-indigo-200"
+                    className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all font-medium hover:"
                 >
                     <Plus size={18} />
                     {t("raiseTicket")}
                 </button>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
                 <div className="p-4 border-b border-slate-200 flex items-center gap-4">
                     <div className="relative flex-1 max-w-sm">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
@@ -117,7 +127,7 @@ export default function HelpdeskPage() {
                             onClick={() => setAssignmentFilter("my")}
                             className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-all duration-200 ${
                                 assignmentFilter === "my"
-                                    ? "bg-white text-slate-900 shadow-sm"
+                                    ? "bg-white text-slate-900"
                                     : "text-slate-500 hover:text-slate-700"
                             }`}
                         >
@@ -127,7 +137,7 @@ export default function HelpdeskPage() {
                             onClick={() => setAssignmentFilter("assigned")}
                             className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-all duration-200 ${
                                 assignmentFilter === "assigned"
-                                    ? "bg-white text-slate-900 shadow-sm"
+                                    ? "bg-white text-slate-900"
                                     : "text-slate-500 hover:text-slate-700"
                             }`}
                         >

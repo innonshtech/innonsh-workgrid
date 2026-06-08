@@ -5,6 +5,7 @@ html {
 }
 
 @theme {
+  --font-sans: "Google Sans", sans-serif;
   /* Brand Colors - Blueprint Palette */
   /* Mapping the provided blues to Indigo to override current brand colors */
   --color-indigo-50: #f0f6fc;
@@ -63,7 +64,7 @@ html {
 /* ========== Global Font System ========== */
 @font-face {
   font-family: 'Google Sans';
-  src: url('/fonts/GoogleSans-VariableFont_GRAD,opsz,wght.ttf') format('truetype');
+  src: url('/fonts/GoogleSans-Regular.ttf') format('truetype');
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
@@ -71,7 +72,7 @@ html {
 
 @font-face {
   font-family: 'Google Sans';
-  src: url('/fonts/GoogleSans-Italic-VariableFont_GRAD,opsz,wght.ttf') format('truetype');
+  src: url('/fonts/GoogleSans-Italic.ttf') format('truetype');
   font-weight: 100 900;
   font-style: italic;
   font-display: swap;
@@ -262,3 +263,5 @@ body, h1, h2, h3, h4, h5, h6, p, span, a, label, .label, .text-xs, .text-sm, div
     display: none !important;
   }
 }
+*, ::before, ::after { border-color: #E5E7EB; }
+

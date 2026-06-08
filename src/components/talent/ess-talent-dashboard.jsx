@@ -131,7 +131,7 @@ export default function ESSTalentDashboard({ employeeId }) {
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
             {/* Header Stats */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all group">
+                <div className="bg-white p-6 rounded-2xl border border-slate-200 hover: transition-all group">
                     <div className="flex justify-between items-start mb-4">
                         <div className="p-2 bg-indigo-50 rounded-xl text-indigo-600 group-hover:scale-110 transition-transform">
                             <Target className="w-5 h-5" />
@@ -145,7 +145,7 @@ export default function ESSTalentDashboard({ employeeId }) {
                     </p>
                 </div>
 
-                <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all group">
+                <div className="bg-white p-6 rounded-2xl border border-slate-200 hover: transition-all group">
                     <div className="flex justify-between items-start mb-4">
                         <div className="p-2 bg-emerald-50 rounded-xl text-emerald-600 group-hover:scale-110 transition-transform">
                             <Star className="w-5 h-5" />
@@ -159,7 +159,7 @@ export default function ESSTalentDashboard({ employeeId }) {
                     </p>
                 </div>
 
-                <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all group">
+                <div className="bg-white p-6 rounded-2xl border border-slate-200 hover: transition-all group">
                     <div className="flex justify-between items-start mb-4">
                         <div className="p-2 bg-purple-50 rounded-xl text-purple-600 group-hover:scale-110 transition-transform">
                             <Award className="w-5 h-5" />
@@ -172,7 +172,7 @@ export default function ESSTalentDashboard({ employeeId }) {
                     <p className="text-xs text-slate-500 mt-1">{t("fromLastReviewCycle")}</p>
                 </div>
 
-                <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all group">
+                <div className="bg-white p-6 rounded-2xl border border-slate-200 hover: transition-all group">
                     <div className="flex justify-between items-start mb-4">
                         <div className="p-2 bg-orange-50 rounded-xl text-orange-600 group-hover:scale-110 transition-transform">
                             <MapIcon className="w-5 h-5" />
@@ -189,7 +189,7 @@ export default function ESSTalentDashboard({ employeeId }) {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Goals Progress */}
                 <div className="lg:col-span-2 space-y-6">
-                    <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden">
                         <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
                             <h4 className="font-black text-slate-900 flex items-center gap-2">
                                 <Target className="w-5 h-5 text-indigo-600" />
@@ -256,7 +256,7 @@ export default function ESSTalentDashboard({ employeeId }) {
                         </div>
                     </div>
 
-                    <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden">
                         <div className="p-6 border-b border-slate-100 bg-slate-50/50">
                             <h4 className="font-black text-slate-900 flex items-center gap-2">
                                 <MapIcon className="w-5 h-5 text-orange-600" />
@@ -270,7 +270,7 @@ export default function ESSTalentDashboard({ employeeId }) {
                             <div className="space-y-10 relative">
                                 {careerPath?.milestones.map((ms, idx) => (
                                     <div key={idx} className={`flex items-start gap-6 relative ${ms.status === 'Planned' ? 'opacity-60 grayscale' : ''}`}>
-                                        <div className={`shrink-0 w-8 h-8 rounded-full flex items-center justify-center z-10 ${ms.status === 'Achieved' ? 'bg-emerald-500 shadow-lg shadow-emerald-100 text-white' : 'bg-white border-2 border-slate-200 text-slate-400'
+                                        <div className={`shrink-0 w-8 h-8 rounded-full flex items-center justify-center z-10 ${ms.status === 'Achieved' ? 'bg-emerald-500 text-white' : 'bg-white border-2 border-slate-200 text-slate-400'
                                             }`}>
                                             {ms.status === 'Achieved' ? <Trophy className="w-4 h-4" /> : <Clock className="w-4 h-4" />}
                                         </div>
@@ -305,7 +305,7 @@ export default function ESSTalentDashboard({ employeeId }) {
 
                 {/* Skills Radar & Matrix */}
                 <div className="space-y-8">
-                    <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 overflow-hidden">
+                    <div className="bg-white rounded-3xl border border-slate-200 p-6 overflow-hidden">
                         <h4 className="font-black text-slate-900 flex items-center gap-2 mb-6">
                             <RadarIcon className="w-5 h-5 text-indigo-600" />
                             {t("skillProficiency")}
@@ -326,7 +326,7 @@ export default function ESSTalentDashboard({ employeeId }) {
                         </div>
                     </div>
 
-                    <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden">
                         <div className="p-6 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
                             <h4 className="font-black text-slate-900 flex items-center gap-2">
                                 <Star className="w-5 h-5 text-amber-500" />
@@ -334,7 +334,7 @@ export default function ESSTalentDashboard({ employeeId }) {
                             </h4>
                             <button
                                 onClick={() => setShowSkillModal(true)}
-                                className="p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all shadow-md shadow-indigo-100"
+                                className="p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all"
                             >
                                 <Plus className="w-4 h-4" />
                             </button>
@@ -374,7 +374,7 @@ export default function ESSTalentDashboard({ employeeId }) {
                         </div>
                     </div>
 
-                    <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden group hover:shadow-xl hover:shadow-indigo-100/30 transition-all duration-500">
+                    <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden group hover: hover: transition-all duration-500">
                         <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/30">
                             <h4 className="text-xs font-black text-slate-900 uppercase tracking-widest flex items-center gap-2">
                                 <Award className="w-4 h-4 text-indigo-600" /> {t("performanceHistory")}
@@ -406,7 +406,7 @@ export default function ESSTalentDashboard({ employeeId }) {
                         </div>
                     </div>
 
-                    <div className="bg-gradient-to-br from-[#FB9D00] to-orange-600 rounded-3xl p-8 text-white shadow-xl shadow-orange-100 group relative overflow-hidden">
+                    <div className="bg-gradient-to-br from-[#FB9D00] to-orange-600 rounded-3xl p-8 text-white group relative overflow-hidden">
                         <div className="relative z-10">
                             <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center mb-6">
                                 <BookOpen className="w-6 h-6" />
@@ -475,7 +475,7 @@ function UpdateGoalModal({ goal, onClose, onSuccess }) {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in">
-            <div className="bg-white rounded-3xl w-full max-w-md shadow-2xl border border-slate-200 overflow-hidden scale-in">
+            <div className="bg-white rounded-3xl w-full max-w-md border border-slate-200 overflow-hidden scale-in">
                 <div className="p-8 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
                     <h2 className="text-xl font-black text-slate-900">{t("updateProgress")}</h2>
                     <button onClick={onClose} className="p-2 hover:bg-white rounded-xl text-slate-400">&times;</button>
@@ -514,7 +514,7 @@ function UpdateGoalModal({ goal, onClose, onSuccess }) {
                     <button
                         onClick={handleSubmit}
                         disabled={submitting}
-                        className="flex-1 py-3 px-6 bg-indigo-600 text-white rounded-2xl text-xs font-black shadow-lg shadow-indigo-100"
+                        className="flex-1 py-3 px-6 bg-indigo-600 text-white rounded-2xl text-xs font-black"
                     >
                         {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : t("saveChanges")}
                     </button>
@@ -554,7 +554,7 @@ function SkillManagementModal({ employeeId, onClose, onSuccess }) {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in">
-            <div className="bg-white rounded-3xl w-full max-w-md shadow-2xl border border-slate-200 overflow-hidden scale-in">
+            <div className="bg-white rounded-3xl w-full max-w-md border border-slate-200 overflow-hidden scale-in">
                 <div className="p-8 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
                     <h2 className="text-xl font-black text-slate-900">{t("addNewSkill")}</h2>
                     <button onClick={onClose} className="p-2 hover:bg-white rounded-xl text-slate-400">&times;</button>
@@ -604,7 +604,7 @@ function SkillManagementModal({ employeeId, onClose, onSuccess }) {
                     <button
                         onClick={handleSubmit}
                         disabled={submitting}
-                        className="flex-1 py-3 px-6 bg-indigo-600 text-white rounded-2xl text-xs font-black shadow-lg shadow-indigo-100"
+                        className="flex-1 py-3 px-6 bg-indigo-600 text-white rounded-2xl text-xs font-black"
                     >
                         {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : t("addSkill")}
                     </button>

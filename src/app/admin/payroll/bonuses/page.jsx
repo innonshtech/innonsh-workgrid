@@ -139,7 +139,7 @@ export default function BonusManagementPage() {
                 {isAdmin && (
                     <button
                         onClick={() => setIsModalOpen(true)}
-                        className="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all shadow-sm hover:shadow-md"
+                        className="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all hover:"
                     >
                         <Plus className="w-4 h-4" />
                         Issue Bonus
@@ -147,18 +147,18 @@ export default function BonusManagementPage() {
                 )}
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
                 <div className="p-4 border-b border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gray-50/50">
                     <div className="flex bg-gray-200 p-1 rounded-lg w-fit">
                         <button
                             onClick={() => setActiveTab("active")}
-                            className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${activeTab === "active" ? "bg-white text-gray-900 shadow-sm" : "text-gray-500 hover:text-gray-900"}`}
+                            className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${activeTab === "active" ? "bg-white text-gray-900" : "text-gray-500 hover:text-gray-900"}`}
                         >
                             Active & Pending
                         </button>
                         <button
                             onClick={() => setActiveTab("history")}
-                            className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${activeTab === "history" ? "bg-white text-gray-900 shadow-sm" : "text-gray-500 hover:text-gray-900"}`}
+                            className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${activeTab === "history" ? "bg-white text-gray-900" : "text-gray-500 hover:text-gray-900"}`}
                         >
                             History
                         </button>

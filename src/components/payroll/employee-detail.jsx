@@ -719,7 +719,7 @@ function DocumentUploadSection({
     return (
       <div
         key={category.id}
-        className={`border-2 border-dashed rounded-xl p-4 hover:shadow-md transition-shadow ${getCategoryColor(category.name)}`}
+        className={`border-2 border-dashed rounded-xl p-4 hover: transition- ${getCategoryColor(category.name)}`}
       >
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center gap-2">
@@ -1951,7 +1951,7 @@ export default function EmployeeDetail({ employeeId }) {
             <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
               <div className="flex items-start gap-5">
                 <div className="relative">
-                  <div className="w-20 h-20 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl flex items-center justify-center text-white text-3xl font-bold shadow-lg shadow-yellow-500/20">
+                  <div className="w-20 h-20 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl flex items-center justify-center text-white text-3xl font-bold">
                     {employee.personalDetails?.firstName?.[0]}
                     {employee.personalDetails?.lastName?.[0]}
                   </div>
@@ -1998,7 +1998,7 @@ export default function EmployeeDetail({ employeeId }) {
               <div className="flex items-center gap-3 self-start">
                 <Link
                   href={`/payroll/employees/${employee._id}/edit`}
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-xl hover:bg-slate-50 hover:border-slate-300 transition-all text-sm font-medium shadow-sm"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-xl hover:bg-slate-50 hover:border-slate-300 transition-all text-sm font-medium"
                 >
                   <Edit3 className="w-4 h-4" />
                   Edit Profile
@@ -2052,7 +2052,7 @@ export default function EmployeeDetail({ employeeId }) {
       {/* Delete Confirmation Modal */}
       {showDeleteConfirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-          <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 transform transition-all scale-100 animate-in fade-in zoom-in duration-200">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 transform transition-all scale-100 animate-in fade-in zoom-in duration-200">
             <div className="flex flex-col items-center text-center">
               <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mb-4">
                 <AlertCircle className="w-6 h-6 text-red-600" />
@@ -2070,7 +2070,7 @@ export default function EmployeeDetail({ employeeId }) {
                 </button>
                 <button
                   onClick={handleDelete}
-                  className="flex-1 py-2.5 bg-red-600 text-white font-medium rounded-xl hover:bg-red-700 transition-colors shadow-lg shadow-red-500/30"
+                  className="flex-1 py-2.5 bg-red-600 text-white font-medium rounded-xl hover:bg-red-700 transition-colors"
                 >
                   Delete Permanently
                 </button>
@@ -2117,7 +2117,7 @@ function OverviewTab({ employee, attendanceStats }) {
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Key Status Card */}
-        <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+        <div className="bg-white p-6 rounded-2xl border border-slate-200">
           <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4">Current Status</h3>
           <div className="flex items-center justify-between mb-4">
             <div>
@@ -2147,7 +2147,7 @@ function OverviewTab({ employee, attendanceStats }) {
         </div>
 
         {/* Compensation Snapshot */}
-        <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm relative overflow-hidden">
+        <div className="bg-white p-6 rounded-2xl border border-slate-200 relative overflow-hidden">
           <div className="absolute top-0 right-0 p-4 opacity-10">
             <DollarSign className="w-24 h-24 text-green-500" />
           </div>
@@ -2174,7 +2174,7 @@ function OverviewTab({ employee, attendanceStats }) {
         </div>
 
         {/* Quick Contact & Bank */}
-        <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+        <div className="bg-white p-6 rounded-2xl border border-slate-200">
           <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4">Quick Info</h3>
           <div className="space-y-4">
             <div className="flex items-start gap-3">
@@ -2221,7 +2221,7 @@ function OverviewTab({ employee, attendanceStats }) {
         </div>
 
         {/* Recent Attendance Mini Chart */}
-        <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+        <div className="bg-white p-6 rounded-2xl border border-slate-200">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-lg font-bold text-slate-900">Attendance Overview</h3>
             <Link href={`/payroll/attendance`} className="text-sm text-yellow-600 font-medium hover:text-yellow-700">View Detailed Report</Link>
@@ -2281,7 +2281,7 @@ function PersonalInfoTab({ employee }) {
 
   return (
     <div className="space-y-6">
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+      <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
         <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
           <h3 className="text-lg font-bold text-slate-900">Personal Information</h3>
         </div>
@@ -2303,7 +2303,7 @@ function PersonalInfoTab({ employee }) {
         </div>
       </div>
 
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+      <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
         <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
           <h3 className="text-lg font-bold text-slate-900">Bank Details</h3>
         </div>
@@ -2326,7 +2326,7 @@ function JobCompensationTab({ employee }) {
 
   return (
     <div className="space-y-6">
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-200">
+      <div className="bg-white rounded-2xl border border-slate-200">
         <div className="px-6 py-4 border-b border-slate-100">
           <h3 className="text-lg font-bold text-slate-900">Job Details</h3>
         </div>
@@ -2364,7 +2364,7 @@ function JobCompensationTab({ employee }) {
         </div>
       </div>
 
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-200">
+      <div className="bg-white rounded-2xl border border-slate-200">
         <div className="px-6 py-4 border-b border-slate-100">
           <h3 className="text-lg font-bold text-slate-900">Salary Structure</h3>
         </div>
@@ -2496,7 +2496,7 @@ function JobCompensationTab({ employee }) {
 function DocumentsTab({ employee }) {
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-slate-200">
+    <div className="bg-white rounded-2xl border border-slate-200">
       <div className="px-6 py-4 border-b border-slate-100">
         <h3 className="text-lg font-bold text-slate-900">Employee Documents</h3>
         <p className="text-sm text-slate-500">Manage and view documents for {employee.personalDetails?.firstName}.</p>
@@ -2529,7 +2529,7 @@ function AttendanceTab({ employee, attendanceStats }) {
 
   if (attendance.length === 0) {
     return (
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-12 text-center">
+      <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center">
         <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4">
           <Calendar className="w-8 h-8 text-slate-300" />
         </div>
@@ -2541,7 +2541,7 @@ function AttendanceTab({ employee, attendanceStats }) {
 
   return (
     <div className="space-y-6">
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+      <div className="bg-white rounded-2xl border border-slate-200 p-6">
         <h3 className="text-lg font-bold text-slate-900 mb-6">Attendance Statistics</h3>
         <AttendanceStatsCards attendance={attendance} />
         <div className="mt-8">
@@ -2550,7 +2550,7 @@ function AttendanceTab({ employee, attendanceStats }) {
         </div>
       </div>
 
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+      <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
         <div className="px-6 py-4 border-b border-slate-100">
           <h3 className="text-lg font-bold text-slate-900">Recent Attendance Log</h3>
         </div>

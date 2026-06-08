@@ -121,10 +121,10 @@ export default function AdminTalentHub() {
     return (
         <div className="space-y-6 animate-in fade-in duration-500">
             {/* Header Panel */}
-            <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm">
+            <div className="bg-white p-8 rounded-3xl border border-slate-200">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                     <div className="flex items-center gap-4">
-                        <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-indigo-100">
+                        <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center text-white">
                             <Award className="w-8 h-8" />
                         </div>
                         <div>
@@ -144,7 +144,7 @@ export default function AdminTalentHub() {
                                 key={tab.id}
                                 onClick={() => setActiveTab(tab.id)}
                                 className={`flex items-center gap-2 px-6 py-2.5 text-xs font-black rounded-xl transition-all ${activeTab === tab.id
-                                    ? 'bg-white text-indigo-600 shadow-lg shadow-indigo-100/50 border border-slate-200'
+                                    ? 'bg-white text-indigo-600 border border-slate-200'
                                     : 'text-slate-500 hover:text-slate-800'
                                     }`}
                             >
@@ -157,7 +157,7 @@ export default function AdminTalentHub() {
             </div>
 
             {/* Main Content Area */}
-            <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+            <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden">
                 {loading ? (
                     <div className="p-32 flex flex-col items-center justify-center space-y-6">
                         <div className="relative">
@@ -206,7 +206,7 @@ export default function AdminTalentHub() {
                                                     className="fixed inset-0 z-40"
                                                     onClick={() => setShowFilterDropdown(false)}
                                                 />
-                                                <div className="absolute right-0 mt-2 w-56 bg-white border border-slate-150 rounded-2xl shadow-xl z-50 p-2 animate-in fade-in slide-in-from-top-3 duration-200">
+                                                <div className="absolute right-0 mt-2 w-56 bg-white border border-slate-150 rounded-2xl z-50 p-2 animate-in fade-in slide-in-from-top-3 duration-200">
                                                     <div className="px-3 py-2 border-b border-slate-50">
                                                         <p className="text-[10px] font-black uppercase tracking-wider text-slate-400">Filter options</p>
                                                     </div>
@@ -311,7 +311,7 @@ export default function AdminTalentHub() {
                                             setSelectedEmployeeId('');
                                             setShowCareerModal(true);
                                         }}
-                                        className="flex items-center gap-2 px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-black shadow-lg shadow-emerald-100 transition-all"
+                                        className="flex items-center gap-2 px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-black transition-all"
                                     >
                                         <MapPin className="w-3.5 h-3.5" /> Set Roadmap
                                     </button>
@@ -323,7 +323,7 @@ export default function AdminTalentHub() {
                                             if (activeTab === 'goals') setShowGoalModal(true);
                                             if (activeTab === 'skills') setShowSkillModal(true);
                                         }}
-                                        className="flex items-center gap-2 px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-black shadow-lg shadow-indigo-100 transition-all"
+                                        className="flex items-center gap-2 px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-black transition-all"
                                     >
                                         <Plus className="w-3.5 h-3.5" /> {activeTab === 'appraisals' ? 'Start Cycle' : activeTab === 'goals' ? 'Assign Goal' : 'Update Matrix'}
                                     </button>
@@ -405,7 +405,7 @@ export default function AdminTalentHub() {
                                     <div className="col-span-full py-20 text-center text-slate-400 font-bold italic">No matching goals found</div>
                                 ) : (
                                     filteredGoals.map((goal) => (
-                                        <div key={goal._id} className="p-6 bg-white border border-slate-200 rounded-3xl hover:border-indigo-100 hover:shadow-xl hover:shadow-indigo-100/30 transition-all group relative overflow-hidden">
+                                        <div key={goal._id} className="p-6 bg-white border border-slate-200 rounded-3xl hover:border-indigo-100  hover:shadow-indigo-100/30 transition-all group relative overflow-hidden">
                                             <div className="flex justify-between items-start mb-6">
                                                 <div className="p-2.5 bg-indigo-50 text-indigo-600 rounded-2xl group-hover:scale-110 group-hover:bg-indigo-600 group-hover:text-white transition-all">
                                                     <Target className="w-5 h-5" />
@@ -451,7 +451,7 @@ export default function AdminTalentHub() {
                             <div className="p-8 space-y-12">
                                 {/* Skill Gap Analysis Stats */}
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                                    <div className="bg-slate-50 p-6 rounded-3xl border border-slate-200 group hover:bg-white hover:shadow-xl transition-all">
+                                    <div className="bg-slate-50 p-6 rounded-3xl border border-slate-200 group hover:bg-white  transition-all">
                                         <div className="flex items-center gap-4 mb-4">
                                             <div className="p-3 bg-indigo-50 text-indigo-600 rounded-2xl group-hover:bg-indigo-600 group-hover:text-white transition-all">
                                                 <TrendingUp className="w-6 h-6" />
@@ -462,7 +462,7 @@ export default function AdminTalentHub() {
                                         <p className="text-xs text-slate-500 mt-1">Average rating across all skills</p>
                                     </div>
 
-                                    <div className="bg-slate-50 p-6 rounded-3xl border border-slate-200 group hover:bg-white hover:shadow-xl transition-all">
+                                    <div className="bg-slate-50 p-6 rounded-3xl border border-slate-200 group hover:bg-white  transition-all">
                                         <div className="flex items-center gap-4 mb-4">
                                             <div className="p-3 bg-rose-50 text-rose-600 rounded-2xl group-hover:bg-rose-600 group-hover:text-white transition-all">
                                                 <AlertCircle className="w-6 h-6" />
@@ -473,7 +473,7 @@ export default function AdminTalentHub() {
                                         <p className="text-xs text-slate-500 mt-1">Skills with low proficiency (≤ 2)</p>
                                     </div>
 
-                                    <div className="bg-slate-50 p-6 rounded-3xl border border-slate-200 group hover:bg-white hover:shadow-xl transition-all">
+                                    <div className="bg-slate-50 p-6 rounded-3xl border border-slate-200 group hover:bg-white  transition-all">
                                         <div className="flex items-center gap-4 mb-4">
                                             <div className="p-3 bg-emerald-50 text-emerald-600 rounded-2xl group-hover:bg-emerald-600 group-hover:text-white transition-all">
                                                 <CheckCircle2 className="w-6 h-6" />
@@ -500,7 +500,7 @@ export default function AdminTalentHub() {
                                             </p>
                                         ) : (
                                             filteredSkills.map(skill => (
-                                                <div key={skill._id} className="p-4 bg-white border border-slate-150 rounded-2xl flex flex-col justify-between gap-3 hover:border-indigo-200 hover:shadow-md hover:shadow-indigo-50/20 transition-all">
+                                                <div key={skill._id} className="p-4 bg-white border border-slate-150 rounded-2xl flex flex-col justify-between gap-3 hover:border-indigo-200  hover:shadow-indigo-50/20 transition-all">
                                                     <div className="space-y-1">
                                                         <div className="flex justify-between items-start gap-2">
                                                             <span className="text-xs font-extrabold text-slate-800 truncate">{skill.name}</span>
@@ -520,7 +520,7 @@ export default function AdminTalentHub() {
                                                                     key={level}
                                                                     className={`w-1.5 h-1.5 rounded-full ${
                                                                         level <= skill.proficiency
-                                                                            ? 'bg-indigo-600 shadow-[0_0_4px_rgba(99,102,241,0.4)]'
+                                                                            ? 'bg-indigo-600'
                                                                             : 'bg-slate-200'
                                                                     }`}
                                                                 ></div>
@@ -558,7 +558,7 @@ export default function AdminTalentHub() {
                                                 const empId = cp.employee?.employeeId || 'N/A';
 
                                                 return (
-                                                    <div key={cp._id} className="p-6 bg-white border border-slate-200 rounded-2xl flex flex-col justify-between gap-4 hover:border-indigo-200 hover:shadow-lg transition-all duration-300 relative group">
+                                                    <div key={cp._id} className="p-6 bg-white border border-slate-200 rounded-2xl flex flex-col justify-between gap-4 hover:border-indigo-200  transition-all duration-300 relative group">
                                                         <div className="space-y-4">
                                                             <div className="flex justify-between items-start gap-4">
                                                                 <div>
@@ -740,7 +740,7 @@ function AssignGoalModal({ employees, onClose, onSuccess }) {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-300">
-            <div className="bg-white rounded-3xl w-full max-w-lg shadow-2xl border border-slate-200 overflow-hidden scale-in duration-300">
+            <div className="bg-white rounded-3xl w-full max-w-lg border border-slate-200 overflow-hidden scale-in duration-300">
                 <div className="p-8 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
                     <h2 className="text-xl font-black text-slate-900">Assign New Goal</h2>
                     <button onClick={onClose} className="p-2 hover:bg-white rounded-xl transition-colors text-slate-400">&times;</button>
@@ -846,7 +846,7 @@ function AssignGoalModal({ employees, onClose, onSuccess }) {
                     <button
                         onClick={handleSubmit}
                         disabled={submitting}
-                        className="flex-1 py-3 px-6 bg-indigo-600 text-white rounded-2xl text-xs font-black shadow-lg shadow-indigo-100 hover:bg-indigo-700 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                        className="flex-1 py-3 px-6 bg-indigo-600 text-white rounded-2xl text-xs font-black hover:bg-indigo-700 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                     >
                         {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : "Assign Goal"}
                     </button>
@@ -892,7 +892,7 @@ function StartAppraisalModal({ employees, onClose, onSuccess }) {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-300">
-            <div className="bg-white rounded-3xl w-full max-w-lg shadow-2xl border border-slate-200 overflow-hidden scale-in duration-300">
+            <div className="bg-white rounded-3xl w-full max-w-lg border border-slate-200 overflow-hidden scale-in duration-300">
                 <div className="p-8 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
                     <h2 className="text-xl font-black text-slate-900">Initiate Appraisal Cycle</h2>
                     <button onClick={onClose} className="p-2 hover:bg-white rounded-xl transition-colors text-slate-400">&times;</button>
@@ -958,7 +958,7 @@ function StartAppraisalModal({ employees, onClose, onSuccess }) {
                     <button
                         onClick={handleSubmit}
                         disabled={submitting}
-                        className="flex-1 py-3 px-6 bg-indigo-600 text-white rounded-2xl text-xs font-black shadow-lg shadow-indigo-100 hover:bg-indigo-700 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                        className="flex-1 py-3 px-6 bg-indigo-600 text-white rounded-2xl text-xs font-black hover:bg-indigo-700 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                     >
                         {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : "Deploy Cycle"}
                     </button>
@@ -999,7 +999,7 @@ function SkillUpdateModal({ employees, onClose, onSuccess }) {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-300">
-            <div className="bg-white rounded-3xl w-full max-w-lg shadow-2xl border border-slate-200 overflow-hidden scale-in duration-300">
+            <div className="bg-white rounded-3xl w-full max-w-lg border border-slate-200 overflow-hidden scale-in duration-300">
                 <div className="p-8 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
                     <h2 className="text-xl font-black text-slate-900">Update Skill Proficiency</h2>
                     <button onClick={onClose} className="p-2 hover:bg-white rounded-xl transition-colors text-slate-400">&times;</button>
@@ -1078,7 +1078,7 @@ function SkillUpdateModal({ employees, onClose, onSuccess }) {
                     <button
                         onClick={handleSubmit}
                         disabled={submitting}
-                        className="flex-1 py-3 px-6 bg-indigo-600 text-white rounded-2xl text-xs font-black shadow-lg shadow-indigo-100 hover:bg-indigo-700 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                        className="flex-1 py-3 px-6 bg-indigo-600 text-white rounded-2xl text-xs font-black hover:bg-indigo-700 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                     >
                         {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : "Update Matrix"}
                     </button>
@@ -1193,7 +1193,7 @@ function SetCareerPathModal({ employees, onClose, onSuccess, initialEmployeeId =
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-300">
-            <div className="bg-white rounded-3xl w-full max-w-2xl shadow-2xl border border-slate-200 overflow-hidden scale-in duration-300">
+            <div className="bg-white rounded-3xl w-full max-w-2xl border border-slate-200 overflow-hidden scale-in duration-300">
                 <div className="p-8 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
                     <h2 className="text-xl font-black text-slate-900">Define Career Roadmap</h2>
                     <button onClick={onClose} className="p-2 hover:bg-white rounded-xl transition-colors text-slate-400">&times;</button>
@@ -1283,7 +1283,7 @@ function SetCareerPathModal({ employees, onClose, onSuccess, initialEmployeeId =
                                     <button
                                         type="button"
                                         onClick={() => removeMilestone(idx)}
-                                        className="absolute -right-2 -top-2 w-6 h-6 bg-rose-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all shadow-lg"
+                                        className="absolute -right-2 -top-2 w-6 h-6 bg-rose-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all"
                                     >
                                         &times;
                                     </button>
@@ -1297,7 +1297,7 @@ function SetCareerPathModal({ employees, onClose, onSuccess, initialEmployeeId =
                     <button
                         onClick={handleSubmit}
                         disabled={submitting}
-                        className="flex-1 py-3 px-6 bg-emerald-600 text-white rounded-2xl text-xs font-black shadow-lg shadow-emerald-100"
+                        className="flex-1 py-3 px-6 bg-emerald-600 text-white rounded-2xl text-xs font-black"
                     >
                         {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : "Set Roadmap"}
                     </button>
@@ -1374,7 +1374,7 @@ function AppraisalReviewModal({ appraisal, onClose, onSuccess }) {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-300">
-            <div className="bg-white rounded-3xl w-full max-w-3xl shadow-2xl border border-slate-200 overflow-hidden scale-in duration-300">
+            <div className="bg-white rounded-3xl w-full max-w-3xl border border-slate-200 overflow-hidden scale-in duration-300">
                 <div className="p-8 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
                     <div>
                         <h2 className="text-xl font-black text-slate-900">Appraisal Details & Review</h2>
@@ -1500,7 +1500,7 @@ function AppraisalReviewModal({ appraisal, onClose, onSuccess }) {
                             type="submit"
                             onClick={handleSubmit}
                             disabled={submitting}
-                            className="flex-1 py-3 px-6 bg-indigo-600 text-white rounded-2xl text-xs font-black shadow-lg shadow-indigo-100 hover:bg-indigo-700 transition-all flex items-center justify-center gap-2"
+                            className="flex-1 py-3 px-6 bg-indigo-600 text-white rounded-2xl text-xs font-black hover:bg-indigo-700 transition-all flex items-center justify-center gap-2"
                         >
                             {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : "Finalize & Submit"}
                         </button>
@@ -1510,3 +1510,4 @@ function AppraisalReviewModal({ appraisal, onClose, onSuccess }) {
         </div>
     );
 }
+

@@ -134,7 +134,7 @@ export default function ATSSystem() {
         return (
             <div className="flex flex-col items-center justify-center min-h-[500px] space-y-6">
                 <div className="relative group">
-                    <div className="w-20 h-20 border-[6px] border-indigo-50 border-t-indigo-600 rounded-full animate-spin shadow-inner"></div>
+                    <div className="w-20 h-20 border-[6px] border-slate-200 border-t-indigo-600 rounded-full animate-spin"></div>
                     <div className="absolute inset-0 flex items-center justify-center text-indigo-600">
                         <Layers className="w-8 h-8 animate-pulse" />
                     </div>
@@ -168,16 +168,16 @@ export default function ATSSystem() {
                 </div>
 
                 <div className="flex items-center gap-3">
-                    <div className="flex bg-white rounded-2xl p-1 border border-slate-200 shadow-sm mr-2">
+                    <div className="flex bg-white rounded-2xl p-1 border border-slate-200 mr-2">
                         <button
                             onClick={() => setView('board')}
-                            className={`p-2 px-4 rounded-xl text-xs font-black flex items-center gap-2 transition-all ${view === 'board' ? 'bg-slate-900 text-white shadow-lg shadow-slate-200' : 'text-slate-400 hover:text-slate-600'}`}
+                            className={`p-2 px-4 rounded-xl text-xs font-black flex items-center gap-2 transition-all ${view === 'board' ? 'bg-slate-900 text-white' : 'text-slate-400 hover:text-slate-600'}`}
                         >
                             <LayoutGrid className="w-3.5 h-3.5" /> Board
                         </button>
                         <button
                             onClick={() => setView('list')}
-                            className={`p-2 px-4 rounded-xl text-xs font-black flex items-center gap-2 transition-all ${view === 'list' ? 'bg-slate-900 text-white shadow-lg shadow-slate-200' : 'text-slate-400 hover:text-slate-600'}`}
+                            className={`p-2 px-4 rounded-xl text-xs font-black flex items-center gap-2 transition-all ${view === 'list' ? 'bg-slate-900 text-white' : 'text-slate-400 hover:text-slate-600'}`}
                         >
                             <ListIcon className="w-3.5 h-3.5" /> List
                         </button>
@@ -185,7 +185,7 @@ export default function ATSSystem() {
                     <Button
                         variant="outline"
                         onClick={handleRefresh}
-                        className="bg-white hover:bg-slate-50 h-12 rounded-2xl border-slate-200 text-slate-700 font-bold px-5 shadow-sm active:scale-95 transition-all"
+                        className="bg-white hover:bg-slate-50 h-12 rounded-2xl border-slate-200 text-slate-700 font-bold px-5 active:scale-95 transition-all"
                         disabled={isRefreshing}
                     >
                         {isRefreshing ? <RefreshCw className="w-4 h-4 mr-2 animate-spin" /> : <RefreshCw className="w-4 h-4 mr-2 text-indigo-500" />}
@@ -193,7 +193,7 @@ export default function ATSSystem() {
                     </Button>
                     <Button
                         onClick={() => setShowAddModal(true)}
-                        className="bg-indigo-600 hover:bg-indigo-700 h-12 rounded-2xl text-white shadow-xl shadow-indigo-100 px-6 font-black group transition-all"
+                        className="bg-indigo-600 hover:bg-indigo-700 h-12 rounded-2xl text-white px-6 font-black group transition-all"
                     >
                         <Plus className="w-5 h-5 mr-2 group-hover:rotate-90 transition-transform duration-300" />
                         Acquire Talent
@@ -208,7 +208,7 @@ export default function ATSSystem() {
                 </div>
                 <Input
                     placeholder="Search resumes, names or contact tags..."
-                    className="pl-14 h-14 w-full rounded-2xl border-slate-200 shadow-sm focus:ring-[6px] focus:ring-indigo-500/10 focus:border-indigo-500 transition-all text-base font-medium placeholder:text-slate-400 bg-white"
+                    className="pl-14 h-14 w-full rounded-2xl border-slate-200 focus:ring-[6px] focus:ring-indigo-500/10 focus:border-indigo-500 transition-all text-base font-medium placeholder:text-slate-400 bg-white"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                 />
@@ -227,9 +227,9 @@ export default function ATSSystem() {
                         {STAGES.map((stage) => (
                             <div key={stage.id} className="w-[340px] shrink-0 group/col">
                                 {/* Proportional Column Header */}
-                                <div className="flex items-center justify-between mb-8 px-3 py-2 bg-white/40 backdrop-blur-sm rounded-2xl border border-transparent group-hover/col:border-slate-200 group-hover/col:bg-white transition-all duration-500 shadow-sm group-hover/col:shadow-md">
+                                <div className="flex items-center justify-between mb-8 px-3 py-2 bg-white/40 backdrop-blur-sm rounded-2xl border border-transparent group-hover/col:border-slate-200 group-hover/col:bg-white transition-all duration-500 group-hover/col:">
                                     <div className="flex items-center gap-3">
-                                        <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${stage.bg} ${stage.text} shadow-inner overflow-hidden relative`}>
+                                        <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${stage.bg} ${stage.text} overflow-hidden relative`}>
                                             <stage.icon className="w-5 h-5 shrink-0" />
                                             <div className={`absolute inset-0 ${stage.iconBg} animate-pulse`}></div>
                                         </div>
@@ -246,7 +246,7 @@ export default function ATSSystem() {
                                 {/* Drop Zone with Enhanced Styling */}
                                 <div
                                     className={`min-h-[600px] flex flex-col gap-4 p-4 rounded-[32px] transition-all duration-500 ${draggedCandidate && draggedCandidate.status !== stage.id
-                                        ? "bg-indigo-50/50 ring-4 ring-indigo-500/20 shadow-2xl scale-[1.02] border-2 border-dashed border-indigo-400 backdrop-blur-2xl"
+                                        ? "bg-indigo-50/50 ring-4 ring-indigo-500/20 scale-[1.02] border-2 border-dashed border-indigo-400 backdrop-blur-2xl"
                                         : "bg-slate-100/50 hover:bg-slate-100/80 border-2 border-transparent backdrop-blur-2xl"
                                         }`}
                                     onDragOver={(e) => e.preventDefault()}
@@ -276,7 +276,7 @@ export default function ATSSystem() {
 
                                     {getCandidatesByStage(stage.id).length === 0 && (
                                         <div className="h-40 flex flex-col items-center justify-center border-2 border-dashed border-slate-200 rounded-3xl bg-white/30 backdrop-blur-[2px] opacity-60 hover:opacity-100 transition-opacity">
-                                            <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm mb-3">
+                                            <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center mb-3">
                                                 <div className="w-5 h-5 bg-slate-50 border border-slate-100 rounded-lg flex items-center justify-center">
                                                     <Plus className="w-3 h-3 text-slate-400" />
                                                 </div>
@@ -362,7 +362,7 @@ function CandidateCard({ candidate, onDragStart, onDragEnd, isSelected, onStatus
             className={`cursor-grab active:cursor-grabbing h-full ${isSelected ? "opacity-30 blur-[2px]" : ""}`}
         >
             <Card
-                className={`group border-none shadow-[rgba(17,17,26,0.05)_0px_8px_24px] hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-500 bg-white rounded-[32px] overflow-hidden relative border border-slate-100 flex flex-col min-h-[380px] ${isRejected ? 'opacity-85 grayscale-[0.2]' : 'hover:border-indigo-100/50'}`}
+                className={`group border-none(17,17,26,0.05) transition-all duration-500 bg-white rounded-[32px] overflow-hidden relative border border-slate-200 flex flex-col min-h-[380px] ${isRejected ? 'opacity-85 grayscale-[0.2]' : 'hover:border-slate-200/50'}`}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
             >
@@ -378,13 +378,13 @@ function CandidateCard({ candidate, onDragStart, onDragEnd, isSelected, onStatus
                                     {candidate.name}
                                 </h4>
                                 <div className="flex items-center gap-2 mt-1.5">
-                                    <span className={`w-1.5 h-1.5 rounded-full shadow-sm ${isRejected ? 'bg-slate-400' : 'bg-emerald-500'}`}></span>
+                                    <span className={`w-1.5 h-1.5 rounded-full ${isRejected ? 'bg-slate-400' : 'bg-emerald-500'}`}></span>
                                     <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest truncate">
                                         {(candidate.appliedRole || candidate.jobRequisition?.title || "Product Designer")}
                                     </p>
                                 </div>
                             </div>
-                            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center overflow-hidden shrink-0 transition-all duration-500 shadow-sm border ${isRejected ? 'bg-slate-100 border-slate-200' : 'bg-slate-50 border-slate-100 group-hover:bg-indigo-600 group-hover:border-indigo-600 group-hover:shadow-[0_8px_16px_rgba(79,70,229,0.2)]'}`}>
+                            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center overflow-hidden shrink-0 transition-all duration-500 border ${isRejected ? 'bg-slate-100 border-slate-200' : 'bg-slate-50 border-slate-200 group-hover:bg-indigo-600 group-hover:border-indigo-600 '}`}>
                                 <span className={`text-base font-black tracking-tighter uppercase ${isRejected ? 'text-slate-400' : 'text-slate-400 group-hover:text-white'}`}>{candidate.name.charAt(0)}</span>
                             </div>
                         </div>
@@ -405,13 +405,13 @@ function CandidateCard({ candidate, onDragStart, onDragEnd, isSelected, onStatus
                         {/* Info Grid */}
                         <div className="space-y-3 bg-slate-50/30 p-5 rounded-2xl border border-slate-100 group-hover:bg-white group-hover:border-indigo-50 transition-all duration-500">
                             <div className="flex items-center text-slate-500 text-xs font-bold gap-3">
-                                <div className="w-8 h-8 rounded-xl bg-white shadow-sm flex items-center justify-center shrink-0 border border-slate-50">
+                                <div className="w-8 h-8 rounded-xl bg-white flex items-center justify-center shrink-0 border border-slate-200">
                                     <Mail className="w-3.5 h-3.5 text-slate-400" />
                                 </div>
                                 <span className="truncate">{candidate.email}</span>
                             </div>
                             <div className="flex items-center text-slate-500 text-xs font-bold gap-3">
-                                <div className="w-8 h-8 rounded-xl bg-white shadow-sm flex items-center justify-center shrink-0 border border-slate-50">
+                                <div className="w-8 h-8 rounded-xl bg-white flex items-center justify-center shrink-0 border border-slate-200">
                                     <Layers className="w-3.5 h-3.5 text-slate-400" />
                                 </div>
                                 <span className="truncate uppercase tracking-wider text-[9px] font-black">Source: {candidate.source}</span>
@@ -421,7 +421,7 @@ function CandidateCard({ candidate, onDragStart, onDragEnd, isSelected, onStatus
                         {/* Status Footer */}
                         <div className="flex items-center justify-between pt-1">
                             <div className="flex items-center gap-2">
-                                <Badge className="text-[9px] font-black tracking-widest bg-white text-slate-500 rounded-lg px-3 py-1.5 border border-slate-100 shadow-sm uppercase">
+                                <Badge className="text-[9px] font-black tracking-widest bg-white text-slate-500 rounded-lg px-3 py-1.5 border border-slate-200 uppercase">
                                     {format(new Date(candidate.appliedDate), "MMM dd")}
                                 </Badge>
                                 {upcomingInterview && (
@@ -450,7 +450,7 @@ function CandidateCard({ candidate, onDragStart, onDragEnd, isSelected, onStatus
                                 {nextStage && !isHired && (
                                     <Button
                                         onClick={handlePromote}
-                                        className="h-12 flex-1 text-[11px] font-black uppercase tracking-wider bg-indigo-600 text-white hover:bg-indigo-700 shadow-lg shadow-indigo-100 border-none rounded-2xl px-2"
+                                        className="h-12 flex-1 text-[11px] font-black uppercase tracking-wider bg-indigo-600 text-white hover:bg-indigo-700 border-none rounded-2xl px-2"
                                     >
                                         <ArrowRight className="w-4 h-4 mr-1" /> Promote
                                     </Button>
@@ -484,7 +484,7 @@ function CandidateCard({ candidate, onDragStart, onDragEnd, isSelected, onStatus
                                             onSchedule(candidate);
                                         }}
                                         variant="ghost"
-                                        className="h-12 flex-1 text-[11px] font-black uppercase tracking-wider bg-slate-900 text-white hover:bg-slate-800 border-none rounded-2xl shadow-lg shadow-slate-100"
+                                        className="h-12 flex-1 text-[11px] font-black uppercase tracking-wider bg-slate-900 text-white hover:bg-slate-800 border-none rounded-2xl"
                                     >
                                         <Calendar className="w-4 h-4 mr-1.5" /> Schedule
                                     </Button>
@@ -568,11 +568,11 @@ function AddCandidateModal({ jobs, onClose, onSuccess }) {
                 initial={{ opacity: 0, scale: 0.95, y: 30 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: 30 }}
-                className="bg-white rounded-[40px] w-full max-w-2xl shadow-3xl border border-white/20 overflow-hidden relative z-10 p-10"
+                className="bg-white rounded-[40px] w-full max-w-2xl border border-white/20 overflow-hidden relative z-10 p-10"
             >
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
                     <div className="flex items-center gap-4">
-                        <div className="w-14 h-14 rounded-3xl bg-indigo-600 flex items-center justify-center text-white shadow-xl shadow-indigo-100">
+                        <div className="w-14 h-14 rounded-3xl bg-indigo-600 flex items-center justify-center text-white">
                             <Users className="w-7 h-7" />
                         </div>
                         <div>
@@ -639,7 +639,7 @@ function AddCandidateModal({ jobs, onClose, onSuccess }) {
                         <Button
                             type="submit"
                             disabled={submitting}
-                            className="flex-1 h-16 rounded-[24px] bg-indigo-600 hover:bg-indigo-700 text-white shadow-2xl shadow-indigo-200 font-black uppercase tracking-widest text-xs"
+                            className="flex-1 h-16 rounded-[24px] bg-indigo-600 hover:bg-indigo-700 text-white font-black uppercase tracking-widest text-xs"
                         >
                             {submitting ? <Loader2 className="w-5 h-5 animate-spin mr-2" /> : "Authorize Profile Creation"}
                         </Button>
@@ -655,7 +655,7 @@ function ListView({ candidates, onStatusUpdate }) {
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-[32px] border border-slate-200 shadow-xl shadow-slate-100 overflow-hidden"
+            className="bg-white rounded-[32px] border border-slate-200 overflow-hidden"
         >
             <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse">
@@ -692,7 +692,7 @@ function ListView({ candidates, onStatusUpdate }) {
                                     >
                                         <td className="px-8 py-6">
                                             <div className="flex items-center gap-4">
-                                                <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center font-black text-indigo-600 text-xs shadow-inner">
+                                                <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center font-black text-indigo-600 text-xs">
                                                     {candidate.name.charAt(0)}
                                                 </div>
                                                 <div>
@@ -720,7 +720,7 @@ function ListView({ candidates, onStatusUpdate }) {
                                             </span>
                                         </td>
                                         <td className="px-8 py-6 text-right">
-                                            <button className="p-2.5 rounded-xl text-slate-400 hover:bg-white hover:text-indigo-600 hover:shadow-lg hover:shadow-indigo-100 transition-all">
+                                            <button className="p-2.5 rounded-xl text-slate-400 hover:bg-white hover:text-indigo-600 transition-all">
                                                 <ExternalLink className="w-4 h-4" />
                                             </button>
                                         </td>
@@ -786,10 +786,10 @@ function ScheduleModal({ onClose, candidate, interviewers, onSuccess }) {
                 initial={{ opacity: 0, scale: 0.9, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                className="bg-white rounded-[40px] w-full max-w-xl shadow-2xl overflow-hidden relative z-10 p-10"
+                className="bg-white rounded-[40px] w-full max-w-xl overflow-hidden relative z-10 p-10"
             >
                 <div className="flex items-center gap-4 mb-8">
-                    <div className="w-12 h-12 rounded-2xl bg-indigo-600 flex items-center justify-center text-white shadow-xl shadow-indigo-100">
+                    <div className="w-12 h-12 rounded-2xl bg-indigo-600 flex items-center justify-center text-white">
                         <Calendar className="w-6 h-6" />
                     </div>
                     <div>
@@ -853,7 +853,7 @@ function ScheduleModal({ onClose, candidate, interviewers, onSuccess }) {
                         <Button
                             type="submit"
                             disabled={submitting}
-                            className="flex-2 h-14 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white shadow-xl shadow-indigo-100 font-black uppercase tracking-widest text-[10px] flex-[2]"
+                            className="flex-2 h-14 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-black uppercase tracking-widest text-[10px] flex-[2]"
                         >
                             {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : "Authorize Schedule"}
                         </Button>

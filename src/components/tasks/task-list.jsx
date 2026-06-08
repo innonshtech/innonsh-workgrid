@@ -130,7 +130,7 @@ const TaskList = () => {
                     </div>
                     <button
                         onClick={() => router.push(`${basePath}/create`)}
-                        className="flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-2xl font-bold text-sm hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-100 ring-offset-2 focus:ring-2 focus:ring-indigo-600 active:scale-95"
+                        className="flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-2xl font-bold text-sm hover:bg-indigo-700 transition-all ring-offset-2 focus:ring-2 focus:ring-indigo-600 active:scale-95"
                     >
                         <Plus size={18} /> {t("createNewTask") || "Create New Task"}
                     </button>
@@ -138,7 +138,7 @@ const TaskList = () => {
             )}
 
             {/* Filters Bar */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 bg-white p-4 rounded-3xl border border-slate-100 shadow-sm shadow-slate-200/50 backdrop-blur-xl">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 bg-white p-4 rounded-3xl border border-slate-200 backdrop-blur-xl">
                 <div className="relative md:col-span-2">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                     <input
@@ -179,7 +179,7 @@ const TaskList = () => {
             </div>
 
             {/* Task List Grid/Table */}
-            <div className="bg-white rounded-[2rem] border border-slate-100 shadow-xl shadow-slate-200/40 overflow-hidden backdrop-blur-2xl">
+            <div className="bg-white rounded-[2rem] border border-slate-200 overflow-hidden backdrop-blur-2xl">
                 <div className="overflow-x-auto text-black">
                     <table className="w-full text-left border-collapse">
                         <thead>

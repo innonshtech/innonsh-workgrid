@@ -92,7 +92,7 @@ export default function BankPayoutModal({ isOpen, onClose, payrollRun, onUpdate 
                 </div>
 
                 <div className="px-6 pb-6 space-y-5 -mt-14 relative z-20">
-                    <div className="flex items-center gap-4 p-5 bg-white rounded-xl shadow-lg shadow-black/5 border border-slate-100 ring-1 ring-slate-900/5 backdrop-blur-sm">
+                    <div className="flex items-center gap-4 p-5 bg-white rounded-xl border border-slate-200 ring-1 ring-slate-900/5 backdrop-blur-sm">
                         <div className="flex-1">
                             <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Total Net Payable</p>
                             <p className="text-3xl font-black text-slate-900 flex items-center gap-1">
@@ -107,7 +107,7 @@ export default function BankPayoutModal({ isOpen, onClose, payrollRun, onUpdate 
                     </div>
 
                     <div className="space-y-4 pt-2">
-                        <div className={`p-5 rounded-xl border transition-all duration-300 relative group overflow-hidden ${step === 'generate' ? 'bg-white border-indigo-200 shadow-md ring-1 ring-indigo-50' : 'bg-slate-50 border-slate-100 opacity-70 hover:opacity-100'}`}>
+                        <div className={`p-5 rounded-xl border transition-all duration-300 relative group overflow-hidden ${step === 'generate' ? 'bg-white border-indigo-200 ring-1 ring-indigo-50' : 'bg-slate-50 border-slate-200 opacity-70 hover:opacity-100'}`}>
                             {step === 'generate' && <div className="absolute top-0 left-0 w-1 h-full bg-indigo-500"></div>}
                             <div className="flex items-start gap-4">
                                 <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 font-bold text-sm transition-colors ${step === 'generate' ? 'bg-indigo-100 text-indigo-700 ring-4 ring-indigo-50' : payrollRun.payoutStatus !== 'Pending' ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-200 text-slate-500'}`}>
@@ -137,7 +137,7 @@ export default function BankPayoutModal({ isOpen, onClose, payrollRun, onUpdate 
                             </div>
                         </div>
 
-                        <div className={`p-5 rounded-xl border transition-all duration-300 relative overflow-hidden ${step === 'confirm' ? 'bg-white border-emerald-200 shadow-md ring-1 ring-emerald-50' : 'bg-slate-50 border-slate-100 opacity-70 grayscale-[30%]'}`}>
+                        <div className={`p-5 rounded-xl border transition-all duration-300 relative overflow-hidden ${step === 'confirm' ? 'bg-white border-emerald-200 ring-1 ring-emerald-50' : 'bg-slate-50 border-slate-200 opacity-70 grayscale-[30%]'}`}>
                             {step === 'confirm' && <div className="absolute top-0 left-0 w-1 h-full bg-emerald-500"></div>}
                             <div className="flex items-start gap-4">
                                 <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 font-bold text-sm transition-colors ${step === 'confirm' ? 'bg-emerald-100 text-emerald-700 ring-4 ring-emerald-50' : payrollRun.payoutStatus === 'Completed' ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-200 text-slate-500'}`}>
@@ -155,7 +155,7 @@ export default function BankPayoutModal({ isOpen, onClose, payrollRun, onUpdate 
                                     <Button
                                         onClick={handleMarkPaid}
                                         size="default"
-                                        className={`w-full font-medium transition-all shadow-sm ${step === 'confirm' ? 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-emerald-200' : 'bg-slate-200 text-slate-400'}`}
+                                        className={`w-full font-medium transition-all ${step === 'confirm' ? 'bg-emerald-600 hover:bg-emerald-700 text-white' : 'bg-slate-200 text-slate-400'}`}
                                         disabled={loading || step !== 'confirm'}
                                     >
                                         {loading && step === 'confirm' ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <CheckCircle className="w-4 h-4 mr-2" />}

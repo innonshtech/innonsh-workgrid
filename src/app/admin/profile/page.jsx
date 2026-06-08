@@ -111,7 +111,7 @@ export default function AdminProfilePage() {
           <p className="text-slate-500 mt-2">Manage your personal information and security settings</p>
         </div>
 
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-xl shadow-slate-200/50 overflow-hidden">
+        <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
           <div className="p-8 border-b border-slate-100">
             <h2 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
               <User className="w-5 h-5 text-indigo-600" />
@@ -128,7 +128,7 @@ export default function AdminProfilePage() {
                       type="text"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all shadow-sm"
+                      className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all"
                       placeholder="Your Full Name"
                       required
                     />
@@ -143,7 +143,7 @@ export default function AdminProfilePage() {
                       type="email"
                       value={profile?.email || ""}
                       readOnly
-                      className="w-full pl-10 pr-4 py-2.5 bg-slate-100 border border-slate-200 rounded-xl text-sm text-slate-500 cursor-not-allowed shadow-sm"
+                      className="w-full pl-10 pr-4 py-2.5 bg-slate-100 border border-slate-200 rounded-xl text-sm text-slate-500 cursor-not-allowed"
                     />
                   </div>
                   <p className="mt-1.5 text-[10px] text-slate-400">Email cannot be changed for security reasons.</p>
@@ -154,7 +154,7 @@ export default function AdminProfilePage() {
                 <button
                   type="submit"
                   disabled={saving || name === profile?.name}
-                  className="flex items-center gap-2 px-6 py-2.5 bg-indigo-600 text-white rounded-xl font-bold shadow-lg shadow-indigo-100 hover:bg-indigo-700 transition-all disabled:opacity-50 disabled:shadow-none"
+                  className="flex items-center gap-2 px-6 py-2.5 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 transition-all disabled:opacity-50 disabled:"
                 >
                   {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                   Save Changes
@@ -179,7 +179,7 @@ export default function AdminProfilePage() {
                       type="password"
                       value={passwordData.oldPassword}
                       onChange={(e) => setPasswordData({ ...passwordData, oldPassword: e.target.value })}
-                      className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all shadow-sm"
+                      className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all"
                       placeholder="••••••••"
                       required={passwordData.newPassword.length > 0}
                     />
@@ -195,7 +195,7 @@ export default function AdminProfilePage() {
                         type="password"
                         value={passwordData.newPassword}
                         onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
-                        className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all shadow-sm"
+                        className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all"
                         placeholder="••••••••"
                         required={passwordData.oldPassword.length > 0}
                       />
@@ -209,7 +209,7 @@ export default function AdminProfilePage() {
                         type="password"
                         value={passwordData.confirmPassword}
                         onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
-                        className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all shadow-sm"
+                        className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all"
                         placeholder="••••••••"
                         required={passwordData.newPassword.length > 0}
                       />
@@ -222,7 +222,7 @@ export default function AdminProfilePage() {
                 <button
                   type="submit"
                   disabled={changingPassword || !passwordData.oldPassword || !passwordData.newPassword}
-                  className="flex items-center gap-2 px-6 py-2.5 bg-slate-900 text-white rounded-xl font-bold shadow-lg shadow-slate-200 hover:bg-black transition-all disabled:opacity-50 disabled:shadow-none"
+                  className="flex items-center gap-2 px-6 py-2.5 bg-slate-900 text-white rounded-xl font-bold hover:bg-black transition-all disabled:opacity-50 disabled:"
                 >
                   {changingPassword ? <Loader2 className="w-4 h-4 animate-spin" /> : <Lock className="w-4 h-4" />}
                   Change Password
@@ -232,7 +232,7 @@ export default function AdminProfilePage() {
           </div>
         </div>
 
-        <div className="bg-indigo-900 rounded-2xl p-8 relative overflow-hidden shadow-2xl shadow-indigo-200">
+        <div className="bg-indigo-900 rounded-2xl p-8 relative overflow-hidden">
           <div className="relative z-10 flex items-center gap-6 text-white">
             <div className="w-16 h-16 bg-white/10 backdrop-blur-xl rounded-2xl flex items-center justify-center border border-white/20">
               <AlertCircle className="w-8 h-8 text-white" />

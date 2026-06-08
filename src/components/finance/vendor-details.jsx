@@ -65,10 +65,10 @@ export default function VendorDetails({ vendor, onBack }) {
             <div className="flex flex-col lg:flex-row gap-8">
                 {/* Profile Card */}
                 <div className="w-full lg:w-1/3 space-y-6">
-                    <div className="bg-white p-8 rounded-[2.5rem] border border-slate-200 shadow-sm relative overflow-hidden">
+                    <div className="bg-white p-8 rounded-[2.5rem] border border-slate-200 relative overflow-hidden">
                         <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-50 rounded-full -mr-16 -mt-16"></div>
                         <div className="relative z-10 text-center">
-                            <div className="w-20 h-20 bg-white shadow-xl border border-slate-100 rounded-3xl flex items-center justify-center mx-auto mb-6">
+                            <div className="w-20 h-20 bg-white border border-slate-200 rounded-3xl flex items-center justify-center mx-auto mb-6">
                                 <Building2 className="w-10 h-10 text-indigo-600" />
                             </div>
                             <h3 className="text-2xl font-black text-slate-900 leading-tight">{vendor.name}</h3>
@@ -106,7 +106,7 @@ export default function VendorDetails({ vendor, onBack }) {
                         </div>
                     </div>
 
-                    <div className="bg-slate-900 p-8 rounded-[2.5rem] shadow-xl text-white">
+                    <div className="bg-slate-900 p-8 rounded-[2.5rem] text-white">
                         <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-400 mb-6 flex items-center gap-2">
                             <Landmark className="w-4 h-4" /> Bank Account Info
                         </h4>
@@ -137,22 +137,22 @@ export default function VendorDetails({ vendor, onBack }) {
                 <div className="flex-1 space-y-8">
                     {/* Summary Cards */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm border-l-4 border-l-indigo-500">
+                        <div className="bg-white p-6 rounded-3xl border border-slate-200 border-l-4 border-l-indigo-500">
                             <p className="text-slate-500 text-[9px] font-black uppercase tracking-widest mb-1">Total Expense</p>
                             <h4 className="text-xl font-black text-slate-900">₹{summary.totalExpense.toLocaleString()}</h4>
                         </div>
-                        <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm border-l-4 border-l-emerald-500">
+                        <div className="bg-white p-6 rounded-3xl border border-slate-200 border-l-4 border-l-emerald-500">
                             <p className="text-slate-500 text-[9px] font-black uppercase tracking-widest mb-1">Total Paid</p>
                             <h4 className="text-xl font-black text-emerald-600">₹{summary.totalPaid.toLocaleString()}</h4>
                         </div>
-                        <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm border-l-4 border-l-orange-500">
+                        <div className="bg-white p-6 rounded-3xl border border-slate-200 border-l-4 border-l-orange-500">
                             <p className="text-slate-500 text-[9px] font-black uppercase tracking-widest mb-1">Pending Balance</p>
                             <h4 className="text-xl font-black text-orange-600">₹{summary.pendingBalance.toLocaleString()}</h4>
                         </div>
                     </div>
 
                     {/* Transaction Tabs */}
-                    <div className="bg-white rounded-[2.5rem] border border-slate-200 shadow-sm overflow-hidden">
+                    <div className="bg-white rounded-[2.5rem] border border-slate-200 overflow-hidden">
                         <div className="p-8 border-b border-slate-50 bg-slate-50/30">
                             <h4 className="text-lg font-black text-slate-900 flex items-center gap-2 uppercase tracking-tight">
                                 <FileText className="w-5 h-5 text-indigo-600" /> Transaction Timeline

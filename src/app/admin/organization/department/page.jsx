@@ -331,7 +331,7 @@ export default function DepartmentsPage() {
     };
     const pageNumbers = getPageNumbers();
     return (
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6 p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6 p-4 bg-white rounded-2xl border border-slate-200">
         <div className="text-sm font-medium text-slate-500">
           Showing <span className="font-bold text-slate-800">{total === 0 ? 0 : startIndex}-{endIndex}</span> of{' '}
           <span className="font-bold text-slate-800">{total}</span> departments
@@ -369,7 +369,7 @@ export default function DepartmentsPage() {
                   <button
                     onClick={() => handlePageChange(pageNum)}
                     className={`h-9 w-9 flex items-center justify-center text-sm font-bold border transition-colors rounded-xl ${page === pageNum
-                        ? "bg-indigo-600 border-indigo-600 text-white shadow-md shadow-indigo-500/20"
+                        ? "bg-indigo-600 border-indigo-600 text-white"
                         : "border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-indigo-600 hover:border-indigo-200"
                       }`}
                   >
@@ -536,7 +536,7 @@ export default function DepartmentsPage() {
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {departments.map((dept) => (
-                  <div key={dept._id} className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden hover:shadow-md transition-all flex flex-col group">
+                  <div key={dept._id} className="bg-white rounded-2xl border border-slate-200 overflow-hidden hover: transition-all flex flex-col group">
                     <div className="p-6 flex-1 space-y-4">
                       <div className="flex items-start justify-between">
                         <div className="flex items-center gap-3">
@@ -616,7 +616,7 @@ export default function DepartmentsPage() {
                       const permObj = availablePermissions.find(p => p.slug === permSlug);
                       const permLabel = permObj ? permObj.name : permSlug;
                       return (
-                        <span key={index} className="inline-flex items-center px-3 py-1 rounded-lg text-xs font-bold bg-white border border-slate-200 text-slate-700 shadow-sm">
+                        <span key={index} className="inline-flex items-center px-3 py-1 rounded-lg text-xs font-bold bg-white border border-slate-200 text-slate-700">
                           {permLabel}
                         </span>
                       );

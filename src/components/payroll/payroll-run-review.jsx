@@ -231,7 +231,7 @@ export function PayrollRunReview({ runId }) {
 
       {/* ATTENDANCE CHANGE ALERT */}
       {run.needsRecalculation && isDraft && (
-        <div className="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-lg flex items-start gap-4 shadow-sm animate-pulse">
+        <div className="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-lg flex items-start gap-4 animate-pulse">
           <div className="p-2 bg-amber-100 rounded-full">
             <RefreshCw className="w-6 h-6 text-amber-600" />
           </div>
@@ -263,7 +263,7 @@ export function PayrollRunReview({ runId }) {
              <button 
                onClick={handleRecalculate}
                disabled={processing || locking}
-               className="flex items-center gap-2 px-5 py-2.5 bg-slate-50 text-slate-700 border border-slate-200 hover:bg-slate-100 font-medium rounded-lg transition-colors shadow-sm"
+               className="flex items-center gap-2 px-5 py-2.5 bg-slate-50 text-slate-700 border border-slate-200 hover:bg-slate-100 font-medium rounded-lg transition-colors"
              >
                <Calculator className="w-4 h-4" />
                Recalculate
@@ -271,7 +271,7 @@ export function PayrollRunReview({ runId }) {
              <button 
                onClick={handleDelete}
                disabled={processing || locking}
-               className="flex items-center gap-2 px-5 py-2.5 bg-red-50 text-red-700 border border-red-200 hover:bg-red-100 font-medium rounded-lg transition-colors shadow-sm"
+               className="flex items-center gap-2 px-5 py-2.5 bg-red-50 text-red-700 border border-red-200 hover:bg-red-100 font-medium rounded-lg transition-colors"
              >
                <Trash2 className="w-4 h-4" />
                Delete Run
@@ -279,7 +279,7 @@ export function PayrollRunReview({ runId }) {
              <button 
                onClick={handleLock}
                disabled={locking || processing}
-               className="flex items-center gap-2 px-5 py-2.5 bg-amber-50 text-amber-700 border border-amber-200 hover:bg-amber-100 font-medium rounded-lg transition-colors shadow-sm"
+               className="flex items-center gap-2 px-5 py-2.5 bg-amber-50 text-amber-700 border border-amber-200 hover:bg-amber-100 font-medium rounded-lg transition-colors"
              >
                <Lock className="w-4 h-4" />
                Lock Payroll
@@ -291,7 +291,7 @@ export function PayrollRunReview({ runId }) {
            <button 
              onClick={handlePublish}
              disabled={publishing}
-             className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 text-white hover:bg-indigo-700 font-medium rounded-lg transition-colors shadow-sm"
+             className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 text-white hover:bg-indigo-700 font-medium rounded-lg transition-colors"
            >
              <Send className="w-4 h-4" />
              Publish to Employees
@@ -301,7 +301,7 @@ export function PayrollRunReview({ runId }) {
          {isPublished && (
             <button 
               onClick={() => setShowPayoutModal(true)}
-              className="flex items-center gap-2 px-5 py-2.5 bg-emerald-600 text-white hover:bg-emerald-700 font-medium rounded-lg transition-colors shadow-sm"
+              className="flex items-center gap-2 px-5 py-2.5 bg-emerald-600 text-white hover:bg-emerald-700 font-medium rounded-lg transition-colors"
             >
               <Banknote className="w-4 h-4" />
               Bank Payout
@@ -317,28 +317,28 @@ export function PayrollRunReview({ runId }) {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+        <div className="bg-white p-5 rounded-xl border border-slate-200">
           <div className="flex items-center gap-3 text-slate-600 mb-2">
             <Users className="w-5 h-5" />
             <span className="font-medium text-sm">Employees Paid</span>
           </div>
           <p className="text-2xl font-bold text-slate-900">{run.processedEmployees ?? 0}</p>
         </div>
-        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+        <div className="bg-white p-5 rounded-xl border border-slate-200">
           <div className="flex items-center gap-3 text-slate-600 mb-2">
             <DollarSign className="w-5 h-5" />
             <span className="font-medium text-sm">Gross Payout</span>
           </div>
           <p className="text-2xl font-bold text-slate-900">₹{run.totalGrossSalary?.toLocaleString('en-IN')}</p>
         </div>
-        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+        <div className="bg-white p-5 rounded-xl border border-slate-200">
           <div className="flex items-center gap-3 text-red-500 mb-2">
             <Calculator className="w-5 h-5" />
             <span className="font-medium text-sm">Total Deductions</span>
           </div>
           <p className="text-2xl font-bold text-red-600">₹{run.totalDeductions?.toLocaleString('en-IN')}</p>
         </div>
-        <div className="bg-gradient-to-br from-indigo-500 to-blue-600 p-5 rounded-xl shadow-sm text-white">
+        <div className="bg-gradient-to-br from-indigo-500 to-blue-600 p-5 rounded-xl text-white">
           <div className="flex items-center gap-3 text-indigo-100 mb-2">
             <FileText className="w-5 h-5" />
             <span className="font-medium text-sm">Net Payout</span>
@@ -348,7 +348,7 @@ export function PayrollRunReview({ runId }) {
       </div>
 
       {/* Generated Payslips Table */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden mt-8">
+      <div className="bg-white rounded-xl border border-slate-200 overflow-hidden mt-8">
         <div className="p-5 border-b border-slate-100">
            <h3 className="text-lg font-bold text-slate-900">Generated Payslips</h3>
         </div>

@@ -234,7 +234,7 @@ export default function ComplianceGenerator() {
               >
                 <ArrowLeft className="w-5 h-5" />
               </button>
-              <div className="w-11 h-11 bg-yellow-500 rounded-xl flex items-center justify-center shadow-sm">
+              <div className="w-11 h-11 bg-yellow-500 rounded-xl flex items-center justify-center">
                 <Shield className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -259,7 +259,7 @@ export default function ComplianceGenerator() {
 
       <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Progress Indicator */}
-        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm mb-8">
+        <div className="bg-white p-6 rounded-xl border border-slate-200 mb-8">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-slate-900">Report Generation Progress</h3>
             <span className="text-sm font-medium text-slate-600">{progress}% Complete</span>
@@ -293,7 +293,7 @@ export default function ComplianceGenerator() {
         <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
           {/* Report Configuration Sidebar */}
           <div className="xl:col-span-1 space-y-6">
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+            <div className="bg-white rounded-xl border border-slate-200">
               <div className="p-6 border-b border-slate-200">
                 <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                   <div className="w-8 h-8 bg-yellow-50 rounded-lg flex items-center justify-center border border-yellow-100">
@@ -379,7 +379,7 @@ export default function ComplianceGenerator() {
             </div>
 
             {/* Overall Status Card */}
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+            <div className="bg-white rounded-xl border border-slate-200">
               <div className="p-6 border-b border-slate-200">
                 <h3 className="text-lg font-semibold text-slate-900 flex items-center gap-2">
                   <TrendingUp className="w-5 h-5 text-green-600" />
@@ -434,7 +434,7 @@ export default function ComplianceGenerator() {
           {/* Main Form Content */}
           <div className="xl:col-span-3 space-y-8">
             {/* Compliance Items */}
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+            <div className="bg-white rounded-xl border border-slate-200">
               <div className="p-6 border-b border-slate-200">
                 <div className="flex justify-between items-center">
                   <div>
@@ -545,7 +545,7 @@ export default function ComplianceGenerator() {
             </div>
 
             {/* Attachments & Notes */}
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+            <div className="bg-white rounded-xl border border-slate-200">
               <div className="p-6 border-b border-slate-200">
                 <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                   <div className="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center border border-green-100">
@@ -652,7 +652,7 @@ export default function ComplianceGenerator() {
                   type="submit"
                   onClick={handleSubmit}
                   disabled={loading}
-                  className="inline-flex items-center gap-2 px-8 py-3 bg-yellow-500 hover:bg-yellow-600 disabled:bg-yellow-300 text-white rounded-lg shadow-sm transition-colors font-semibold disabled:cursor-not-allowed"
+                  className="inline-flex items-center gap-2 px-8 py-3 bg-yellow-500 hover:bg-yellow-600 disabled:bg-yellow-300 text-white rounded-lg transition-colors font-semibold disabled:cursor-not-allowed"
                 >
                   {loading ? (
                     <>

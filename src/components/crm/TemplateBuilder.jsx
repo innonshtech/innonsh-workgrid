@@ -69,7 +69,7 @@ export default function TemplateBuilder() {
     <div className="p-6 max-w-7xl mx-auto flex gap-6">
       {/* Main Editor Section */}
       <div className="flex-1 space-y-6">
-        <div className="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-slate-100">
+        <div className="flex justify-between items-center bg-white p-4 rounded-xl border border-slate-200">
           <button onClick={() => router.back()} className="flex items-center text-slate-500 hover:text-slate-800">
             <ArrowLeft className="h-5 w-5 mr-2" /> Back
           </button>
@@ -83,7 +83,7 @@ export default function TemplateBuilder() {
           </button>
         </div>
 
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 space-y-4">
+        <div className="bg-white p-6 rounded-xl border border-slate-200 space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Template Name</label>
@@ -150,7 +150,7 @@ export default function TemplateBuilder() {
 
       {/* Right Sidebar - Variables */}
       <div className="w-80 space-y-4">
-        <div className="bg-white p-5 rounded-xl shadow-sm border border-slate-100 sticky top-6">
+        <div className="bg-white p-5 rounded-xl border border-slate-200 sticky top-6">
           <div className="flex items-center gap-2 mb-4 text-slate-800">
             <Tags className="h-5 w-5 text-indigo-500" />
             <h3 className="font-bold text-lg">Dynamic Variables</h3>

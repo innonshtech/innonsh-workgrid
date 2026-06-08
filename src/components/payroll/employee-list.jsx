@@ -414,11 +414,11 @@ export default function EmployeeList() {
   const EmployeeCard = ({ employee }) => {
     const DeptIcon = getDepartmentIcon(employee.jobDetails?.department);
     return (
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+      <div className="bg-white rounded-xl border border-slate-200 overflow-hidden hover: transition-">
         <div className="p-6">
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-indigo-600 rounded-xl flex items-center justify-center shadow-sm shadow-indigo-200">
+              <div className="w-12 h-12 bg-indigo-600 rounded-xl flex items-center justify-center">
                 <span className="text-white font-semibold text-sm">
                   {getInitials(employee.personalDetails?.firstName, employee.personalDetails?.lastName)}
                 </span>
@@ -592,7 +592,7 @@ export default function EmployeeList() {
                   <button
                     onClick={() => handlePageChange(page)}
                     className={`h-9 w-9 flex items-center justify-center text-sm font-medium border transition-colors rounded-md ${currentPage === page
-                      ? "bg-indigo-600 border-indigo-600 text-white hover:bg-indigo-700 shadow-sm shadow-indigo-200"
+                      ? "bg-indigo-600 border-indigo-600 text-white hover:bg-indigo-700"
                       : "border-slate-300 text-slate-600 hover:bg-slate-50"
                       }`}
                   >
@@ -727,7 +727,7 @@ export default function EmployeeList() {
                   <div className="flex bg-slate-100 rounded-lg p-1">
                     <button
                       onClick={() => setViewMode('grid')}
-                      className={`p-2 rounded-md transition-all duration-200 ${viewMode === 'grid' ? 'bg-white shadow-sm text-indigo-600' : 'text-slate-500 hover:text-slate-700'
+                      className={`p-2 rounded-md transition-all duration-200 ${viewMode === 'grid' ? 'bg-white text-indigo-600' : 'text-slate-500 hover:text-slate-700'
                         }`}
                       title="Grid view"
                     >
@@ -735,7 +735,7 @@ export default function EmployeeList() {
                     </button>
                     <button
                       onClick={() => setViewMode('table')}
-                      className={`p-2 rounded-md transition-all duration-200 ${viewMode === 'table' ? 'bg-white shadow-sm text-indigo-600' : 'text-slate-500 hover:text-slate-700'
+                      className={`p-2 rounded-md transition-all duration-200 ${viewMode === 'table' ? 'bg-white text-indigo-600' : 'text-slate-500 hover:text-slate-700'
                         }`}
                       title="Table view"
                     >
@@ -858,7 +858,7 @@ export default function EmployeeList() {
             {loading ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {[...Array(6)].map((_, i) => (
-                  <div key={i} className="bg-white rounded-xl border border-slate-200 p-6 space-y-4 shadow-sm">
+                  <div key={i} className="bg-white rounded-xl border border-slate-200 p-6 space-y-4">
                     <div className="flex items-center gap-3">
                       <Skeleton className="w-12 h-12 rounded-xl" />
                       <div className="space-y-2 flex-1">
@@ -1083,7 +1083,7 @@ export default function EmployeeList() {
       {/* Lifecycle Modal */}
       {lifecycleModal.isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden border border-slate-200">
+          <div className="bg-white rounded-2xl w-full max-w-md overflow-hidden border border-slate-200">
             <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center text-emerald-600">
@@ -1112,7 +1112,7 @@ export default function EmployeeList() {
                       type="button"
                       onClick={() => setLifecycleModal({ ...lifecycleModal, action })}
                       className={`py-2 px-3 text-xs font-bold rounded-lg border transition-all ${lifecycleModal.action === action
-                        ? 'bg-indigo-600 border-indigo-600 text-white shadow-md'
+                        ? 'bg-indigo-600 border-indigo-600 text-white'
                         : 'bg-white border-slate-200 text-slate-600 hover:border-indigo-400 hover:text-indigo-600'
                         }`}
                     >
@@ -1219,7 +1219,7 @@ export default function EmployeeList() {
                 <button
                   type="submit"
                   disabled={lifecycleLoading}
-                  className="flex-[2] py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg shadow-indigo-100 transition-all flex items-center justify-center gap-2"
+                  className="flex-[2] py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2"
                 >
                   {lifecycleLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle2 className="w-4 h-4" />}
                   Confirm {lifecycleModal.action}

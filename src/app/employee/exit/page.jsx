@@ -44,11 +44,21 @@ export default function ExitPage() {
 
     return (
         <div className="p-6 space-y-6">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-4 mt-2">
+                <div className="space-y-1">
+                    <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+                        Exit Management
+                    </h1>
+                    <p className="text-slate-500 text-sm mt-1 max-w-xl">
+                        Manage resignation requests, clearance processes and exit status tracking.
+                    </p>
+                </div>
+            </div>
             {user?.role === "employee" && (
                 <div className="flex justify-end">
                     <button
                         onClick={() => setIsCreateModalOpen(true)}
-                        className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all font-medium shadow-sm hover:shadow-red-200"
+                        className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all font-medium hover:"
                     >
                         <LogOut size={18} />
                         {t("submitResignation")}
@@ -56,7 +66,7 @@ export default function ExitPage() {
                 </div>
             )}
 
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
                 <div className="p-4 border-b border-slate-200 flex items-center gap-4">
                     <div className="relative flex-1 max-w-sm">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />

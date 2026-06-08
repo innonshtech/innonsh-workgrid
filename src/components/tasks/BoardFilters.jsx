@@ -23,7 +23,7 @@ const BoardFilters = ({
     };
 
     return (
-        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 bg-white/80 backdrop-blur-xl p-4 rounded-2xl border border-slate-100 shadow-sm">
+        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 bg-white/80 backdrop-blur-xl p-4 rounded-2xl border border-slate-200">
             {/* Left Side: Search + Filters */}
             <div className="flex flex-wrap items-center gap-3 flex-1">
                 {/* Search */}
@@ -104,7 +104,7 @@ const BoardFilters = ({
                         onClick={() => setViewMode(mode)}
                         className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-200 ${
                             viewMode === mode
-                                ? "bg-white text-indigo-700 shadow-sm"
+                                ? "bg-white text-indigo-700"
                                 : "text-slate-500 hover:text-slate-700"
                         }`}
                         title={label}

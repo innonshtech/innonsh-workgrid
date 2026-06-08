@@ -87,10 +87,10 @@ export default function EmployeeAttendanceInline({
   }, [viewMode, selectedMonth, selectedYear, selectedDate, employeeData]);
 
   return (
-    <div className="p-4 sm:p-6 bg-white overflow-x-auto border-t border-slate-100">
+    <div className="px-4 py-4 bg-white overflow-x-auto">
       {viewMode === 'monthly' ? (
         /* Monthly Grid Calendar */
-        <div className="grid grid-cols-7 gap-2 sm:gap-3 text-center min-w-[700px]">
+        <div className="grid grid-cols-7 gap-3 text-center min-w-[600px]">
           {/* Weekday Names */}
           {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((dayName) => (
             <div key={dayName} className="text-[10px] font-black uppercase tracking-wider text-slate-400 py-2">
@@ -102,16 +102,16 @@ export default function EmployeeAttendanceInline({
           {calendarCells.map((cell, idx) => (
             <div
               key={idx}
-              className={`min-h-[100px] p-2 sm:p-3 rounded-2xl border flex flex-col justify-between transition-all ${
+              className={`min-h-[90px] p-3 rounded-2xl border flex flex-col justify-between transition-all ${
                 cell.day ? getCellStatusClass(cell.record) : "bg-slate-50/20 border-transparent cursor-default"
               }`}
             >
               {cell.day ? (
                 <>
                   <div className="flex justify-between items-start">
-                    <span className="text-xs font-black leading-none">{cell.monthName} {cell.day}</span>
+                    <span className="text-xs font-black leading-none">{cell.day}</span>
                     {cell.record && (
-                      <span className="text-[8px] font-bold uppercase tracking-tighter opacity-80 hidden sm:inline">
+                      <span className="text-[8px] font-bold uppercase tracking-tighter opacity-80">
                         {cell.record.status}
                       </span>
                     )}
@@ -130,14 +130,14 @@ export default function EmployeeAttendanceInline({
                         </p>
                       )}
                       {cell.record.totalHours && (
-                        <p className="text-[9px] font-bold leading-none text-blue-500 mt-1">
+                        <p className="text-[8px] font-bold leading-none text-indigo-500 mt-1">
                           {parseFloat(cell.record.totalHours).toFixed(1)}h logged
                         </p>
                       )}
                     </div>
                   ) : (
                     <div className="text-left mt-2">
-                      <p className="text-[9px] text-slate-300 italic font-medium leading-none">No punch logs</p>
+                      <p className="text-[8px] text-slate-300 italic font-medium leading-none">No punch logs</p>
                     </div>
                   )}
                 </>
@@ -147,11 +147,11 @@ export default function EmployeeAttendanceInline({
         </div>
       ) : (
         /* Weekly Cards */
-        <div className="grid grid-cols-7 gap-3 min-w-[800px]">
+        <div className="grid grid-cols-7 gap-3 min-w-[600px]">
           {calendarCells.map((cell, idx) => (
             <div
               key={idx}
-              className={`min-h-[120px] p-3 rounded-2xl border flex flex-col justify-between transition-all ${
+              className={`min-h-[90px] p-3 rounded-2xl border flex flex-col justify-between transition-all ${
                 getCellStatusClass(cell.record)
               }`}
             >
@@ -165,28 +165,28 @@ export default function EmployeeAttendanceInline({
               </div>
 
               {cell.record ? (
-                <div className="text-left mt-4 space-y-1">
+                <div className="text-left mt-2 space-y-0.5">
                   {cell.record.checkIn && (
-                    <p className="text-[10px] font-semibold leading-none text-slate-600">
+                    <p className="text-[9px] font-semibold leading-none text-slate-600">
                       In: {formatTime(cell.record.checkIn)}
                     </p>
                   )}
                   {cell.record.checkOut && (
-                    <p className="text-[10px] font-semibold leading-none text-slate-600">
+                    <p className="text-[9px] font-semibold leading-none text-slate-600">
                       Out: {formatTime(cell.record.checkOut)}
                     </p>
                   )}
                   {cell.record.totalHours && (
-                    <div className="pt-1 mt-1">
-                      <p className="text-[10px] font-black text-blue-500">
+                    <div className="pt-0.5">
+                      <p className="text-[9px] font-black text-indigo-500">
                         {parseFloat(cell.record.totalHours).toFixed(1)}h logged
                       </p>
                     </div>
                   )}
                 </div>
               ) : (
-                <div className="text-left mt-4">
-                  <p className="text-[10px] text-slate-300 italic font-medium">No punch logs</p>
+                <div className="text-left mt-2">
+                  <p className="text-[9px] text-slate-300 italic font-medium">No punch logs</p>
                 </div>
               )}
             </div>

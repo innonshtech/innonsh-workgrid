@@ -97,7 +97,7 @@ export default function StatusPage() {
                 
                 {/* Header */}
                 <div className="text-center space-y-4">
-                    <div className="w-16 h-16 rounded-3xl bg-indigo-600 flex items-center justify-center text-white shadow-xl shadow-indigo-200 mx-auto">
+                    <div className="w-16 h-16 rounded-3xl bg-indigo-600 flex items-center justify-center text-white mx-auto">
                         <Search className="w-8 h-8" />
                     </div>
                     <h1 className="text-4xl font-black text-slate-900 tracking-tighter">Track Your Application</h1>
@@ -105,7 +105,7 @@ export default function StatusPage() {
                 </div>
 
                 {/* Form */}
-                <form onSubmit={handleCheck} className="bg-white p-6 md:p-8 rounded-[40px] shadow-2xl shadow-slate-200/50 border border-slate-100 flex flex-col md:flex-row gap-4">
+                <form onSubmit={handleCheck} className="bg-white p-6 md:p-8 rounded-[40px] border border-slate-200 flex flex-col md:flex-row gap-4">
                     <div className="flex-1 relative group">
                         <KeyRound className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
                         <input
@@ -155,7 +155,7 @@ export default function StatusPage() {
                         <motion.div
                             initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="bg-white rounded-[40px] shadow-2xl shadow-slate-200/50 border border-slate-100 overflow-hidden"
+                            className="bg-white rounded-[40px] border border-slate-200 overflow-hidden"
                         >
                             {/* Profile Header */}
                             <div className="p-8 border-b border-slate-100 bg-gradient-to-r from-slate-50 to-white flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
@@ -223,7 +223,7 @@ export default function StatusPage() {
                                             <button
                                                 onClick={() => handleOfferResponse('accept')}
                                                 disabled={responding}
-                                                className="h-14 px-10 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-black uppercase tracking-widest text-[11px] transition-all flex items-center gap-2 disabled:opacity-50 shadow-lg shadow-emerald-200"
+                                                className="h-14 px-10 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-black uppercase tracking-widest text-[11px] transition-all flex items-center gap-2 disabled:opacity-50"
                                             >
                                                 {responding ? <Loader2 className="w-4 h-4 animate-spin" /> : <ThumbsUp className="w-4 h-4" />}
                                                 Accept Offer
@@ -311,8 +311,8 @@ export default function StatusPage() {
                                                     
                                                     <div className={`w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 border-2 transition-colors duration-500 ${
                                                         isPast ? 'bg-indigo-500 border-indigo-500 text-white' : 
-                                                        isCurrent && !isRejected && !isDeclined ? 'bg-white border-indigo-500 text-indigo-600 shadow-lg shadow-indigo-100' :
-                                                        isCurrent && isConfirmed ? 'bg-emerald-500 border-emerald-500 text-white shadow-lg shadow-emerald-100' :
+                                                        isCurrent && !isRejected && !isDeclined ? 'bg-white border-indigo-500 text-indigo-600' :
+                                                        isCurrent && isConfirmed ? 'bg-emerald-500 border-emerald-500 text-white' :
                                                         'bg-white border-slate-200 text-slate-300'
                                                     }`}>
                                                         {isPast || (isCurrent && isConfirmed) ? <CheckCircle2 className="w-5 h-5" /> : <div className={`w-2.5 h-2.5 rounded-full ${isCurrent ? 'bg-indigo-500 animate-pulse' : 'bg-slate-200'}`} />}

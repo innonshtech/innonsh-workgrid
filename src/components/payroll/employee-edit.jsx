@@ -2499,7 +2499,7 @@ export default function EmployeeEdit({ employeeId }) {
 
         <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
           {/* Progress Skeleton */}
-          <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+          <div className="bg-white p-6 rounded-xl border border-slate-200">
             <div className="flex justify-between mb-4">
               <Skeleton className="h-6 w-32" />
               <Skeleton className="h-6 w-16" />
@@ -2512,7 +2512,7 @@ export default function EmployeeEdit({ employeeId }) {
 
           {/* Sections Skeleton */}
           {[1, 2, 3].map((i) => (
-            <div key={i} className="bg-white rounded-xl border border-slate-200 shadow-sm">
+            <div key={i} className="bg-white rounded-xl border border-slate-200">
               <div className="p-6 border-b border-slate-200">
                 <div className="flex items-center gap-3 mb-2">
                   <Skeleton className="w-8 h-8 rounded-lg" />
@@ -2553,7 +2553,7 @@ export default function EmployeeEdit({ employeeId }) {
                 >
                   <ArrowLeft className="w-5 h-5" />
                 </button>
-                <div className="w-11 h-11 bg-yellow-500 rounded-xl flex items-center justify-center shadow-sm">
+                <div className="w-11 h-11 bg-yellow-500 rounded-xl flex items-center justify-center">
                   <Edit3 className="w-6 h-6 text-white" />
                 </div>
                 <div>
@@ -2578,7 +2578,7 @@ export default function EmployeeEdit({ employeeId }) {
           </div>
         </div>
         {/* Progress Indicator */}
-        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm mb-8">
+        <div className="bg-white p-6 rounded-xl border border-slate-200 mb-8">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-slate-900">
               Form Completion
@@ -2667,7 +2667,7 @@ export default function EmployeeEdit({ employeeId }) {
           </div>
         </div>
         {/* Organization Details */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm mb-8">
+        <div className="bg-white rounded-xl border border-slate-200 mb-8">
           <div className="p-6 border-b border-slate-200">
             <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
               <div className="w-8 h-8 bg-slate-50 rounded-lg flex items-center justify-center border border-blue-100">
@@ -2829,7 +2829,7 @@ export default function EmployeeEdit({ employeeId }) {
           </div>
         </div>
         {/* Personal Details */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm mb-8">
+        <div className="bg-white rounded-xl border border-slate-200 mb-8">
           <div className="p-6 border-b border-slate-200">
             <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
               <div className="w-8 h-8 bg-yellow-50 rounded-lg flex items-center justify-center border border-yellow-100">
@@ -3177,7 +3177,7 @@ export default function EmployeeEdit({ employeeId }) {
           </div>
         </div>
         {/* Organization Details */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm mb-8">
+        <div className="bg-white rounded-xl border border-slate-200 mb-8">
           <div className="p-6 border-b border-slate-200">
             <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
               <div className="w-8 h-8 bg-slate-50 rounded-lg flex items-center justify-center border border-blue-100">
@@ -3312,7 +3312,7 @@ export default function EmployeeEdit({ employeeId }) {
           </div>
         </div>
         {/* Job Details */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm mb-8">
+        <div className="bg-white rounded-xl border border-slate-200 mb-8">
           <div className="p-6 border-b border-slate-200">
             <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
               <div className="w-8 h-8 bg-slate-50 rounded-lg flex items-center justify-center border border-blue-100">
@@ -3417,7 +3417,7 @@ export default function EmployeeEdit({ employeeId }) {
         </div>
 
         {/* Financial Information */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm mb-8">
+        <div className="bg-white rounded-xl border border-slate-200 mb-8">
           <div className="p-6 border-b border-slate-200">
             <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
               <div className="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center border border-green-100">
@@ -3633,7 +3633,7 @@ export default function EmployeeEdit({ employeeId }) {
           </div>
         </div>
         {/* Payslip Structure */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm mb-8">
+        <div className="bg-white rounded-xl border border-slate-200 mb-8">
           <div className="p-6 border-b border-slate-200">
             <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
               <div className="w-8 h-8 bg-purple-50 rounded-lg flex items-center justify-center border border-purple-100">
@@ -3659,7 +3659,7 @@ export default function EmployeeEdit({ employeeId }) {
           </div>
         </div>
         {/* Additional Information & Documents */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+        <div className="bg-white rounded-xl border border-slate-200">
           <div className="p-6 border-b border-slate-200">
             <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
               <div className="w-8 h-8 bg-purple-50 rounded-lg flex items-center justify-center border border-purple-100">
@@ -4077,7 +4077,7 @@ export default function EmployeeEdit({ employeeId }) {
           <button
             onClick={handleSubmit}
             disabled={saving || fetchLoading}
-            className="inline-flex items-center gap-2 px-8 py-3 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg font-semibold transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            className="inline-flex items-center gap-2 px-8 py-3 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {saving ? (
               <>

@@ -68,7 +68,7 @@ const ResourceUtilization = () => {
     ) || [];
 
     return (
-        <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/50 overflow-hidden flex flex-col h-full">
+        <div className="bg-white rounded-[2.5rem] border border-slate-200 overflow-hidden flex flex-col h-full">
             <div className="p-8 pb-4 space-y-6">
                 <div className="flex items-center justify-between">
                     <div className="space-y-1">
@@ -101,10 +101,10 @@ const ResourceUtilization = () => {
             <div className="flex-1 overflow-y-auto px-8 pb-8 custom-scrollbar">
                 <div className="space-y-3">
                     {filteredReport.map((emp) => (
-                        <div key={emp.employeeId} className="group p-4 bg-slate-50/50 hover:bg-white border border-transparent hover:border-slate-100 hover:shadow-lg hover:shadow-slate-200/40 rounded-3xl transition-all duration-300">
+                        <div key={emp.employeeId} className="group p-4 bg-slate-50/50 hover:bg-white border border-transparent hover:border-slate-200 hover: hover: rounded-3xl transition-all duration-300">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-2xl bg-white border border-slate-100 flex items-center justify-center font-bold text-indigo-600 shadow-sm group-hover:scale-110 transition-transform">
+                                    <div className="w-10 h-10 rounded-2xl bg-white border border-slate-200 flex items-center justify-center font-bold text-indigo-600 group-hover:scale-110 transition-transform">
                                         {emp.name.charAt(0)}
                                     </div>
                                     <div>

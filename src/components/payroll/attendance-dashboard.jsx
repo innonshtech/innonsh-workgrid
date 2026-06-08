@@ -41,6 +41,7 @@ import EmployeeDetailsDrawer from "./attendance/EmployeeDetailsDrawer";
 import { useSession } from "@/context/SessionContext";
 import { exportToExcel } from "@/utils/exportToExcel";
 import MarkAttendance from "./attendance/MarkAttendance";
+import EmployeeAttendanceInline from "./attendance/EmployeeAttendanceInline";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -1176,15 +1177,15 @@ export default function AttendanceDashboard() {
                         </div>
                       </div>
                     </div>
-
                     {expandedOrgs[org.name] && (
                       <div className="p-6 space-y-4">
                         {org.employees.map((empData) => (
-                          <div key={empData.employee._id} className="border border-slate-200 rounded-xl overflow-hidden">
-                            <div
-                              onClick={() => toggleEmployee(empData.employee._id)}
-                              className="px-4 py-3 bg-slate-50 hover:bg-slate-100 cursor-pointer transition-colors"
-                            >
+                          <div 
+                            key={empData.employee._id} 
+                            onClick={() => toggleEmployee(empData.employee._id)}
+                            className="border border-slate-200 rounded-xl overflow-hidden cursor-pointer"
+                          >
+                            <div className="px-4 py-3 bg-slate-50 hover:bg-slate-100 transition-colors">
                               <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-3">
                                   <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-lg flex items-center justify-center">
@@ -1216,48 +1217,14 @@ export default function AttendanceDashboard() {
                             </div>
 
                             {expandedEmployees[empData.employee._id] && (
-                              <div className="p-4 bg-white overflow-x-auto">
-                                <table className="w-full text-sm">
-                                  <thead>
-                                    <tr className="border-b border-slate-200">
-                                      <th className="text-left py-2 px-3 text-xs font-semibold text-slate-600">Date</th>
-                                      <th className="text-left py-2 px-3 text-xs font-semibold text-slate-600">Status</th>
-                                      <th className="text-left py-2 px-3 text-xs font-semibold text-slate-600">In Time</th>
-                                      <th className="text-left py-2 px-3 text-xs font-semibold text-slate-600">Out Time</th>
-                                      <th className="text-left py-2 px-3 text-xs font-semibold text-slate-600">Total Hrs</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody className="divide-y divide-slate-100">
-                                    {(() => {
-                                      const curr = new Date(selectedDate);
-                                      const day = curr.getDay();
-                                      const diff = curr.getDate() - day + (day === 0 ? -6 : 1);
-                                      return Array.from({ length: 7 }, (_, i) => {
-                                        const d = new Date(new Date(selectedDate).setDate(diff + i));
-                                        const dayNum = d.getDate();
-                                        const record = empData.records[dayNum];
-                                        const isSunday = d.getDay() === 0;
-                                        
-                                        return (
-                                          <tr key={i} className={`hover:bg-slate-50 ${isSunday ? "bg-red-50" : ""}`}>
-                                            <td className="py-2 px-3">
-                                              <div className="flex flex-col">
-                                                <span className="font-medium text-slate-900">{d.toLocaleDateString('en-US', { day: 'numeric', month: 'short' })}</span>
-                                                <span className="text-[10px] text-slate-500 uppercase">{d.toLocaleDateString('en-US', { weekday: 'short' })}</span>
-                                              </div>
-                                            </td>
-                                            <td className="py-2 px-3">{record ? getStatusBadge(record.status) : <span className="text-xs text-slate-400">-</span>}</td>
-                                            <td className="py-2 px-3 text-slate-700">{record?.checkIn ? new Date(record.checkIn).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }) : "-"}</td>
-                                            <td className="py-2 px-3 text-slate-700">{record?.checkOut ? new Date(record.checkOut).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }) : "-"}</td>
-                                            <td className="py-2 px-3">
-                                              {record?.totalHours ? <span className="font-medium text-blue-700">{record.totalHours}h</span> : <span className="text-xs text-slate-400">-</span>}
-                                            </td>
-                                          </tr>
-                                        );
-                                      });
-                                    })()}
-                                  </tbody>
-                                </table>
+                              <div className="bg-slate-50 border-t border-slate-100 p-1">
+                                <EmployeeAttendanceInline 
+                                  employeeData={empData}
+                                  viewMode={viewMode}
+                                  selectedMonth={selectedMonth}
+                                  selectedYear={selectedYear}
+                                  selectedDate={selectedDate}
+                                />
                               </div>
                             )}
                           </div>
@@ -1375,9 +1342,7 @@ export default function AttendanceDashboard() {
                               className="border border-slate-200 rounded-xl overflow-hidden"
                             >
                               <div
-                                onClick={() =>
-                                  toggleEmployee(empData.employee._id)
-                                }
+                                onClick={() => toggleEmployee(empData.employee._id)}
                                 className="px-4 py-3 bg-slate-50 hover:bg-slate-100 cursor-pointer transition-colors"
                               >
                                 <div className="flex items-center justify-between">
@@ -1437,175 +1402,14 @@ export default function AttendanceDashboard() {
                               </div>
 
                               {expandedEmployees[empData.employee._id] && (
-                                <div className="p-4 bg-white">
-                                  <div className="overflow-x-auto">
-                                    <table className="w-full text-sm">
-                                      <thead>
-                                        <tr className="border-b border-slate-200">
-                                          <th className="text-left py-2 px-3 text-xs font-semibold text-slate-600">
-                                            Day
-                                          </th>
-                                          <th className="text-left py-2 px-3 text-xs font-semibold text-slate-600">
-                                            Status
-                                          </th>
-                                          <th className="text-left py-2 px-3 text-xs font-semibold text-slate-600">
-                                            In Time
-                                          </th>
-                                          <th className="text-left py-2 px-3 text-xs font-semibold text-slate-600">
-                                            Out Time
-                                          </th>
-                                          <th className="text-left py-2 px-3 text-xs font-semibold text-slate-600">
-                                            Total Hrs
-                                          </th>
-                                          <th className="text-left py-2 px-3 text-xs font-semibold text-slate-600">
-                                            Day Type
-                                          </th>
-                                          <th className="text-left py-2 px-3 text-xs font-semibold text-slate-600">
-                                            Overtime
-                                          </th>
-                                        </tr>
-                                      </thead>
-                                      <tbody className="divide-y divide-slate-100">
-                                        {Array.from(
-                                          { length: daysInMonth },
-                                          (_, i) => i + 1
-                                        ).map((day) => {
-                                          const record = empData.records[day];
-                                          const date = new Date(
-                                            selectedYear,
-                                            selectedMonth - 1,
-                                            day
-                                          );
-                                          const dayName =
-                                            date.toLocaleDateString("en-US", {
-                                              weekday: "short",
-                                            });
-                                          const isSunday = date.getDay() === 0;
-
-                                          return (
-                                            <tr
-                                              key={day}
-                                              className={`hover:bg-slate-50 ${isSunday ? "bg-red-50" : ""
-                                                }`}
-                                            >
-                                              <td className="py-2 px-3">
-                                                <div className="flex items-center gap-2">
-                                                  <span className="font-medium text-slate-900">
-                                                    {day}
-                                                  </span>
-                                                  <span className="text-xs text-slate-500">
-                                                    {dayName}
-                                                  </span>
-                                                </div>
-                                              </td>
-                                              <td className="py-2 px-3">
-                                                {record ? (
-                                                  getStatusBadge(record.status)
-                                                ) : (
-                                                  <span className="text-xs text-slate-400">
-                                                    -
-                                                  </span>
-                                                )}
-                                              </td>
-                                              <td className="py-2 px-3 text-slate-700">
-                                                {record?.checkIn
-                                                  ? new Date(
-                                                    record.checkIn
-                                                  ).toLocaleTimeString(
-                                                    "en-US",
-                                                    {
-                                                      hour: "2-digit",
-                                                      minute: "2-digit",
-                                                    }
-                                                  )
-                                                  : "-"}
-                                              </td>
-                                              <td className="py-2 px-3 text-slate-700">
-                                                {record?.checkOut
-                                                  ? new Date(
-                                                    record.checkOut
-                                                  ).toLocaleTimeString(
-                                                    "en-US",
-                                                    {
-                                                      hour: "2-digit",
-                                                      minute: "2-digit",
-                                                    }
-                                                  )
-                                                  : "-"}
-                                              </td>
-                                              <td className="py-2 px-3">
-                                                {record?.totalHours ? (
-                                                  <span className="font-medium text-blue-700">
-                                                    {record.totalHours}h
-                                                  </span>
-                                                ) : (
-                                                  <span className="text-xs text-slate-400">
-                                                    -
-                                                  </span>
-                                                )}
-                                              </td>
-                                              <td className="py-2 px-3">
-                                                {record?.dayType ? (
-                                                  <span
-                                                    className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${record.dayType === "Full"
-                                                      ? "bg-green-100 text-green-800"
-                                                      : "bg-yellow-100 text-yellow-800"
-                                                      }`}
-                                                  >
-                                                    {record.dayType} Day
-                                                  </span>
-                                                ) : (
-                                                  <span className="text-xs text-slate-400">
-                                                    -
-                                                  </span>
-                                                )}
-                                              </td>
-                                              <td className="py-2 px-3">
-                                                {record?.overtimeHours &&
-                                                  record.overtimeHours > 0 ? (
-                                                  <span className="font-medium text-purple-700">
-                                                    {record.overtimeHours}h
-                                                  </span>
-                                                ) : (
-                                                  <span className="text-xs text-slate-400">
-                                                    -
-                                                  </span>
-                                                )}
-                                              </td>
-                                            </tr>
-                                          );
-                                        })}
-                                      </tbody>
-                                      <tfoot>
-                                        <tr className="border-t-2 border-slate-300 bg-slate-50 font-semibold">
-                                          <td
-                                            className="py-3 px-3 text-slate-900"
-                                            colSpan="2"
-                                          >
-                                            Total
-                                          </td>
-                                          <td className="py-3 px-3 text-green-700">
-                                            {empData.stats.totalPresent} days
-                                          </td>
-                                          <td className="py-3 px-3 text-red-700">
-                                            {empData.stats.totalAbsent} days
-                                          </td>
-                                          <td className="py-3 px-3 text-blue-700">
-                                            {empData.stats.totalHours.toFixed(
-                                              1
-                                            )}
-                                            h
-                                          </td>
-                                          <td className="py-3 px-3 text-purple-700">
-                                            {empData.stats.totalOvertime.toFixed(
-                                              1
-                                            )}
-                                            h
-                                          </td>
-                                        </tr>
-                                      </tfoot>
-                                    </table>
-                                  </div>
+                                <div className="bg-slate-50 border-t border-slate-100 p-1">
+                                  <EmployeeAttendanceInline 
+                                    employeeData={empData}
+                                    viewMode={viewMode}
+                                    selectedMonth={selectedMonth}
+                                    selectedYear={selectedYear}
+                                    selectedDate={selectedDate}
+                                  />
                                 </div>
                               )}
                             </div>
@@ -1642,7 +1446,7 @@ export default function AttendanceDashboard() {
                         className="border border-slate-200 rounded-xl overflow-hidden"
                       >
                         <div
-                          onClick={() => toggleEmployee(empData.employee._id)}
+                          onClick={() => handleOpenCalendarModal(empData)}
                           className="px-4 py-3 bg-slate-50 hover:bg-slate-100 cursor-pointer transition-colors"
                         >
                           <div className="flex items-center justify-between">
@@ -1700,126 +1504,14 @@ export default function AttendanceDashboard() {
                         </div>
 
                         {expandedEmployees[empData.employee._id] && (
-                          <div className="p-4 bg-white">
-                            <div className="overflow-x-auto">
-                              <table className="w-full text-sm">
-                                <thead>
-                                  <tr className="border-b border-slate-200">
-                                    <th className="text-left py-2 px-3 text-xs font-semibold text-slate-600">
-                                      Day
-                                    </th>
-                                    <th className="text-left py-2 px-3 text-xs font-semibold text-slate-600">
-                                      Status
-                                    </th>
-                                    <th className="text-left py-2 px-3 text-xs font-semibold text-slate-600">
-                                      In Time
-                                    </th>
-                                    <th className="text-left py-2 px-3 text-xs font-semibold text-slate-600">
-                                      Out Time
-                                    </th>
-                                    <th className="text-left py-2 px-3 text-xs font-semibold text-slate-600">
-                                      Total Hrs
-                                    </th>
-                                  </tr>
-                                </thead>
-                                <tbody className="divide-y divide-slate-100">
-                                  {Array.from(
-                                    { length: daysInMonth },
-                                    (_, i) => i + 1
-                                  ).map((day) => {
-                                    const record = empData.records[day];
-                                    const date = new Date(
-                                      selectedYear,
-                                      selectedMonth - 1,
-                                      day
-                                    );
-                                    const dayName = date.toLocaleDateString(
-                                      "en-US",
-                                      { weekday: "short" }
-                                    );
-                                    const isSunday = date.getDay() === 0;
-
-                                    return (
-                                      <tr
-                                        key={day}
-                                        className={`hover:bg-slate-50 ${isSunday ? "bg-red-50" : ""
-                                          }`}
-                                      >
-                                        <td className="py-2 px-3">
-                                          <div className="flex items-center gap-2">
-                                            <span className="font-medium text-slate-900">
-                                              {day}
-                                            </span>
-                                            <span className="text-xs text-slate-500">
-                                              {dayName}
-                                            </span>
-                                          </div>
-                                        </td>
-                                        <td className="py-2 px-3">
-                                          {record ? (
-                                            getStatusBadge(record.status)
-                                          ) : (
-                                            <span className="text-xs text-slate-400">
-                                              -
-                                            </span>
-                                          )}
-                                        </td>
-                                        <td className="py-2 px-3 text-slate-700">
-                                          {record?.checkIn
-                                            ? new Date(
-                                              record.checkIn
-                                            ).toLocaleTimeString("en-US", {
-                                              hour: "2-digit",
-                                              minute: "2-digit",
-                                            })
-                                            : "-"}
-                                        </td>
-                                        <td className="py-2 px-3 text-slate-700">
-                                          {record?.checkOut
-                                            ? new Date(
-                                              record.checkOut
-                                            ).toLocaleTimeString("en-US", {
-                                              hour: "2-digit",
-                                              minute: "2-digit",
-                                            })
-                                            : "-"}
-                                        </td>
-                                        <td className="py-2 px-3">
-                                          {record?.totalHours ? (
-                                            <span className="font-medium text-blue-700">
-                                              {record.totalHours}h
-                                            </span>
-                                          ) : (
-                                            <span className="text-xs text-slate-400">
-                                              -
-                                            </span>
-                                          )}
-                                        </td>
-                                      </tr>
-                                    );
-                                  })}
-                                </tbody>
-                                <tfoot>
-                                  <tr className="border-t-2 border-slate-300 bg-slate-50 font-semibold">
-                                    <td
-                                      className="py-3 px-3 text-slate-900"
-                                      colSpan="2"
-                                    >
-                                      Total
-                                    </td>
-                                    <td className="py-3 px-3 text-green-700">
-                                      {empData.stats.totalPresent} days
-                                    </td>
-                                    <td className="py-3 px-3 text-red-700">
-                                      {empData.stats.totalAbsent} days
-                                    </td>
-                                    <td className="py-3 px-3 text-blue-700">
-                                      {empData.stats.totalHours.toFixed(1)}h
-                                    </td>
-                                  </tr>
-                                </tfoot>
-                              </table>
-                            </div>
+                          <div className="bg-slate-50 border-t border-slate-100 p-1">
+                            <EmployeeAttendanceInline 
+                              employeeData={empData}
+                              viewMode={viewMode}
+                              selectedMonth={selectedMonth}
+                              selectedYear={selectedYear}
+                              selectedDate={selectedDate}
+                            />
                           </div>
                         )}
                       </div>

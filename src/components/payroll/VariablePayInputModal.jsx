@@ -98,7 +98,7 @@ export default function VariablePayInputModal({ isOpen, onClose, run, onUpdate }
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-            <div className="bg-white rounded-xl shadow-xl w-full max-w-5xl max-h-[90vh] flex flex-col">
+            <div className="bg-white rounded-xl w-full max-w-5xl max-h-[90vh] flex flex-col">
                 <div className="p-6 border-b border-slate-100 flex items-center justify-between">
                     <div>
                         <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
@@ -144,7 +144,7 @@ export default function VariablePayInputModal({ isOpen, onClose, run, onUpdate }
                                 </div>
                             ) : (
                                 filteredEmployees.map(emp => (
-                                    <div key={emp.employeeId} className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+                                    <div key={emp.employeeId} className="bg-white border border-slate-200 rounded-xl overflow-hidden">
                                         <div className="bg-slate-50/80 px-4 py-3 border-b border-slate-100 flex justify-between items-center">
                                             <div className="flex items-center gap-3">
                                                 <div className="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-xs">
@@ -210,7 +210,7 @@ export default function VariablePayInputModal({ isOpen, onClose, run, onUpdate }
                     <button
                         onClick={handleSave}
                         disabled={saving || loading}
-                        className="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold shadow-sm transition-colors disabled:opacity-50 flex items-center gap-2"
+                        className="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold transition-colors disabled:opacity-50 flex items-center gap-2"
                     >
                         {saving ? (
                             <>

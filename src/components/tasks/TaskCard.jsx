@@ -35,7 +35,7 @@ const TaskCard = ({ task, onClick, onDragStart, onDragEnd, projectPrefix }) => {
                 onDragEnd?.(task);
             }}
             onClick={() => onClick?.(task)}
-            className={`group bg-white rounded-xl border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 cursor-pointer overflow-hidden border-l-[3px] ${priority.border}`}
+            className={`group bg-white rounded-xl border border-slate-200 hover: hover:-translate-y-0.5 transition-all duration-200 cursor-pointer overflow-hidden border-l-[3px] ${priority.border}`}
         >
             <div className="p-3.5 space-y-3">
                 {/* Top Row: Task ID + Labels */}
@@ -96,7 +96,7 @@ const TaskCard = ({ task, onClick, onDragStart, onDragEnd, projectPrefix }) => {
                 {/* Footer: Assignee + Due Date + Comments */}
                 <div className="flex items-center justify-between pt-1 border-t border-slate-50">
                     <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 rounded-full bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center text-white text-[10px] font-bold ring-2 ring-white shadow-sm">
+                        <div className="w-6 h-6 rounded-full bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center text-white text-[10px] font-bold ring-2 ring-white">
                             {assigneeInitial}
                         </div>
                         <span className="text-[10px] font-medium text-slate-500 truncate max-w-[80px]">

@@ -326,7 +326,7 @@ export default function ESSLeaveManagement({ employeeId, payrollConfig }) {
                     </button>
                 </div>
 
-                <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
                     <form onSubmit={handleApplyLeave} className="p-8 space-y-8">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div className="space-y-2">
@@ -556,7 +556,7 @@ export default function ESSLeaveManagement({ employeeId, payrollConfig }) {
 
                                 {/* Search Results Dropdown */}
                                 {searchResults.length > 0 && (
-                                    <div className="absolute z-[60] left-6 right-6 mt-1 bg-white border border-slate-200 rounded-xl shadow-2xl max-h-60 overflow-y-auto divide-y divide-slate-100">
+                                    <div className="absolute z-[60] left-6 right-6 mt-1 bg-white border border-slate-200 rounded-xl max-h-60 overflow-y-auto divide-y divide-slate-100">
                                         {searchResults.map((emp) => (
                                             <button
                                                 key={emp._id}
@@ -592,7 +592,7 @@ export default function ESSLeaveManagement({ employeeId, payrollConfig }) {
                                     {customApprovers.map((emp) => (
                                         <div 
                                             key={emp._id} 
-                                            className="flex items-center gap-3 px-3 py-2 bg-indigo-600 text-white rounded-xl shadow-lg shadow-indigo-200 group animate-in slide-in-from-bottom-1 duration-200"
+                                            className="flex items-center gap-3 px-3 py-2 bg-indigo-600 text-white rounded-xl group animate-in slide-in-from-bottom-1 duration-200"
                                         >
                                             <div className="text-left">
                                                 <p className="text-[10px] font-bold text-indigo-100 uppercase tracking-widest opacity-80">Approver</p>
@@ -671,7 +671,7 @@ export default function ESSLeaveManagement({ employeeId, payrollConfig }) {
                             <button
                                 type="submit"
                                 disabled={submitLoading || calculating || calculateTotalDays() <= 0}
-                                className="flex-[2] py-4 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 disabled:text-slate-500 disabled:shadow-none text-white rounded-xl text-sm font-black shadow-lg shadow-indigo-100 transition-all flex items-center justify-center gap-2"
+                                className="flex-[2] py-4 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 disabled:text-slate-500 disabled: text-white rounded-xl text-sm font-black transition-all flex items-center justify-center gap-2"
                             >
                                 {submitLoading ? (
                                     <Loader2 className="w-5 h-5 animate-spin" />
@@ -699,19 +699,19 @@ export default function ESSLeaveManagement({ employeeId, payrollConfig }) {
                 <div className="flex bg-slate-100 p-1.5 rounded-xl self-start gap-1">
                     <button
                         onClick={() => setActiveView('list')}
-                        className={`text-sm font-bold px-5 py-2 rounded-lg transition-all ${activeView === 'list' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'}`}
+                        className={`text-sm font-bold px-5 py-2 rounded-lg transition-all ${activeView === 'list' ? 'bg-white text-slate-900' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'}`}
                     >
                         My Leaves
                     </button>
                     <button
                         onClick={() => setActiveView('approvals')}
-                        className={`text-sm font-bold px-5 py-2 rounded-lg transition-all ${activeView === 'approvals' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'}`}
+                        className={`text-sm font-bold px-5 py-2 rounded-lg transition-all ${activeView === 'approvals' ? 'bg-white text-indigo-600' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'}`}
                     >
                         Team Approvals
                     </button>
                     <button
                         onClick={() => setActiveView('apply')}
-                        className="flex items-center gap-2 px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-bold shadow-sm transition-all ml-4"
+                        className="flex items-center gap-2 px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-bold transition-all ml-4"
                     >
                         <Plus className="w-4 h-4" /> Apply Leave
                     </button>
@@ -720,7 +720,7 @@ export default function ESSLeaveManagement({ employeeId, payrollConfig }) {
 
             {/* Team Approvals View */}
             {activeView === 'approvals' && (
-                <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden animate-in fade-in slide-in-from-bottom-2 duration-300">
+                <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden animate-in fade-in slide-in-from-bottom-2 duration-300">
                     {loadingApprovals ? (
                         <div className="p-20 flex justify-center">
                             <Loader2 className="w-8 h-8 text-indigo-600 animate-spin" />
@@ -807,7 +807,7 @@ export default function ESSLeaveManagement({ employeeId, payrollConfig }) {
                 <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
                     {/* LEAVE BALANCES WIDGETS */}
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                        <div className="p-6 bg-white border border-slate-200 rounded-3xl shadow-sm flex flex-col justify-between hover:shadow-md transition-all">
+                        <div className="p-6 bg-white border border-slate-200 rounded-3xl flex flex-col justify-between hover: transition-all">
                             <div className="flex items-center gap-3 mb-2">
                                 <div className="p-2 bg-slate-50 rounded-xl">
                                     <CalendarDays className="w-5 h-5 text-slate-400" />
@@ -820,7 +820,7 @@ export default function ESSLeaveManagement({ employeeId, payrollConfig }) {
                             </div>
                         </div>
 
-                        <div className="p-6 bg-indigo-50 border border-indigo-100 rounded-3xl shadow-sm flex flex-col justify-between hover:shadow-md transition-all">
+                        <div className="p-6 bg-indigo-50 border border-slate-200 rounded-3xl flex flex-col justify-between hover: transition-all">
                             <div className="flex items-center gap-3 mb-2">
                                 <div className="p-2 bg-indigo-100 rounded-xl">
                                     <CheckCircle2 className="w-5 h-5 text-indigo-500" />
@@ -835,7 +835,7 @@ export default function ESSLeaveManagement({ employeeId, payrollConfig }) {
                             </div>
                         </div>
 
-                        <div className="p-6 bg-emerald-50 border border-emerald-100 rounded-3xl shadow-sm flex flex-col justify-between hover:shadow-md transition-all">
+                        <div className="p-6 bg-emerald-50 border border-emerald-100 rounded-3xl flex flex-col justify-between hover: transition-all">
                             <div className="flex items-center gap-3 mb-2">
                                 <div className="p-2 bg-emerald-100 rounded-xl">
                                     <Calendar className="w-5 h-5 text-emerald-500" />
@@ -850,7 +850,7 @@ export default function ESSLeaveManagement({ employeeId, payrollConfig }) {
                             </div>
                         </div>
 
-                        <div className="p-6 bg-amber-50 border border-amber-100 rounded-3xl shadow-sm flex flex-col justify-between hover:shadow-md transition-all">
+                        <div className="p-6 bg-amber-50 border border-amber-100 rounded-3xl flex flex-col justify-between hover: transition-all">
                             <div className="flex items-center gap-3 mb-2">
                                 <div className="p-2 bg-amber-100 rounded-xl">
                                     <AlertCircle className="w-5 h-5 text-amber-500" />
@@ -866,7 +866,7 @@ export default function ESSLeaveManagement({ employeeId, payrollConfig }) {
                         </div>
                     </div>
 
-                    <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden">
                         <div className="p-6 border-b border-slate-100 flex items-center justify-between">
                             <h3 className="text-lg font-black text-slate-900">Leave History</h3>
                             <div className="flex gap-2">
@@ -952,7 +952,7 @@ export default function ESSLeaveManagement({ employeeId, payrollConfig }) {
             {/* Action Modal */}
             {showActionModal && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-200">
-                    <div className="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden border border-slate-200 animate-in zoom-in-95 duration-200">
+                    <div className="bg-white w-full max-w-md rounded-2xl overflow-hidden border border-slate-200 animate-in zoom-in-95 duration-200">
                         <div className="p-6 border-b border-slate-100 flex items-center justify-between">
                             <h3 className="text-lg font-black text-slate-900 uppercase">
                                 {showActionModal.action === 'approve' ? 'Approve Leave' : 'Reject Leave'}
@@ -982,8 +982,8 @@ export default function ESSLeaveManagement({ employeeId, payrollConfig }) {
                                 <button 
                                     onClick={() => handleApprovalAction(showActionModal.id, showActionModal.action)}
                                     disabled={actioningId}
-                                    className={`flex-1 py-3 rounded-xl text-sm font-black text-white shadow-lg transition-all flex items-center justify-center gap-2 ${
-                                        showActionModal.action === 'approve' ? 'bg-emerald-600 hover:bg-emerald-700 shadow-emerald-100' : 'bg-rose-600 hover:bg-rose-700 shadow-rose-100'
+                                    className={`flex-1 py-3 rounded-xl text-sm font-black text-white transition-all flex items-center justify-center gap-2 ${
+                                        showActionModal.action === 'approve' ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-rose-600 hover:bg-rose-700'
                                     }`}
                                 >
                                     {actioningId ? <Loader2 className="w-4 h-4 animate-spin" /> : showActionModal.action === 'approve' ? 'Confirm Approval' : 'Confirm Rejection'}

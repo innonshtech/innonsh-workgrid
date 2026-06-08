@@ -155,7 +155,7 @@ export default function EmployeeClaimsManager({ employeeId }) {
     };
 
     return (
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 max-w-[1400px] mx-auto animate-in fade-in duration-500">
+        <div className="bg-white rounded-xl border border-slate-200 p-6 max-w-[1400px] mx-auto animate-in fade-in duration-500">
             
             {/* Header */}
             <div className="flex justify-end mb-8">
@@ -201,7 +201,7 @@ export default function EmployeeClaimsManager({ employeeId }) {
 
             {/* Stat Cards */}
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
-                <div className="bg-white rounded-xl border border-slate-200 p-4 flex items-center gap-4 shadow-sm">
+                <div className="bg-white rounded-xl border border-slate-200 p-4 flex items-center gap-4">
                     <div className="bg-blue-50 p-3 rounded-lg text-blue-600">
                         <Wallet className="w-6 h-6" />
                     </div>
@@ -211,7 +211,7 @@ export default function EmployeeClaimsManager({ employeeId }) {
                         <p className="text-[10px] text-slate-400 mt-1">This Month</p>
                     </div>
                 </div>
-                <div className="bg-white rounded-xl border border-slate-200 p-4 flex items-center gap-4 shadow-sm">
+                <div className="bg-white rounded-xl border border-slate-200 p-4 flex items-center gap-4">
                     <div className="bg-orange-50 p-3 rounded-full text-orange-500 border-4 border-orange-100/50">
                         <Clock className="w-5 h-5" />
                     </div>
@@ -221,7 +221,7 @@ export default function EmployeeClaimsManager({ employeeId }) {
                         <p className="text-[10px] text-slate-400 mt-1">Awaiting Approval</p>
                     </div>
                 </div>
-                <div className="bg-white rounded-xl border border-slate-200 p-4 flex items-center gap-4 shadow-sm">
+                <div className="bg-white rounded-xl border border-slate-200 p-4 flex items-center gap-4">
                     <div className="bg-emerald-50 p-3 rounded-full text-emerald-500 border-4 border-emerald-100/50">
                         <CheckCircle2 className="w-5 h-5" />
                     </div>
@@ -231,7 +231,7 @@ export default function EmployeeClaimsManager({ employeeId }) {
                         <p className="text-[10px] text-slate-400 mt-1">This Month</p>
                     </div>
                 </div>
-                <div className="bg-white rounded-xl border border-slate-200 p-4 flex items-center gap-4 shadow-sm">
+                <div className="bg-white rounded-xl border border-slate-200 p-4 flex items-center gap-4">
                     <div className="bg-rose-50 p-3 rounded-full text-rose-500 border-4 border-rose-100/50">
                         <XCircle className="w-5 h-5" />
                     </div>
@@ -241,7 +241,7 @@ export default function EmployeeClaimsManager({ employeeId }) {
                         <p className="text-[10px] text-slate-400 mt-1">This Month</p>
                     </div>
                 </div>
-                <div className="bg-white rounded-xl border border-slate-200 p-4 flex items-center gap-4 shadow-sm">
+                <div className="bg-white rounded-xl border border-slate-200 p-4 flex items-center gap-4">
                     <div className="bg-purple-50 p-3 rounded-full text-purple-600 border-4 border-purple-100/50">
                         <IndianRupee className="w-5 h-5" />
                     </div>
@@ -465,14 +465,14 @@ export default function EmployeeClaimsManager({ employeeId }) {
                     {expenses.some(e => e.status === 'Draft') && (
                         <div className="flex items-center gap-3 animate-bounce">
                             <span className="text-xl">📢</span>
-                            <span className="text-lg font-black text-indigo-700 uppercase tracking-tighter italic bg-white px-4 py-2 rounded-full shadow-lg border-2 border-indigo-500">
+                            <span className="text-lg font-black text-indigo-700 uppercase tracking-tighter italic bg-white px-4 py-2 rounded-full border-2 border-indigo-500">
                                 ADMIN NE REQUEST BHEJI HAI - CLAIM KARO!
                             </span>
                         </div>
                     )}
                     <button 
                         onClick={() => fetchExpenses()}
-                        className="px-4 py-2 bg-indigo-600 text-white text-xs font-black rounded-lg hover:bg-indigo-700 transition-all shadow-md"
+                        className="px-4 py-2 bg-indigo-600 text-white text-xs font-black rounded-lg hover:bg-indigo-700 transition-all"
                     >
                         REFRESH DATA
                     </button>

@@ -128,7 +128,7 @@ export default function StatutorySettings() {
     };
 
     return (
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg p-6">
             <div className="flex justify-between items-center mb-6">
                 <h2 className="text-xl font-bold text-gray-800">State Statutory Settings</h2>
                 {!editingId && (
@@ -244,7 +244,7 @@ export default function StatutorySettings() {
                     {/* LIST */}
                     <div className="grid grid-cols-1 gap-4">
                         {configs.map(config => (
-                            <div key={config._id} className="border rounded-lg p-4 flex justify-between items-start hover:shadow-sm transition-shadow">
+                            <div key={config._id} className="border rounded-lg p-4 flex justify-between items-start hover: transition-">
                                 <div>
                                     <h3 className="font-semibold text-lg text-gray-800">{config.state}</h3>
                                     <div className="text-sm text-gray-500 mt-1 space-y-1">

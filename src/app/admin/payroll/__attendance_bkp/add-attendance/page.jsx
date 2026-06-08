@@ -217,10 +217,10 @@
 //     <div className="min-h-screen bg-slate-50">
 //       <div className="max-w-7xl mx-auto px-6 py-8">
 //         {/* Header */}
-//         <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 mb-8">
+//         <div className="bg-white rounded-xl border border-slate-200 p-6 mb-8">
 //           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
 //             <div className="flex items-center gap-4">
-//               <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-amber-500 rounded-2xl flex items-center justify-center shadow-lg">
+//               <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-amber-500 rounded-2xl flex items-center justify-center">
 //                 <Calendar className="w-8 h-8 text-white" />
 //               </div>
 //               <div>
@@ -247,7 +247,7 @@
 //         </div>
 
 //         {/* Date Picker */}
-//         <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 mb-8">
+//         <div className="bg-white rounded-xl border border-slate-200 p-6 mb-8">
 //           <label className="block text-sm font-medium text-slate-600 mb-2">
 //             Select Date
 //           </label>
@@ -261,7 +261,7 @@
 
 //         {/* Employee List by Department */}
 //         {employees.length === 0 ? (
-//           <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
+//           <div className="bg-white rounded-xl border border-slate-200 p-6 text-center">
 //             <h3 className="text-lg font-semibold text-slate-900 mb-2">
 //               No Employees Available
 //             </h3>
@@ -275,7 +275,7 @@
 //           Object.keys(groupedEmployees).map((department) => (
 //             <div
 //               key={department}
-//               className="bg-white rounded-xl border border-slate-200 shadow-sm mb-8"
+//               className="bg-white rounded-xl border border-slate-200 mb-8"
 //             >
 //               <div className="p-6 border-b border-slate-200">
 //                 <h2 className="text-xl font-semibold text-slate-900">
@@ -293,7 +293,7 @@
 //                       onSubmit={(e) => handleAddAttendance(emp.employeeId, e)}
 //                       className="flex items-center gap-4 p-4 border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors"
 //                     >
-//                       <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-sm">
+//                       <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
 //                         <User className="w-6 h-6 text-white" />
 //                       </div>
 //                       <div className="flex-1">
@@ -617,10 +617,10 @@
 //     <div className="min-h-screen bg-slate-50">
 //       <div className="max-w-7xl mx-auto px-6 py-8">
 //         {/* Header */}
-//         <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 mb-8">
+//         <div className="bg-white rounded-xl border border-slate-200 p-6 mb-8">
 //           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
 //             <div className="flex items-center gap-4">
-//               <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-amber-500 rounded-2xl flex items-center justify-center shadow-lg">
+//               <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-amber-500 rounded-2xl flex items-center justify-center">
 //                 <Calendar className="w-8 h-8 text-white" />
 //               </div>
 //               <div>
@@ -645,7 +645,7 @@
 //         </div>
 
 //         {/* Date Picker */}
-//         <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 mb-8">
+//         <div className="bg-white rounded-xl border border-slate-200 p-6 mb-8">
 //           <label className="block text-sm font-medium text-slate-600 mb-2">
 //             Select Date
 //           </label>
@@ -659,7 +659,7 @@
 
 //         {/* Employee List */}
 //         {employees.length === 0 ? (
-//           <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
+//           <div className="bg-white rounded-xl border border-slate-200 p-6 text-center">
 //             <h3 className="text-lg font-semibold text-slate-900 mb-2">
 //               No Employees Found
 //             </h3>
@@ -673,7 +673,7 @@
 //           Object.keys(groupedEmployees).map((department) => (
 //             <div
 //               key={department}
-//               className="bg-white rounded-xl border border-slate-200 shadow-sm mb-8"
+//               className="bg-white rounded-xl border border-slate-200 mb-8"
 //             >
 //               <div className="p-6 border-b border-slate-200">
 //                 <h2 className="text-xl font-semibold text-slate-900">
@@ -698,7 +698,7 @@
 //                       className="flex items-center gap-4 p-4 border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors"
 //                     >
 //                       {/* Avatar */}
-//                       <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-sm">
+//                       <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
 //                         <User className="w-6 h-6 text-white" />
 //                       </div>
 
@@ -1027,10 +1027,10 @@ export default function AddAttendance() {
       <Toaster />
       <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Header */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 mb-8">
+        <div className="bg-white rounded-xl border border-slate-200 p-6 mb-8">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-amber-500 rounded-2xl flex items-center justify-center shadow-lg">
+              <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-amber-500 rounded-2xl flex items-center justify-center">
                 <Calendar className="w-8 h-8 text-white" />
               </div>
               <div>
@@ -1055,7 +1055,7 @@ export default function AddAttendance() {
         </div>
 
         {/* Date Picker */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 mb-8">
+        <div className="bg-white rounded-xl border border-slate-200 p-6 mb-8">
           <label className="block text-sm font-medium text-slate-600 mb-2">
             Select Date
           </label>
@@ -1069,7 +1069,7 @@ export default function AddAttendance() {
 
         {/* Employee List */}
         {employees.length === 0 ? (
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
+          <div className="bg-white rounded-xl border border-slate-200 p-6 text-center">
             <h3 className="text-lg font-semibold text-slate-900 mb-2">
               No Employees Found
             </h3>
@@ -1083,7 +1083,7 @@ export default function AddAttendance() {
           Object.keys(groupedEmployees).map((department) => (
             <div
               key={department}
-              className="bg-white rounded-xl border border-slate-200 shadow-sm mb-8"
+              className="bg-white rounded-xl border border-slate-200 mb-8"
             >
               <div className="p-6 border-b border-slate-200">
                 <h2 className="text-xl font-semibold text-slate-900">
@@ -1109,7 +1109,7 @@ export default function AddAttendance() {
                       className="flex items-center gap-4 p-4 border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors"
                     >
                       {/* Avatar */}
-                      <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-sm">
+                      <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
                         <User className="w-6 h-6 text-white" />
                       </div>
 

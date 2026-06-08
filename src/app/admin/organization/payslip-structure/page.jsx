@@ -673,7 +673,7 @@ const PayslipTemplate = () => {
         </div>
 
         {/* Template Selection Bar */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 mb-8">
+        <div className="bg-white rounded-xl border border-slate-200 p-6 mb-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center gap-4 flex-wrap">
               <select
@@ -721,7 +721,7 @@ const PayslipTemplate = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Configuration Panel */}
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 max-h-[800px] overflow-y-auto">
+          <div className="bg-white rounded-xl border border-slate-200 p-6 max-h-[800px] overflow-y-auto">
             <div className="flex items-center justify-between mb-6 gap-4 flex-wrap">
               <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-2">
                 <Edit3 className="w-6 h-6 text-indigo-600" />
@@ -1164,7 +1164,7 @@ const PayslipTemplate = () => {
           </div>
 
           {/* Payslip Preview */}
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+          <div className="bg-white rounded-xl border border-slate-200 p-6">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-2">
                 <FileText className="w-6 h-6 text-indigo-600" />

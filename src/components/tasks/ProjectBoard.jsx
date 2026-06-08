@@ -261,7 +261,7 @@ const ProjectBoard = () => {
                                 <ArrowLeft className="w-5 h-5" />
                             </button>
                             <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-indigo-700 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-indigo-200">
+                                <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-indigo-700 rounded-2xl flex items-center justify-center text-white">
                                     <Briefcase className="w-5 h-5" />
                                 </div>
                                 <div>
@@ -423,7 +423,7 @@ const ProjectBoard = () => {
             {/* Column Management Modal */}
             {showColumnModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm">
-                    <div className="bg-white rounded-3xl w-full max-w-md p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+                    <div className="bg-white rounded-3xl w-full max-w-md p-6 animate-in fade-in zoom-in-95 duration-200">
                         <h3 className="text-lg font-black text-slate-900 mb-1">Manage Board Columns</h3>
                         <p className="text-xs text-slate-500 mb-5">Add or remove columns to customize your workflow</p>
 

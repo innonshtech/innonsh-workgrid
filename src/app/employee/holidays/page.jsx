@@ -92,7 +92,7 @@ export default function EmployeeHolidaysPage() {
     if (!data.holidayList) {
         return (
             <div className="flex flex-col items-center justify-center py-20 px-4 text-center">
-                <div className="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mb-6 shadow-inner">
+                <div className="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mb-6">
                     <Calendar className="w-10 h-10 text-slate-400" />
                 </div>
                 <h2 className="text-2xl font-bold text-slate-800 mb-2">No Holiday List Assigned</h2>
@@ -104,10 +104,21 @@ export default function EmployeeHolidaysPage() {
     }
 
     return (
-        <div className="min-h-screen bg-slate-50/50 p-6 font-['Inter',sans-serif]">
-            <div className="max-w-6xl mx-auto space-y-8">
+        <div className="min-h-screen bg-slate-50 font-sans pb-12">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+                {/* Module Hero */}
+                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8 mt-2">
+                    <div className="space-y-1">
+                        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+                            My Holidays
+                        </h1>
+                        <p className="text-slate-500 text-sm mt-1 max-w-xl">
+                            View upcoming holidays, mandatory leaves, and claim your restricted optional holidays.
+                        </p>
+                    </div>
+                </div>
                 
-                {/* Header */}
+                {/* Context Header */}
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
                     <div>
                         <p className="text-slate-500 flex items-center gap-2 text-sm">
@@ -116,7 +127,7 @@ export default function EmployeeHolidaysPage() {
                         </p>
                     </div>
                     {data.quota > 0 && (
-                        <div className="flex items-center gap-3 bg-white px-5 py-3 rounded-2xl border border-slate-200 shadow-sm">
+                        <div className="flex items-center gap-3 bg-white px-5 py-3 rounded-2xl border border-slate-200">
                             <div className="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center">
                                 <Sun className="w-6 h-6 text-indigo-600" />
                             </div>
@@ -143,7 +154,7 @@ export default function EmployeeHolidaysPage() {
                         </div>
 
                         {data.mandatoryHolidays.length === 0 ? (
-                            <div className="bg-white p-8 rounded-2xl border border-slate-200 text-center text-slate-500 shadow-sm">
+                            <div className="bg-white p-8 rounded-2xl border border-slate-200 text-center text-slate-500">
                                 No mandatory holidays scheduled.
                             </div>
                         ) : (
@@ -154,7 +165,7 @@ export default function EmployeeHolidaysPage() {
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ delay: idx * 0.05 }}
                                         key={holiday._id}
-                                        className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group"
+                                        className="bg-white p-5 rounded-2xl border border-slate-200 hover: transition- relative overflow-hidden group"
                                     >
                                         <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-50 rounded-bl-full -z-0 opacity-50 group-hover:scale-110 transition-transform"></div>
                                         <div className="relative z-10 flex items-start gap-4">
@@ -188,14 +199,14 @@ export default function EmployeeHolidaysPage() {
                             <h2 className="text-lg font-bold text-slate-800">Restricted Holidays</h2>
                             <div className="group relative ml-1 cursor-help">
                                 <Info className="w-4 h-4 text-slate-400" />
-                                <div className="absolute bottom-full mb-2 -left-1/2 w-48 p-2 bg-slate-800 text-white text-xs rounded-lg shadow-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
+                                <div className="absolute bottom-full mb-2 -left-1/2 w-48 p-2 bg-slate-800 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
                                     You can pick and claim holidays from this list up to your allowed quota.
                                 </div>
                             </div>
                         </div>
 
                         {data.quota === 0 ? (
-                            <div className="bg-white p-6 rounded-2xl border border-slate-200 text-center shadow-sm">
+                            <div className="bg-white p-6 rounded-2xl border border-slate-200 text-center">
                                 <div className="w-12 h-12 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-3">
                                     <AlertCircle className="w-6 h-6 text-slate-400" />
                                 </div>
@@ -203,7 +214,7 @@ export default function EmployeeHolidaysPage() {
                                 <p className="text-xs text-slate-500">Your holiday list does not allow optional holidays this year.</p>
                             </div>
                         ) : data.restrictedHolidays.length === 0 ? (
-                            <div className="bg-white p-6 rounded-2xl border border-slate-200 text-center shadow-sm text-slate-500">
+                            <div className="bg-white p-6 rounded-2xl border border-slate-200 text-center text-slate-500">
                                 No restricted holidays configured.
                             </div>
                         ) : (
@@ -221,7 +232,7 @@ export default function EmployeeHolidaysPage() {
                                             animate={{ opacity: 1, x: 0 }}
                                             transition={{ delay: idx * 0.1 }}
                                             key={holiday._id}
-                                            className={`p-4 rounded-2xl border transition-all ${isClaimed ? 'bg-indigo-50/50 border-indigo-200 shadow-sm' : 'bg-white border-slate-200 hover:border-slate-300 shadow-sm'}`}
+                                            className={`p-4 rounded-2xl border transition-all ${isClaimed ? 'bg-indigo-50/50 border-indigo-200' : 'bg-white border-slate-200 hover:border-slate-300'}`}
                                         >
                                             <div className="flex items-center justify-between gap-4">
                                                 <div>
@@ -234,7 +245,7 @@ export default function EmployeeHolidaysPage() {
                                                 <div>
                                                     {isClaimed ? (
                                                         <div className="flex flex-col items-end gap-1.5">
-                                                            <span className="flex items-center gap-1.5 px-2.5 py-1 bg-white border border-indigo-200 text-indigo-700 text-xs font-bold rounded-lg shadow-sm">
+                                                            <span className="flex items-center gap-1.5 px-2.5 py-1 bg-white border border-indigo-200 text-indigo-700 text-xs font-bold rounded-lg">
                                                                 <CheckCircle className="w-3.5 h-3.5" />
                                                                 {isAutoApproved ? 'Claimed' : 'Pending'}
                                                             </span>
@@ -254,7 +265,7 @@ export default function EmployeeHolidaysPage() {
                                                         <button 
                                                             onClick={() => handleClaim(holiday._id)}
                                                             disabled={processingId === holiday._id}
-                                                            className="px-4 py-1.5 bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold rounded-lg shadow-sm transition-all active:scale-95 disabled:opacity-50"
+                                                            className="px-4 py-1.5 bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold rounded-lg transition-all active:scale-95 disabled:opacity-50"
                                                         >
                                                             {processingId === holiday._id ? '...' : 'Claim'}
                                                         </button>

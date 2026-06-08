@@ -596,7 +596,7 @@ export default function PayslipList() {
 
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-        <div className="bg-white rounded-xl shadow-2xl max-w-md w-full">
+        <div className="bg-white rounded-xl max-w-md w-full">
           {/* Header */}
           <div className="border-b border-slate-200 p-6">
             <h2 className="text-xl font-bold text-slate-900">
@@ -978,7 +978,7 @@ export default function PayslipList() {
         <div className="max-w-7xl mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <div className="w-11 h-11 bg-gradient-to-br from-indigo-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
+              <div className="w-11 h-11 bg-gradient-to-br from-indigo-500 to-blue-600 rounded-xl flex items-center justify-center">
                 <CreditCard className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -1000,7 +1000,7 @@ export default function PayslipList() {
       <div className="max-w-7xl mx-auto px-6 py-6 space-y-6">
         {/* Analytics Overview */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white p-6 rounded-xl border-2 border-slate-200 shadow-sm">
+          <div className="bg-white p-6 rounded-xl border-2 border-slate-200">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-slate-600">Total Payslips</p>
@@ -1015,7 +1015,7 @@ export default function PayslipList() {
 
 
 
-          <div className="bg-white p-6 rounded-xl border-2 border-slate-200 shadow-sm">
+          <div className="bg-white p-6 rounded-xl border-2 border-slate-200">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-slate-600">Paid</p>
@@ -1028,7 +1028,7 @@ export default function PayslipList() {
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-xl border-2 border-slate-200 shadow-sm">
+          <div className="bg-white p-6 rounded-xl border-2 border-slate-200">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-slate-600">Total Amount</p>
@@ -1091,7 +1091,7 @@ export default function PayslipList() {
         )}    </div>
 
         {/* Controls Panel */}
-        <div className="bg-white rounded-xl border-2 border-slate-200 shadow-sm">
+        <div className="bg-white rounded-xl border-2 border-slate-200">
           <div className="p-6 border-b border-slate-200">
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
               <div className="flex items-center space-x-3">
@@ -1117,7 +1117,7 @@ export default function PayslipList() {
 
                 <Link
                   href="/admin/payroll/payslip/generate"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-indigo-500 to-blue-600 hover:from-indigo-600 hover:to-blue-700 text-white rounded-lg font-semibold transition-all shadow-lg hover:shadow-xl"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-indigo-500 to-blue-600 hover:from-indigo-600 hover:to-blue-700 text-white rounded-lg font-semibold transition-all hover:"
                 >
                   <Plus className="w-4 h-4" />
                   Generate Payslip
@@ -1271,7 +1271,7 @@ export default function PayslipList() {
                 ) : (
                   <Link
                     href="/admin/payroll/payslip/generate"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-indigo-500 to-blue-600 hover:from-indigo-600 hover:to-blue-700 text-white rounded-lg font-semibold transition-all shadow-lg hover:shadow-xl"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-indigo-500 to-blue-600 hover:from-indigo-600 hover:to-blue-700 text-white rounded-lg font-semibold transition-all hover:"
                   >
                     <Plus className="w-4 h-4" />
                     Generate First Payslip

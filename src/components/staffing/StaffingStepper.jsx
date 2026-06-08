@@ -53,7 +53,7 @@ export default function StaffingStepper({ currentStep = 1 }) {
   const router = useRouter();
 
   return (
-    <div className="w-full bg-white rounded-3xl border border-slate-100 p-6 shadow-sm mb-6 overflow-hidden relative">
+    <div className="w-full bg-white rounded-3xl border border-slate-200 p-6 mb-6 overflow-hidden relative">
       {/* Background gradients */}
       <div className="absolute -right-16 -top-16 w-36 h-36 bg-indigo-500/5 rounded-full blur-2xl"></div>
       <div className="absolute -left-16 -bottom-16 w-36 h-36 bg-emerald-500/5 rounded-full blur-2xl"></div>
@@ -100,9 +100,9 @@ export default function StaffingStepper({ currentStep = 1 }) {
                   <div
                     className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 transform group-hover:scale-105 active:scale-95 ${
                       isActive
-                        ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 ring-4 ring-indigo-100"
+                        ? "bg-indigo-600 text-white ring-4 ring-indigo-100"
                         : isCompleted
-                        ? "bg-emerald-500 text-white shadow-md shadow-emerald-500/25"
+                        ? "bg-emerald-500 text-white"
                         : "bg-white border-2 border-slate-200 text-slate-400 group-hover:border-slate-300 group-hover:text-slate-500"
                     }`}
                   >

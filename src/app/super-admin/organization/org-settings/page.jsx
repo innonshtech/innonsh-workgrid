@@ -223,7 +223,7 @@ export default function OrgSettingsPage() {
                             <tr key={item._id} className="hover:bg-slate-50 transition-colors group">
                                 <td className="px-6 py-4">
                                     <div className="flex items-center gap-3">
-                                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center border shadow-sm ${activeTab === 'business-units' ? 'bg-slate-50 text-blue-600 border-blue-100' :
+                                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center border ${activeTab === 'business-units' ? 'bg-slate-50 text-blue-600 border-slate-200' :
                                             activeTab === 'teams' ? 'bg-amber-50 text-amber-600 border-amber-100' :
                                                 'bg-emerald-50 text-emerald-600 border-emerald-100'
                                             }`}>
@@ -301,7 +301,7 @@ export default function OrgSettingsPage() {
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
                     <div>
                         <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight flex items-center gap-3">
-                            <div className="w-12 h-12 bg-white rounded-2xl shadow-sm border border-slate-200 flex items-center justify-center">
+                            <div className="w-12 h-12 bg-white rounded-2xl border border-slate-200 flex items-center justify-center">
                                 <Layers className="w-7 h-7 text-indigo-600" />
                             </div>
                             Organization Settings
@@ -313,14 +313,14 @@ export default function OrgSettingsPage() {
 
                     <button
                         onClick={handleCreateNew}
-                        className="flex items-center justify-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-xl font-bold shadow-lg shadow-indigo-100 hover:bg-indigo-700 transition-all scale-100 active:scale-95"
+                        className="flex items-center justify-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 transition-all scale-100 active:scale-95"
                     >
                         <PlusCircle className="w-5 h-5" />
                         Create New {activeTab === "business-units" ? "Business Unit" : activeTab === "teams" ? "Team" : "Cost Center"}
                     </button>
                 </div>
 
-                <div className="bg-white rounded-2xl border border-slate-200 shadow-xl shadow-slate-200/50 overflow-hidden">
+                <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
                     <div className="border-b border-slate-200 bg-white">
                         <div className="flex overflow-x-auto scrollbar-hide">
                             <TabButton
@@ -355,11 +355,11 @@ export default function OrgSettingsPage() {
                                 placeholder="Search by name, code or info..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all shadow-sm"
+                                className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all"
                             />
                         </div>
 
-                        <div className="flex items-center gap-2 text-xs font-medium text-slate-400 bg-white px-4 py-2 rounded-lg border border-slate-200 shadow-sm">
+                        <div className="flex items-center gap-2 text-xs font-medium text-slate-400 bg-white px-4 py-2 rounded-lg border border-slate-200">
                             <Info className="w-3.5 h-3.5" />
                             Showing {data[activeTab === 'business-units' ? 'businessUnits' : activeTab === 'teams' ? 'teams' : 'costCenters']?.length || 0} total records
                         </div>
@@ -377,7 +377,7 @@ export default function OrgSettingsPage() {
                     </div>
                 </div>
 
-                <div className="mt-8 bg-indigo-900 rounded-2xl p-8 relative overflow-hidden shadow-2xl shadow-indigo-200">
+                <div className="mt-8 bg-indigo-900 rounded-2xl p-8 relative overflow-hidden">
                     <div className="relative z-10 flex flex-col md:flex-row items-center gap-8 text-white">
                         <div className="w-20 h-20 bg-white/10 backdrop-blur-xl rounded-2xl flex items-center justify-center shrink-0 border border-white/20">
                             <Building className="w-10 h-10 text-white" />
@@ -390,7 +390,7 @@ export default function OrgSettingsPage() {
                             </p>
                         </div>
                         <div className="md:ml-auto">
-                            <button className="px-8 py-3 bg-white text-indigo-900 font-bold rounded-xl hover:bg-slate-100 transition-all shadow-xl active:scale-95">
+                            <button className="px-8 py-3 bg-white text-indigo-900 font-bold rounded-xl hover:bg-slate-100 transition-all active:scale-95">
                                 Download Hierarchy Report
                             </button>
                         </div>
@@ -404,7 +404,7 @@ export default function OrgSettingsPage() {
             {/* CREATE/EDIT MODAL */}
             {isModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
-                    <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden border border-slate-200">
+                    <div className="bg-white rounded-2xl w-full max-w-lg overflow-hidden border border-slate-200">
                         <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center text-indigo-600">
@@ -532,7 +532,7 @@ export default function OrgSettingsPage() {
                                 <button
                                     type="submit"
                                     disabled={submitting}
-                                    className="flex-[2] py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg shadow-indigo-100 transition-all flex items-center justify-center gap-2"
+                                    className="flex-[2] py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2"
                                 >
                                     {submitting ? (
                                         <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />

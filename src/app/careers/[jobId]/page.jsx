@@ -52,7 +52,7 @@ export default async function JobLandingPage({ params }) {
             {/* Nav */}
             <nav className="fixed top-0 inset-x-0 h-20 bg-white/80 backdrop-blur-md border-b border-slate-200/50 z-40 flex items-center justify-between px-8">
                 <Link href="/careers" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-                    <div className="w-10 h-10 rounded-2xl bg-indigo-600 flex items-center justify-center text-white shadow-lg shadow-indigo-200">
+                    <div className="w-10 h-10 rounded-2xl bg-indigo-600 flex items-center justify-center text-white">
                         <Terminal className="w-5 h-5" />
                     </div>
                     <span className="text-xl font-black text-slate-800 tracking-tight">Xpertance Careers</span>
@@ -64,7 +64,7 @@ export default async function JobLandingPage({ params }) {
 
             <main className="max-w-4xl mx-auto pt-32 pb-20 px-8">
                 {/* Header Section */}
-                <div className="bg-white rounded-[40px] p-10 md:p-14 border border-slate-200 shadow-2xl shadow-indigo-100/30 mb-8 relative overflow-hidden">
+                <div className="bg-white rounded-[40px] p-10 md:p-14 border border-slate-200 mb-8 relative overflow-hidden">
                     <div className="absolute top-0 left-0 w-2 h-full bg-indigo-500"></div>
                     
                     <div className="mb-6 inline-flex p-4 rounded-3xl bg-indigo-50 text-indigo-600">
@@ -87,7 +87,7 @@ export default async function JobLandingPage({ params }) {
 
                     <Link 
                         href={`/careers?jobId=${job._id}`}
-                        className="inline-flex items-center justify-center px-10 h-14 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-[11px] uppercase tracking-widest rounded-2xl transition-all shadow-xl shadow-indigo-200 hover:shadow-2xl hover:-translate-y-1 gap-3"
+                        className="inline-flex items-center justify-center px-10 h-14 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-[11px] uppercase tracking-widest rounded-2xl transition-all hover: hover:-translate-y-1 gap-3"
                     >
                         Apply For This Role <ArrowRight className="w-4 h-4" />
                     </Link>

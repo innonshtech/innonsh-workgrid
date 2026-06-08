@@ -273,7 +273,7 @@ const {user} = useSession();
               >
                 <ArrowLeft className="w-5 h-5" />
               </button>
-              <div className="w-11 h-11 bg-yellow-500 rounded-xl flex items-center justify-center shadow-sm">
+              <div className="w-11 h-11 bg-yellow-500 rounded-xl flex items-center justify-center">
                 <Target className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -299,7 +299,7 @@ const {user} = useSession();
 
       <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Progress Indicator */}
-        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm mb-8">
+        <div className="bg-white p-6 rounded-xl border border-slate-200 mb-8">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-slate-900">Task Creation Progress</h3>
             <span className="text-sm font-medium text-slate-600">{progress}% Complete</span>
@@ -330,7 +330,7 @@ const {user} = useSession();
           {/* Main Form Content */}
           <div className="xl:col-span-2 space-y-8">
             {/* Basic Information */}
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+            <div className="bg-white rounded-xl border border-slate-200">
               <div className="p-6 border-b border-slate-200">
                 <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                   <div className="w-8 h-8 bg-yellow-50 rounded-lg flex items-center justify-center border border-yellow-100">
@@ -412,7 +412,7 @@ const {user} = useSession();
             </div>
 
             {/* Assignment & Timeline */}
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+            <div className="bg-white rounded-xl border border-slate-200">
               <div className="p-6 border-b border-slate-200">
                 <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                   <div className="w-8 h-8 bg-yellow-50 rounded-lg flex items-center justify-center border border-yellow-100">
@@ -556,7 +556,7 @@ const {user} = useSession();
             </div>
 
             {/* Tags & Notes */}
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+            <div className="bg-white rounded-xl border border-slate-200">
               <div className="p-6 border-b border-slate-200">
                 <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                   <div className="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center border border-green-100">
@@ -631,7 +631,7 @@ const {user} = useSession();
           {/* Sidebar */}
           <div className="xl:col-span-1 space-y-6">
             {/* Quick Summary */}
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+            <div className="bg-white rounded-xl border border-slate-200">
               <div className="p-6 border-b border-slate-200">
                 <h3 className="text-lg font-semibold text-slate-900 flex items-center gap-2">
                   <TrendingUp className="w-5 h-5 text-green-600" />
@@ -708,7 +708,7 @@ const {user} = useSession();
                 type="submit"
                 disabled={loading || employeesLoading}
                 onClick={handleSubmit}
-                className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg font-semibold transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? (
                   <>
@@ -754,7 +754,7 @@ const {user} = useSession();
               type="submit" 
               disabled={loading || employeesLoading} 
               onClick={handleSubmit}
-              className="inline-flex items-center gap-2 px-8 py-2.5 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg font-semibold transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+              className="inline-flex items-center gap-2 px-8 py-2.5 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <>

@@ -40,24 +40,27 @@ import ESSTalentDashboard from "@/components/talent/ess-talent-dashboard";
 import MyTasks from "@/components/tasks/my-tasks";
 import { CheckSquare } from "lucide-react";
 
-/* ─── Premium Tab Button ─── */
+/* ═══ Premium Tab Button ═══ */
 const TabButton = ({ active, label, icon: Icon, onClick }) => (
     <button
         type="button"
         onClick={onClick}
-        className={`group relative flex items-center gap-2.5 px-5 py-3.5 text-[13px] font-bold tracking-wide transition-all duration-300 rounded-xl whitespace-nowrap ${active
-            ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-200/60'
-            : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100/80'
+        className={`group relative flex items-center gap-2 px-3.5 py-2 transition-all duration-200 rounded-lg whitespace-nowrap font-['Google_Sans','Product_Sans',sans-serif] font-medium text-[10px] sm:text-[12px] tracking-tight ${active
+            ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+            : 'bg-transparent text-[#667085] hover:bg-[#F5F8FF] hover:text-blue-600'
             }`}
     >
-        <Icon className={`w-4 h-4 transition-transform duration-300 ${active ? 'text-white scale-110' : 'text-slate-400 group-hover:text-indigo-500 group-hover:scale-110'}`} />
+        <div className={`flex items-center justify-center p-1 rounded-md transition-colors duration-200 ${active ? 'bg-white text-blue-600' : 'text-[#667085] group-hover:text-blue-600'
+            }`}>
+            <Icon className="w-3.5 h-3.5" />
+        </div>
         {label}
     </button>
 );
 
 /* ─── Glass Card ─── */
 const Card = ({ children, className = "" }) => (
-    <div className={`bg-white/80 backdrop-blur-xl rounded-[1.5rem] border border-white/60 shadow-[0_8px_32px_rgba(0,0,0,0.06)] hover:shadow-[0_12px_48px_rgba(0,0,0,0.1)] transition-all duration-500 ${className}`}>
+    <div className={`bg-white/80 backdrop-blur-xl rounded-[1.5rem] border border-white/  transition-all duration-500 ${className}`}>
         {children}
     </div>
 );
@@ -65,15 +68,15 @@ const Card = ({ children, className = "" }) => (
 /* ─── Premium Stat Card ─── */
 const StatCard = ({ title, value, sub, icon: Icon, color = "indigo" }) => {
     const configs = {
-        indigo: { bg: "from-indigo-500/10 to-violet-500/10", icon: "bg-indigo-100 text-indigo-600 shadow-indigo-100", ring: "ring-indigo-500/10" },
-        emerald: { bg: "from-emerald-500/10 to-teal-500/10", icon: "bg-emerald-100 text-emerald-600 shadow-emerald-100", ring: "ring-emerald-500/10" },
-        amber: { bg: "from-amber-500/10 to-orange-500/10", icon: "bg-amber-100 text-amber-600 shadow-amber-100", ring: "ring-amber-500/10" },
+        indigo: { bg: "from-indigo-500/10 to-violet-500/10", icon: "bg-blue-100 text-blue-600", ring: "ring-blue-500/10" },
+        emerald: { bg: "from-emerald-500/10 to-teal-500/10", icon: "bg-emerald-100 text-emerald-600", ring: "ring-emerald-500/10" },
+        amber: { bg: "from-amber-500/10 to-orange-500/10", icon: "bg-amber-100 text-amber-600", ring: "ring-amber-500/10" },
     };
     const c = configs[color];
     return (
         <Card className={`p-7 bg-gradient-to-br ${c.bg} border-none ring-1 ${c.ring}`}>
             <div className="flex items-center gap-5">
-                <div className={`p-4 rounded-2xl ${c.icon} shadow-lg`}>
+                <div className={`p-4 rounded-2xl ${c.icon}`}>
                     <Icon className="w-6 h-6" />
                 </div>
                 <div>
@@ -406,7 +409,7 @@ function ESSDashboardContent() {
                 const invData = await invRes.json();
                 setInvestments(invData);
             }
-            
+
             // Fetch tasks to get count
             const taskRes = await fetch('/api/v1/employee/tasks');
             if (taskRes.ok) {
@@ -467,8 +470,8 @@ function ESSDashboardContent() {
                 <div className="relative">
                     <div className="w-16 h-16 rounded-full border-4 border-indigo-100 border-t-indigo-600 animate-spin"></div>
                     <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-8 h-8 rounded-full bg-indigo-50 flex items-center justify-center">
-                            <LayoutDashboard className="w-4 h-4 text-indigo-600" />
+                        <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center">
+                            <LayoutDashboard className="w-4 h-4 text-blue-600" />
                         </div>
                     </div>
                 </div>
@@ -534,7 +537,7 @@ function ESSDashboardContent() {
     // Construct dynamic Recent Payroll Events feed
     const dynamicEvents = (() => {
         const list = [];
-        
+
         // 1. Payslips Events
         payslips.forEach(slip => {
             list.push({
@@ -604,14 +607,14 @@ function ESSDashboardContent() {
 
     const StatusBadge = ({ status, label }) => {
         const styles = {
-            'Pending': 'bg-amber-50 text-amber-700 border-amber-200 shadow-amber-100/50',
-            'Approved': 'bg-emerald-50 text-emerald-700 border-emerald-200 shadow-emerald-100/50',
-            'Rejected': 'bg-rose-50 text-rose-700 border-rose-200 shadow-rose-100/50',
-            'Earn': 'bg-emerald-50 text-emerald-700 border-emerald-200 shadow-emerald-100/50',
-            'Use': 'bg-indigo-50 text-indigo-700 border-indigo-200 shadow-indigo-100/50'
+            'Pending': 'bg-amber-50 text-amber-700 border-amber-200',
+            'Approved': 'bg-emerald-50 text-emerald-700 border-emerald-200',
+            'Rejected': 'bg-rose-50 text-rose-700 border-rose-200',
+            'Earn': 'bg-emerald-50 text-emerald-700 border-emerald-200',
+            'Use': 'bg-blue-50 text-indigo-700 border-indigo-200'
         };
         return (
-            <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border shadow-sm ${styles[status]}`}>
+            <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border ${styles[status]}`}>
                 {label || status}
             </span>
         );
@@ -621,8 +624,20 @@ function ESSDashboardContent() {
         <div className="p-4 md:p-8 bg-gradient-to-br from-slate-50 via-white to-indigo-50/30 min-h-screen">
             <div className="max-w-7xl mx-auto space-y-6">
 
-                {/* ═══ Premium Tab Navigation ═══ */}
-                <div className="bg-white/60 backdrop-blur-xl rounded-[1.5rem] border border-white/80 shadow-[0_4px_24px_rgba(0,0,0,0.04)] p-2">
+                {/* Standard Hero */}
+                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-4 mt-2">
+                    <div className="space-y-1">
+                        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+                            Employee Dashboard
+                        </h1>
+                        <p className="text-slate-500 text-sm mt-1 truncate">
+                            Access your daily work summary, attendance insights, tasks, announcements and productivity metrics.
+                        </p>
+                    </div>
+                </div>
+
+                {/* ✨ Premium Tab Navigation ✨ */}
+                <div className="bg-white rounded-2xl border border-[#E9EEF5] p-1.5">
                     <nav className="flex gap-1.5 px-1 overflow-x-auto no-scrollbar">
                         <TabButton active={activeTab === "overview"} label={t("overview")} icon={LayoutDashboard} onClick={() => setActiveTab("overview")} />
                         <TabButton active={activeTab === "payslips"} label={t("payslipsGallery")} icon={FileText} onClick={() => setActiveTab("payslips")} />
@@ -646,29 +661,29 @@ function ESSDashboardContent() {
                             {/* Summary Cards Row */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 {/* Latest Pay Card */}
-                                <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-indigo-600 via-violet-600 to-purple-700 p-7 text-white shadow-2xl shadow-indigo-200/50 sm:col-span-2">
-                                    <div className="absolute top-0 right-0 w-40 h-40 bg-white/5 rounded-full -mr-16 -mt-16 blur-2xl"></div>
-                                    <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/5 rounded-full -ml-12 -mb-12 blur-2xl"></div>
+                                <Card className="relative overflow-hidden p-7 sm:col-span-2 border border-slate-200">
+                                    <div className="absolute top-0 right-0 w-40 h-40 bg-blue-50/50 rounded-full -mr-16 -mt-16 blur-2xl"></div>
+                                    <div className="absolute bottom-0 left-0 w-32 h-32 bg-blue-50/50 rounded-full -ml-12 -mb-12 blur-2xl"></div>
                                     <div className="relative z-10">
                                         <div className="flex justify-between items-start mb-6">
-                                            <div className="p-3 bg-white/15 backdrop-blur-sm rounded-2xl">
+                                            <div className="p-3 bg-blue-50 text-blue-600 rounded-2xl">
                                                 <Wallet className="w-5 h-5" />
                                             </div>
-                                            <span className="text-[10px] font-black uppercase tracking-[0.2em] bg-white/15 backdrop-blur-sm px-3 py-1.5 rounded-full">{t("latestPay")}</span>
+                                            <span className="text-[10px] font-black uppercase tracking-[0.2em] bg-slate-100 text-slate-500 px-3 py-1.5 rounded-full">{t("latestPay")}</span>
                                         </div>
-                                        <h3 className="text-4xl font-black tracking-tight">₹{latestPayslip?.netSalary?.toLocaleString() || '0'}</h3>
-                                        <p className="text-indigo-200 text-sm font-medium mt-1">{t("disbursedFor")} {latestPayslip ? safeFormatDate(latestPayslip.year, latestPayslip.month) : 'N/A'}</p>
-                                        <div className="mt-8 pt-5 border-t border-white/15 flex justify-between items-center text-xs">
-                                            <span className="text-indigo-200 font-semibold">{t("gross")}: ₹{latestPayslip?.grossSalary?.toLocaleString() || '0'}</span>
-                                            <button type="button" onClick={() => setActiveTab("payslips")} className="flex items-center gap-1.5 font-bold hover:underline bg-white/10 px-3 py-1.5 rounded-full transition-all hover:bg-white/20">{t("viewBreakdown")} <ChevronRight className="w-3 h-3" /></button>
+                                        <h3 className="text-4xl font-black tracking-tight text-slate-900">₹{latestPayslip?.netSalary?.toLocaleString() || '0'}</h3>
+                                        <p className="text-slate-500 text-sm font-medium mt-1">{t("disbursedFor")} {latestPayslip ? safeFormatDate(latestPayslip.year, latestPayslip.month) : 'N/A'}</p>
+                                        <div className="mt-8 pt-5 border-t border-slate-100 flex justify-between items-center text-xs">
+                                            <span className="text-slate-500 font-semibold">{t("gross")}: ₹{latestPayslip?.grossSalary?.toLocaleString() || '0'}</span>
+                                            <button type="button" onClick={() => setActiveTab("payslips")} className="flex items-center gap-1.5 font-bold text-blue-600 hover:underline bg-blue-50 px-3 py-1.5 rounded-full transition-all hover:bg-blue-100">{t("viewBreakdown")} <ChevronRight className="w-3 h-3" /></button>
                                         </div>
                                     </div>
-                                </div>
+                                </Card>
 
                                 {/* YTD Earnings Card */}
                                 <Card className="p-7">
                                     <div className="flex justify-between items-start mb-5">
-                                        <div className="p-3 bg-emerald-50 rounded-2xl shadow-sm">
+                                        <div className="p-3 bg-emerald-50 rounded-2xl">
                                             <TrendingUp className="w-5 h-5 text-emerald-600" />
                                         </div>
                                         <span className="text-[10px] font-black uppercase tracking-[0.15em] text-slate-400">{t("totalYTDEarnings")}</span>
@@ -690,7 +705,7 @@ function ESSDashboardContent() {
                                 {/* Active Tasks Card */}
                                 <Card className="p-7 cursor-pointer group hover:ring-2 hover:ring-indigo-200 transition-all" onClick={() => setActiveTab('tasks')}>
                                     <div className="flex justify-between items-start mb-5">
-                                        <div className="p-3 bg-rose-50 rounded-2xl shadow-sm group-hover:shadow-md transition-shadow">
+                                        <div className="p-3 bg-rose-50 rounded-2xl group-hover: transition-">
                                             <CheckSquare className="w-5 h-5 text-rose-600" />
                                         </div>
                                         <span className="text-[10px] font-black uppercase tracking-[0.15em] text-slate-400">{t("activeTasks")}</span>
@@ -699,7 +714,7 @@ function ESSDashboardContent() {
                                     <p className="text-slate-500 text-sm font-medium">{t("pendingTasks") || "Pending Tasks"}</p>
                                     <div className="mt-6 pt-5 border-t border-slate-100/80 flex justify-between items-center text-xs">
                                         <span className="text-slate-400 font-semibold">{t("totalTasks") || "Total"}: {taskStats.total}</span>
-                                        <span className="flex items-center gap-1.5 text-indigo-600 font-bold group-hover:gap-2.5 transition-all">{t("viewAll")} <ChevronRight className="w-3 h-3" /></span>
+                                        <span className="flex items-center gap-1.5 text-blue-600 font-bold group-hover:gap-2.5 transition-all">{t("viewAll")} <ChevronRight className="w-3 h-3" /></span>
                                     </div>
                                 </Card>
                             </div>
@@ -708,12 +723,12 @@ function ESSDashboardContent() {
                             <Card className="overflow-hidden">
                                 <div className="p-6 border-b border-slate-100/80 flex justify-between items-center">
                                     <div className="flex items-center gap-3">
-                                        <div className="p-2 bg-indigo-50 rounded-xl">
-                                            <History className="w-4 h-4 text-indigo-600" />
+                                        <div className="p-2 bg-blue-50 rounded-xl">
+                                            <History className="w-4 h-4 text-blue-600" />
                                         </div>
                                         <h3 className="font-black text-slate-900">{t("recentPayrollEvents")}</h3>
                                     </div>
-                                    <button onClick={() => setShowPolicyModal(true)} className="text-xs text-indigo-600 font-bold hover:underline px-3 py-1.5 bg-indigo-50 rounded-full transition-colors hover:bg-indigo-100">{t("checkPolicy")}</button>
+                                    <button onClick={() => setShowPolicyModal(true)} className="text-xs text-blue-600 font-bold hover:underline px-3 py-1.5 bg-blue-50 rounded-full transition-colors hover:bg-blue-100">{t("checkPolicy")}</button>
                                 </div>
                                 <div className="divide-y divide-slate-50">
                                     {dynamicEvents.length === 0 ? (
@@ -724,11 +739,10 @@ function ESSDashboardContent() {
                                     ) : (
                                         dynamicEvents.map((evt, idx) => (
                                             <div key={idx} className="p-5 flex items-center gap-4 hover:bg-slate-50/50 transition-all duration-200 group">
-                                                <div className={`w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 shadow-sm ${
-                                                    evt.type === 'payslip' 
-                                                        ? 'bg-gradient-to-br from-blue-50 to-indigo-50 text-blue-600' 
-                                                        : 'bg-gradient-to-br from-emerald-50 to-teal-50 text-emerald-600'
-                                                }`}>
+                                                <div className={`w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 ${evt.type === 'payslip'
+                                                    ? 'bg-gradient-to-br from-blue-50 to-indigo-50 text-blue-600'
+                                                    : 'bg-gradient-to-br from-emerald-50 to-teal-50 text-emerald-600'
+                                                    }`}>
                                                     {evt.type === 'payslip' ? <FileText className="w-5 h-5" /> : <Percent className="w-5 h-5" />}
                                                 </div>
                                                 <div className="flex-1 min-w-0">
@@ -736,17 +750,16 @@ function ESSDashboardContent() {
                                                     <p className="text-[11px] text-slate-500 font-medium">{format(evt.date, 'MMMM dd, yyyy')}</p>
                                                 </div>
                                                 {evt.type === 'payslip' ? (
-                                                    <button onClick={evt.action} className="p-2.5 text-slate-300 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-all">
+                                                    <button onClick={evt.action} className="p-2.5 text-slate-300 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all">
                                                         <Download className="w-4 h-4" />
                                                     </button>
                                                 ) : (
-                                                    <div className={`px-3 py-1 text-[10px] font-black rounded-full tracking-wider ${
-                                                        evt.badge === 'Approved' 
-                                                            ? 'bg-emerald-100 text-emerald-700' 
-                                                            : evt.badge === 'Rejected' 
-                                                                ? 'bg-rose-100 text-rose-700' 
-                                                                : 'bg-amber-100 text-amber-700'
-                                                    }`}>
+                                                    <div className={`px-3 py-1 text-[10px] font-black rounded-full tracking-wider ${evt.badge === 'Approved'
+                                                        ? 'bg-emerald-100 text-emerald-700'
+                                                        : evt.badge === 'Rejected'
+                                                            ? 'bg-rose-100 text-rose-700'
+                                                            : 'bg-amber-100 text-amber-700'
+                                                        }`}>
                                                         {evt.badge}
                                                     </div>
                                                 )}
@@ -768,7 +781,7 @@ function ESSDashboardContent() {
                                     <div className="flex items-center justify-between mb-5">
                                         <h4 className="font-black text-slate-900 text-sm flex items-center gap-2.5">
                                             <span className="relative flex h-2.5 w-2.5">
-                                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-500 opacity-75"></span>
+                                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-500 opacity-75"></span>
                                                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-indigo-600"></span>
                                             </span>
                                             {t("nextPaydayCountdown") || "Next Payday"}
@@ -783,7 +796,7 @@ function ESSDashboardContent() {
                                             </div>
                                         </div>
                                         <div>
-                                            <p className="text-sm font-bold text-indigo-600">
+                                            <p className="text-sm font-bold text-blue-600">
                                                 {daysRemaining === 1 ? t("dayRemaining") || "day left" : t("daysRemaining") || "days left"}
                                             </p>
                                             <p className="text-[11px] text-slate-500 font-medium mt-1">
@@ -797,7 +810,7 @@ function ESSDashboardContent() {
                             {/* Tax Tip Widget */}
                             <Card className="p-7 bg-gradient-to-br from-blue-50/60 to-sky-50/40">
                                 <div className="flex items-center gap-3 mb-4">
-                                    <div className="p-2 bg-blue-100 rounded-xl shadow-sm">
+                                    <div className="p-2 bg-blue-100 rounded-xl">
                                         <AlertTriangle className="w-4 h-4 text-blue-600" />
                                     </div>
                                     <h4 className="font-black text-slate-900 text-sm">{t("taxSeasonReminder")}</h4>
@@ -807,7 +820,7 @@ function ESSDashboardContent() {
                                 </p>
                                 <button
                                     onClick={() => setActiveTab("tax")}
-                                    className="w-full py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl text-xs font-black transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-100"
+                                    className="w-full py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl text-xs font-black transition-all flex items-center justify-center gap-2"
                                 >
                                     {t("uploadProofs")} <ArrowUpRight className="w-3 h-3" />
                                 </button>
@@ -819,8 +832,8 @@ function ESSDashboardContent() {
                                     <h4 className="font-black text-slate-900 text-sm">
                                         {userRoster.length > 0 ? t("myUpcomingShifts") : t("standardSchedule")}
                                     </h4>
-                                    <div className="p-1.5 bg-indigo-50 rounded-lg">
-                                        <Clock className="w-4 h-4 text-indigo-600" />
+                                    <div className="p-1.5 bg-blue-50 rounded-lg">
+                                        <Clock className="w-4 h-4 text-blue-600" />
                                     </div>
                                 </div>
                                 <div className="space-y-3">
@@ -835,14 +848,14 @@ function ESSDashboardContent() {
                                                     <p className="text-xs font-bold text-slate-900">{r.shiftId?.name}</p>
                                                     <p className="text-[10px] text-slate-500 font-medium">{r.shiftId?.startTime} - {r.shiftId?.endTime}</p>
                                                 </div>
-                                                <div className="w-2.5 h-2.5 rounded-full shadow-sm" style={{ backgroundColor: r.shiftId?.color || '#4f46e5' }} />
+                                                <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: r.shiftId?.color || '#4f46e5' }} />
                                             </div>
                                         ))
                                     ) : (
                                         <div className="p-5 bg-gradient-to-br from-indigo-50/60 to-violet-50/40 rounded-2xl border border-indigo-100/50">
                                             <div className="flex items-center gap-3">
-                                                <div className="w-11 h-11 rounded-xl bg-white flex items-center justify-center shadow-sm border border-indigo-100/50">
-                                                    <Calendar className="w-5 h-5 text-indigo-600" />
+                                                <div className="w-11 h-11 rounded-xl bg-white flex items-center justify-center border border-slate-200/50">
+                                                    <Calendar className="w-5 h-5 text-blue-600" />
                                                 </div>
                                                 <div>
                                                     <p className="text-xs font-bold text-slate-900">{employee?.jobDetails?.defaultShift?.name || t("generalShift")}</p>
@@ -851,7 +864,7 @@ function ESSDashboardContent() {
                                                     </p>
                                                 </div>
                                             </div>
-                                            <p className="text-[10px] text-indigo-600 font-semibold mt-3 bg-white/60 p-2 rounded-lg text-center">
+                                            <p className="text-[10px] text-blue-600 font-semibold mt-3 bg-white/60 p-2 rounded-lg text-center">
                                                 {employee?.jobDetails?.defaultShift ? t("defaultShiftAssigned") : t("standardWorkingHours")}
                                             </p>
                                         </div>
@@ -888,11 +901,11 @@ function ESSDashboardContent() {
                                     <div className="space-y-2">
                                         <div className="flex justify-between items-center text-[10px] font-bold text-slate-500">
                                             <span>Present Ratio</span>
-                                            <span className="text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full">{presentRatio}%</span>
+                                            <span className="text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">{presentRatio}%</span>
                                         </div>
                                         <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
-                                            <div 
-                                                className="bg-gradient-to-r from-emerald-500 to-teal-500 h-full rounded-full transition-all duration-1000 ease-out" 
+                                            <div
+                                                className="bg-gradient-to-r from-emerald-500 to-teal-500 h-full rounded-full transition-all duration-1000 ease-out"
                                                 style={{ width: `${presentRatio}%` }}
                                             />
                                         </div>
@@ -924,7 +937,7 @@ function ESSDashboardContent() {
                                 <h2 className="text-2xl font-black text-slate-900 tracking-tight">{t("historicPayslips")}</h2>
                                 <p className="text-sm text-slate-500 font-medium mt-1">Download and preview your salary slips</p>
                             </div>
-                            <div className="flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-slate-200/60 rounded-xl p-1.5 shadow-sm">
+                            <div className="flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-slate-200/60 rounded-xl p-1.5">
                                 <select
                                     value={selectedFY}
                                     onChange={(e) => setSelectedFY(e.target.value)}
@@ -981,7 +994,7 @@ function ESSDashboardContent() {
                                             </button>
                                             <button
                                                 onClick={() => handleDownloadPDF(slip)}
-                                                className="p-2.5 bg-indigo-50 hover:bg-indigo-100 rounded-xl text-indigo-600 transition-all border border-indigo-100/60"
+                                                className="p-2.5 bg-blue-50 hover:bg-blue-100 rounded-xl text-blue-600 transition-all border border-indigo-100/60"
                                             >
                                                 <Download className="w-4 h-4" />
                                             </button>
@@ -1010,7 +1023,7 @@ function ESSDashboardContent() {
                     <div className="space-y-5 animate-in fade-in slide-in-from-bottom-4 duration-500">
                         <Card className="p-8 md:p-10">
                             <div className="flex items-center gap-5 mb-10">
-                                <div className="p-4 bg-gradient-to-br from-indigo-100 to-violet-100 rounded-2xl text-indigo-600 shadow-lg shadow-indigo-100/50">
+                                <div className="p-4 bg-gradient-to-br from-indigo-100 to-violet-100 rounded-2xl text-blue-600">
                                     <ShieldCheck className="w-8 h-8" />
                                 </div>
                                 <div>
@@ -1024,7 +1037,7 @@ function ESSDashboardContent() {
                                 <div className="space-y-8">
                                     <div>
                                         <h4 className="font-black text-slate-900 mb-5 flex items-center gap-2.5">
-                                            Section 80C 
+                                            Section 80C
                                             <span className="text-[10px] font-bold text-slate-400 font-mono bg-slate-50 px-2 py-1 rounded-full">(Max ₹1.5L)</span>
                                         </h4>
                                         <div className="space-y-4">
@@ -1063,7 +1076,7 @@ function ESSDashboardContent() {
 
                                     <div>
                                         <h4 className="font-black text-slate-900 mb-5 flex items-center gap-2.5">
-                                            Section 80D 
+                                            Section 80D
                                             <span className="text-[10px] font-bold text-slate-400 font-mono bg-slate-50 px-2 py-1 rounded-full">(Health Ins.)</span>
                                         </h4>
                                         <div className="space-y-1.5">
@@ -1083,7 +1096,7 @@ function ESSDashboardContent() {
                                 <div className="space-y-8 lg:border-l lg:border-slate-100 lg:pl-12">
                                     <div>
                                         <h4 className="font-black text-slate-900 mb-5 flex items-center gap-2.5">
-                                            HRA Exemption 
+                                            HRA Exemption
                                             <span className="text-[10px] font-bold text-slate-400 font-mono bg-slate-50 px-2 py-1 rounded-full">(House Rent)</span>
                                         </h4>
                                         <div className="space-y-4">
@@ -1094,7 +1107,7 @@ function ESSDashboardContent() {
                                                     value={hraData.annualRent || 0}
                                                     onChange={(e) => setHraData({ ...hraData, annualRent: parseInt(e.target.value) || 0 })}
                                                     placeholder="0"
-                                                    className="w-full p-3.5 bg-slate-50/80 border border-slate-200/60 rounded-xl text-sm font-bold text-indigo-600 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-300 outline-none transition-all"
+                                                    className="w-full p-3.5 bg-slate-50/80 border border-slate-200/60 rounded-xl text-sm font-bold text-blue-600 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-300 outline-none transition-all"
                                                 />
                                             </div>
                                             <div className="space-y-1.5">
@@ -1124,13 +1137,13 @@ function ESSDashboardContent() {
                                             <div className="flex gap-3 pt-3">
                                                 <button
                                                     onClick={() => handleSaveDeclaration(false)}
-                                                    className="flex-1 py-3.5 bg-white border border-slate-200/80 text-slate-700 rounded-xl text-sm font-bold hover:bg-slate-50 transition-all shadow-sm"
+                                                    className="flex-1 py-3.5 bg-white border border-slate-200/80 text-slate-700 rounded-xl text-sm font-bold hover:bg-slate-50 transition-all"
                                                 >
                                                     {t("saveDraft")}
                                                 </button>
                                                 <button
                                                     onClick={() => handleSaveDeclaration(true)}
-                                                    className="flex-[2] py-3.5 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white rounded-xl text-sm font-black shadow-lg shadow-indigo-200/50 transition-all flex items-center justify-center gap-2"
+                                                    className="flex-[2] py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl text-sm font-black transition-all flex items-center justify-center gap-2"
                                                 >
                                                     {t("submit")} <ArrowUpRight className="w-4 h-4" />
                                                 </button>
@@ -1148,7 +1161,7 @@ function ESSDashboardContent() {
                 {/* ═══════════════════════════════════════════ */}
                 {activeTab === "projection" && (
                     <div className="max-w-4xl mx-auto py-16 text-center space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                        <div className="w-24 h-24 bg-gradient-to-br from-indigo-100 to-violet-100 rounded-[2rem] flex items-center justify-center text-indigo-600 mx-auto shadow-lg shadow-indigo-100/50">
+                        <div className="w-24 h-24 bg-gradient-to-br from-indigo-100 to-violet-100 rounded-[2rem] flex items-center justify-center text-blue-600 mx-auto">
                             <Calculator className="w-12 h-12" />
                         </div>
                         <h2 className="text-3xl font-black text-slate-900 tracking-tight">{t("comingSoon")}</h2>
@@ -1156,10 +1169,10 @@ function ESSDashboardContent() {
                             {t("whatIfCalculatorSub")}
                         </p>
                         <div className="flex justify-center gap-4 pt-4">
-                            <div className="px-5 py-2.5 bg-white/80 backdrop-blur-sm rounded-full border border-slate-200/60 text-xs font-bold text-slate-400 flex items-center gap-2 shadow-sm">
+                            <div className="px-5 py-2.5 bg-white/80 backdrop-blur-sm rounded-full border border-slate-200/60 text-xs font-bold text-slate-400 flex items-center gap-2">
                                 <PlusCircle className="w-4 h-4" /> {t("newTaxRegime")}
                             </div>
-                            <div className="px-5 py-2.5 bg-white/80 backdrop-blur-sm rounded-full border border-slate-200/60 text-xs font-bold text-slate-400 flex items-center gap-2 shadow-sm">
+                            <div className="px-5 py-2.5 bg-white/80 backdrop-blur-sm rounded-full border border-slate-200/60 text-xs font-bold text-slate-400 flex items-center gap-2">
                                 <PlusCircle className="w-4 h-4" /> {t("oldTaxRegime")}
                             </div>
                         </div>
@@ -1219,7 +1232,7 @@ function ESSDashboardContent() {
                                     </div>
                                     <button
                                         onClick={() => window.openOTModal()}
-                                        className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-xl text-xs font-bold hover:from-indigo-700 hover:to-violet-700 transition-all shadow-lg shadow-indigo-200/50"
+                                        className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl text-xs font-bold hover:from-blue-700 hover:to-indigo-700 transition-all"
                                     >
                                         <FilePlus2 size={16} /> {t("requestOT")}
                                     </button>
@@ -1227,10 +1240,10 @@ function ESSDashboardContent() {
 
                                 <div className="space-y-3">
                                     {otRequests.length > 0 ? otRequests.map((r, i) => (
-                                        <div key={i} className="p-4 bg-gradient-to-r from-slate-50/80 to-white rounded-2xl border border-slate-100/80 flex items-center justify-between hover:shadow-sm transition-all">
+                                        <div key={i} className="p-4 bg-gradient-to-r from-slate-50/80 to-white rounded-2xl border border-slate-200/80 flex items-center justify-between hover: transition-all">
                                             <div className="flex items-center gap-4">
-                                                <div className="w-11 h-11 rounded-xl bg-white flex items-center justify-center border border-slate-200/60 shadow-sm">
-                                                    <Clock className="w-5 h-5 text-indigo-600" />
+                                                <div className="w-11 h-11 rounded-xl bg-white flex items-center justify-center border border-slate-200/60">
+                                                    <Clock className="w-5 h-5 text-blue-600" />
                                                 </div>
                                                 <div>
                                                     <p className="text-sm font-bold text-slate-900">{format(new Date(r.date), 'MMM dd, yyyy')}</p>
@@ -1258,13 +1271,13 @@ function ESSDashboardContent() {
                                     <div className="flex gap-2">
                                         <button
                                             onClick={() => window.openCOModal('Earn')}
-                                            className="px-4 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-xl text-xs font-bold hover:from-emerald-600 hover:to-teal-700 transition-all shadow-lg shadow-emerald-100/50"
+                                            className="px-4 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-xl text-xs font-bold hover:from-emerald-600 hover:to-teal-700 transition-all"
                                         >
                                             {t("earn")}
                                         </button>
                                         <button
                                             onClick={() => window.openCOModal('Use')}
-                                            className="px-4 py-2.5 bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-xl text-xs font-bold hover:from-indigo-700 hover:to-violet-700 transition-all shadow-lg shadow-indigo-100/50"
+                                            className="px-4 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl text-xs font-bold hover:from-blue-700 hover:to-indigo-700 transition-all"
                                         >
                                             {t("use")}
                                         </button>
@@ -1273,15 +1286,15 @@ function ESSDashboardContent() {
 
                                 <div className="space-y-3">
                                     {coRequests.length > 0 ? coRequests.map((r, i) => (
-                                        <div key={i} className="p-4 bg-gradient-to-r from-slate-50/80 to-white rounded-2xl border border-slate-100/80 flex items-center justify-between hover:shadow-sm transition-all">
+                                        <div key={i} className="p-4 bg-gradient-to-r from-slate-50/80 to-white rounded-2xl border border-slate-200/80 flex items-center justify-between hover: transition-all">
                                             <div className="flex items-center gap-4">
-                                                <div className={`w-11 h-11 rounded-xl flex items-center justify-center border shadow-sm ${r.type === 'Earn' ? 'bg-emerald-50 border-emerald-100 text-emerald-600' : 'bg-indigo-50 border-indigo-100 text-indigo-600'}`}>
+                                                <div className={`w-11 h-11 rounded-xl flex items-center justify-center border ${r.type === 'Earn' ? 'bg-emerald-50 border-emerald-100 text-emerald-600' : 'bg-blue-50 border-slate-200 text-blue-600'}`}>
                                                     <Calendar className="w-5 h-5" />
                                                 </div>
                                                 <div>
                                                     <p className="text-sm font-bold text-slate-900">{format(new Date(r.date), 'MMM dd, yyyy')}</p>
                                                     <p className="text-[11px] text-slate-500 font-medium">
-                                                        <span className={`font-bold ${r.type === 'Earn' ? 'text-emerald-600' : 'text-indigo-600'}`}>[{r.type}]</span> {r.days} Day • {r.reason}
+                                                        <span className={`font-bold ${r.type === 'Earn' ? 'text-emerald-600' : 'text-blue-600'}`}>[{r.type}]</span> {r.days} Day • {r.reason}
                                                     </p>
                                                 </div>
                                             </div>
@@ -1306,7 +1319,7 @@ function ESSDashboardContent() {
                     <div className="space-y-5 animate-in fade-in slide-in-from-bottom-4 duration-500">
                         <Card className="p-8 md:p-10">
                             <div className="flex items-center gap-5 mb-10">
-                                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-700 flex items-center justify-center text-white shadow-xl shadow-indigo-200/50">
+                                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-700 flex items-center justify-center text-white">
                                     <Clock className="w-8 h-8" />
                                 </div>
                                 <div>
@@ -1320,8 +1333,8 @@ function ESSDashboardContent() {
                                     <div className="p-7 bg-gradient-to-br from-slate-50 to-indigo-50/20 rounded-2xl border border-slate-200/50">
                                         <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.15em] mb-5">{t("defaultShift")}</h4>
                                         <div className="flex items-center gap-4">
-                                            <div className="w-14 h-14 rounded-xl bg-white flex items-center justify-center border border-slate-200/60 shadow-sm">
-                                                <Building className="w-6 h-6 text-indigo-600" />
+                                            <div className="w-14 h-14 rounded-xl bg-white flex items-center justify-center border border-slate-200/60">
+                                                <Building className="w-6 h-6 text-blue-600" />
                                             </div>
                                             <div>
                                                 <p className="text-lg font-black text-slate-900">{employee?.jobDetails?.defaultShift?.name || t("generalShift")}</p>
@@ -1352,7 +1365,7 @@ function ESSDashboardContent() {
                                 </div>
 
                                 <div className="space-y-6">
-                                    <div className="p-7 bg-white rounded-2xl border border-slate-200/50 shadow-sm">
+                                    <div className="p-7 bg-white rounded-2xl border border-slate-200/50">
                                         <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.15em] mb-5">{t("upcomingRoster")}</h4>
                                         {userRoster.length > 0 ? (
                                             <div className="space-y-3">
@@ -1390,7 +1403,7 @@ function ESSDashboardContent() {
             {/* ═══════════════════════════════════════════ */}
             {showPolicyModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-md animate-in fade-in duration-300">
-                    <div className="bg-white rounded-[2rem] w-full max-w-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
+                    <div className="bg-white rounded-[2rem] w-full max-w-2xl overflow-hidden animate-in zoom-in-95 duration-300">
                         <div className="p-7 border-b border-slate-100 flex justify-between items-center bg-gradient-to-r from-slate-50 to-indigo-50/30">
                             <div>
                                 <h3 className="text-lg font-black text-slate-900">{t("payrollPolicy")} 2025-26</h3>
@@ -1410,7 +1423,7 @@ function ESSDashboardContent() {
                         <div className="p-7 border-t border-slate-100 bg-slate-50/50 text-right">
                             <button
                                 onClick={() => handleDownload('Payroll_Policy_2025.txt', 'Full Payroll Policy Content...')}
-                                className="px-6 py-3 bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-bold rounded-xl text-xs hover:from-indigo-700 hover:to-violet-700 transition-all shadow-lg shadow-indigo-200/50"
+                                className="px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold rounded-xl text-xs hover:from-blue-700 hover:to-indigo-700 transition-all"
                             >
                                 {t("downloadPolicy")}
                             </button>
@@ -1424,7 +1437,7 @@ function ESSDashboardContent() {
             {/* ═══════════════════════════════════════════ */}
             {previewSlip && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-md animate-in fade-in duration-300">
-                    <div className="bg-white rounded-[2rem] w-full max-w-md shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
+                    <div className="bg-white rounded-[2rem] w-full max-w-md overflow-hidden animate-in zoom-in-95 duration-300">
                         <div className="p-7 border-b border-slate-100 flex justify-between items-center bg-gradient-to-r from-slate-50 to-indigo-50/30">
                             <div>
                                 <h3 className="text-lg font-black text-slate-900">{t("payslipPreview")}</h3>
@@ -1458,13 +1471,13 @@ function ESSDashboardContent() {
                         <div className="p-7 border-t border-slate-100 bg-slate-50/50 flex gap-3">
                             <button
                                 onClick={() => setPreviewSlip(null)}
-                                className="flex-1 py-3 bg-white border border-slate-200/80 text-slate-700 font-bold rounded-xl text-xs hover:bg-slate-50 transition-all shadow-sm"
+                                className="flex-1 py-3 bg-white border border-slate-200/80 text-slate-700 font-bold rounded-xl text-xs hover:bg-slate-50 transition-all"
                             >
                                 {t("close")}
                             </button>
                             <button
                                 onClick={() => handleDownloadPDF(previewSlip)}
-                                className="flex-1 py-3 bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-bold rounded-xl text-xs hover:from-indigo-700 hover:to-violet-700 transition-all flex items-center justify-center gap-2 shadow-lg shadow-indigo-200/50"
+                                className="flex-1 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold rounded-xl text-xs hover:from-blue-700 hover:to-indigo-700 transition-all flex items-center justify-center gap-2"
                             >
                                 <Download className="w-4 h-4" /> {t("download")}
                             </button>
@@ -1549,7 +1562,7 @@ const OTRequestModal = ({ employeeId, onSuccess }) => {
 
     return (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-md animate-in fade-in duration-300">
-            <div className="bg-white rounded-[2rem] w-full max-w-md shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
+            <div className="bg-white rounded-[2rem] w-full max-w-md overflow-hidden animate-in zoom-in-95 duration-300">
                 <div className="p-7 border-b border-slate-100 flex justify-between items-center bg-gradient-to-r from-slate-50 to-indigo-50/30">
                     <h3 className="text-lg font-black text-slate-900">{t("requestOT")}</h3>
                     <button onClick={() => setIsOpen(false)} className="p-2.5 hover:bg-slate-200/60 rounded-xl transition-colors">
@@ -1592,7 +1605,7 @@ const OTRequestModal = ({ employeeId, onSuccess }) => {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full py-3.5 bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-black rounded-xl text-sm hover:from-indigo-700 hover:to-violet-700 transition-all disabled:opacity-50 shadow-lg shadow-indigo-200/50"
+                        className="w-full py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-black rounded-xl text-sm hover:from-blue-700 hover:to-indigo-700 transition-all disabled:opacity-50"
                     >
                         {loading ? t("submitting") : t("submitRequest")}
                     </button>
@@ -1648,7 +1661,7 @@ const CORequestModal = ({ employeeId, onSuccess, balance }) => {
 
     return (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-md animate-in fade-in duration-300">
-            <div className="bg-white rounded-[2rem] w-full max-w-md shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
+            <div className="bg-white rounded-[2rem] w-full max-w-md overflow-hidden animate-in zoom-in-95 duration-300">
                 <div className="p-7 border-b border-slate-100 flex justify-between items-center bg-gradient-to-r from-slate-50 to-indigo-50/30">
                     <div>
                         <h3 className="text-lg font-black text-slate-900">{type === 'Earn' ? t("earnCompOff") : t("useCompOff")}</h3>
@@ -1695,7 +1708,7 @@ const CORequestModal = ({ employeeId, onSuccess, balance }) => {
                     <button
                         type="submit"
                         disabled={loading}
-                        className={`w-full py-3.5 text-white font-black rounded-xl text-sm transition-all disabled:opacity-50 shadow-lg ${type === 'Earn' ? 'bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 shadow-emerald-200/50' : 'bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 shadow-indigo-200/50'}`}
+                        className={`w-full py-3.5 text-white font-black rounded-xl text-sm transition-all disabled:opacity-50 ${type === 'Earn' ? 'bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700' : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700'}`}
                     >
                         {loading ? t("submitting") : t("submitRequest")}
                     </button>
@@ -1704,3 +1717,4 @@ const CORequestModal = ({ employeeId, onSuccess, balance }) => {
         </div>
     );
 };
+

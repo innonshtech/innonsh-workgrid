@@ -134,7 +134,7 @@ function AcknowledgedCopiesContent() {
         <div className="max-w-7xl mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <div className="w-11 h-11 bg-[#FB9D00] rounded-xl flex items-center justify-center shadow-sm">
+              <div className="w-11 h-11 bg-[#FB9D00] rounded-xl flex items-center justify-center">
                 <FileText className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -158,7 +158,7 @@ function AcknowledgedCopiesContent() {
 
       <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
         {/* Action Bar */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+        <div className="bg-white rounded-xl border border-slate-200 p-6">
           <div className="flex flex-wrap gap-4 items-center justify-between">
             <div className="flex gap-4">
               <button
@@ -211,7 +211,7 @@ function AcknowledgedCopiesContent() {
         </div>
 
         {/* Documents List */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
           <table className="min-w-full divide-y divide-slate-200">
             <thead className="bg-slate-50">
               <tr>
@@ -317,7 +317,7 @@ function AcknowledgedCopiesContent() {
         </div>
 
         {/* Statistics */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+        <div className="bg-white rounded-xl border border-slate-200">
           <div className="p-6 border-b border-slate-200">
             <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
               <div className="w-8 h-8 bg-[#FB9D00]/10 rounded-lg flex items-center justify-center border border-[#FB9D00]/20">
@@ -328,7 +328,7 @@ function AcknowledgedCopiesContent() {
           </div>
           <div className="p-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="group bg-white rounded-xl border border-blue-200 p-6 hover:shadow-lg transition-all duration-200 bg-slate-50 hover:scale-105">
+              <div className="group bg-white rounded-xl border border-blue-200 p-6 hover: transition-all duration-200 bg-slate-50 hover:scale-105">
                 <div className="flex items-center justify-between mb-3">
                   <div className="p-3 rounded-xl bg-slate-50 border border-blue-200">
                     <FileText className="h-6 w-6 text-blue-600" />
@@ -346,7 +346,7 @@ function AcknowledgedCopiesContent() {
                 </div>
               </div>
 
-              <div className="group bg-white rounded-xl border border-green-200 p-6 hover:shadow-lg transition-all duration-200 bg-green-50 hover:scale-105">
+              <div className="group bg-white rounded-xl border border-green-200 p-6 hover: transition-all duration-200 bg-green-50 hover:scale-105">
                 <div className="flex items-center justify-between mb-3">
                   <div className="p-3 rounded-xl bg-green-50 border border-green-200">
                     <CheckCircle2 className="h-6 w-6 text-green-600" />
@@ -364,7 +364,7 @@ function AcknowledgedCopiesContent() {
                 </div>
               </div>
 
-              <div className="group bg-white rounded-xl border border-yellow-200 p-6 hover:shadow-lg transition-all duration-200 bg-yellow-50 hover:scale-105">
+              <div className="group bg-white rounded-xl border border-yellow-200 p-6 hover: transition-all duration-200 bg-yellow-50 hover:scale-105">
                 <div className="flex items-center justify-between mb-3">
                   <div className="p-3 rounded-xl bg-yellow-50 border border-yellow-200">
                     <Clock className="h-6 w-6 text-yellow-600" />

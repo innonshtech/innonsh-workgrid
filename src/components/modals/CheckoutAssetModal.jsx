@@ -93,7 +93,7 @@ export default function CheckoutAssetModal({ isOpen, onClose, onSuccess, vaultPr
 
     return (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 backdrop-blur-sm">
-            <div className="bg-white rounded-2xl w-full max-w-lg shadow-2xl transform transition-all animate-in fade-in zoom-in-95 duration-200">
+            <div className="bg-white rounded-2xl w-full max-w-lg transform transition-all animate-in fade-in zoom-in-95 duration-200">
                 <div className="flex items-center justify-between p-6 border-b border-gray-100">
                     <div className="flex items-center gap-3">
                         <div className="p-2 bg-emerald-50 rounded-lg text-emerald-600">
@@ -160,7 +160,7 @@ export default function CheckoutAssetModal({ isOpen, onClose, onSuccess, vaultPr
                             className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
                         />
                         {showDropdown && (
-                            <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-xl max-h-48 overflow-y-auto">
+                            <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg max-h-48 overflow-y-auto">
                                 {filteredEmployees.length === 0 ? (
                                     <div className="px-3 py-3 text-sm text-gray-500 text-center">No employees found</div>
                                 ) : (

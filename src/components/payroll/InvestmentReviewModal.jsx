@@ -48,7 +48,7 @@ export default function InvestmentReviewModal({ declaration, onClose, onUpdate }
     const SectionHeader = ({ icon: Icon, title, amount }) => (
         <div className="flex justify-between items-center bg-slate-50 p-4 rounded-xl border border-slate-100 mb-4">
             <div className="flex items-center gap-3">
-                <div className="p-2 bg-white rounded-lg shadow-sm border border-slate-100">
+                <div className="p-2 bg-white rounded-lg border border-slate-200">
                     <Icon className="w-5 h-5 text-indigo-600" />
                 </div>
                 <h4 className="font-bold text-slate-900">{title}</h4>
@@ -69,7 +69,7 @@ export default function InvestmentReviewModal({ declaration, onClose, onUpdate }
 
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4">
-            <div className="bg-white w-full max-w-2xl rounded-3xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden animate-in zoom-in-95 duration-300">
+            <div className="bg-white w-full max-w-2xl rounded-3xl flex flex-col max-h-[90vh] overflow-hidden animate-in zoom-in-95 duration-300">
                 {/* Modal Header */}
                 <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-white sticky top-0 z-10">
                     <div className="flex items-center gap-4">
@@ -166,7 +166,7 @@ export default function InvestmentReviewModal({ declaration, onClose, onUpdate }
                     <button
                         disabled={submitting}
                         onClick={() => handleAction('Approved')}
-                        className="flex-[2] py-4 px-6 rounded-2xl bg-indigo-600 text-white text-sm font-black shadow-xl shadow-indigo-100 hover:bg-indigo-700 transition-all flex items-center justify-center gap-2"
+                        className="flex-[2] py-4 px-6 rounded-2xl bg-indigo-600 text-white text-sm font-black hover:bg-indigo-700 transition-all flex items-center justify-center gap-2"
                     >
                         <CheckCircle2 className="w-5 h-5" /> Approve Declaration
                     </button>

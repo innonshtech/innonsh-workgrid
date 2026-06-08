@@ -764,7 +764,7 @@ export default function PayslipGenerator() {
           />
         </button>
         {isOpen && (
-          <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-slate-200 rounded-lg shadow-lg z-50 max-h-96 overflow-hidden flex flex-col">
+          <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-slate-200 rounded-lg z-50 max-h-96 overflow-hidden flex flex-col">
             <div className="p-3 border-b border-slate-100 bg-slate-50">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
@@ -945,7 +945,7 @@ export default function PayslipGenerator() {
               >
                 <ArrowLeft className="w-5 h-5" />
               </button>
-              <div className="w-11 h-11 bg-indigo-500 rounded-xl flex items-center justify-center shadow-sm">
+              <div className="w-11 h-11 bg-indigo-500 rounded-xl flex items-center justify-center">
                 <Calculator className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -1141,7 +1141,7 @@ export default function PayslipGenerator() {
           </div>
         )}
 
-        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm mb-8">
+        <div className="bg-white p-6 rounded-xl border border-slate-200 mb-8">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-slate-900">
               Generation Progress
@@ -1282,7 +1282,7 @@ export default function PayslipGenerator() {
         </div>
         <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
           <div className="xl:col-span-1 space-y-6">
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+            <div className="bg-white rounded-xl border border-slate-200">
               <div className="p-6 border-b border-slate-200">
                 <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                   <div className="w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center border border-indigo-100">
@@ -1436,7 +1436,7 @@ export default function PayslipGenerator() {
                 </div>
               </div>
             </div>
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+            <div className="bg-white rounded-xl border border-slate-200">
               <div className="p-6 border-b border-slate-200">
                 <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                   <div className="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center border border-green-100">
@@ -1519,7 +1519,7 @@ export default function PayslipGenerator() {
             </div>
           </div>
           <div className="xl:col-span-3 space-y-8">
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+            <div className="bg-white rounded-xl border border-slate-200">
               <div className="p-6 border-b border-slate-200">
                 <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                   <div className="w-8 h-8 bg-slate-50 rounded-lg flex items-center justify-center border border-blue-100">
@@ -1675,7 +1675,7 @@ export default function PayslipGenerator() {
               </div>
             </div>
             {employeeData?.payslipStructure?.salaryType === "monthly" && (
-              <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+              <div className="bg-white rounded-xl border border-slate-200">
                 <div className="p-6 border-b border-slate-200">
                   <div className="flex items-center justify-between">
                     <div>
@@ -1845,7 +1845,7 @@ export default function PayslipGenerator() {
               </div>
             )}
             {employeeData?.payslipStructure?.salaryType === "monthly" && (
-              <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+              <div className="bg-white rounded-xl border border-slate-200">
                 <div className="p-6 border-b border-slate-200">
                   <div className="flex items-center justify-between">
                     <div>
@@ -2030,7 +2030,7 @@ export default function PayslipGenerator() {
                 </div>
               </div>
             )}
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+            <div className="bg-white rounded-xl border border-slate-200">
               <div className="p-6 border-b border-slate-200">
                 <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                   <div className="w-8 h-8 bg-purple-50 rounded-lg flex items-center justify-center border border-purple-100">
@@ -2062,7 +2062,7 @@ export default function PayslipGenerator() {
               <button
                 onClick={handleSubmit}
                 disabled={loading || !employeeData}
-                className="inline-flex items-center gap-2 px-8 py-3 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg font-semibold transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                className="inline-flex items-center gap-2 px-8 py-3 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? (
                   <>

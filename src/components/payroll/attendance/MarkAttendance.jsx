@@ -182,7 +182,7 @@ export default function MarkAttendance({ onAttendanceMarked }) {
     if (status === "loading") return <div className="animate-pulse h-12 w-32 bg-slate-200 rounded-lg"></div>;
 
     return (
-        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <div className="bg-white p-6 rounded-2xl border border-slate-200">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                 <div>
                     <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
@@ -207,7 +207,7 @@ export default function MarkAttendance({ onAttendanceMarked }) {
                         <button
                             onClick={handleClockIn}
                             disabled={loading}
-                            className="px-6 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-xl font-bold flex items-center gap-2 transition-all shadow-lg shadow-green-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="px-6 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-xl font-bold flex items-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {loading ? "Locating..." : (
                                 <>
@@ -221,7 +221,7 @@ export default function MarkAttendance({ onAttendanceMarked }) {
                         <button
                             onClick={handleClockOut}
                             disabled={loading}
-                            className="px-6 py-2.5 bg-red-500 hover:bg-red-600 text-white rounded-xl font-bold flex items-center gap-2 transition-all shadow-lg shadow-red-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="px-6 py-2.5 bg-red-500 hover:bg-red-600 text-white rounded-xl font-bold flex items-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {loading ? "Processing..." : (
                                 <>

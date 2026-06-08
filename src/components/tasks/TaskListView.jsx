@@ -55,7 +55,7 @@ const TaskListView = ({ tasks, onTaskClick, onStatusChange, groupBy = "status", 
                 const isExpanded = expandedGroups.has(group);
 
                 return (
-                    <div key={group} className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+                    <div key={group} className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
                         {/* Group Header */}
                         <button
                             onClick={() => toggleGroup(group)}

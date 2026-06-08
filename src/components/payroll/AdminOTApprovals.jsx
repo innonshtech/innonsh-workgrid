@@ -73,7 +73,7 @@ export default function AdminOTApprovals() {
                 </div>
             </div>
 
-            <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm">
+            <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden">
                 <table className="w-full text-left">
                     <thead className="bg-slate-50 border-b border-slate-200">
                         <tr>

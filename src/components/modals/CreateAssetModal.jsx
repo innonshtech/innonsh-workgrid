@@ -86,7 +86,7 @@ export default function CreateAssetModal({ isOpen, onClose, onSuccess }) {
 
     return (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 backdrop-blur-sm">
-            <div className="bg-white rounded-2xl w-full max-w-lg shadow-2xl transform transition-all">
+            <div className="bg-white rounded-2xl w-full max-w-lg transform transition-all">
                 <div className="flex items-center justify-between p-6 border-b border-gray-100">
                     <div className="flex items-center gap-3">
                         <div className="p-2 bg-indigo-50 rounded-lg text-indigo-600">
@@ -174,7 +174,7 @@ export default function CreateAssetModal({ isOpen, onClose, onSuccess }) {
                             className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
                         />
                         {showDropdown && (
-                            <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-xl max-h-48 overflow-y-auto">
+                            <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg max-h-48 overflow-y-auto">
                                 <div 
                                     className="px-3 py-2.5 hover:bg-gray-50 cursor-pointer text-sm text-gray-500 font-medium border-b border-gray-100"
                                     onMouseDown={(e) => {

@@ -93,7 +93,7 @@ const IssueBonusModal = ({ isOpen, onClose, onSave }) => {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-            <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
                 <div className="flex items-center justify-between p-6 border-b border-gray-100 sticky top-0 bg-white z-10">
                     <h2 className="text-xl font-bold flex items-center gap-2 text-gray-800">
                         <Gift className="w-6 h-6 text-pink-500" />
@@ -302,7 +302,7 @@ const IssueBonusModal = ({ isOpen, onClose, onSave }) => {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="px-6 py-2 bg-pink-600 hover:bg-pink-700 text-white text-sm font-medium rounded-lg shadow-md hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                            className="px-6 py-2 bg-pink-600 hover:bg-pink-700 text-white text-sm font-medium rounded-lg hover: transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                         >
                             {loading ? "Issuing..." : "Issue Bonus"}
                         </button>

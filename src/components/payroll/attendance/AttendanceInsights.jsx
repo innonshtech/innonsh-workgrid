@@ -22,7 +22,7 @@ export default function AttendanceInsights({ trendData, deptData, ratioData }) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
       {/* Attendance Trend */}
-      <Card className="shadow-sm border border-slate-200">
+      <Card className=" border border-slate-200">
         <CardHeader className="border-b border-slate-100 bg-slate-50/50">
           <CardTitle className="text-lg font-bold text-slate-800">Attendance Trend</CardTitle>
         </CardHeader>
@@ -68,7 +68,7 @@ export default function AttendanceInsights({ trendData, deptData, ratioData }) {
       </Card>
 
       {/* Present vs Absent Ratio */}
-      <Card className="shadow-sm border border-slate-200">
+      <Card className=" border border-slate-200">
         <CardHeader className="border-b border-slate-100 bg-slate-50/50">
           <CardTitle className="text-lg font-bold text-slate-800">Present vs Absent Ratio</CardTitle>
         </CardHeader>
@@ -102,7 +102,7 @@ export default function AttendanceInsights({ trendData, deptData, ratioData }) {
       </Card>
 
       {/* Department-wise Attendance */}
-      <Card className="shadow-sm border border-slate-200 lg:col-span-2">
+      <Card className=" border border-slate-200 lg:col-span-2">
         <CardHeader className="border-b border-slate-100 bg-slate-50/50">
           <CardTitle className="text-lg font-bold text-slate-800">Department-wise Attendance</CardTitle>
         </CardHeader>

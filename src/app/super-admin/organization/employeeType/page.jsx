@@ -307,7 +307,7 @@
 //         <div className="max-w-7xl mx-auto px-6 py-6">
 //           <div className="flex items-center justify-between">
 //             <div className="flex items-center space-x-4">
-//               <div className="w-11 h-11 bg-yellow-500 rounded-xl flex items-center justify-center shadow-sm">
+//               <div className="w-11 h-11 bg-yellow-500 rounded-xl flex items-center justify-center">
 //                 <Users className="w-6 h-6 text-white" />
 //               </div>
 //               <div>
@@ -323,28 +323,28 @@
 //             <div className="flex items-center gap-3">
 //               <button
 //                 onClick={() => setShowDocumentsAddModal(true)}
-//                 className="inline-flex items-center gap-2 px-5 py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-medium transition-colors shadow-sm"
+//                 className="inline-flex items-center gap-2 px-5 py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-medium transition-colors"
 //               >
 //                 <Plus className="w-4 h-4" />
 //                 Add Supported Documents
 //               </button>
 //               <button
 //                 onClick={() => setShowCreateModal(true)}
-//                 className="inline-flex items-center gap-2 px-5 py-2.5 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg font-medium transition-colors shadow-sm"
+//                 className="inline-flex items-center gap-2 px-5 py-2.5 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg font-medium transition-colors"
 //               >
 //                 <Plus className="w-4 h-4" />
 //                 Add Employee Type
 //               </button>
 //               <button
 //                 onClick={() => setShowCategoryModal(true)}
-//                 className="inline-flex items-center gap-2 px-5 py-2.5 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium transition-colors shadow-sm"
+//                 className="inline-flex items-center gap-2 px-5 py-2.5 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium transition-colors"
 //               >
 //                 <Tag className="w-4 h-4" />
 //                 Add Category
 //               </button>
 //               <button
 //                 onClick={() => setShowSubCategoryModal(true)}
-//                 className="inline-flex items-center gap-2 px-5 py-2.5 bg-slate-500 hover:bg-blue-600 text-white rounded-lg font-medium transition-colors shadow-sm"
+//                 className="inline-flex items-center gap-2 px-5 py-2.5 bg-slate-500 hover:bg-blue-600 text-white rounded-lg font-medium transition-colors"
 //               >
 //                 <Layers className="w-4 h-4" />
 //                 Add Sub-Category
@@ -1130,7 +1130,7 @@ export default function EmployeeTypesPage() {
         <div className="max-w-7xl mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <div className="w-11 h-11 bg-indigo-500 rounded-xl flex items-center justify-center shadow-sm">
+              <div className="w-11 h-11 bg-indigo-500 rounded-xl flex items-center justify-center">
                 <Users className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -1145,28 +1145,28 @@ export default function EmployeeTypesPage() {
             <div className="flex items-center gap-3">
               <button
                 onClick={() => setShowDocumentsAddModal(true)}
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-purple-500 hover:bg-purple-600 text-white rounded-lg font-medium transition-colors shadow-sm"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-purple-500 hover:bg-purple-600 text-white rounded-lg font-medium transition-colors"
               >
                 <Plus className="w-4 h-4" />
                 Add Supported Documents
               </button>
               <button
                 onClick={() => setShowCreateModal(true)}
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg font-medium transition-colors shadow-sm"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg font-medium transition-colors"
               >
                 <Plus className="w-4 h-4" />
                 Add Employee Type
               </button>
               <button
                 onClick={() => setShowCategoryModal(true)}
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium transition-colors shadow-sm"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium transition-colors"
               >
                 <Tag className="w-4 h-4" />
                 Add Category
               </button>
               <button
                 onClick={() => setShowSubCategoryModal(true)}
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-slate-500 hover:bg-blue-600 text-white rounded-lg font-medium transition-colors shadow-sm"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-slate-500 hover:bg-blue-600 text-white rounded-lg font-medium transition-colors"
               >
                 <Layers className="w-4 h-4" />
                 Add Sub-Category

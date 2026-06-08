@@ -63,7 +63,7 @@ export default function PayrollPage() {
             href={feature.disabled ? '#' : feature.href}
             className={feature.disabled ? 'cursor-not-allowed' : ''}
           >
-            <div className={`bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow ${feature.disabled ? 'opacity-50' : ''}`}>
+            <div className={`bg-white rounded-lg border border-gray-200 p-6 hover: transition- ${feature.disabled ? 'opacity-50' : ''}`}>
               <div className="flex items-start space-x-4">
                 <div className={`p-3 rounded-full bg-gray-100`}>
                   <feature.icon className={`h-6 w-6 ${feature.color}`} />

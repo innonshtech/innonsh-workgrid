@@ -137,7 +137,7 @@ export default function RolesManagement() {
 
       <div className="grid grid-cols-1 gap-4">
         {roles.map(role => (
-          <div key={role._id} className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow">
+          <div key={role._id} className="bg-white border border-gray-200 rounded-xl p-5 hover: transition-">
             <div className="flex justify-between items-start">
               <div>
                 <div className="flex items-center">
@@ -181,7 +181,7 @@ export default function RolesManagement() {
           <motion.div 
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] flex flex-col border border-slate-100 overflow-hidden"
+            className="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col border border-slate-200 overflow-hidden"
           >
             <div className="p-6 border-b border-slate-150">
               <h2 className="text-xl font-extrabold text-slate-800 tracking-tight">
@@ -197,7 +197,7 @@ export default function RolesManagement() {
                     type="text"
                     value={formData.name}
                     onChange={e => setFormData({...formData, name: e.target.value})}
-                    className="w-full px-4 py-2.5 bg-slate-50/50 hover:bg-slate-50 focus:bg-white border border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 rounded-xl text-sm font-semibold text-slate-800 placeholder-slate-400 outline-none transition-all shadow-inner"
+                    className="w-full px-4 py-2.5 bg-slate-50/50 hover:bg-slate-50 focus:bg-white border border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 rounded-xl text-sm font-semibold text-slate-800 placeholder-slate-400 outline-none transition-all"
                     placeholder="e.g., HR Assistant"
                   />
                 </div>
@@ -207,7 +207,7 @@ export default function RolesManagement() {
                     type="text"
                     value={formData.description}
                     onChange={e => setFormData({...formData, description: e.target.value})}
-                    className="w-full px-4 py-2.5 bg-slate-50/50 hover:bg-slate-50 focus:bg-white border border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 rounded-xl text-sm font-semibold text-slate-800 placeholder-slate-400 outline-none transition-all shadow-inner"
+                    className="w-full px-4 py-2.5 bg-slate-50/50 hover:bg-slate-50 focus:bg-white border border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 rounded-xl text-sm font-semibold text-slate-800 placeholder-slate-400 outline-none transition-all"
                     placeholder="Brief description of this role"
                   />
                 </div>

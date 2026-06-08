@@ -73,7 +73,7 @@ const QuickCreateTask = ({ status, projectId, onTaskCreated, assignedBy }) => {
     }
 
     return (
-        <div className="bg-white rounded-xl border-2 border-indigo-200 shadow-lg p-3 space-y-2 animate-in fade-in slide-in-from-top-2 duration-200">
+        <div className="bg-white rounded-xl border-2 border-indigo-200 p-3 space-y-2 animate-in fade-in slide-in-from-top-2 duration-200">
             <input
                 ref={inputRef}
                 type="text"

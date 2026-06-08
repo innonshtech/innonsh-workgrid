@@ -183,7 +183,7 @@ export default function NotificationsDashboard() {
           {/* Stats Skeleton */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             {[1, 2, 3, 4].map(i => (
-              <div key={i} className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+              <div key={i} className="bg-white p-6 rounded-xl border border-slate-200">
                 <div className="flex justify-between">
                   <div>
                     <Skeleton className="h-3 w-24 mb-2" />
@@ -205,7 +205,7 @@ export default function NotificationsDashboard() {
           </div>
 
           {/* List Skeleton */}
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+          <div className="bg-white rounded-xl border border-slate-200">
             <div className="p-6 border-b border-slate-200 flex justify-between">
               <Skeleton className="h-6 w-48" />
               <Skeleton className="h-6 w-16 rounded-full" />
@@ -244,7 +244,7 @@ export default function NotificationsDashboard() {
         <div className="max-w-7xl mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <div className="w-11 h-11 bg-gradient-to-br from-indigo-500 to-blue-500 rounded-xl flex items-center justify-center shadow-lg">
+              <div className="w-11 h-11 bg-gradient-to-br from-indigo-500 to-blue-500 rounded-xl flex items-center justify-center">
                 <Bell className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -256,7 +256,7 @@ export default function NotificationsDashboard() {
             <div className="flex items-center space-x-2">
               <button
                 onClick={() => setIsModalOpen(true)}
-                className="inline-flex items-center gap-2 px-4 py-2.5 text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-sm transition-colors font-medium mr-2"
+                className="inline-flex items-center gap-2 px-4 py-2.5 text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors font-medium mr-2"
               >
                 <Bell className="w-4 h-4" />
                 {t('compose') || "Compose"}
@@ -279,7 +279,7 @@ export default function NotificationsDashboard() {
       <div className="max-w-7xl mx-auto px-6 py-6 space-y-6">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="bg-white p-6 rounded-xl border-2 border-slate-200 shadow-sm border-l-4 border-l-blue-500">
+          <div className="bg-white p-6 rounded-xl border-2 border-slate-200 border-l-4 border-l-blue-500">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-slate-600">{t('totalNotifications')}</p>
@@ -292,7 +292,7 @@ export default function NotificationsDashboard() {
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-xl border-2 border-slate-200 shadow-sm border-l-4 border-l-orange-500">
+          <div className="bg-white p-6 rounded-xl border-2 border-slate-200 border-l-4 border-l-orange-500">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-slate-600">{t('unread')}</p>
@@ -305,7 +305,7 @@ export default function NotificationsDashboard() {
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-xl border-2 border-slate-200 shadow-sm border-l-4 border-l-red-500">
+          <div className="bg-white p-6 rounded-xl border-2 border-slate-200 border-l-4 border-l-red-500">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-slate-600">{t('highPriority')}</p>
@@ -318,7 +318,7 @@ export default function NotificationsDashboard() {
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-xl border-2 border-slate-200 shadow-sm border-l-4 border-l-purple-500">
+          <div className="bg-white p-6 rounded-xl border-2 border-slate-200 border-l-4 border-l-purple-500">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-slate-600">{t('thresholdAlerts')}</p>
@@ -333,7 +333,7 @@ export default function NotificationsDashboard() {
         </div>
 
         {/* Filters */}
-        <div className="bg-white rounded-xl border-2 border-slate-200 shadow-sm p-5">
+        <div className="bg-white rounded-xl border-2 border-slate-200 p-5">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1">
               <div className="relative">
@@ -366,7 +366,7 @@ export default function NotificationsDashboard() {
         </div>
 
         {/* Notifications List */}
-        <div className="bg-white rounded-xl border-2 border-slate-200 shadow-sm">
+        <div className="bg-white rounded-xl border-2 border-slate-200">
           <div className="p-6 border-b-2 border-slate-200">
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-semibold text-slate-900">
@@ -476,12 +476,12 @@ export default function NotificationsDashboard() {
       {/* Notification Detail Modal */}
       {selectedNotification && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             {/* Modal Header */}
             <div className="sticky top-0 bg-gradient-to-r from-indigo-500 to-blue-500 px-6 py-5 border-b-2 border-blue-600">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-md">
+                  <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
                     {getNotificationIcon(selectedNotification.type)}
                   </div>
                   <div>
@@ -570,7 +570,7 @@ export default function NotificationsDashboard() {
                       {selectedNotification.actions.map((action, index) => (
                         <button
                           key={index}
-                          className="px-4 py-2 bg-gradient-to-r from-indigo-500 to-blue-500 hover:from-indigo-600 hover:to-blue-600 text-white text-sm rounded-lg font-semibold transition-all shadow-md"
+                          className="px-4 py-2 bg-gradient-to-r from-indigo-500 to-blue-500 hover:from-indigo-600 hover:to-blue-600 text-white text-sm rounded-lg font-semibold transition-all"
                           onClick={() => {
                             console.log('Action clicked:', action);
                             toast.success(`Action: ${action.label}`);
@@ -591,7 +591,7 @@ export default function NotificationsDashboard() {
                       markAsRead(selectedNotification._id);
                       setSelectedNotification(null);
                     }}
-                    className="w-full px-4 py-3 bg-gradient-to-r from-indigo-500 to-blue-500 hover:from-indigo-600 hover:to-blue-600 text-white rounded-lg font-semibold transition-all shadow-lg flex items-center justify-center gap-2"
+                    className="w-full px-4 py-3 bg-gradient-to-r from-indigo-500 to-blue-500 hover:from-indigo-600 hover:to-blue-600 text-white rounded-lg font-semibold transition-all flex items-center justify-center gap-2"
                   >
                     <CheckCircle className="w-5 h-5" />
                     {t('markAsRead')}

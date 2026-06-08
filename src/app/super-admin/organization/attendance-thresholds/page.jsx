@@ -339,7 +339,7 @@ export default function AttendanceThresholds() {
         <div className="max-w-7xl mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <div className="w-11 h-11 bg-gradient-to-br from-indigo-500 to-blue-500 rounded-xl flex items-center justify-center shadow-lg">
+              <div className="w-11 h-11 bg-gradient-to-br from-indigo-500 to-blue-500 rounded-xl flex items-center justify-center">
                 <AlertTriangle className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -361,7 +361,7 @@ export default function AttendanceThresholds() {
       <div className="max-w-7xl mx-auto px-6 py-6 space-y-6">
         {/* Analytics Overview */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="bg-white p-6 rounded-xl border-2 border-slate-200 shadow-sm border-l-4 border-l-indigo-500">
+          <div className="bg-white p-6 rounded-xl border-2 border-slate-200 border-l-4 border-l-indigo-500">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-slate-600">Total Thresholds</p>
@@ -374,7 +374,7 @@ export default function AttendanceThresholds() {
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-xl border-2 border-slate-200 shadow-sm border-l-4 border-l-green-500">
+          <div className="bg-white p-6 rounded-xl border-2 border-slate-200 border-l-4 border-l-green-500">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-slate-600">Active Rules</p>
@@ -387,7 +387,7 @@ export default function AttendanceThresholds() {
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-xl border-2 border-slate-200 shadow-sm border-l-4 border-l-blue-500">
+          <div className="bg-white p-6 rounded-xl border-2 border-slate-200 border-l-4 border-l-blue-500">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-slate-600">Organizations</p>
@@ -400,7 +400,7 @@ export default function AttendanceThresholds() {
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-xl border-2 border-slate-200 shadow-sm border-l-4 border-l-purple-500">
+          <div className="bg-white p-6 rounded-xl border-2 border-slate-200 border-l-4 border-l-purple-500">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-slate-600">Avg. Threshold</p>
@@ -415,7 +415,7 @@ export default function AttendanceThresholds() {
         </div>
 
         {/* Main Content */}
-        <div className="bg-white rounded-xl border-2 border-slate-200 shadow-sm">
+        <div className="bg-white rounded-xl border-2 border-slate-200">
           <div className="p-6 border-b border-slate-200">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
@@ -439,7 +439,7 @@ export default function AttendanceThresholds() {
 
                 <button
                   onClick={() => setShowForm(true)}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-indigo-500 to-blue-500 hover:from-indigo-600 hover:to-blue-600 text-white rounded-lg font-semibold transition-all shadow-lg hover:shadow-xl"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-indigo-500 to-blue-500 hover:from-indigo-600 hover:to-blue-600 text-white rounded-lg font-semibold transition-all hover:"
                 >
                   <Plus className="w-4 h-4" />
                   Add Threshold
@@ -461,7 +461,7 @@ export default function AttendanceThresholds() {
                 </p>
                 <button
                   onClick={() => setShowForm(true)}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-indigo-500 to-blue-500 hover:from-indigo-600 hover:to-blue-600 text-white rounded-lg font-semibold transition-all shadow-lg hover:shadow-xl"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-indigo-500 to-blue-500 hover:from-indigo-600 hover:to-blue-600 text-white rounded-lg font-semibold transition-all hover:"
                 >
                   <Plus className="w-4 h-4" />
                   Add First Threshold
@@ -472,11 +472,11 @@ export default function AttendanceThresholds() {
                 {thresholds.map((threshold) => (
                   <div
                     key={threshold._id}
-                    className="border-2 border-slate-200 rounded-xl p-5 hover:shadow-lg transition-all hover:border-indigo-200 bg-white"
+                    className="border-2 border-slate-200 rounded-xl p-5 hover: transition-all hover:border-indigo-200 bg-white"
                   >
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-blue-500 rounded-lg flex items-center justify-center shadow-md">
+                        <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-blue-500 rounded-lg flex items-center justify-center">
                           <Building className="w-5 h-5 text-white" />
                         </div>
                         <div>
@@ -570,7 +570,7 @@ export default function AttendanceThresholds() {
       {/* Form Modal */}
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col">
+          <div className="bg-white rounded-xl w-full max-w-2xl max-h-[90vh] flex flex-col">
             {/* Modal Header */}
             <div className="bg-gradient-to-r from-indigo-500 to-blue-500 px-6 py-4 border-b-2 border-blue-600 rounded-t-xl flex-shrink-0">
               <div className="flex items-center justify-between">
@@ -743,7 +743,7 @@ export default function AttendanceThresholds() {
                 <button
                   type="button"
                   onClick={handleCancel}
-                  className="flex-1 px-4 py-2.5 bg-white text-slate-700 rounded-lg hover:bg-slate-100 font-semibold transition-colors border-2 border-slate-200 shadow-sm"
+                  className="flex-1 px-4 py-2.5 bg-white text-slate-700 rounded-lg hover:bg-slate-100 font-semibold transition-colors border-2 border-slate-200"
                 >
                   Cancel
                 </button>
@@ -751,7 +751,7 @@ export default function AttendanceThresholds() {
                   type="submit"
                   form="thresholdForm"
                   disabled={saving}
-                  className="flex-1 bg-gradient-to-r from-indigo-500 to-blue-500 hover:from-indigo-600 hover:to-blue-600 text-white py-2.5 px-4 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 font-semibold transition-all shadow-lg"
+                  className="flex-1 bg-gradient-to-r from-indigo-500 to-blue-500 hover:from-indigo-600 hover:to-blue-600 text-white py-2.5 px-4 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 font-semibold transition-all"
                 >
                   {saving ? (
                     <>

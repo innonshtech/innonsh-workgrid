@@ -31,7 +31,7 @@ import { useLanguage } from "@/context/LanguageContext";
 
 /* ─── Premium Glass Card ─── */
 const Card = ({ children, className = "" }) => (
-    <div className={`bg-white rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-all duration-300 ${className}`}>
+    <div className={`bg-white rounded-2xl border   transition-all duration-300 ${className}`}>
         {children}
     </div>
 );
@@ -53,7 +53,7 @@ const StatCard = ({ title, value, subText, icon: Icon, color = "indigo" }) => {
                     <p className="text-3xl font-extrabold text-slate-800 tracking-tight">{value}</p>
                     <p className="text-xs font-medium text-slate-400">{subText}</p>
                 </div>
-                <div className={`w-12 h-12 rounded-2xl border flex items-center justify-center ${colorStyles[color]} shadow-sm`}>
+                <div className={`w-12 h-12 rounded-2xl border flex items-center justify-center ${colorStyles[color]}`}>
                     <Icon className="w-5 h-5" />
                 </div>
             </div>
@@ -310,50 +310,42 @@ export default function TimesheetsPage() {
     return (
         <div className="max-w-7xl mx-auto space-y-8 animate-fade-in p-6 bg-slate-50/30 min-h-screen">
             
-            {/* Header Banner - Staff Augmentation Premium Style */}
-            <div className="relative overflow-hidden bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-3xl p-8 shadow-xl shadow-indigo-950/20 border border-slate-800">
-                <div className="absolute -right-16 -top-16 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl"></div>
-                <div className="absolute -left-16 -bottom-16 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl"></div>
-                
-                <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-                    <div className="space-y-2">
-                        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
-                            <Clock className="w-3.5 h-3.5" /> Timesheet Hub v2.0
-                        </div>
-                        <h1 className="text-3xl font-extrabold text-white tracking-tight">
-                            Weekly Timesheet Workspace
-                        </h1>
-                        <p className="text-slate-400 text-sm max-w-xl">
-                            Log hours daily, tag active client projects, and submit weekly timesheets directly to your reporting manager or admin for review.
+            {/* Header Banner */}
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8 mt-2">
+                <div className="space-y-1">
+                    <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+                        Timesheet Management
+                    </h1>
+                    <p className="text-slate-500 text-sm mt-1 max-w-xl">
+                        Track working hours, project allocations, daily activities and productivity records.
+                    </p>
+                </div>
+
+                <div className="flex items-center gap-4 bg-white border border-slate-200 p-2 rounded-2xl">
+                    <button 
+                        onClick={() => changeWeek(-1)} 
+                        className="p-2 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-all"
+                    >
+                        <ChevronLeft className="w-5 h-5" />
+                    </button>
+                    <div className="text-center min-w-[150px]">
+                        <p className="text-[10px] font-black uppercase text-slate-500 tracking-wider">Week of</p>
+                        <p className="text-sm font-bold text-slate-800 mt-0.5">
+                            {format(weekStartDate, 'MMM dd')} - {format(addDays(weekStartDate, 6), 'MMM dd, yyyy')}
                         </p>
                     </div>
-
-                    <div className="flex items-center gap-4 bg-slate-800/80 backdrop-blur border border-slate-700/60 p-3 rounded-2xl">
-                        <button 
-                            onClick={() => changeWeek(-1)} 
-                            className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-xl transition-all"
-                        >
-                            <ChevronLeft className="w-5 h-5" />
-                        </button>
-                        <div className="text-center min-w-[150px]">
-                            <p className="text-[10px] font-black uppercase text-indigo-400 tracking-wider">Week of</p>
-                            <p className="text-sm font-bold text-white mt-0.5">
-                                {format(weekStartDate, 'MMM dd')} - {format(addDays(weekStartDate, 6), 'MMM dd, yyyy')}
-                            </p>
-                        </div>
-                        <button 
-                            onClick={() => changeWeek(1)} 
-                            className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-xl transition-all"
-                        >
-                            <ChevronRight className="w-5 h-5" />
-                        </button>
-                    </div>
+                    <button 
+                        onClick={() => changeWeek(1)} 
+                        className="p-2 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-all"
+                    >
+                        <ChevronRight className="w-5 h-5" />
+                    </button>
                 </div>
             </div>
 
             {/* Rejection alert banner */}
             {timesheet?.status === 'Rejected' && (
-                <div className="bg-rose-50 border border-rose-200 rounded-2xl p-5 flex items-start gap-4 shadow-sm animate-pulse-subtle">
+                <div className="bg-rose-50 border border-rose-200 rounded-2xl p-5 flex items-start gap-4 animate-pulse-subtle">
                     <div className="p-2.5 bg-rose-100 text-rose-600 rounded-xl">
                         <AlertCircle className="w-5 h-5" />
                     </div>
@@ -370,7 +362,7 @@ export default function TimesheetsPage() {
 
             {/* Approved notification banner */}
             {timesheet?.status === 'Approved' && (
-                <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-5 flex items-start gap-4 shadow-sm">
+                <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-5 flex items-start gap-4">
                     <div className="p-2.5 bg-emerald-100 text-emerald-600 rounded-xl">
                         <CheckCircle className="w-5 h-5" />
                     </div>
@@ -446,7 +438,7 @@ export default function TimesheetsPage() {
                     <div className="flex items-center gap-3">
                         <button
                             onClick={() => router.push('/employee/timesheet-approvals')}
-                            className="flex items-center gap-2 px-5 py-2.5 bg-indigo-50 border border-indigo-100 text-indigo-700 hover:bg-indigo-100 rounded-xl text-xs font-extrabold shadow-sm active:scale-[0.98] transition-all"
+                            className="flex items-center gap-2 px-5 py-2.5 bg-indigo-50 border border-slate-200 text-indigo-700 hover:bg-indigo-100 rounded-xl text-xs font-extrabold active:scale-[0.98] transition-all"
                         >
                             <Users className="w-4 h-4" /> Timesheet Approvals
                         </button>
@@ -454,7 +446,7 @@ export default function TimesheetsPage() {
                         <button
                             onClick={() => handleSaveTimesheet(false)}
                             disabled={isSavingTimesheet || timesheet?.status === 'Approved' || timesheet?.status === 'Submitted'}
-                            className="flex items-center gap-2 px-5 py-2.5 bg-white border border-slate-200 text-slate-700 hover:text-slate-900 rounded-xl text-xs font-extrabold shadow-sm hover:bg-slate-50 active:scale-[0.98] transition-all disabled:opacity-50"
+                            className="flex items-center gap-2 px-5 py-2.5 bg-white border border-slate-200 text-slate-700 hover:text-slate-900 rounded-xl text-xs font-extrabold hover:bg-slate-50 active:scale-[0.98] transition-all disabled:opacity-50"
                         >
                             <Save className="w-4 h-4" /> Save Weekly Draft
                         </button>
@@ -462,7 +454,7 @@ export default function TimesheetsPage() {
                         <button
                             onClick={() => setIsSubmitModalOpen(true)}
                             disabled={isSavingTimesheet || timesheet?.status === 'Approved' || timesheet?.status === 'Submitted'}
-                            className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-xl text-xs font-extrabold shadow-lg shadow-indigo-600/20 hover:from-indigo-500 hover:to-violet-500 active:scale-[0.98] transition-all disabled:opacity-50"
+                            className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-xl text-xs font-extrabold hover:from-indigo-500 hover:to-violet-500 active:scale-[0.98] transition-all disabled:opacity-50"
                         >
                             <Send className="w-4 h-4" /> Submit Timesheet
                         </button>
@@ -482,7 +474,7 @@ export default function TimesheetsPage() {
                                 className={`rounded-2xl border p-6 transition-all bg-white ${
                                     isWeekend 
                                         ? 'border-dashed border-slate-200/80 bg-slate-50/20' 
-                                        : 'border-slate-100 shadow-sm hover:border-indigo-100'
+                                        : 'border-slate-200 hover:border-slate-200'
                                 }`}
                             >
                                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4 mb-4">
@@ -603,7 +595,7 @@ export default function TimesheetsPage() {
                     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-10 pt-4 border-t border-slate-800">
                         {/* Step 1 */}
                         <div className="flex items-center gap-2.5">
-                            <div className="w-6 h-6 rounded-full bg-indigo-500 text-white flex items-center justify-center text-[10px] font-black shadow-lg shadow-indigo-500/20">
+                            <div className="w-6 h-6 rounded-full bg-indigo-500 text-white flex items-center justify-center text-[10px] font-black">
                                 1
                             </div>
                             <div>
@@ -618,7 +610,7 @@ export default function TimesheetsPage() {
                         <div className="flex items-center gap-2.5">
                             <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black ${
                                 timesheet?.status === 'Submitted' || timesheet?.status === 'Approved'
-                                    ? 'bg-indigo-500 text-white shadow-lg' 
+                                    ? 'bg-indigo-500 text-white' 
                                     : 'bg-slate-800 text-slate-500 border border-slate-700'
                             }`}>
                                 2
@@ -635,9 +627,9 @@ export default function TimesheetsPage() {
                         <div className="flex items-center gap-2.5">
                             <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black ${
                                 timesheet?.status === 'Approved'
-                                    ? 'bg-emerald-500 text-white shadow-lg' 
+                                    ? 'bg-emerald-500 text-white' 
                                     : timesheet?.status === 'Rejected'
-                                        ? 'bg-rose-500 text-white shadow-lg'
+                                        ? 'bg-rose-500 text-white'
                                         : 'bg-slate-800 text-slate-500 border border-slate-700'
                             }`}>
                                 3
@@ -654,7 +646,7 @@ export default function TimesheetsPage() {
             {/* Submission Modal with Manager Selection */}
             {isSubmitModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 animate-fade-in">
-                    <div className="bg-white rounded-3xl max-w-lg w-full p-8 shadow-2xl border border-slate-100 flex flex-col space-y-6 animate-scale-up">
+                    <div className="bg-white rounded-3xl max-w-lg w-full p-8 border border-slate-200 flex flex-col space-y-6 animate-scale-up">
                         <div className="flex items-start justify-between">
                             <div className="space-y-1">
                                 <h3 className="text-lg font-black text-slate-850">Submit Timesheet for Approval</h3>
@@ -755,7 +747,7 @@ export default function TimesheetsPage() {
                             <button
                                 onClick={() => handleSaveTimesheet(true)}
                                 disabled={isSavingTimesheet}
-                                className="flex-1 py-3 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-extrabold rounded-2xl text-xs shadow-lg shadow-indigo-600/25 transition-all active:scale-[0.98]"
+                                className="flex-1 py-3 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-extrabold rounded-2xl text-xs transition-all active:scale-[0.98]"
                             >
                                 Confirm Submission
                             </button>

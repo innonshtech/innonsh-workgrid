@@ -19,7 +19,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { useSession } from "@/context/SessionContext";
 
 const Card = ({ children, className = "" }) => (
-    <div className={`bg-white rounded-xl border border-slate-200 shadow-sm ${className}`}>
+    <div className={`bg-white rounded-xl border border-slate-200 ${className}`}>
         {children}
     </div>
 );
@@ -167,7 +167,7 @@ function AdminHolidaysContent() {
                     </div>
                     <button
                         onClick={() => handleOpenModal()}
-                        className="flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-2xl font-bold shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition-all hover:scale-105 active:scale-95"
+                        className="flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-2xl font-bold hover:bg-indigo-700 transition-all hover:scale-105 active:scale-95"
                     >
                         <Plus className="w-5 h-5" />
                         Add New Holiday
@@ -200,7 +200,7 @@ function AdminHolidaysContent() {
                                 <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-50 rounded-full -mr-12 -mt-12 group-hover:bg-indigo-100 transition-colors"></div>
                                 <div className="relative z-10">
                                     <div className="flex justify-between items-start mb-4">
-                                        <div className="p-3 bg-white border border-slate-100 rounded-2xl shadow-sm text-center min-w-[64px]">
+                                        <div className="p-3 bg-white border border-slate-200 rounded-2xl text-center min-w-[64px]">
                                             <p className="text-[10px] font-black uppercase text-indigo-600 tracking-widest">{format(new Date(holiday.date), 'MMM')}</p>
                                             <p className="text-2xl font-black text-slate-900">{format(new Date(holiday.date), 'dd')}</p>
                                         </div>
@@ -252,7 +252,7 @@ function AdminHolidaysContent() {
             {/* Modal */}
             {showModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-300">
-                    <div className="bg-white rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
+                    <div className="bg-white rounded-3xl w-full max-w-lg overflow-hidden animate-in zoom-in-95 duration-300">
                         <div className="p-8 border-b border-slate-100 flex justify-between items-center">
                             <div>
                                 <h2 className="text-2xl font-black text-slate-900">{editingHoliday ? "Update Holiday" : "Create New Holiday"}</h2>
@@ -343,7 +343,7 @@ function AdminHolidaysContent() {
                                 </button>
                                 <button
                                     type="submit"
-                                    className="flex-[2] py-4 bg-indigo-600 text-white rounded-2xl font-bold shadow-lg shadow-indigo-100 hover:bg-indigo-700 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                                    className="flex-[2] py-4 bg-indigo-600 text-white rounded-2xl font-bold hover:bg-indigo-700 transition-all hover:scale-[1.02] active:scale-[0.98]"
                                 >
                                     {editingHoliday ? "Update Holiday" : "Create Holiday"}
                                 </button>

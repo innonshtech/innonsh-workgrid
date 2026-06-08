@@ -656,7 +656,7 @@ export default function ComplianceReportDetailPage() {
     <div className="min-h-screen bg-blue-50">
       <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Header */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 mb-8">
+        <div className="bg-white rounded-xl border border-slate-200 p-6 mb-8">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
             <div className="flex items-center gap-4">
               <Link
@@ -666,7 +666,7 @@ export default function ComplianceReportDetailPage() {
                 <ArrowLeft className="w-5 h-5" />
               </Link>
               <div className="flex items-center gap-4">
-                <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-amber-500 rounded-2xl flex items-center justify-center shadow-lg">
+                <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-amber-500 rounded-2xl flex items-center justify-center">
                   <Receipt className="w-8 h-8 text-white" />
                 </div>
                 <div>
@@ -720,7 +720,7 @@ export default function ComplianceReportDetailPage() {
 
         {/* Edit Form */}
         {isEditing && (
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 mb-8">
+          <div className="bg-white rounded-xl border border-slate-200 p-6 mb-8">
             <h2 className="text-xl font-bold text-slate-900 mb-4">Edit Compliance Report</h2>
             <form onSubmit={handleUpdate} className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
@@ -925,7 +925,7 @@ export default function ComplianceReportDetailPage() {
         )}
 
         {/* Compliance Report Document */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm print:shadow-none">
+        <div className="bg-white rounded-xl border border-slate-200 print:">
           {/* Document Header */}
           <div className="border-b border-slate-200 p-6">
             <div className="flex justify-between items-start">
@@ -1068,7 +1068,7 @@ export default function ComplianceReportDetailPage() {
         </div>
 
         {/* Quick Actions */}
-        {/* <div className="bg-white rounded-xl border border-slate-200 shadow-sm mt-8">
+        {/* <div className="bg-white rounded-xl border border-slate-200 mt-8">
           <div className="p-6 border-b border-slate-200">
             <h3 className="text-lg font-semibold text-slate-900">Quick Actions</h3>
             <p className="text-slate-600 text-sm mt-1">Common actions for this compliance report</p>

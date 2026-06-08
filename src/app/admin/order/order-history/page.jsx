@@ -318,10 +318,10 @@ export default function HistoryReports() {
     <div className="min-h-screen bg-slate-50">
       <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Header */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 mb-8">
+        <div className="bg-white rounded-xl border border-slate-200 p-6 mb-8">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-amber-500 rounded-2xl flex items-center justify-center shadow-lg">
+              <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-amber-500 rounded-2xl flex items-center justify-center">
                 <BarChart3 className="w-8 h-8 text-white" />
               </div>
               <div>
@@ -355,7 +355,7 @@ export default function HistoryReports() {
         </div>
 
         {/* Report Type Selector */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm mb-8">
+        <div className="bg-white rounded-xl border border-slate-200 mb-8">
           <div className="border-b border-slate-200">
             <div className="flex space-x-8 px-6">
               {[
@@ -383,7 +383,7 @@ export default function HistoryReports() {
         {selectedReport === 'activity' && (
           <>
             {/* Filters */}
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 mb-8">
+            <div className="bg-white rounded-xl border border-slate-200 p-6 mb-8">
               <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                 <div>
                   <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
@@ -483,7 +483,7 @@ export default function HistoryReports() {
             </div>
 
             {/* Activity Table */}
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+            <div className="bg-white rounded-xl border border-slate-200">
               <div className="px-6 py-4 border-b border-slate-200">
                 <div className="flex justify-between items-center">
                   <h2 className="text-xl font-semibold text-slate-900">Verification Activity History</h2>
@@ -588,7 +588,7 @@ export default function HistoryReports() {
         {selectedReport === 'performance' && performanceStats && (
           <div className="space-y-8">
             {/* Personal Performance */}
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+            <div className="bg-white rounded-xl border border-slate-200 p-6">
               <h2 className="text-xl font-semibold text-slate-900 mb-6 flex items-center gap-3">
                 <div className="w-8 h-8 bg-slate-50 rounded-lg flex items-center justify-center border border-blue-100">
                   <User className="w-4 h-4 text-blue-600" />
@@ -645,7 +645,7 @@ export default function HistoryReports() {
             </div>
 
             {/* Team Performance */}
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+            <div className="bg-white rounded-xl border border-slate-200 p-6">
               <h2 className="text-xl font-semibold text-slate-900 mb-6 flex items-center gap-3">
                 <div className="w-8 h-8 bg-slate-50 rounded-lg flex items-center justify-center border border-slate-100">
                   <Users className="w-4 h-4 text-slate-600" />
@@ -693,7 +693,7 @@ export default function HistoryReports() {
             </div>
 
             {/* Trends */}
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+            <div className="bg-white rounded-xl border border-slate-200 p-6">
               <h2 className="text-xl font-semibold text-slate-900 mb-6 flex items-center gap-3">
                 <div className="w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center border border-indigo-100">
                   <BarChart3 className="w-4 h-4 text-indigo-600" />
@@ -701,17 +701,17 @@ export default function HistoryReports() {
                 Performance Trends
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="text-center p-6 border border-slate-200 rounded-xl hover:shadow-md transition-shadow">
+                <div className="text-center p-6 border border-slate-200 rounded-xl hover: transition-">
                   <div className="text-3xl font-bold text-blue-600">{performanceStats.trends.dailyAverage}</div>
                   <div className="text-lg text-slate-700 font-medium mt-2">Daily Average</div>
                   <div className="text-sm text-slate-500 mt-2">Orders processed per day</div>
                 </div>
-                <div className="text-center p-6 border border-slate-200 rounded-xl hover:shadow-md transition-shadow">
+                <div className="text-center p-6 border border-slate-200 rounded-xl hover: transition-">
                   <div className="text-3xl font-bold text-green-600">{performanceStats.trends.weeklyTotal}</div>
                   <div className="text-lg text-slate-700 font-medium mt-2">Weekly Total</div>
                   <div className="text-sm text-slate-500 mt-2">This week's performance</div>
                 </div>
-                <div className="text-center p-6 border border-slate-200 rounded-xl hover:shadow-md transition-shadow">
+                <div className="text-center p-6 border border-slate-200 rounded-xl hover: transition-">
                   <div className="text-3xl font-bold text-purple-600">{performanceStats.trends.monthlyTotal}</div>
                   <div className="text-lg text-slate-700 font-medium mt-2">Monthly Total</div>
                   <div className="text-sm text-slate-500 mt-2">This month's performance</div>
@@ -725,7 +725,7 @@ export default function HistoryReports() {
         {selectedReport === 'team' && (
           <div className="space-y-8">
             {/* Team Members Performance */}
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+            <div className="bg-white rounded-xl border border-slate-200">
               <div className="px-6 py-4 border-b border-slate-200">
                 <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                   <div className="w-8 h-8 bg-slate-50 rounded-lg flex items-center justify-center border border-blue-100">
@@ -739,9 +739,9 @@ export default function HistoryReports() {
                   {teamMembers.map((member) => {
                     const stats = getVerifierStats(member.name);
                     return (
-                      <div key={member.id} className="border border-slate-200 rounded-xl p-4 hover:shadow-md transition-shadow">
+                      <div key={member.id} className="border border-slate-200 rounded-xl p-4 hover: transition-">
                         <div className="flex items-center space-x-3 mb-4">
-                          <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-sm">
+                          <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
                             <span className="text-white text-lg">{member.avatar}</span>
                           </div>
                           <div>
@@ -775,7 +775,7 @@ export default function HistoryReports() {
             </div>
 
             {/* Team Activity Summary */}
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+            <div className="bg-white rounded-xl border border-slate-200 p-6">
               <h2 className="text-xl font-semibold text-slate-900 mb-6 flex items-center gap-3">
                 <div className="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center border border-green-100">
                   <BarChart3 className="w-4 h-4 text-green-600" />

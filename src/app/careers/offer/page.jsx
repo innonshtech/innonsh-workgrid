@@ -58,7 +58,7 @@ function OfferResponseContent() {
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-white rounded-[40px] shadow-2xl shadow-slate-200/50 border border-slate-100 max-w-lg w-full overflow-hidden"
+                className="bg-white rounded-[40px] border border-slate-200 max-w-lg w-full overflow-hidden"
             >
                 {/* Loading */}
                 {status === 'loading' && (
@@ -82,7 +82,7 @@ function OfferResponseContent() {
                             </p>
                             <button
                                 onClick={handleConfirm}
-                                className="w-full h-16 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-black uppercase tracking-widest text-sm transition-all flex items-center justify-center gap-3 shadow-lg shadow-emerald-200"
+                                className="w-full h-16 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-black uppercase tracking-widest text-sm transition-all flex items-center justify-center gap-3"
                             >
                                 <CheckCircle2 className="w-5 h-5" />
                                 Yes, I Accept the Offer

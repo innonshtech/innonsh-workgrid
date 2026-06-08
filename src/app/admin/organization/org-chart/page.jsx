@@ -48,7 +48,7 @@ const OrgNode = ({ node, level = 0 }) => {
 
     return (
         <div className="flex flex-col">
-            <div className={`flex items-center gap-3 py-2.5 px-4 rounded-xl hover:bg-slate-50 transition-colors group relative ${level === 0 ? 'bg-slate-50 border border-slate-200 shadow-sm' : ''}`}>
+            <div className={`flex items-center gap-3 py-2.5 px-4 rounded-xl hover:bg-slate-50 transition-colors group relative ${level === 0 ? 'bg-slate-50 border border-slate-200' : ''}`}>
                 {hasChildren ? (
                     <button
                         onClick={() => setIsExpanded(!isExpanded)}
@@ -172,7 +172,7 @@ export default function OrgChartPage() {
             </EnterpriseSectionCard>
 
             {loading ? (
-                <div className="flex flex-col items-center justify-center h-64 bg-white rounded-3xl border border-slate-200 shadow-sm">
+                <div className="flex flex-col items-center justify-center h-64 bg-white rounded-3xl border border-slate-200">
                     <div className="w-12 h-12 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mb-4" />
                     <p className="text-slate-500 font-bold text-sm">Building organization tree...</p>
                 </div>
@@ -188,22 +188,22 @@ export default function OrgChartPage() {
                     }
                 />
             ) : (
-                <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+                <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden">
                     <div className="p-4 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-center gap-6">
                         <div className="flex items-center gap-2">
-                            <div className="w-3 h-3 rounded bg-indigo-500 border border-indigo-600 shadow-sm" />
+                            <div className="w-3 h-3 rounded bg-indigo-500 border border-indigo-600" />
                             <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Company</span>
                         </div>
                         <div className="flex items-center gap-2">
-                            <div className="w-3 h-3 rounded bg-blue-500 border border-blue-600 shadow-sm" />
+                            <div className="w-3 h-3 rounded bg-blue-500 border border-blue-600" />
                             <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Business Unit</span>
                         </div>
                         <div className="flex items-center gap-2">
-                            <div className="w-3 h-3 rounded bg-emerald-500 border border-emerald-600 shadow-sm" />
+                            <div className="w-3 h-3 rounded bg-emerald-500 border border-emerald-600" />
                             <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Department</span>
                         </div>
                         <div className="flex items-center gap-2">
-                            <div className="w-3 h-3 rounded bg-amber-500 border border-amber-600 shadow-sm" />
+                            <div className="w-3 h-3 rounded bg-amber-500 border border-amber-600" />
                             <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Team</span>
                         </div>
                     </div>
@@ -218,21 +218,21 @@ export default function OrgChartPage() {
             )}
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                <div className="bg-white p-6 rounded-3xl border border-slate-200 hover: transition-">
                     <div className="flex items-center gap-3 mb-3">
                         <EnterpriseIconContainer icon={Building} color="indigo" size="sm" />
                         <h3 className="font-extrabold text-slate-800">Business Units</h3>
                     </div>
                     <p className="text-slate-500 text-sm font-medium leading-relaxed">Large logical divisions of a company, each with its own head and objectives.</p>
                 </div>
-                <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                <div className="bg-white p-6 rounded-3xl border border-slate-200 hover: transition-">
                     <div className="flex items-center gap-3 mb-3">
                         <EnterpriseIconContainer icon={Users} color="emerald" size="sm" />
                         <h3 className="font-extrabold text-slate-800">Departments</h3>
                     </div>
                     <p className="text-slate-500 text-sm font-medium leading-relaxed">Functional groups within a business unit focused on specific disciplines.</p>
                 </div>
-                <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                <div className="bg-white p-6 rounded-3xl border border-slate-200 hover: transition-">
                     <div className="flex items-center gap-3 mb-3">
                         <EnterpriseIconContainer icon={Users} color="amber" size="sm" />
                         <h3 className="font-extrabold text-slate-800">Teams</h3>

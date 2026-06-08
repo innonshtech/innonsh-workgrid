@@ -74,7 +74,7 @@ export default function BillingDashboard() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Current Plan Card */}
-        <div className="md:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div className="md:col-span-2 bg-white rounded-xl border border-gray-200 p-6">
           <div className="flex justify-between items-start">
             <div>
               <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">Current Plan</p>
@@ -120,7 +120,7 @@ export default function BillingDashboard() {
         </div>
 
         {/* Upgrade Actions */}
-        <div className="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-xl shadow-sm text-white p-6 flex flex-col justify-between">
+        <div className="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-xl text-white p-6 flex flex-col justify-between">
           <div>
             <h3 className="text-xl font-bold mb-2">Ready to Upgrade?</h3>
             <p className="text-indigo-100 text-sm mb-6">
@@ -135,7 +135,7 @@ export default function BillingDashboard() {
           <button 
             onClick={() => handleUpgrade('growth')}
             disabled={processing}
-            className="w-full py-3 px-4 bg-white text-indigo-700 font-bold rounded-lg shadow hover:bg-indigo-50 transition-colors disabled:opacity-50"
+            className="w-full py-3 px-4 bg-white text-indigo-700 font-bold rounded-lg hover:bg-indigo-50 transition-colors disabled:opacity-50"
           >
             {processing ? 'Processing...' : 'Upgrade to Growth'}
           </button>
@@ -143,7 +143,7 @@ export default function BillingDashboard() {
       </div>
 
       {/* Invoice History */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
         <div className="px-6 py-5 border-b border-gray-200 flex justify-between items-center">
           <h3 className="text-lg font-medium text-gray-900">Invoice History</h3>
         </div>

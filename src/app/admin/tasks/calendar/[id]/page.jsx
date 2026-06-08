@@ -21,7 +21,7 @@ const LoadingSkeleton = () => (
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
         {/* Main Content Skeleton */}
         <div className="xl:col-span-2 space-y-8">
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 animate-pulse space-y-4">
+          <div className="bg-white rounded-xl border border-slate-200 p-6 animate-pulse space-y-4">
             <div className="h-6 bg-slate-200 rounded w-1/4"></div>
             <div className="h-10 bg-slate-100 rounded"></div>
             <div className="h-24 bg-slate-100 rounded"></div>
@@ -30,7 +30,7 @@ const LoadingSkeleton = () => (
               <div className="h-10 bg-slate-100 rounded"></div>
             </div>
           </div>
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 animate-pulse space-y-4">
+          <div className="bg-white rounded-xl border border-slate-200 p-6 animate-pulse space-y-4">
             <div className="h-6 bg-slate-200 rounded w-1/4"></div>
             <div className="h-20 bg-slate-100 rounded"></div>
             <div className="grid grid-cols-2 gap-6">
@@ -46,7 +46,7 @@ const LoadingSkeleton = () => (
 
         {/* Sidebar Skeleton */}
         <div className="xl:col-span-1 space-y-6">
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 animate-pulse space-y-4">
+          <div className="bg-white rounded-xl border border-slate-200 p-6 animate-pulse space-y-4">
             <div className="h-6 bg-slate-200 rounded w-1/2 mb-4"></div>
             {[...Array(7)].map((_, i) => (
               <div key={i} className="flex justify-between">
@@ -207,7 +207,7 @@ export default function ViewTaskPage() {
 
   if (error || !task) {
     return (
-      <div className="flex flex-col justify-center items-center h-96 text-center bg-white m-8 rounded-xl shadow-lg border border-slate-200">
+      <div className="flex flex-col justify-center items-center h-96 text-center bg-white m-8 rounded-xl border border-slate-200">
         <XCircle className="w-12 h-12 text-red-500 mb-4" />
         <h2 className="text-2xl font-bold text-slate-900 mb-2">Task Not Found</h2>
         <p className="text-slate-600 max-w-md">{error || `The requested task with ID ${taskId} could not be found.`}</p>
@@ -225,7 +225,7 @@ export default function ViewTaskPage() {
         <div className="max-w-7xl mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <div className="w-11 h-11 bg-indigo-500 rounded-xl flex items-center justify-center shadow-sm">
+              <div className="w-11 h-11 bg-indigo-500 rounded-xl flex items-center justify-center">
                 <Target className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -251,7 +251,7 @@ export default function ViewTaskPage() {
           {/* Main Content */}
           <div className="xl:col-span-2 space-y-8">
             {/* Basic Information */}
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+            <div className="bg-white rounded-xl border border-slate-200">
               <div className="p-6 border-b border-slate-200">
                 <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                   <div className="w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center border border-indigo-100">
@@ -299,7 +299,7 @@ export default function ViewTaskPage() {
             </div>
 
             {/* Assignment & Timeline */}
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+            <div className="bg-white rounded-xl border border-slate-200">
               <div className="p-6 border-b border-slate-200">
                 <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                   <div className="w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center border border-indigo-100">
@@ -396,7 +396,7 @@ export default function ViewTaskPage() {
             </div>
 
             {/* Tags & Notes */}
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+            <div className="bg-white rounded-xl border border-slate-200">
               <div className="p-6 border-b border-slate-200">
                 <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                   <div className="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center border border-green-100">
@@ -456,7 +456,7 @@ export default function ViewTaskPage() {
           {/* Sidebar */}
           <div className="xl:col-span-1 space-y-6">
             {/* Quick Summary */}
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+            <div className="bg-white rounded-xl border border-slate-200">
               <div className="p-6 border-b border-slate-200">
                 <h3 className="text-lg font-semibold text-slate-900 flex items-center gap-2">
                   <TrendingUp className="w-5 h-5 text-green-600" />
@@ -497,7 +497,7 @@ export default function ViewTaskPage() {
             </div>
 
             {/* Additional Information */}
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+            <div className="bg-white rounded-xl border border-slate-200">
               <div className="p-6 border-b border-slate-200">
                 <h3 className="text-lg font-semibold text-slate-900 flex items-center gap-2">
                   <Info className="w-5 h-5 text-blue-600" />

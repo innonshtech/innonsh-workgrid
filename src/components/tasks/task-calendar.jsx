@@ -197,8 +197,8 @@ export default function TaskCalendar() {
           week.push(
             <div
               key={j}
-              className={`h-28 p-2 border cursor-pointer transition-all duration-200 hover:shadow-sm ${isToday(date) ? 'bg-yellow-50 border-yellow-300 shadow-sm' :
-                isSelected(date) ? 'bg-slate-50 border-blue-300 shadow-sm' :
+              className={`h-28 p-2 border cursor-pointer transition-all duration-200 hover: ${isToday(date) ? 'bg-yellow-50 border-yellow-300' :
+                isSelected(date) ? 'bg-slate-50 border-blue-300' :
                   hasOverdue ? 'bg-red-50 border-red-200' :
                     'border-slate-200 hover:bg-slate-50'
                 }`}
@@ -301,7 +301,7 @@ export default function TaskCalendar() {
         <div className="bg-white border-b border-slate-200">
           <div className="max-w-7xl mx-auto px-6 py-6">
             <div className="flex items-center space-x-4">
-              <div className="w-11 h-11 bg-yellow-500 rounded-xl flex items-center justify-center shadow-sm">
+              <div className="w-11 h-11 bg-yellow-500 rounded-xl flex items-center justify-center">
                 <Calendar className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -331,7 +331,7 @@ export default function TaskCalendar() {
         <div className="max-w-7xl mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <div className="w-11 h-11 bg-yellow-500 rounded-xl flex items-center justify-center shadow-sm">
+              <div className="w-11 h-11 bg-yellow-500 rounded-xl flex items-center justify-center">
                 <Calendar className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -360,7 +360,7 @@ export default function TaskCalendar() {
 
               {user?.role !== "Employee" && (
                 <Link href="/tasks/create">
-                  <Button className="bg-yellow-500 hover:bg-yellow-600 text-white shadow-sm px-6 py-2.5 font-semibold">
+                  <Button className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2.5 font-semibold">
                     <Plus className="h-4 w-4 mr-2" />
                     New Task
                   </Button>
@@ -373,7 +373,7 @@ export default function TaskCalendar() {
 
       <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
         {/* Statistics Overview */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+        <div className="bg-white rounded-xl border border-slate-200">
           <div className="p-6 border-b border-slate-200">
             <div className="flex items-center justify-between">
               <div>
@@ -444,7 +444,7 @@ export default function TaskCalendar() {
 
         {/* Filters Panel */}
         {showFilters && (
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+          <div className="bg-white rounded-xl border border-slate-200">
             <div className="p-6">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-8 h-8 bg-yellow-50 rounded-lg flex items-center justify-center border border-yellow-100">
@@ -503,7 +503,7 @@ export default function TaskCalendar() {
         )}
 
         {/* Calendar Navigation & Controls */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+        <div className="bg-white rounded-xl border border-slate-200">
           <div className="p-6">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-4">
@@ -582,7 +582,7 @@ export default function TaskCalendar() {
         </div>
 
         {/* Selected Date Tasks */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+        <div className="bg-white rounded-xl border border-slate-200">
           <div className="p-6 border-b border-slate-200">
             <div className="flex items-center justify-between">
               <div>
@@ -626,7 +626,7 @@ export default function TaskCalendar() {
                 {getSelectedDateTasks()?.map((task) => (
                   <div
                     key={task._id}
-                    className="group flex items-center justify-between p-4 border border-slate-200 rounded-lg hover:shadow-md transition-all duration-200"
+                    className="group flex items-center justify-between p-4 border border-slate-200 rounded-lg hover: transition-all duration-200"
                   >
                     <div className="flex items-center gap-4 flex-1 min-w-0">
                       <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${getPriorityColor(task.priority)}`}>

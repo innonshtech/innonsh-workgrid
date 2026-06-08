@@ -142,7 +142,7 @@ const LoginPage = () => {
                 <span>{t(locale)}</span>
                 <ChevronDown className="w-3.5 h-3.5" />
               </div>
-              <div className="absolute right-0 top-full mt-1 w-40 bg-white border border-slate-200 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 py-1">
+              <div className="absolute right-0 top-full mt-1 w-40 bg-white border border-slate-200 rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 py-1">
                 {[
                   { id: 'en', label: t('english') },
                   { id: 'hi', label: t('hindi') },
@@ -186,7 +186,7 @@ const LoginPage = () => {
                     type="button"
                     onClick={() => setFormData(prev => ({ ...prev, role: role.value }))}
                     className={`flex-1 flex items-center justify-center py-1.5 text-xs font-medium rounded-lg transition-all duration-200 ${isActive
-                      ? 'bg-white text-indigo-600 shadow-sm ring-1 ring-slate-200'
+                      ? 'bg-white text-indigo-600 ring-1 ring-slate-200'
                       : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'
                       }`}
                   >
@@ -282,7 +282,7 @@ const LoginPage = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 active:scale-[0.98] text-white font-bold rounded-xl shadow-lg shadow-indigo-200 transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 active:scale-[0.98] text-white font-bold rounded-xl transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : t("logIn")}
             </button>
@@ -324,7 +324,7 @@ const LoginPage = () => {
           </div>
 
           {/* Dashboard Mockup/Visual */}
-          <div className="relative w-full aspect-[16/10] bg-white/10 backdrop-blur-md rounded-xl border border-white/20 p-4 shadow-2xl flex flex-col gap-4 overflow-hidden">
+          <div className="relative w-full aspect-[16/10] bg-white/10 backdrop-blur-md rounded-xl border border-white/20 p-4 flex flex-col gap-4 overflow-hidden">
 
             {/* Fake Header */}
             <div className="flex items-center justify-between">

@@ -1891,7 +1891,7 @@ export default function EmployeeForm({ employeeData, isEdit = false }) {
       />
 
       {/* Header */}
-      <div className="bg-white border-b border-slate-200 sticky top-0 z-10 shadow-sm">
+      <div className="bg-white border-b border-slate-200 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
@@ -1901,7 +1901,7 @@ export default function EmployeeForm({ employeeData, isEdit = false }) {
               >
                 <ArrowLeft className="w-5 h-5" />
               </button>
-              <div className="w-11 h-11 bg-gradient-to-br from-indigo-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
+              <div className="w-11 h-11 bg-gradient-to-br from-indigo-500 to-blue-600 rounded-xl flex items-center justify-center">
                 <User className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -1952,7 +1952,7 @@ export default function EmployeeForm({ employeeData, isEdit = false }) {
                 }}>
                   <div
                     className={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${isActive
-                      ? "bg-indigo-600 border-indigo-600 text-white shadow-lg scale-110"
+                      ? "bg-indigo-600 border-indigo-600 text-white scale-110"
                       : isCompleted
                         ? "bg-indigo-100 border-indigo-600 text-indigo-600"
                         : "bg-white border-slate-300 text-slate-400"
@@ -1996,7 +1996,7 @@ export default function EmployeeForm({ employeeData, isEdit = false }) {
                 className="space-y-6"
               >
                 {/* Account Credentials Card */}
-                <div className="bg-white rounded-xl border border-slate-200 shadow-sm mb-8">
+                <div className="bg-white rounded-xl border border-slate-200 mb-8">
                   <div className="p-6 border-b border-slate-200">
                     <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                       <div className="w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center border border-indigo-100">
@@ -2122,7 +2122,7 @@ export default function EmployeeForm({ employeeData, isEdit = false }) {
                 {formData.role !== "attendance_only" && (
                   <>
                     {/* Organization Details Card */}
-                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm mb-8">
+                    <div className="bg-white rounded-xl border border-slate-200 mb-8">
                       <div className="p-6 border-b border-slate-200">
                         <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                           <div className="w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center border border-indigo-100">
@@ -2467,7 +2467,7 @@ export default function EmployeeForm({ employeeData, isEdit = false }) {
                 transition={{ duration: 0.3, type: "tween" }}
                 className="space-y-6"
               >
-                <div className="bg-white rounded-xl border border-slate-200 shadow-sm mb-8">
+                <div className="bg-white rounded-xl border border-slate-200 mb-8">
                   <div className="p-6 border-b border-slate-200">
                     <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                       <div className="w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center border border-indigo-100">
@@ -2891,7 +2891,7 @@ export default function EmployeeForm({ employeeData, isEdit = false }) {
                 transition={{ duration: 0.3, type: "tween" }}
                 className="space-y-6"
               >
-                <div className="bg-white rounded-xl border border-slate-200 shadow-sm mb-8">
+                <div className="bg-white rounded-xl border border-slate-200 mb-8">
                   <div className="p-6 border-b border-slate-200">
                     <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                       <div className="w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center border border-indigo-100">
@@ -3040,7 +3040,7 @@ export default function EmployeeForm({ employeeData, isEdit = false }) {
 
 
                 {/* Compliance & Configuration Card */}
-                <div className="bg-white rounded-xl border border-slate-200 shadow-sm mb-8">
+                <div className="bg-white rounded-xl border border-slate-200 mb-8">
                   <div className="p-6 border-b border-slate-200">
                     <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                       <div className="w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center border border-indigo-100">
@@ -3218,7 +3218,7 @@ export default function EmployeeForm({ employeeData, isEdit = false }) {
                 transition={{ duration: 0.3, type: "tween" }}
                 className="space-y-6"
               >
-                <div className="bg-white rounded-xl border border-slate-200 shadow-sm mb-8">
+                <div className="bg-white rounded-xl border border-slate-200 mb-8">
                   <div className="p-6 border-b border-slate-200">
                     <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                       <div className="w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center border border-indigo-100">
@@ -3262,7 +3262,7 @@ export default function EmployeeForm({ employeeData, isEdit = false }) {
                 transition={{ duration: 0.3, type: "tween" }}
                 className="space-y-6"
               >
-                <div className="bg-white rounded-xl border border-slate-200 shadow-sm mb-8">
+                <div className="bg-white rounded-xl border border-slate-200 mb-8">
                   <div className="p-6">
                     <VariablePaySection
                       variablePayStructure={formData.variablePayStructure}
@@ -3284,7 +3284,7 @@ export default function EmployeeForm({ employeeData, isEdit = false }) {
                 transition={{ duration: 0.3, type: "tween" }}
                 className="space-y-6"
               >
-                <div className="bg-white rounded-xl border border-slate-200 shadow-sm mb-8">
+                <div className="bg-white rounded-xl border border-slate-200 mb-8">
                   <div className="p-6 border-b border-slate-200">
                     <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                       <div className="w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center border border-indigo-100">
@@ -3584,7 +3584,7 @@ export default function EmployeeForm({ employeeData, isEdit = false }) {
           </AnimatePresence >
 
           {/* Sticky Footer Navigation */}
-          < div className="sticky bottom-0 bg-white border-t border-slate-200 p-4 -mx-6 mt-auto shadow-lg z-20" >
+          < div className="sticky bottom-0 bg-white border-t border-slate-200 p-4 -mx-6 mt-auto z-20" >
             <div className="max-w-7xl mx-auto flex items-center justify-between">
               <button
                 type="button"
@@ -3637,7 +3637,7 @@ export default function EmployeeForm({ employeeData, isEdit = false }) {
                   <button
                     type="submit"
                     disabled={loading || fetchLoading}
-                    className="inline-flex items-center gap-2 px-8 py-2.5 bg-gradient-to-r from-indigo-500 to-blue-600 hover:from-indigo-600 hover:to-blue-700 text-white rounded-lg font-semibold transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="inline-flex items-center gap-2 px-8 py-2.5 bg-gradient-to-r from-indigo-500 to-blue-600 hover:from-indigo-600 hover:to-blue-700 text-white rounded-lg font-semibold transition-all hover: disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {loading ? (
                       <>
@@ -3655,7 +3655,7 @@ export default function EmployeeForm({ employeeData, isEdit = false }) {
                   <button
                     type="button"
                     onClick={handleNext}
-                    className="inline-flex items-center gap-2 px-8 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold transition-colors shadow-md"
+                    className="inline-flex items-center gap-2 px-8 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold transition-colors"
                   >
                     Next Step
                     <ChevronRight className="w-4 h-4" />

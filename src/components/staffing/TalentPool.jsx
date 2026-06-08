@@ -305,7 +305,7 @@ export default function TalentPool() {
             onClick={() => { setActiveTab("bank"); setUploadResult(null); }}
             className={`px-4 py-2 text-xs font-bold rounded-lg transition-all ${
               activeTab === "bank"
-                ? "bg-white text-indigo-700 shadow-sm"
+                ? "bg-white text-indigo-700"
                 : "text-slate-600 hover:text-slate-900"
             }`}
           >
@@ -315,7 +315,7 @@ export default function TalentPool() {
             onClick={() => setActiveTab("upload")}
             className={`px-4 py-2 text-xs font-bold rounded-lg transition-all ${
               activeTab === "upload"
-                ? "bg-white text-indigo-700 shadow-sm"
+                ? "bg-white text-indigo-700"
                 : "text-slate-600 hover:text-slate-900"
             }`}
           >
@@ -329,7 +329,7 @@ export default function TalentPool() {
           {/* Sourcing Search list */}
           <div className="lg:col-span-2 space-y-6">
             {/* Search Input Card */}
-            <form onSubmit={handleSearchSubmit} className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 flex gap-3 items-center">
+            <form onSubmit={handleSearchSubmit} className="bg-white rounded-2xl border border-slate-200 p-4 flex gap-3 items-center">
               <div className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 flex items-center gap-2">
                 <Search className="w-4 h-4 text-slate-400 shrink-0" />
                 <input
@@ -347,7 +347,7 @@ export default function TalentPool() {
               </div>
               <button
                 type="submit"
-                className="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm px-5 py-2.5 rounded-xl transition-all shadow-md shadow-indigo-600/10 active:scale-[0.98]"
+                className="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm px-5 py-2.5 rounded-xl transition-all active:scale-[0.98]"
               >
                 Search
               </button>
@@ -359,7 +359,7 @@ export default function TalentPool() {
                 <div className="w-8 h-8 rounded-full border-4 border-indigo-100 border-t-indigo-600 animate-spin"></div>
               </div>
             ) : candidates.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-20 bg-white border border-slate-100 rounded-2xl space-y-4 shadow-sm text-slate-400">
+              <div className="flex flex-col items-center justify-center py-20 bg-white border border-slate-200 rounded-2xl space-y-4 text-slate-400">
                 <Users className="w-12 h-12 opacity-35" />
                 <p className="text-sm font-medium">No candidates in the resume pool yet</p>
                 <button
@@ -375,9 +375,9 @@ export default function TalentPool() {
                   <div
                     key={candidate._id}
                     onClick={() => setSelectedCandidate(candidate)}
-                    className={`bg-white rounded-2xl border p-5 flex items-center justify-between gap-6 hover:shadow-md transition-all cursor-pointer relative overflow-hidden active:scale-[0.99] ${
+                    className={`bg-white rounded-2xl border p-5 flex items-center justify-between gap-6 hover: transition-all cursor-pointer relative overflow-hidden active:scale-[0.99] ${
                       selectedCandidate?._id === candidate._id
-                        ? "border-indigo-500 shadow-md ring-1 ring-indigo-500/20"
+                        ? "border-indigo-500 ring-1 ring-indigo-500/20"
                         : "border-slate-100"
                     }`}
                   >
@@ -447,7 +447,7 @@ export default function TalentPool() {
           {/* Right Column: Detailed Candidate View Drawer */}
           <div className="lg:col-span-1">
             {selectedCandidate ? (
-              <div className="bg-white rounded-3xl border border-indigo-100 shadow-xl p-4 sm:p-6 space-y-6 sticky top-6 max-h-[85vh] overflow-y-auto no-scrollbar">
+              <div className="bg-white rounded-3xl border border-slate-200 p-4 sm:p-6 space-y-6 sticky top-6 max-h-[85vh] overflow-y-auto no-scrollbar">
                 {/* Header Profile */}
                 <div className="flex items-start justify-between border-b border-slate-50 pb-4 gap-4">
                   <div className="space-y-1.5 min-w-0">
@@ -479,7 +479,7 @@ export default function TalentPool() {
                 <div className="flex gap-2">
                   <button
                     onClick={() => handleOpenSubmissionModal(selectedCandidate._id)}
-                    className="flex-1 flex items-center justify-center gap-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md shadow-indigo-600/10 active:scale-[0.98] transition-all"
+                    className="flex-1 flex items-center justify-center gap-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl active:scale-[0.98] transition-all"
                   >
                     <UserPlus className="w-4.5 h-4.5" /> Submit to Job
                   </button>
@@ -600,7 +600,7 @@ export default function TalentPool() {
       ) : (
         /* Upload & AI parse screen */
         <div className="max-w-3xl mx-auto space-y-8 py-4">
-          <div className="bg-white rounded-3xl border border-slate-100 shadow-md p-6 space-y-6">
+          <div className="bg-white rounded-3xl border border-slate-200 p-6 space-y-6">
             <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
               <UploadCloud className="w-5 h-5 text-indigo-600" /> AI Resume Parsing Console
             </h3>
@@ -616,7 +616,7 @@ export default function TalentPool() {
               />
               
               <div className="space-y-4">
-                <div className="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mx-auto shadow-inner group-hover:scale-105 transition-transform">
+                <div className="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mx-auto group-hover:scale-105 transition-transform">
                   <UploadCloud className="w-6 h-6 animate-pulse" />
                 </div>
                 
@@ -709,7 +709,7 @@ export default function TalentPool() {
                       {uploadResult.matches.map((match) => (
                         <div
                           key={match.requirement._id}
-                          className="bg-white border border-slate-150 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm"
+                          className="bg-white border border-slate-150 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
                         >
                           <div className="space-y-1.5 min-w-0">
                             <div className="flex items-center gap-2 flex-wrap">
@@ -751,7 +751,7 @@ export default function TalentPool() {
       {/* Submission Popup Modal */}
       {submissionModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 overflow-y-auto">
-          <div className="bg-white rounded-3xl border border-slate-100 shadow-2xl max-w-md w-full overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+          <div className="bg-white rounded-3xl border border-slate-200 max-w-md w-full overflow-hidden animate-in fade-in zoom-in-95 duration-200">
             <div className="flex items-center justify-between bg-slate-50 border-b border-slate-100 px-6 py-4">
               <h3 className="text-base font-extrabold text-slate-800">
                 🚀 Submit Candidate to Client Role
@@ -802,7 +802,7 @@ export default function TalentPool() {
                 <button
                   onClick={handleSubmitCandidate}
                   disabled={submittingToReq}
-                  className="px-4 py-2 rounded-xl text-sm font-semibold bg-indigo-600 hover:bg-indigo-500 text-white shadow-md shadow-indigo-600/15 active:scale-[0.98] transition-all flex items-center gap-1.5"
+                  className="px-4 py-2 rounded-xl text-sm font-semibold bg-indigo-600 hover:bg-indigo-500 text-white active:scale-[0.98] transition-all flex items-center gap-1.5"
                 >
                   {submittingToReq ? (
                     <>
@@ -822,7 +822,7 @@ export default function TalentPool() {
       {/* Google API Error Modal */}
       {apiErrorModalOpen && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-900/80 backdrop-blur-md p-4 overflow-y-auto animate-in fade-in duration-200">
-          <div className="bg-white rounded-3xl border border-red-100 shadow-2xl max-w-md w-full overflow-hidden animate-in zoom-in-95 duration-300">
+          <div className="bg-white rounded-3xl border border-red-100 max-w-md w-full overflow-hidden animate-in zoom-in-95 duration-300">
             <div className="bg-gradient-to-br from-red-500 to-rose-600 p-6 flex flex-col items-center justify-center text-center space-y-3 relative">
               <button
                 onClick={() => setApiErrorModalOpen(false)}
@@ -830,7 +830,7 @@ export default function TalentPool() {
               >
                 <X className="w-5 h-5" />
               </button>
-              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm shadow-inner">
+              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
                 <AlertTriangle className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-xl font-extrabold text-white tracking-tight">API Quota Exhausted</h3>
@@ -850,7 +850,7 @@ export default function TalentPool() {
               <div className="space-y-3">
                 <button
                   onClick={() => setApiErrorModalOpen(false)}
-                  className="w-full bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-sm px-6 py-3.5 rounded-xl shadow-lg shadow-slate-900/20 active:scale-[0.98] transition-all"
+                  className="w-full bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-sm px-6 py-3.5 rounded-xl active:scale-[0.98] transition-all"
                 >
                   Understood
                 </button>

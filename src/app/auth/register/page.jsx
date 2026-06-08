@@ -189,7 +189,7 @@ export default function RegisterPage() {
   if (success) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 to-slate-100 p-4">
-        <div className="bg-white rounded-3xl shadow-2xl p-10 max-w-md w-full text-center space-y-5 animate-in fade-in zoom-in-95">
+        <div className="bg-white rounded-3xl p-10 max-w-md w-full text-center space-y-5 animate-in fade-in zoom-in-95">
           <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto">
             <CheckCircle2 className="w-10 h-10 text-emerald-500" />
           </div>
@@ -404,7 +404,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 active:scale-[0.98] text-white font-bold rounded-xl shadow-lg shadow-indigo-200 transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm"
+              className="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 active:scale-[0.98] text-white font-bold rounded-xl transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm"
             >
               {loading ? (
                 <><Loader2 className="w-4 h-4 animate-spin" /> Creating your workspace...</>

@@ -127,7 +127,7 @@ export default function TakeSurvey() {
 
             <form onSubmit={handleSubmit} className="space-y-6">
                 {survey.questions.map((q, index) => (
-                    <div key={q._id} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                    <div key={q._id} className="bg-white p-6 rounded-2xl border border-slate-200 space-y-4">
                         <h3 className="text-lg font-semibold text-slate-800">
                             <span className="text-indigo-500 mr-2">{index + 1}.</span>
                             {q.text}
@@ -141,7 +141,7 @@ export default function TakeSurvey() {
                                         type="button"
                                         onClick={() => handleAnswer(q._id, num)}
                                         className={`w-12 h-12 rounded-full font-bold transition-all ${answers[q._id] === num
-                                                ? 'bg-indigo-600 text-white scale-110 shadow-lg shadow-indigo-100'
+                                                ? 'bg-indigo-600 text-white scale-110'
                                                 : 'bg-slate-50 text-slate-400 hover:bg-slate-100'
                                             }`}
                                     >
@@ -159,7 +159,7 @@ export default function TakeSurvey() {
                                         type="button"
                                         onClick={() => handleAnswer(q._id, opt)}
                                         className={`flex-1 py-3 rounded-xl font-semibold border transition-all ${answers[q._id] === opt
-                                                ? 'bg-indigo-50 border-indigo-200 text-indigo-700 shadow-sm'
+                                                ? 'bg-indigo-50 border-indigo-200 text-indigo-700'
                                                 : 'bg-white border-slate-200 text-slate-500 hover:bg-slate-50'
                                             }`}
                                     >
@@ -184,7 +184,7 @@ export default function TakeSurvey() {
                 <button
                     type="submit"
                     disabled={submitting}
-                    className="w-full bg-indigo-600 text-white py-4 rounded-2xl font-bold text-lg shadow-lg shadow-indigo-100 hover:bg-indigo-700 disabled:opacity-50 transition-all flex items-center justify-center gap-2"
+                    className="w-full bg-indigo-600 text-white py-4 rounded-2xl font-bold text-lg hover:bg-indigo-700 disabled:opacity-50 transition-all flex items-center justify-center gap-2"
                 >
                     <Send className="w-5 h-5" />
                     {submitting ? "Submitting..." : "Submit Feedback"}

@@ -95,12 +95,12 @@ export default function OnboardingTracker() {
                                     key={cl._id}
                                     onClick={() => setSelectedChecklist(cl)}
                                     className={`w-full p-4 rounded-3xl border text-left transition-all group ${selectedChecklist?._id === cl._id
-                                            ? "bg-emerald-50 border-emerald-200 shadow-lg shadow-emerald-100/50"
+                                            ? "bg-emerald-50 border-emerald-200"
                                             : "bg-white border-slate-100 hover:border-emerald-200"
                                         }`}
                                 >
                                     <div className="flex items-center gap-3">
-                                        <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center font-black text-emerald-600 shadow-sm border border-slate-50">
+                                        <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center font-black text-emerald-600 border border-slate-200">
                                             {cl.employee?.personalDetails?.firstName?.charAt(0)}
                                         </div>
                                         <div className="flex-1 min-w-0">
@@ -136,10 +136,10 @@ export default function OnboardingTracker() {
                 {/* Checklist Detail View */}
                 <div className="lg:col-span-2">
                     {selectedChecklist ? (
-                        <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden animate-in slide-in-from-right-4 duration-500">
+                        <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden animate-in slide-in-from-right-4 duration-500">
                             <div className="p-8 border-b border-slate-50 flex justify-between items-center bg-slate-50/30">
                                 <div className="flex items-center gap-4">
-                                    <div className="w-14 h-14 bg-emerald-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-emerald-100">
+                                    <div className="w-14 h-14 bg-emerald-600 rounded-2xl flex items-center justify-center text-white">
                                         <UserCheck className="w-8 h-8" />
                                     </div>
                                     <div>
@@ -153,7 +153,7 @@ export default function OnboardingTracker() {
                                         </p>
                                     </div>
                                 </div>
-                                <button className="p-2 hover:bg-white rounded-xl text-slate-400 transition-all border border-transparent hover:border-slate-100 shadow-sm"><MoreVertical className="w-5 h-5" /></button>
+                                <button className="p-2 hover:bg-white rounded-xl text-slate-400 transition-all border border-transparent hover:border-slate-200"><MoreVertical className="w-5 h-5" /></button>
                             </div>
 
                             <div className="p-8">
@@ -171,12 +171,12 @@ export default function OnboardingTracker() {
                                                     {catTasks.map((task, idx) => {
                                                         const globalIdx = selectedChecklist.tasks.indexOf(task);
                                                         return (
-                                                            <div key={idx} className="group p-4 bg-slate-50 hover:bg-white rounded-2xl border border-slate-100 hover:border-emerald-200 hover:shadow-xl hover:shadow-emerald-100/20 transition-all flex items-center justify-between">
+                                                            <div key={idx} className="group p-4 bg-slate-50 hover:bg-white rounded-2xl border border-slate-200 hover:border-emerald-200 hover: hover: transition-all flex items-center justify-between">
                                                                 <div className="flex items-center gap-4">
                                                                     <button
                                                                         onClick={() => updateTaskStatus(selectedChecklist._id, globalIdx, task.status === 'Completed' ? 'Pending' : 'Completed')}
                                                                         className={`w-6 h-6 rounded-lg flex items-center justify-center transition-all ${task.status === 'Completed'
-                                                                                ? "bg-emerald-500 text-white shadow-lg shadow-emerald-200 border-none"
+                                                                                ? "bg-emerald-500 text-white border-none"
                                                                                 : "bg-white border-2 border-slate-200 text-transparent hover:border-emerald-400"
                                                                             }`}
                                                                     >

@@ -170,22 +170,22 @@ export default function RosterPlanning() {
                     </div>
 
                     <div className="flex flex-wrap items-center gap-4">
-                        <div className="flex bg-white rounded-2xl p-1 shadow-sm border border-slate-200">
+                        <div className="flex bg-white rounded-2xl p-1 border border-slate-200">
                             <button
                                 onClick={() => setViewMode('weekly')}
-                                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${viewMode === 'weekly' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-100' : 'text-slate-500 hover:bg-slate-50'}`}
+                                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${viewMode === 'weekly' ? 'bg-indigo-600 text-white' : 'text-slate-500 hover:bg-slate-50'}`}
                             >
                                 Weekly
                             </button>
                             <button
                                 onClick={() => setViewMode('monthly')}
-                                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${viewMode === 'monthly' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-100' : 'text-slate-500 hover:bg-slate-50'}`}
+                                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${viewMode === 'monthly' ? 'bg-indigo-600 text-white' : 'text-slate-500 hover:bg-slate-50'}`}
                             >
                                 Monthly
                             </button>
                         </div>
 
-                        <div className="flex items-center gap-2 bg-white rounded-2xl p-2 shadow-sm border border-slate-200 font-bold text-slate-900">
+                        <div className="flex items-center gap-2 bg-white rounded-2xl p-2 border border-slate-200 font-bold text-slate-900">
                             <button onClick={() => navigateDate(-1)} className="p-2 hover:bg-slate-50 rounded-xl transition-colors">
                                 <ChevronLeft size={18} />
                             </button>
@@ -202,14 +202,14 @@ export default function RosterPlanning() {
                         <button
                             disabled={selectedEmployees.length === 0}
                             onClick={() => setShowBulkModal(true)}
-                            className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-2xl font-bold shadow-lg shadow-indigo-200 transition-all disabled:opacity-50 disabled:shadow-none"
+                            className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-2xl font-bold transition-all disabled:opacity-50 disabled:"
                         >
                             Bulk Assign
                         </button>
                     </div>
                 </div>
 
-                <div className="bg-white rounded-[2.5rem] border border-slate-200 shadow-xl overflow-hidden flex flex-col">
+                <div className="bg-white rounded-[2.5rem] border border-slate-200 overflow-hidden flex flex-col">
                     {/* Toolbar */}
                     <div className="p-6 border-b border-slate-100 flex flex-col md:flex-row gap-4 items-center justify-between">
                         <div className="relative w-full md:w-96">
@@ -324,7 +324,7 @@ export default function RosterPlanning() {
             {/* Bulk Assign Modal */}
             {showBulkModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
-                    <div className="bg-white w-full max-w-md rounded-[3rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
+                    <div className="bg-white w-full max-w-md rounded-[3rem] overflow-hidden animate-in zoom-in-95 duration-300">
                         <div className="p-8 border-b border-slate-100 bg-indigo-600 text-white flex justify-between items-center">
                             <h2 className="text-2xl font-black">Bulk Assign Shift</h2>
                             <button onClick={() => setShowBulkModal(false)} className="p-2 hover:bg-white/20 rounded-full transition-colors">
@@ -373,7 +373,7 @@ export default function RosterPlanning() {
                                 <button
                                     disabled={saving || !bulkShiftId}
                                     onClick={handleBulkAssign}
-                                    className="flex-[2] py-4 bg-indigo-600 text-white rounded-[1.5rem] font-bold shadow-xl shadow-indigo-100 hover:bg-indigo-700 transition-all disabled:opacity-50"
+                                    className="flex-[2] py-4 bg-indigo-600 text-white rounded-[1.5rem] font-bold hover:bg-indigo-700 transition-all disabled:opacity-50"
                                 >
                                     {saving ? 'Processing...' : 'Assign to Selection'}
                                 </button>

@@ -125,7 +125,7 @@ export default function LoanManagementPage() {
 
             {/* Stats Cards (Optional) */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4">
+                <div className="bg-white p-4 rounded-xl border border-slate-200 flex items-center gap-4">
                     <div className="p-3 bg-blue-50 text-blue-600 rounded-lg"><Banknote size={24} /></div>
                     <div>
                         <p className="text-sm text-slate-500">Active Loans</p>
@@ -134,7 +134,7 @@ export default function LoanManagementPage() {
                         </p>
                     </div>
                 </div>
-                <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4">
+                <div className="bg-white p-4 rounded-xl border border-slate-200 flex items-center gap-4">
                     <div className="p-3 bg-yellow-50 text-yellow-600 rounded-lg"><Clock size={24} /></div>
                     <div>
                         <p className="text-sm text-slate-500">Pending Requests</p>
@@ -146,7 +146,7 @@ export default function LoanManagementPage() {
             </div>
 
             {/* Table */}
-            <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+            <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
                 <div className="overflow-x-auto">
                     <table className="w-full text-left text-sm">
                         <thead className="bg-slate-50 text-slate-600 border-b border-slate-200">
@@ -283,7 +283,7 @@ function RequestLoanModal({ isOpen, onClose, onSuccess }) {
 
     return (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
-            <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden">
+            <div className="bg-white rounded-2xl w-full max-w-md overflow-hidden">
                 <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
                     <h3 className="font-semibold text-lg text-slate-900">Request Loan/Advance</h3>
                     <button onClick={onClose} className="p-1 hover:bg-slate-200 rounded-full transition-colors"><XCircle size={20} className="text-slate-500" /></button>

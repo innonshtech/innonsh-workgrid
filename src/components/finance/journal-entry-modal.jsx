@@ -98,7 +98,7 @@ export default function JournalEntryModal({ isOpen, onClose, onEntrySaved }) {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
-            <div className="bg-white rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col shadow-2xl">
+            <div className="bg-white rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
                 {/* Header */}
                 <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50">
                     <div>
@@ -242,7 +242,7 @@ export default function JournalEntryModal({ isOpen, onClose, onEntrySaved }) {
                         <button
                             onClick={handleSubmit}
                             disabled={loading || !balanced}
-                            className={`px-6 py-2 rounded-lg text-sm font-semibold text-white shadow-lg transition-all flex items-center gap-2 ${loading || !balanced ? 'bg-slate-400 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700 hover:shadow-indigo-200'}`}
+                            className={`px-6 py-2 rounded-lg text-sm font-semibold text-white transition-all flex items-center gap-2 ${loading || !balanced ? 'bg-slate-400 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700 hover:'}`}
                         >
                             <Save className="w-4 h-4" />
                             {loading ? "Posting..." : "Post Entry"}

@@ -144,7 +144,7 @@ export default function InterviewScheduler() {
                 <div className="flex items-center gap-4">
                     <Button
                         onClick={() => setShowScheduleModal(true)}
-                        className="bg-indigo-600 hover:bg-indigo-700 h-16 rounded-[24px] px-8 text-white shadow-2xl shadow-indigo-200 font-black uppercase tracking-widest group transition-all"
+                        className="bg-indigo-600 hover:bg-indigo-700 h-16 rounded-[24px] px-8 text-white font-black uppercase tracking-widest group transition-all"
                     >
                         <Plus className="w-5 h-5 mr-3 group-hover:rotate-90 transition-transform duration-500" />
                         Book Initial Round
@@ -160,7 +160,7 @@ export default function InterviewScheduler() {
                     { label: "Selection Rate", value: hiredCandidates.length > 0 ? `${Math.round((hiredCandidates.length / (hiredCandidates.length + rejectedCandidates.length)) * 100)}%` : "0%", icon: Star, color: "emerald", gradient: "from-emerald-500 to-teal-500" },
                     { label: "Upcoming Session", value: activeCandidates.filter(c => !isPast(new Date(c.latestInterview?.date))).length, icon: Clock, color: "purple", gradient: "from-purple-600 to-violet-600" }
                 ].map((stat, i) => (
-                    <Card key={i} className="border-none shadow-[0_20px_50px_rgba(0,0,0,0.04)] rounded-[40px] overflow-hidden group hover:scale-[1.03] transition-all duration-700 bg-white relative">
+                    <Card key={i} className=" rounded-[40px] overflow-hidden group hover:scale-[1.03] transition-all duration-700 bg-white relative">
                         <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${stat.gradient} opacity-[0.03] -mr-16 -mt-16 rounded-full group-hover:scale-150 transition-transform duration-1000`}></div>
                         <CardContent className="pt-14 pb-10 px-10">
                             <div className="flex items-start justify-between">
@@ -168,7 +168,7 @@ export default function InterviewScheduler() {
                                     <p className="text-[12px] font-black text-slate-400 uppercase tracking-[0.25em] mb-4">{stat.label}</p>
                                     <h4 className="text-4xl font-black text-slate-900 tracking-tighter">{stat.value}</h4>
                                 </div>
-                                <div className={`w-16 h-16 rounded-[24px] bg-slate-50 flex items-center justify-center group-hover:bg-indigo-600 group-hover:text-white transition-all duration-700 shadow-sm`}>
+                                <div className={`w-16 h-16 rounded-[24px] bg-slate-50 flex items-center justify-center group-hover:bg-indigo-600 group-hover:text-white transition-all duration-700`}>
                                     <stat.icon className="w-7 h-7" />
                                 </div>
                             </div>
@@ -184,7 +184,7 @@ export default function InterviewScheduler() {
                     <section className="space-y-8">
                         <div className="flex items-center justify-between px-4">
                             <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 rounded-2xl bg-indigo-600 flex items-center justify-center text-white shadow-lg shadow-indigo-100">
+                                <div className="w-12 h-12 rounded-2xl bg-indigo-600 flex items-center justify-center text-white">
                                     <Activity className="w-6 h-6" />
                                 </div>
                                 <h3 className="text-2xl font-black text-slate-900 tracking-tight uppercase leading-none">
@@ -223,7 +223,7 @@ export default function InterviewScheduler() {
                                     ))
                                 ) : (
                                     <motion.div className="py-32 flex flex-col items-center justify-center bg-slate-50/50 border-4 border-dashed border-slate-100 rounded-[60px]">
-                                        <div className="w-24 h-24 rounded-[40px] bg-white shadow-xl flex items-center justify-center mb-8">
+                                        <div className="w-24 h-24 rounded-[40px] bg-white flex items-center justify-center mb-8">
                                             <Users className="w-10 h-10 text-slate-200" />
                                         </div>
                                         <p className="font-black text-slate-400 uppercase tracking-[0.3em] text-sm">Pipeline Clear</p>
@@ -307,7 +307,7 @@ export default function InterviewScheduler() {
 
                 {/* Right Column: Insights & Quick Actions */}
                 <div className="xl:col-span-4 space-y-8">
-                    <Card className="rounded-[40px] border-slate-100 shadow-xl shadow-slate-100 bg-white">
+                    <Card className="rounded-[40px] border-slate-200 bg-white">
                         <CardContent className="pt-12 pb-8 px-8">
                             <h5 className="text-sm font-black uppercase tracking-widest text-slate-900 mb-6 flex items-center gap-2">
                                 <Users className="w-4 h-4 text-indigo-500" /> Top Interviewers
@@ -407,14 +407,14 @@ function InterviewCard({ interview, onStatusUpdate, onAddFeedback, onAddAction, 
     const decisionBadge = getDecisionBadge();
 
     return (
-        <div className={`group relative bg-white rounded-[40px] border shadow-sm ${isComp ? 'border-emerald-100' : isCanc ? 'border-slate-100 grayscale' : 'border-slate-100'} hover:border-indigo-400 hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-700 overflow-hidden min-h-[140px] flex items-stretch`}>
+        <div className={`group relative bg-white rounded-[40px] border ${isComp ? 'border-emerald-100' : isCanc ? 'border-slate-200 grayscale' : 'border-slate-200'} hover:border-indigo-400 transition-all duration-700 overflow-hidden min-h-[140px] flex items-stretch`}>
             {/* Status Indicator Strip */}
             <div className={`absolute left-0 top-0 bottom-0 w-2.5 ${hasDecision && interview.decision === 'Rejected' ? 'bg-rose-400' : hasDecision && interview.decision === 'On Hold' ? 'bg-amber-400' : isComp ? 'bg-emerald-500' : isCanc ? 'bg-slate-300' : 'bg-indigo-600'} group-hover:w-4 transition-all duration-700`}></div>
 
             <div className="p-6 pl-10 flex flex-col xl:flex-row xl:items-center justify-between gap-6 w-full">
                 <div className="flex flex-col sm:flex-row sm:items-center gap-6">
                     {/* Time/Date Block */}
-                    <div className="flex flex-col items-center justify-center min-w-[80px] h-[80px] rounded-[28px] bg-slate-50 border border-slate-100 group-hover:bg-indigo-600 group-hover:border-indigo-600 transition-all duration-700 shadow-sm group-hover:shadow-[0_12px_24px_rgba(79,70,229,0.3)] shrink-0">
+                    <div className="flex flex-col items-center justify-center min-w-[80px] h-[80px] rounded-[28px] bg-slate-50 border border-slate-200 group-hover:bg-indigo-600 group-hover:border-indigo-600 transition-all duration-700  shrink-0">
                         <p className="text-[9px] font-black text-slate-400 group-hover:text-indigo-200 uppercase tracking-[0.2em] transition-colors">{format(date, 'MMM')}</p>
                         <p className="text-2xl font-black text-slate-900 group-hover:text-white leading-none py-1 transition-colors">{format(date, 'dd')}</p>
                         <p className="text-[10px] font-black text-indigo-600 group-hover:text-white mt-0.5 uppercase transition-colors">{format(date, 'HH:mm')}</p>
@@ -424,7 +424,7 @@ function InterviewCard({ interview, onStatusUpdate, onAddFeedback, onAddAction, 
                     <div className="space-y-2.5 min-w-0">
                         <div className="flex flex-wrap items-center gap-3">
                             <h4 className="text-xl font-black text-slate-900 tracking-tighter leading-none truncate">{interview.candidateName}</h4>
-                            <Badge className={`${isComp ? 'bg-emerald-50 text-emerald-600 shadow-emerald-100' : isCanc ? 'bg-slate-50 text-slate-400' : 'bg-indigo-600 text-white shadow-indigo-100'} border-none font-black text-[9px] uppercase py-1.5 px-4 rounded-xl shadow-lg shrink-0`}>
+                            <Badge className={`${isComp ? 'bg-emerald-50 text-emerald-600' : isCanc ? 'bg-slate-50 text-slate-400' : 'bg-indigo-600 text-white'} border-none font-black text-[9px] uppercase py-1.5 px-4 rounded-xl shrink-0`}>
                                 {interview.round || "Assessment Round"}
                             </Badge>
                         </div>
@@ -454,7 +454,7 @@ function InterviewCard({ interview, onStatusUpdate, onAddFeedback, onAddAction, 
                     {!minimal && !isComp && !isCanc && (
                         <>
                             <Button
-                                className="h-14 rounded-[20px] bg-slate-900 text-white hover:bg-slate-800 font-black uppercase tracking-widest text-[10px] px-6 shadow-xl shadow-slate-200/50 flex items-center gap-2.5 group/btn"
+                                className="h-14 rounded-[20px] bg-slate-900 text-white hover:bg-slate-800 font-black uppercase tracking-widest text-[10px] px-6 flex items-center gap-2.5 group/btn"
                                 onClick={() => window.open(interview.meetingLink || '#', '_blank')}
                             >
                                 <Video className="w-4 h-4 group-hover/btn:scale-110 transition-transform" />
@@ -481,14 +481,14 @@ function InterviewCard({ interview, onStatusUpdate, onAddFeedback, onAddAction, 
                             <Button
                                 variant="ghost"
                                 onClick={() => onAddFeedback && onAddFeedback(interview)}
-                                className="h-12 rounded-[16px] bg-purple-50 text-purple-600 hover:bg-purple-100 font-black uppercase tracking-widest text-[9px] px-5 flex items-center gap-1.5 border border-purple-100 shadow-sm transition-all"
+                                className="h-12 rounded-[16px] bg-purple-50 text-purple-600 hover:bg-purple-100 font-black uppercase tracking-widest text-[9px] px-5 flex items-center gap-1.5 border border-purple-100 transition-all"
                             >
                                 <Sparkles className="w-3.5 h-3.5" /> View Feedback
                             </Button>
                             {interview.decision === 'Confirmed' && (
                                 <Button
                                     variant="ghost"
-                                    className="h-12 rounded-[16px] bg-emerald-600 text-white hover:bg-emerald-700 font-black uppercase tracking-widest text-[9px] px-5 flex items-center gap-1.5 shadow-lg shadow-emerald-200 border-none transition-all hover:scale-105 active:scale-95"
+                                    className="h-12 rounded-[16px] bg-emerald-600 text-white hover:bg-emerald-700 font-black uppercase tracking-widest text-[9px] px-5 flex items-center gap-1.5 border-none transition-all hover:scale-105 active:scale-95"
                                     onClick={() => onAddAction && onAddAction(interview)}
                                 >
                                     <Sparkles className="w-3.5 h-3.5" /> HIRE / ONBOARD
@@ -497,7 +497,7 @@ function InterviewCard({ interview, onStatusUpdate, onAddFeedback, onAddAction, 
                             {(interview.decision === 'On Hold' || !['Confirmed', 'Onboarded', 'Rejected'].includes(interview.decision)) && (
                                 <Button
                                     variant="ghost"
-                                    className="h-12 rounded-[16px] bg-amber-50 text-amber-700 hover:bg-amber-100 font-black uppercase tracking-widest text-[9px] px-5 flex items-center gap-1.5 border border-amber-100 shadow-sm transition-all"
+                                    className="h-12 rounded-[16px] bg-amber-50 text-amber-700 hover:bg-amber-100 font-black uppercase tracking-widest text-[9px] px-5 flex items-center gap-1.5 border border-amber-100 transition-all"
                                     onClick={() => onAddAction && onAddAction(interview)}
                                 >
                                     <ArrowUpRight className="w-3.5 h-3.5" /> Action
@@ -592,11 +592,11 @@ function ScheduleModal({ onClose, candidates, interviewers, onSuccess, prefill =
                 initial={{ opacity: 0, scale: 0.9, y: 30 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.9, y: 30 }}
-                className="bg-white rounded-[48px] w-full max-w-3xl shadow-4xl border border-white/20 overflow-hidden relative z-10 p-12 overflow-y-auto max-h-[90vh]"
+                className="bg-white rounded-[48px] w-full max-w-3xl border border-white/20 overflow-hidden relative z-10 p-12 overflow-y-auto max-h-[90vh]"
             >
                 <div className="flex items-center justify-between mb-12">
                     <div className="flex items-center gap-5">
-                        <div className="w-16 h-16 rounded-[28px] bg-indigo-600 flex items-center justify-center text-white shadow-2xl shadow-indigo-100">
+                        <div className="w-16 h-16 rounded-[28px] bg-indigo-600 flex items-center justify-center text-white">
                             <Plus className="w-8 h-8" />
                         </div>
                         <div>
@@ -738,7 +738,7 @@ function ScheduleModal({ onClose, candidates, interviewers, onSuccess, prefill =
                         <Button
                             type="submit"
                             disabled={submitting}
-                            className="flex-3 h-20 rounded-[32px] bg-indigo-600 hover:bg-indigo-700 text-white shadow-2xl shadow-indigo-200 font-black uppercase tracking-widest text-xs transition-all flex-[2]"
+                            className="flex-3 h-20 rounded-[32px] bg-indigo-600 hover:bg-indigo-700 text-white font-black uppercase tracking-widest text-xs transition-all flex-[2]"
                         >
                             {submitting ? <Loader2 className="w-5 h-5 animate-spin mr-2" /> : "Authorize Scheduling"}
                         </Button>
@@ -785,7 +785,7 @@ function FeedbackModal({ onClose, interview, onSuccess }) {
             />
             <motion.div
                 initial={{ opacity: 0, scale: 0.9, y: 30 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.9, y: 30 }}
-                className="bg-white rounded-[40px] w-full max-w-2xl shadow-4xl border border-white/20 overflow-hidden relative z-10 flex flex-col max-h-[90vh]"
+                className="bg-white rounded-[40px] w-full max-w-2xl border border-white/20 overflow-hidden relative z-10 flex flex-col max-h-[90vh]"
             >
                 <div className="p-8 border-b border-slate-100 shrink-0">
                     <div className="flex items-center justify-between">
@@ -819,7 +819,7 @@ function FeedbackModal({ onClose, interview, onSuccess }) {
                                 readOnly={hasSavedFeedback}
                                 onChange={(e) => setFeedbackText(e.target.value)}
                                 placeholder="Enter the interviewer's detailed feedback here..."
-                                className={`w-full h-64 p-6 rounded-[32px] border border-slate-200 focus:border-indigo-300 focus:ring-4 focus:ring-indigo-500/5 text-slate-700 bg-white resize-none shadow-sm transition-all text-sm leading-relaxed ${hasSavedFeedback ? 'opacity-70 cursor-not-allowed bg-slate-50' : ''}`}
+                                className={`w-full h-64 p-6 rounded-[32px] border border-slate-200 focus:border-indigo-300 focus:ring-4 focus:ring-indigo-500/5 text-slate-700 bg-white resize-none transition-all text-sm leading-relaxed ${hasSavedFeedback ? 'opacity-70 cursor-not-allowed bg-slate-50' : ''}`}
                             />
                         </div>
 
@@ -827,7 +827,7 @@ function FeedbackModal({ onClose, interview, onSuccess }) {
                             <Button
                                 onClick={handleSaveFeedback}
                                 disabled={submitting || !feedbackText.trim()}
-                                className="w-full h-14 rounded-2xl bg-indigo-600 text-white hover:bg-indigo-700 font-black text-[10px] uppercase tracking-widest shadow-lg flex items-center justify-center gap-2"
+                                className="w-full h-14 rounded-2xl bg-indigo-600 text-white hover:bg-indigo-700 font-black text-[10px] uppercase tracking-widest flex items-center justify-center gap-2"
                             >
                                 {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle2 className="w-4 h-4" />}
                                 Save Feedback
@@ -905,7 +905,7 @@ function ActionModal({ onClose, interview, onSuccess }) {
             />
             <motion.div
                 initial={{ opacity: 0, scale: 0.9, y: 30 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.9, y: 30 }}
-                className="bg-white rounded-[40px] w-full max-w-lg shadow-4xl border border-white/20 overflow-hidden relative z-10"
+                className="bg-white rounded-[40px] w-full max-w-lg border border-white/20 overflow-hidden relative z-10"
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className="p-8 border-b border-slate-100">
@@ -938,7 +938,7 @@ function ActionModal({ onClose, interview, onSuccess }) {
                                         onClick={() => handleSubmitDecision('Promoted', round)}
                                         disabled={submitting}
                                         style={{ color: '#1e293b' }}
-                                        className="h-14 rounded-2xl border-2 border-indigo-200 hover:border-indigo-400 bg-white hover:bg-indigo-50 font-bold text-sm shadow-sm flex items-center justify-between px-6 transition-all cursor-pointer disabled:opacity-50"
+                                        className="h-14 rounded-2xl border-2 border-indigo-200 hover:border-indigo-400 bg-white hover:bg-indigo-50 font-bold text-sm flex items-center justify-between px-6 transition-all cursor-pointer disabled:opacity-50"
                                     >
                                         <span className="font-black text-slate-900">{round}</span> 
                                         {submitting ? <Loader2 className="w-5 h-5 animate-spin text-indigo-500" /> : <ArrowRight className="w-5 h-5 text-indigo-500" />}
@@ -963,7 +963,7 @@ function ActionModal({ onClose, interview, onSuccess }) {
                                         window.location.href = `/admin/employees/new?${query}`;
                                     }}
                                     style={{ color: '#fff', backgroundColor: '#059669', border: '2px solid #059669', boxSizing: 'border-box', height: '60px', borderRadius: '16px' }}
-                                    className="w-full hover:opacity-90 font-black text-xs uppercase tracking-widest shadow-lg flex items-center gap-3 pl-8 cursor-pointer transition-all"
+                                    className="w-full hover:opacity-90 font-black text-xs uppercase tracking-widest flex items-center gap-3 pl-8 cursor-pointer transition-all"
                                 >
                                     <Sparkles className="w-5 h-5 shrink-0" /> Onboard Candidate
                                 </button>
@@ -973,7 +973,7 @@ function ActionModal({ onClose, interview, onSuccess }) {
                                         onClick={() => setShowRoundPicker(true)}
                                         disabled={submitting}
                                         style={{ color: '#fff', backgroundColor: '#0f172a', border: '2px solid #0f172a', boxSizing: 'border-box', height: '60px', borderRadius: '16px' }}
-                                        className="w-full hover:opacity-90 font-black text-xs uppercase tracking-widest shadow-lg flex items-center gap-3 pl-8 cursor-pointer disabled:opacity-50 transition-all"
+                                        className="w-full hover:opacity-90 font-black text-xs uppercase tracking-widest flex items-center gap-3 pl-8 cursor-pointer disabled:opacity-50 transition-all"
                                     >
                                         <ArrowUpRight className="w-5 h-5 shrink-0" /> Promote to Next Round
                                     </button>
@@ -981,7 +981,7 @@ function ActionModal({ onClose, interview, onSuccess }) {
                                         onClick={() => handleSubmitDecision('Offer Sent')}
                                         disabled={submitting}
                                         style={{ color: '#fff', backgroundColor: '#059669', border: '2px solid #059669', boxSizing: 'border-box', height: '60px', borderRadius: '16px' }}
-                                        className="w-full hover:opacity-90 font-black text-xs uppercase tracking-widest shadow-lg flex items-center gap-3 pl-8 cursor-pointer disabled:opacity-50 transition-all"
+                                        className="w-full hover:opacity-90 font-black text-xs uppercase tracking-widest flex items-center gap-3 pl-8 cursor-pointer disabled:opacity-50 transition-all"
                                     >
                                         {submitting ? <Loader2 className="w-5 h-5 animate-spin shrink-0" /> : <Trophy className="w-5 h-5 shrink-0" />}
                                         {submitting ? 'Processing...' : 'Send Offer Letter'}

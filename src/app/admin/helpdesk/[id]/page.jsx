@@ -171,7 +171,7 @@ export default function TicketDetailPage() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Main Content: Ticket Info + Comments */}
                 <div className="lg:col-span-2 space-y-6">
-                    <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-4">
+                    <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-4">
                         <div className="flex items-start justify-between">
                             <h1 className="text-xl font-bold text-slate-900">{ticket.subject}</h1>
                             <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border ${getStatusColor(ticket.status)}`}>
@@ -185,7 +185,7 @@ export default function TicketDetailPage() {
                     </div>
 
                     {/* Comments Section */}
-                    <div className="bg-white rounded-xl shadow-sm border border-slate-200 flex flex-col h-[500px]">
+                    <div className="bg-white rounded-xl border border-slate-200 flex flex-col h-[500px]">
                         <div className="p-4 border-b border-slate-200 font-semibold text-slate-700">Discussion</div>
 
                         <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50">
@@ -240,7 +240,7 @@ export default function TicketDetailPage() {
 
                 {/* Sidebar: Meta Info & Actions */}
                 <div className="space-y-6">
-                    <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-6">
+                    <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-6">
                         <h3 className="font-semibold text-slate-900 border-b border-gray-100 pb-3">Ticket Details</h3>
 
                         <div className="space-y-4">
@@ -276,7 +276,7 @@ export default function TicketDetailPage() {
                                         </button>
 
                                         {dropdownOpen && (
-                                            <div className="absolute z-50 w-full mt-1.5 bg-white border border-slate-200 rounded-xl shadow-xl overflow-hidden animate-in fade-in slide-in-from-top-1 duration-200">
+                                            <div className="absolute z-50 w-full mt-1.5 bg-white border border-slate-200 rounded-xl overflow-hidden animate-in fade-in slide-in-from-top-1 duration-200">
                                                 <div className="p-2 border-b border-slate-100 flex items-center gap-2 bg-slate-50/50">
                                                     <Search size={14} className="text-slate-400 shrink-0" />
                                                     <input

@@ -152,9 +152,7 @@ export default function AttendanceTable({
                       </div>
                       <div className="text-left">
                         <p className="text-xs font-extrabold text-slate-800">{record.totalHours || '0'}h</p>
-                        {record.overtimeHours > 0 && (
-                          <p className="text-[9px] text-purple-650 font-bold uppercase">+ {record.overtimeHours}h OT</p>
-                        )}
+                        
                       </div>
                     </div>
                   </td>

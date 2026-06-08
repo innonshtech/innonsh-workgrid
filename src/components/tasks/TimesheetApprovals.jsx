@@ -112,7 +112,7 @@ const TimesheetApprovals = () => {
             </div>
 
             {/* Filters */}
-            <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
+            <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 bg-white p-4 rounded-2xl border border-slate-200">
                 <div className="relative flex-1 max-w-md">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                     <input
@@ -145,7 +145,7 @@ const TimesheetApprovals = () => {
             {/* List */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredTimesheets.map((ts) => (
-                    <div key={ts._id} className="bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition-all group overflow-hidden">
+                    <div key={ts._id} className="bg-white rounded-3xl border border-slate-200 hover: transition-all group overflow-hidden">
                         <div className="p-6 space-y-4">
                             <div className="flex items-start justify-between">
                                 <div className="flex items-center gap-3">
@@ -210,10 +210,10 @@ const TimesheetApprovals = () => {
             {/* Detail Modal */}
             {selectedTimesheet && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-300">
-                    <div className="bg-white rounded-3xl w-full max-w-4xl shadow-2xl overflow-hidden scale-in duration-300 max-h-[90vh] flex flex-col border border-slate-100">
+                    <div className="bg-white rounded-3xl w-full max-w-4xl overflow-hidden scale-in duration-300 max-h-[90vh] flex flex-col border border-slate-200">
                         <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
                             <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 rounded-xl bg-white border border-slate-200 shadow-sm flex items-center justify-center font-black text-indigo-600 text-lg uppercase">
+                                <div className="w-12 h-12 rounded-xl bg-white border border-slate-200 flex items-center justify-center font-black text-indigo-600 text-lg uppercase">
                                     {selectedTimesheet.employee?.personalDetails?.firstName?.charAt(0)}
                                 </div>
                                 <div>
@@ -250,7 +250,7 @@ const TimesheetApprovals = () => {
                             </div>
 
                             {/* Entries Table */}
-                            <div className="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-sm">
+                            <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
                                 <table className="w-full text-left border-collapse">
                                     <thead className="bg-slate-50 border-b border-slate-100">
                                         <tr>
@@ -308,7 +308,7 @@ const TimesheetApprovals = () => {
                                         
                                         <button
                                             onClick={() => handleAction('Approved')}
-                                            className="flex-1 px-5 py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl font-black text-xs transition-all shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2 active:scale-[0.98]"
+                                            className="flex-1 px-5 py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl font-black text-xs transition-all flex items-center justify-center gap-2 active:scale-[0.98]"
                                         >
                                             <CheckCircle className="w-4.5 h-4.5" /> Approve Timesheet
                                         </button>

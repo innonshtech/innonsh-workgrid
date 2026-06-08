@@ -121,7 +121,7 @@ export default function ChangePasswordPage() {
             <div className="max-w-4xl mx-auto space-y-8 lg:mt-10">
 
                 {/* Security Hero Section */}
-                <div className="bg-gradient-to-br from-slate-900 to-indigo-950 rounded-[3rem] p-10 lg:p-14 text-white relative overflow-hidden shadow-2xl shadow-slate-300">
+                <div className="bg-gradient-to-br from-slate-900 to-indigo-950 rounded-[3rem] p-10 lg:p-14 text-white relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-500/10 rounded-full -mr-48 -mt-48 blur-3xl"></div>
                     <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-500/5 rounded-full -ml-48 -mb-48 blur-3xl"></div>
 
@@ -140,8 +140,8 @@ export default function ChangePasswordPage() {
 
                         <div className="relative group">
                             <div className="absolute inset-0 bg-indigo-500/20 rounded-full blur-3xl group-hover:bg-indigo-500/30 transition-all duration-700"></div>
-                            <div className="relative bg-white/5 backdrop-blur-xl p-10 rounded-[3.5rem] border border-white/10 shadow-2xl flex flex-col items-center">
-                                <ShieldCheck className="w-20 h-20 text-emerald-400 drop-shadow-[0_0_15px_rgba(52,211,153,0.5)]" />
+                            <div className="relative bg-white/5 backdrop-blur-xl p-10 rounded-[3.5rem] border border-white/10 flex flex-col items-center">
+                                <ShieldCheck className="w-20 h-20 text-emerald-4000_0_15px_rgba(52,211,153,0.5)]" />
                                 <div className="mt-6 text-center">
                                     <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest">{t("systemStatus")}</p>
                                     <p className="text-sm font-bold text-emerald-400 mt-1 flex items-center gap-2">
@@ -157,7 +157,7 @@ export default function ChangePasswordPage() {
                 {/* Form Section */}
                 <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
                     <div className="lg:col-span-3">
-                        <div className="bg-white rounded-[2.5rem] border border-slate-200 shadow-xl shadow-slate-200/50 overflow-hidden">
+                        <div className="bg-white rounded-[2.5rem] border border-slate-200 overflow-hidden">
                             <div className="p-10">
                                 <form onSubmit={handleSubmit} className="space-y-8">
                                     {/* Current Password */}
@@ -247,7 +247,7 @@ export default function ChangePasswordPage() {
                                     <button
                                         type="submit"
                                         disabled={loading}
-                                        className={`group w-full bg-indigo-600 text-white font-black py-5 px-8 rounded-[1.5rem] shadow-xl shadow-indigo-100 hover:bg-indigo-700 hover:-translate-y-1 active:translate-y-0 transition-all flex items-center justify-center gap-3 ${loading ? "opacity-70 pointer-events-none" : ""}`}
+                                        className={`group w-full bg-indigo-600 text-white font-black py-5 px-8 rounded-[1.5rem] hover:bg-indigo-700 hover:-translate-y-1 active:translate-y-0 transition-all flex items-center justify-center gap-3 ${loading ? "opacity-70 pointer-events-none" : ""}`}
                                     >
                                         {loading ? (
                                             <div className="w-6 h-6 border-3 border-white/30 border-t-white rounded-full animate-spin"></div>
@@ -273,7 +273,7 @@ export default function ChangePasswordPage() {
                             </h3>
                             <ul className="space-y-6">
                                 <li className="flex gap-4">
-                                    <div className="p-2 bg-white rounded-xl shadow-sm h-fit">
+                                    <div className="p-2 bg-white rounded-xl h-fit">
                                         <CheckCircle2 className="w-4 h-4 text-emerald-500" />
                                     </div>
                                     <div>
@@ -282,7 +282,7 @@ export default function ChangePasswordPage() {
                                     </div>
                                 </li>
                                 <li className="flex gap-4">
-                                    <div className="p-2 bg-white rounded-xl shadow-sm h-fit">
+                                    <div className="p-2 bg-white rounded-xl h-fit">
                                         <CheckCircle2 className="w-4 h-4 text-emerald-500" />
                                     </div>
                                     <div>

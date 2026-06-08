@@ -428,7 +428,7 @@ export default function OrganizationsPage() {
           {/* Analytics Skeleton */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+              <div key={i} className="bg-white p-6 rounded-xl border border-slate-200">
                 <div className="flex items-center justify-between">
                   <div className="space-y-2">
                     <Skeleton className="h-4 w-32" />
@@ -442,7 +442,7 @@ export default function OrganizationsPage() {
           </div>
 
           {/* Controls Skeleton */}
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+          <div className="bg-white rounded-xl border border-slate-200">
             <div className="p-6 border-b border-slate-200">
               <div className="flex justify-between mb-6">
                 <Skeleton className="h-8 w-48" />
@@ -489,7 +489,7 @@ export default function OrganizationsPage() {
         <div className="max-w-7xl mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <div className="w-11 h-11 bg-indigo-500 rounded-xl flex items-center justify-center shadow-sm">
+              <div className="w-11 h-11 bg-indigo-500 rounded-xl flex items-center justify-center">
                 <Building2 className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -503,7 +503,7 @@ export default function OrganizationsPage() {
                   resetForm();
                   setView('create');
                 }}
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg font-medium transition-colors shadow-sm"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg font-medium transition-colors"
               >
                 <Plus className="w-4 h-4" />
                 Add Organization
@@ -516,7 +516,7 @@ export default function OrganizationsPage() {
         {/* Analytics Overview */}
         {view === 'list' && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+            <div className="bg-white p-6 rounded-xl border border-slate-200">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-slate-600">Total Organizations</p>
@@ -528,7 +528,7 @@ export default function OrganizationsPage() {
                 </div>
               </div>
             </div>
-            <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+            <div className="bg-white p-6 rounded-xl border border-slate-200">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-slate-600">Active</p>
@@ -542,7 +542,7 @@ export default function OrganizationsPage() {
                 </div>
               </div>
             </div>
-            <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+            <div className="bg-white p-6 rounded-xl border border-slate-200">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-slate-600">Total Members</p>
@@ -559,7 +559,7 @@ export default function OrganizationsPage() {
           </div>
         )}
         {/* Controls Panel */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+        <div className="bg-white rounded-xl border border-slate-200">
           {view === 'list' && (
             <div className="p-6 border-b border-slate-200">
               <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
@@ -675,7 +675,7 @@ export default function OrganizationsPage() {
                           resetForm();
                           setView('create');
                         }}
-                        className="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg font-medium transition-colors shadow-sm"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg font-medium transition-colors"
                       >
                         <Plus className="w-4 h-4" />
                         Add First Organization
@@ -686,11 +686,11 @@ export default function OrganizationsPage() {
                   <>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                       {organizations.map((org) => (
-                        <div key={org._id} className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                        <div key={org._id} className="bg-white rounded-xl border border-slate-200 overflow-hidden hover: transition-">
                           <div className="p-6">
                             <div className="flex items-start justify-between mb-4">
                               <div className="flex items-center gap-3">
-                                <div className="w-12 h-12 bg-indigo-500 rounded-xl flex items-center justify-center shadow-sm">
+                                <div className="w-12 h-12 bg-indigo-500 rounded-xl flex items-center justify-center">
                                   <Building2 className="w-6 h-6 text-white" />
                                 </div>
                                 <div className="flex-1">
@@ -772,7 +772,7 @@ export default function OrganizationsPage() {
                     <span className="font-medium">Back to List</span>
                   </button>
                   {view === 'view' ? (
-                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
                       <div className="bg-slate-50 border-b border-slate-200 px-6 py-4">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-4">
@@ -783,7 +783,7 @@ export default function OrganizationsPage() {
                                 className="w-16 h-16 rounded-lg object-cover border"
                               />
                             ) : (
-                              <div className="w-16 h-16 bg-indigo-500 rounded-lg flex items-center justify-center shadow-sm">
+                              <div className="w-16 h-16 bg-indigo-500 rounded-lg flex items-center justify-center">
                                 <Building2 className="w-7 h-7 text-white" />
                               </div>
                             )}
@@ -794,7 +794,7 @@ export default function OrganizationsPage() {
                           </div>
                           <button
                             onClick={() => handleEdit(selectedOrganization)}
-                            className="inline-flex items-center gap-2 px-4 py-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 rounded-lg font-medium transition-colors hover:shadow-sm"
+                            className="inline-flex items-center gap-2 px-4 py-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 rounded-lg font-medium transition-colors hover:"
                           >
                             <Edit2 className="w-4 h-4" />
                             Edit
@@ -909,11 +909,11 @@ export default function OrganizationsPage() {
                       </div>
                     </div>
                   ) : (
-                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
                       <div className="bg-slate-50 border-b border-slate-200 px-6 py-4">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 bg-indigo-500 rounded-lg flex items-center justify-center shadow-sm">
+                            <div className="w-12 h-12 bg-indigo-500 rounded-lg flex items-center justify-center">
                               <Building2 className="w-6 h-6 text-white" />
                             </div>
                             <div>

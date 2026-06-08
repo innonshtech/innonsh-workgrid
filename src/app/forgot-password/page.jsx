@@ -41,10 +41,10 @@ export default function ForgotPasswordPage() {
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-950 to-purple-950 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Card */}
-        <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl p-8">
+        <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-8">
           {/* Logo / Header */}
           <div className="text-center mb-8">
-            <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+            <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
               <Mail className="w-8 h-8 text-white" />
             </div>
             <h1 className="text-2xl font-bold text-white">Forgot Password?</h1>
@@ -61,7 +61,7 @@ export default function ForgotPasswordPage() {
                   type="button"
                   onClick={() => setRole(r)}
                   className={`flex-1 py-2 text-xs font-semibold rounded-lg transition-all duration-200 capitalize ${role === r
-                    ? 'bg-indigo-600 text-white shadow-lg'
+                    ? 'bg-indigo-600 text-white'
                     : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
                     }`}
                 >
@@ -107,7 +107,7 @@ export default function ForgotPasswordPage() {
               <button
                 type="submit"
                 disabled={status === "loading"}
-                className="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold rounded-xl shadow-lg transition-all flex items-center justify-center gap-2"
+                className="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-all flex items-center justify-center gap-2"
               >
                 {status === "loading" ? (
                   <>

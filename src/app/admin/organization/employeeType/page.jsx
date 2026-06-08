@@ -367,7 +367,7 @@ export default function EmployeeTypesPage() {
       ) : (
         <div className="space-y-4">
           {filteredHierarchy.map((type) => (
-            <div key={type._id} className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden hover:shadow-md transition-all">
+            <div key={type._id} className="bg-white rounded-2xl border border-slate-200 overflow-hidden hover: transition-all">
               <div className="p-4 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <EnterpriseButton variant="ghost" size="sm" onClick={() => toggleTypeExpand(type._id)} icon={expandedTypes[type._id] ? ChevronUp : ChevronDown} />
@@ -395,7 +395,7 @@ export default function EmployeeTypesPage() {
               {expandedTypes[type._id] && type.categories.length > 0 && (
                 <div className="p-6 bg-white space-y-4">
                   {type.categories.map((category) => (
-                    <div key={category._id} className="border border-slate-100 rounded-xl overflow-hidden shadow-sm">
+                    <div key={category._id} className="border border-slate-200 rounded-xl overflow-hidden">
                       <div className="p-3 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
                         <div className="flex items-center gap-3">
                           <EnterpriseButton variant="ghost" size="sm" onClick={() => toggleCategoryExpand(category._id)} icon={expandedCategories[category._id] ? ChevronUp : ChevronDown} />

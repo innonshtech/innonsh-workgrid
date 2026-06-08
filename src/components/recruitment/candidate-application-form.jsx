@@ -69,7 +69,7 @@ export default function CandidateApplicationForm({ isOpen, onClose, job }) {
                     initial={{ opacity: 0, scale: 0.9, y: 30 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.9, y: 30 }}
-                    className="bg-white rounded-[40px] w-full max-w-2xl shadow-3xl overflow-hidden relative z-10 flex flex-col max-h-[90vh]"
+                    className="bg-white rounded-[40px] w-full max-w-2xl overflow-hidden relative z-10 flex flex-col max-h-[90vh]"
                 >
                     <div className="p-8 border-b border-slate-100 bg-gradient-to-r from-slate-50 to-white flex items-center justify-between shrink-0">
                         <div>
@@ -134,7 +134,7 @@ export default function CandidateApplicationForm({ isOpen, onClose, job }) {
                                 <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
                                     <UploadCloud className="w-3.5 h-3.5" /> Resume Document *
                                 </label>
-                                <label className="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-slate-300 rounded-2xl bg-white hover:bg-slate-50 hover:border-indigo-400 cursor-pointer transition-all shadow-sm">
+                                <label className="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-slate-300 rounded-2xl bg-white hover:bg-slate-50 hover:border-indigo-400 cursor-pointer transition-all">
                                     <div className="flex flex-col items-center justify-center pt-5 pb-6 text-slate-500">
                                         {formData.resumeFile ? (
                                             <>
@@ -174,7 +174,7 @@ export default function CandidateApplicationForm({ isOpen, onClose, job }) {
                             type="submit"
                             form="apply-form"
                             disabled={submitting}
-                            className="h-12 px-8 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white shadow-xl shadow-indigo-200 font-black uppercase tracking-widest text-[11px] transition-all flex items-center gap-2 disabled:opacity-50"
+                            className="h-12 px-8 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-black uppercase tracking-widest text-[11px] transition-all flex items-center gap-2 disabled:opacity-50"
                         >
                             {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
                             {submitting ? "Submitting..." : "Submit Application"}

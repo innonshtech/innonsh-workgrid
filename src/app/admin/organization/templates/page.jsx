@@ -46,7 +46,7 @@ export default function TemplatesPage() {
 
   return (
     <div className="p-6 max-w-6xl mx-auto space-y-6">
-      <div className="flex justify-between items-center bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+      <div className="flex justify-between items-center bg-white p-6 rounded-2xl border border-slate-200">
         <div className="flex items-center gap-4">
           <div className="p-3 bg-indigo-50 rounded-xl">
             <LayoutTemplate className="h-6 w-6 text-indigo-600" />
@@ -58,7 +58,7 @@ export default function TemplatesPage() {
         </div>
         <button
           onClick={() => router.push("/admin/organization/templates/new")}
-          className="flex items-center gap-2 bg-indigo-600 text-white px-5 py-2.5 rounded-lg hover:bg-indigo-700 transition-colors shadow-sm font-medium"
+          className="flex items-center gap-2 bg-indigo-600 text-white px-5 py-2.5 rounded-lg hover:bg-indigo-700 transition-colors font-medium"
         >
           <Plus className="h-4 w-4" /> Create Template
         </button>
@@ -71,7 +71,7 @@ export default function TemplatesPage() {
           ))}
         </div>
       ) : templates.length === 0 ? (
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-12 text-center">
+        <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center">
           <LayoutTemplate className="h-12 w-12 text-slate-300 mx-auto mb-4" />
           <h3 className="text-lg font-semibold text-slate-800 mb-2">No Templates Found</h3>
           <p className="text-slate-500 max-w-md mx-auto mb-6">
@@ -87,7 +87,7 @@ export default function TemplatesPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {templates.map((template) => (
-            <div key={template._id} className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 hover:shadow-md transition-all group">
+            <div key={template._id} className="bg-white rounded-2xl border border-slate-200 p-6 hover: transition-all group">
               <div className="flex justify-between items-start mb-4">
                 <div className="p-2 bg-slate-50 rounded-lg">
                   {getIconForType(template.type)}

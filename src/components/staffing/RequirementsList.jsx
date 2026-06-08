@@ -234,14 +234,14 @@ export default function RequirementsList() {
         
         <button
           onClick={handleAddClick}
-          className="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm px-4 py-2.5 rounded-xl shadow-md shadow-indigo-600/20 active:scale-[0.98] transition-all"
+          className="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm px-4 py-2.5 rounded-xl active:scale-[0.98] transition-all"
         >
           <Plus className="w-4 h-4" /> Add Requirement
         </button>
       </div>
 
       {/* Search Bar */}
-      <div className="flex bg-white rounded-xl border border-slate-100 p-3 shadow-sm max-w-md items-center gap-2">
+      <div className="flex bg-white rounded-xl border border-slate-200 p-3 max-w-md items-center gap-2">
         <Search className="w-4 h-4 text-slate-400 shrink-0 ml-1" />
         <input
           type="text"
@@ -257,7 +257,7 @@ export default function RequirementsList() {
           <div className="w-8 h-8 rounded-full border-4 border-indigo-100 border-t-indigo-600 animate-spin"></div>
         </div>
       ) : filteredRequirements.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-20 bg-white border border-slate-100 rounded-2xl space-y-4 shadow-sm text-slate-400">
+        <div className="flex flex-col items-center justify-center py-20 bg-white border border-slate-200 rounded-2xl space-y-4 text-slate-400">
           <Briefcase className="w-12 h-12 opacity-35" />
           <p className="text-sm font-medium">No open requirements found</p>
         </div>
@@ -266,12 +266,12 @@ export default function RequirementsList() {
           {filteredRequirements.map((req) => (
             <div
               key={req._id}
-              className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 space-y-5 flex flex-col justify-between hover:shadow-md transition-shadow relative"
+              className="bg-white rounded-2xl border border-slate-200 p-6 space-y-5 flex flex-col justify-between hover: transition- relative"
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center text-amber-600 shadow-inner">
+                    <div className="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center text-amber-600">
                       <Briefcase className="w-5 h-5" />
                     </div>
                     <div>
@@ -344,13 +344,13 @@ export default function RequirementsList() {
                 <div className="flex items-center gap-1.5">
                   <button
                     onClick={() => router.push(`/admin/staffing/talent-pool?reqId=${req._id}`)}
-                    className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-bold bg-indigo-50 text-indigo-700 hover:bg-indigo-600 hover:text-white transition-all shadow-inner"
+                    className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-bold bg-indigo-50 text-indigo-700 hover:bg-indigo-600 hover:text-white transition-all"
                   >
                     <Users className="w-3.5 h-3.5" /> Source
                   </button>
                   <button
                     onClick={() => router.push(`/admin/staffing/matching?reqId=${req._id}`)}
-                    className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-bold bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white transition-all shadow-inner"
+                    className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-bold bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white transition-all"
                   >
                     <Sparkles className="w-3.5 h-3.5" /> AI Match
                   </button>
@@ -379,7 +379,7 @@ export default function RequirementsList() {
       {/* Add/Edit Modal */}
       {modalOpen && (
         <div className="fixed inset-0 z-50 flex items-start sm:items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 overflow-y-auto">
-          <div className="bg-white rounded-3xl border border-slate-100 shadow-2xl max-w-lg w-full overflow-hidden animate-in fade-in zoom-in-95 duration-200 my-4 sm:my-0">
+          <div className="bg-white rounded-3xl border border-slate-200 max-w-lg w-full overflow-hidden animate-in fade-in zoom-in-95 duration-200 my-4 sm:my-0">
             <div className="flex items-center justify-between bg-slate-50 border-b border-slate-100 px-6 py-4">
               <h3 className="text-base font-extrabold text-slate-800">
                 {editMode ? "✏️ Edit Requirement" : "📋 Create Job Requirement"}
@@ -534,7 +534,7 @@ export default function RequirementsList() {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-xl text-sm font-semibold bg-indigo-600 hover:bg-indigo-500 text-white shadow-md shadow-indigo-600/15 active:scale-[0.98] transition-all"
+                  className="px-4 py-2 rounded-xl text-sm font-semibold bg-indigo-600 hover:bg-indigo-500 text-white active:scale-[0.98] transition-all"
                 >
                   {editMode ? "Update Details" : "Create Requirement"}
                 </button>

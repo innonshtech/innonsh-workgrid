@@ -416,7 +416,7 @@ function DiscountCalculator({ rules, products, customers, onApplyDiscount }) {
   };
 
   return (
-    <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+    <div className="bg-white rounded-xl border border-slate-200 p-6">
       <h3 className="text-lg font-semibold text-slate-900 mb-4">Discount Calculator</h3>
 
       <div className="space-y-4">
@@ -687,7 +687,7 @@ export default function DiscountManagementPage() {
         <div className="max-w-7xl mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <div className="w-11 h-11 bg-[#FC9C00] rounded-xl flex items-center justify-center shadow-sm">
+              <div className="w-11 h-11 bg-[#FC9C00] rounded-xl flex items-center justify-center">
                 <Calculator className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -726,7 +726,7 @@ export default function DiscountManagementPage() {
 
       <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
         {/* Tabs */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
           <div className="border-b border-slate-200">
             <div className="flex space-x-1">
               {[
@@ -758,10 +758,10 @@ export default function DiscountManagementPage() {
             {/* Overview Tab */}
             {activeTab === 'overview' && (
               <div className="space-y-8">
-                <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+                <div className="bg-white rounded-xl border border-slate-200">
                   <div className="p-6 border-b border-slate-200">
                     <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
-                      <div className="w-11 h-11 bg-[#FB9D00] hover:bg-[#e68d00] rounded-xl flex items-center justify-center shadow-sm transition-colors">
+                      <div className="w-11 h-11 bg-[#FB9D00] hover:bg-[#e68d00] rounded-xl flex items-center justify-center transition-colors">
                         <DollarSign className="w-4 h-4 text-white" />
                       </div>
                       Key Performance Indicators
@@ -771,7 +771,7 @@ export default function DiscountManagementPage() {
 
                   <div className="p-6">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                      <div className="group bg-white rounded-xl border border-slate-200 p-6 hover:shadow-lg transition-all duration-200 bg-slate-50 hover:scale-105">
+                      <div className="group bg-white rounded-xl border border-slate-200 p-6 hover: transition-all duration-200 bg-slate-50 hover:scale-105">
                         <div className="flex items-center justify-between mb-3">
                           <div className="p-3 rounded-xl bg-green-50 border border-green-200">
                             <DollarSign className="h-6 w-6 text-green-600" />
@@ -789,7 +789,7 @@ export default function DiscountManagementPage() {
                         </div>
                       </div>
 
-                      <div className="group bg-white rounded-xl border border-slate-200 p-6 hover:shadow-lg transition-all duration-200 bg-slate-50 hover:scale-105">
+                      <div className="group bg-white rounded-xl border border-slate-200 p-6 hover: transition-all duration-200 bg-slate-50 hover:scale-105">
                         <div className="flex items-center justify-between mb-3">
                           <div className="p-3 rounded-xl bg-slate-50 border border-blue-200">
                             <TrendingUp className="h-6 w-6 text-blue-600" />
@@ -807,7 +807,7 @@ export default function DiscountManagementPage() {
                         </div>
                       </div>
 
-                      <div className="group bg-white rounded-xl border border-slate-200 p-6 hover:shadow-lg transition-all duration-200 bg-slate-50 hover:scale-105">
+                      <div className="group bg-white rounded-xl border border-slate-200 p-6 hover: transition-all duration-200 bg-slate-50 hover:scale-105">
                         <div className="flex items-center justify-between mb-3">
                           <div className="p-3 rounded-xl bg-green-50 border border-green-200">
                             <CheckCircle className="h-6 w-6 text-green-600" />
@@ -829,7 +829,7 @@ export default function DiscountManagementPage() {
                 </div>
 
                 {/* Top Performing Rules */}
-                <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+                <div className="bg-white rounded-xl border border-slate-200">
                   <div className="p-6 border-b border-slate-200">
                     <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                       <div className="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center border border-green-100">
@@ -874,10 +874,10 @@ export default function DiscountManagementPage() {
             {/* Discount Rules Tab */}
             {activeTab === 'rules' && (
               <div className="space-y-8">
-                <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+                <div className="bg-white rounded-xl border border-slate-200">
                   <div className="p-6 border-b border-slate-200">
                     <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
-                      <div className="w-11 h-11 bg-[#FB9D00] hover:bg-[#e68d00] rounded-xl flex items-center justify-center shadow-sm transition-colors">
+                      <div className="w-11 h-11 bg-[#FB9D00] hover:bg-[#e68d00] rounded-xl flex items-center justify-center transition-colors">
                         <Settings className="w-4 h-4 text-white" />
                       </div>
                       Discount Rules
@@ -1009,7 +1009,7 @@ export default function DiscountManagementPage() {
             {/* Calculator Tab */}
             {activeTab === 'calculator' && (
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div className="lg:col-span-2 bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+                <div className="lg:col-span-2 bg-white rounded-xl border border-slate-200 p-6">
                   <DiscountCalculator
                     rules={discountRules.filter(rule => rule.isActive)}
                     products={[]}
@@ -1020,7 +1020,7 @@ export default function DiscountManagementPage() {
 
                 <div className="space-y-6">
                   {/* Active Rules Summary */}
-                  <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+                  <div className="bg-white rounded-xl border border-slate-200 p-6">
                     <h3 className="text-lg font-semibold text-slate-900 mb-4">Active Rules</h3>
                     <div className="space-y-3">
                       {discountRules
@@ -1047,7 +1047,7 @@ export default function DiscountManagementPage() {
                   </div>
 
                   {/* Quick Stats */}
-                  <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+                  <div className="bg-white rounded-xl border border-slate-200 p-6">
                     <h3 className="text-lg font-semibold text-slate-900 mb-4">Discount Statistics</h3>
                     <div className="space-y-3">
                       <div className="flex justify-between">
@@ -1078,7 +1078,7 @@ export default function DiscountManagementPage() {
             {activeTab === 'analytics' && (
               <div className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+                  <div className="bg-white rounded-xl border border-slate-200 p-6">
                     <h3 className="text-lg font-semibold text-slate-900 mb-4">Discount Performance</h3>
                     <div className="space-y-4">
                       {discountRules.map((rule) => (
@@ -1100,7 +1100,7 @@ export default function DiscountManagementPage() {
                     </div>
                   </div>
 
-                  <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+                  <div className="bg-white rounded-xl border border-slate-200 p-6">
                     <h3 className="text-lg font-semibold text-slate-900 mb-4">Discount Impact</h3>
                     <div className="space-y-4">
                       {discountRules.map((rule) => (
@@ -1125,7 +1125,7 @@ export default function DiscountManagementPage() {
                   </div>
                 </div>
 
-                <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+                <div className="bg-white rounded-xl border border-slate-200 p-6">
                   <h3 className="text-lg font-semibold text-slate-900 mb-4">Rule Effectiveness</h3>
                   <div className="overflow-x-auto">
                     <table className="min-w-full divide-y divide-slate-200">
@@ -1186,7 +1186,7 @@ export default function DiscountManagementPage() {
       {/* Discount Rule Dialog */}
       {isDialogOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-hidden shadow-2xl">
+          <div className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
             <div className="p-6 border-b border-slate-200">
               <h2 className="text-xl font-semibold text-slate-900">
                 {editingRule ? 'Edit Discount Rule' : 'Create New Discount Rule'}

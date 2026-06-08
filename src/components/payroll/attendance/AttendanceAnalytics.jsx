@@ -89,10 +89,10 @@ export default function AttendanceAnalytics({ stats, viewMode, role }) {
       {displayItems.map((item, index) => (
         <div
           key={index}
-          className="group relative bg-white hover:bg-slate-50/50 rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-all cursor-pointer overflow-hidden active:scale-[0.99]"
+          className="group relative bg-white hover:bg-slate-50/50 rounded-2xl p-6 border border-slate-200 hover: transition-all cursor-pointer overflow-hidden active:scale-[0.99]"
         >
           <div className="space-y-4">
-            <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${item.color} text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform`}>
+            <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${item.color} text-white flex items-center justify-center group-hover:scale-110 transition-transform`}>
               <item.icon className="w-5 h-5" />
             </div>
             <div>

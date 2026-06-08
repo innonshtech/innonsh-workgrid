@@ -71,7 +71,7 @@ export default function FnFSettlement({ exitRequestId, employeeId, isHR, status 
 
     if (!fnfData) {
         return (
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <div className="bg-white rounded-xl border border-slate-200 p-6">
                 <h2 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
                     <Calculator className="w-5 h-5 text-indigo-600" />
                     Full & Final Settlement
@@ -101,7 +101,7 @@ export default function FnFSettlement({ exitRequestId, employeeId, isHR, status 
     }
 
     return (
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+        <div className="bg-white rounded-xl border border-slate-200 p-6">
             <div className="flex items-center justify-between mb-6">
                 <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
                     <Calculator className="w-5 h-5 text-indigo-600" />

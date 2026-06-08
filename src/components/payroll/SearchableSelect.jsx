@@ -63,7 +63,7 @@ export default function SearchableSelect({
             </div>
 
             {isOpen && !disabled && (
-                <div className="absolute z-50 w-full mt-1 bg-white border border-slate-200 rounded-lg shadow-lg max-h-60 overflow-hidden flex flex-col">
+                <div className="absolute z-50 w-full mt-1 bg-white border border-slate-200 rounded-lg max-h-60 overflow-hidden flex flex-col">
                     <div className="p-2 border-b border-slate-100">
                         <input
                             type="text"

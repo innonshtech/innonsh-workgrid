@@ -266,7 +266,7 @@ const TaskDetailPanel = ({ task, isOpen, onClose, onUpdate, onDelete, employees 
             {/* Panel */}
             <div
                 ref={panelRef}
-                className="fixed right-0 top-0 h-full w-full max-w-[520px] bg-white shadow-2xl z-50 flex flex-col animate-in slide-in-from-right duration-300 border-l border-slate-200"
+                className="fixed right-0 top-0 h-full w-full max-w-[520px] bg-white z-50 flex flex-col animate-in slide-in-from-right duration-300 border-l border-slate-200"
             >
                 {/* Header */}
                 <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50/50 shrink-0">
@@ -363,7 +363,7 @@ const TaskDetailPanel = ({ task, isOpen, onClose, onUpdate, onDelete, employees 
                         <div className="space-y-1.5">
                             <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Assignee</label>
                             <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl border border-slate-100">
-                                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center text-white text-xs font-bold shadow-sm">
+                                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center text-white text-xs font-bold">
                                     {assigneeName.charAt(0).toUpperCase()}
                                 </div>
                                 <div className="flex-1">
@@ -669,7 +669,7 @@ const TaskDetailPanel = ({ task, isOpen, onClose, onUpdate, onDelete, employees 
                         className="absolute inset-0 bg-slate-900/60 backdrop-blur-md"
                         onClick={() => setShowFullDesc(false)}
                     />
-                    <div className="relative bg-white rounded-3xl w-full max-w-2xl shadow-2xl animate-in zoom-in-95 duration-200 overflow-hidden flex flex-col max-h-[80vh]">
+                    <div className="relative bg-white rounded-3xl w-full max-w-2xl animate-in zoom-in-95 duration-200 overflow-hidden flex flex-col max-h-[80vh]">
                         <div className="flex items-center justify-between p-6 border-b border-slate-100 bg-slate-50/50">
                             <h3 className="text-lg font-black text-slate-900">Full Description</h3>
                             <button 
@@ -685,7 +685,7 @@ const TaskDetailPanel = ({ task, isOpen, onClose, onUpdate, onDelete, employees 
                         <div className="p-6 border-t border-slate-100 flex justify-end">
                             <button
                                 onClick={() => setShowFullDesc(false)}
-                                className="px-6 py-2.5 bg-indigo-600 text-white text-xs font-black rounded-xl hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200"
+                                className="px-6 py-2.5 bg-indigo-600 text-white text-xs font-black rounded-xl hover:bg-indigo-700 transition-colors"
                             >
                                 Close View
                             </button>

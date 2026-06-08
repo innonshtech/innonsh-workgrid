@@ -705,7 +705,7 @@ export default function CreditControlPage() {
         <div className="max-w-7xl mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <div className="w-11 h-11 bg-[#FB9D00] rounded-xl flex items-center justify-center shadow-sm">
+              <div className="w-11 h-11 bg-[#FB9D00] rounded-xl flex items-center justify-center">
                 <Shield className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -729,7 +729,7 @@ export default function CreditControlPage() {
 
       <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
         {/* Tabs */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+        <div className="bg-white rounded-xl border border-slate-200">
           <div className="border-b border-slate-200">
             <div className="flex space-x-8">
               {[
@@ -763,7 +763,7 @@ export default function CreditControlPage() {
             {activeTab === 'overview' && (
               <div className="space-y-8">
                 {/* KPIs */}
-                <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+                <div className="bg-white rounded-xl border border-slate-200">
                   <div className="p-6 border-b border-slate-200">
                     <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                       <div className="w-8 h-8 bg-slate-50 rounded-lg flex items-center justify-center border border-blue-100">
@@ -776,7 +776,7 @@ export default function CreditControlPage() {
 
                   <div className="p-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                      <div className="group bg-white rounded-xl border border-red-200 p-6 hover:shadow-lg transition-all duration-200 bg-red-50 hover:scale-105">
+                      <div className="group bg-white rounded-xl border border-red-200 p-6 hover: transition-all duration-200 bg-red-50 hover:scale-105">
                         <div className="flex items-center justify-between mb-3">
                           <div className="p-3 rounded-xl bg-red-50 border border-red-200">
                             <Ban className="h-6 w-6 text-red-600" />
@@ -794,7 +794,7 @@ export default function CreditControlPage() {
                         </div>
                       </div>
 
-                      <div className="group bg-white rounded-xl border border-yellow-200 p-6 hover:shadow-lg transition-all duration-200 bg-yellow-50 hover:scale-105">
+                      <div className="group bg-white rounded-xl border border-yellow-200 p-6 hover: transition-all duration-200 bg-yellow-50 hover:scale-105">
                         <div className="flex items-center justify-between mb-3">
                           <div className="p-3 rounded-xl bg-yellow-50 border border-yellow-200">
                             <AlertTriangle className="h-6 w-6 text-yellow-600" />
@@ -812,7 +812,7 @@ export default function CreditControlPage() {
                         </div>
                       </div>
 
-                      <div className="group bg-white rounded-xl border border-orange-200 p-6 hover:shadow-lg transition-all duration-200 bg-orange-50 hover:scale-105">
+                      <div className="group bg-white rounded-xl border border-orange-200 p-6 hover: transition-all duration-200 bg-orange-50 hover:scale-105">
                         <div className="flex items-center justify-between mb-3">
                           <div className="p-3 rounded-xl bg-orange-50 border border-orange-200">
                             <Clock className="h-6 w-6 text-orange-600" />
@@ -830,7 +830,7 @@ export default function CreditControlPage() {
                         </div>
                       </div>
 
-                      <div className="group bg-white rounded-xl border border-blue-200 p-6 hover:shadow-lg transition-all duration-200 bg-slate-50 hover:scale-105">
+                      <div className="group bg-white rounded-xl border border-blue-200 p-6 hover: transition-all duration-200 bg-slate-50 hover:scale-105">
                         <div className="flex items-center justify-between mb-3">
                           <div className="p-3 rounded-xl bg-slate-50 border border-blue-200">
                             <Bell className="h-6 w-6 text-blue-600" />
@@ -852,7 +852,7 @@ export default function CreditControlPage() {
                 </div>
 
                 {/* Risk Assessment */}
-                <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+                <div className="bg-white rounded-xl border border-slate-200">
                   <div className="p-6 border-b border-slate-200">
                     <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                       <div className="w-8 h-8 bg-yellow-50 rounded-lg flex items-center justify-center border border-yellow-100">
@@ -946,7 +946,7 @@ export default function CreditControlPage() {
                   </div>
                 </div>
 
-                <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
                   <table className="min-w-full divide-y divide-slate-200">
                     <thead className="bg-slate-50">
                       <tr>
@@ -1068,7 +1068,7 @@ export default function CreditControlPage() {
             {activeTab === 'reminders' && (
               <div className="space-y-8">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                  <div className="lg:col-span-2 bg-white rounded-xl border border-slate-200 shadow-sm">
+                  <div className="lg:col-span-2 bg-white rounded-xl border border-slate-200">
                     <div className="p-6 border-b border-slate-200">
                       <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                         <div className="w-8 h-8 bg-slate-50 rounded-lg flex items-center justify-center border border-blue-100">
@@ -1111,7 +1111,7 @@ export default function CreditControlPage() {
 
                   <div className="space-y-8">
                     {/* Upcoming Reminders */}
-                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+                    <div className="bg-white rounded-xl border border-slate-200">
                       <div className="p-6 border-b border-slate-200">
                         <h2 className="text-lg font-semibold text-slate-900 flex items-center gap-2">
                           <Calendar className="w-5 h-5 text-[#FB9D00]" />
@@ -1148,7 +1148,7 @@ export default function CreditControlPage() {
                     </div>
 
                     {/* Quick Actions */}
-                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+                    <div className="bg-white rounded-xl border border-slate-200">
                       <div className="p-6 border-b border-slate-200">
                         <h2 className="text-lg font-semibold text-slate-900 flex items-center gap-2">
                           <Zap className="w-5 h-5 text-green-600" />
@@ -1237,7 +1237,7 @@ export default function CreditControlPage() {
                   </button>
                 </div>
 
-                <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
                   <table className="min-w-full divide-y divide-slate-200">
                     <thead className="bg-slate-50">
                       <tr>
@@ -1325,7 +1325,7 @@ export default function CreditControlPage() {
                   </button>
                 </div>
 
-                <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
                   <table className="min-w-full divide-y divide-slate-200">
                     <thead className="bg-slate-50">
                       <tr>
@@ -1418,7 +1418,7 @@ export default function CreditControlPage() {
       {/* Dialogs */}
       {isDialogOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-lg">
+          <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b border-slate-200">
               <h2 className="text-xl font-semibold text-slate-900">
                 {dialogType === 'reminderRule' && (editingRule ? 'Edit Reminder Rule' : 'Create Reminder Rule')}

@@ -276,7 +276,7 @@ export default function EmployeePayslipView() {
 
 
         {/* Tab Navigation Menu */}
-        <div className="flex overflow-x-auto gap-2 bg-white p-2 rounded-3xl border border-slate-200/60 shadow-sm max-w-fit no-scrollbar">
+        <div className="flex overflow-x-auto gap-2 bg-white p-2 rounded-3xl border border-slate-200/60 max-w-fit no-scrollbar">
           {[
             { id: "overview", label: t("overview") || "Structure & Recent", icon: LayoutDashboard },
             { id: "history", label: t("payHistory") || "Pay History", icon: Clock },
@@ -287,7 +287,7 @@ export default function EmployeePayslipView() {
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-2.5 px-6 py-3 rounded-2xl text-xs font-black uppercase tracking-wider transition-all duration-300 ${
                 activeTab === tab.id
-                  ? "bg-indigo-600 text-white shadow-xl shadow-indigo-100"
+                  ? "bg-indigo-600 text-white"
                   : "text-slate-500 hover:text-slate-800 hover:bg-slate-100"
               }`}
             >
@@ -301,7 +301,7 @@ export default function EmployeePayslipView() {
         {activeTab === "overview" && (
           <div className="space-y-10 animate-in fade-in duration-500">
             {employee?.payslipStructure && (employee.payslipStructure.basicSalary || employee.payslipStructure.grossSalary) && (
-              <div className="bg-white rounded-[2.5rem] border border-slate-200/60 p-8 shadow-sm space-y-6">
+              <div className="bg-white rounded-[2.5rem] border border-slate-200/60 p-8 space-y-6">
                 <div>
                   <h3 className="text-xl font-black text-slate-900">Current Salary Structure</h3>
                   <p className="text-xs text-slate-400 mt-1 font-medium">Standard baseline structure defined by the organization.</p>
@@ -387,7 +387,7 @@ export default function EmployeePayslipView() {
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {payslips.slice(0, 3).map((ps, i) => (
-                  <div key={i} className="bg-white rounded-3xl p-6 border border-slate-200/60 shadow-sm flex flex-col justify-between hover:shadow-lg transition-all duration-300">
+                  <div key={i} className="bg-white rounded-3xl p-6 border border-slate-200/60 flex flex-col justify-between hover: transition-all duration-300">
                     <div className="flex justify-between items-start mb-6">
                       <div className="w-12 h-12 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600">
                         <Wallet className="w-6 h-6" />
@@ -425,7 +425,7 @@ export default function EmployeePayslipView() {
                 ))}
 
                 {payslips.length === 0 && (
-                  <div className="col-span-3 bg-white rounded-3xl p-16 border border-slate-200/60 shadow-sm text-center flex flex-col items-center justify-center">
+                  <div className="col-span-3 bg-white rounded-3xl p-16 border border-slate-200/60 text-center flex flex-col items-center justify-center">
                     <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mb-4">
                       <Shield className="w-8 h-8 text-slate-300" />
                     </div>
@@ -440,14 +440,14 @@ export default function EmployeePayslipView() {
 
         {/* Tab 2: Pay History Logs */}
         {activeTab === "history" && (
-          <div className="bg-white rounded-[2.5rem] border border-slate-200/60 p-8 shadow-sm space-y-6 animate-in fade-in duration-500">
+          <div className="bg-white rounded-[2.5rem] border border-slate-200/60 p-8 space-y-6 animate-in fade-in duration-500">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div>
                 <h3 className="text-xl font-black text-slate-900">{t("earningsHistory") || "Earnings History Log"}</h3>
                 <p className="text-xs text-slate-400 mt-1 font-medium">{t("foundSalaryRecords", { count: payslips.length }) || `Found ${payslips.length} salary records`}</p>
               </div>
 
-              <div className="flex items-center gap-3 bg-slate-50 p-2.5 rounded-2xl border border-slate-100 shadow-inner">
+              <div className="flex items-center gap-3 bg-slate-50 p-2.5 rounded-2xl border border-slate-200">
                 <Filter className="w-4 h-4 text-slate-400" />
                 <select
                   value={filters.year}
@@ -478,7 +478,7 @@ export default function EmployeePayslipView() {
                     <tr key={i} className="group hover:bg-slate-50/50 transition-colors">
                       <td className="p-5">
                         <div className="flex items-center gap-3.5">
-                          <div className="w-10 h-10 bg-slate-50 group-hover:bg-white border border-slate-100 group-hover:border-indigo-100 rounded-xl flex flex-col items-center justify-center shadow-sm transition-all duration-300">
+                          <div className="w-10 h-10 bg-slate-50 group-hover:bg-white border border-slate-200 group-hover:border-slate-200 rounded-xl flex flex-col items-center justify-center transition-all duration-300">
                             <span className="text-[8px] font-black uppercase text-indigo-500 leading-none">{getMonthName(ps.month)}</span>
                             <span className="text-[10px] font-black text-slate-800 mt-0.5 leading-none">{ps.year}</span>
                           </div>
@@ -502,14 +502,14 @@ export default function EmployeePayslipView() {
                         <div className="flex items-center justify-end gap-2.5">
                           <button
                             onClick={() => handleViewDetails(ps)}
-                            className="p-2.5 bg-white border border-slate-200 text-slate-600 rounded-xl hover:bg-slate-50 hover:text-slate-800 shadow-sm active:scale-95"
+                            className="p-2.5 bg-white border border-slate-200 text-slate-600 rounded-xl hover:bg-slate-50 hover:text-slate-800 active:scale-95"
                             title="View Slip Details"
                           >
                             <Eye className="w-4 h-4" />
                           </button>
                           <button
                             onClick={() => handleDownloadPDF(ps)}
-                            className="p-2.5 bg-indigo-600 text-white rounded-xl hover:bg-indigo-500 shadow-lg shadow-indigo-100 active:scale-95"
+                            className="p-2.5 bg-indigo-600 text-white rounded-xl hover:bg-indigo-500 active:scale-95"
                             title="Download PDF Copy"
                           >
                             <DownloadCloud className="w-4 h-4" />
@@ -536,7 +536,7 @@ export default function EmployeePayslipView() {
         {activeTab === "analytics" && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-in fade-in duration-500">
             {/* Bar chart */}
-            <div className="bg-white rounded-[2.5rem] border border-slate-200/60 p-8 shadow-sm space-y-6">
+            <div className="bg-white rounded-[2.5rem] border border-slate-200/60 p-8 space-y-6">
               <div>
                 <h3 className="text-xl font-black text-slate-900 flex items-center gap-2">
                   <TrendingUp className="w-5 h-5 text-indigo-600" />
@@ -585,7 +585,7 @@ export default function EmployeePayslipView() {
             </div>
 
             {/* Projections Card */}
-            <div className="bg-gradient-to-br from-slate-900 to-indigo-950 rounded-[2.5rem] p-8 lg:p-10 text-white relative overflow-hidden shadow-2xl flex flex-col justify-between">
+            <div className="bg-gradient-to-br from-slate-900 to-indigo-950 rounded-[2.5rem] p-8 lg:p-10 text-white relative overflow-hidden flex flex-col justify-between">
               <div className="absolute top-0 right-0 w-80 h-80 bg-indigo-500/10 rounded-full -mr-40 -mt-40 blur-3xl"></div>
               
               <div className="space-y-6">
@@ -632,7 +632,7 @@ export default function EmployeePayslipView() {
       {/* Side-by-side Details Modal */}
       {showModal && selectedPayslip && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4 overflow-hidden animate-in fade-in duration-300">
-          <div className="bg-white w-full max-w-4xl rounded-[2.5rem] shadow-2xl flex flex-col md:flex-row max-h-[90vh] overflow-hidden animate-in zoom-in-95 duration-300">
+          <div className="bg-white w-full max-w-4xl rounded-[2.5rem] flex flex-col md:flex-row max-h-[90vh] overflow-hidden animate-in zoom-in-95 duration-300">
             {/* Dark Sidebar Section */}
             <div className="md:w-80 bg-gradient-to-br from-slate-900 to-indigo-950 p-8 lg:p-10 text-white flex flex-col justify-between shrink-0 relative">
               <div className="absolute top-0 right-0 w-40 h-40 bg-indigo-500/10 rounded-full blur-2xl"></div>
@@ -743,7 +743,7 @@ export default function EmployeePayslipView() {
                 </button>
                 <button
                   onClick={() => handleDownloadPDF(selectedPayslip)}
-                  className="flex-[2] py-4 bg-indigo-600 text-white rounded-2xl text-xs font-black uppercase tracking-wider shadow-lg shadow-indigo-100 hover:bg-indigo-500 transition-all flex items-center justify-center gap-1.5 active:scale-95"
+                  className="flex-[2] py-4 bg-indigo-600 text-white rounded-2xl text-xs font-black uppercase tracking-wider hover:bg-indigo-500 transition-all flex items-center justify-center gap-1.5 active:scale-95"
                 >
                   <DownloadCloud className="w-4.5 h-4.5" />
                   {t("downloadPdfReport") || "Download PDF Slip"}

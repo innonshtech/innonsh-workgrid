@@ -296,7 +296,7 @@ export default function OrgSettingsPage() {
             return (
                 <div className="p-8 space-y-8">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+                        <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden flex flex-col">
                             <div className="p-6 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
                                 <div className="flex items-center gap-3">
                                     <div className="w-10 h-10 bg-[#0077b5] rounded-xl flex items-center justify-center text-white">
@@ -342,7 +342,7 @@ export default function OrgSettingsPage() {
                                         </code>
                                         <button 
                                             onClick={() => copyToClipboard(feedUrl)}
-                                            className="p-1.5 hover:bg-white rounded-lg text-slate-400 hover:text-indigo-600 transition-all shadow-sm"
+                                            className="p-1.5 hover:bg-white rounded-lg text-slate-400 hover:text-indigo-600 transition-all"
                                         >
                                             {copying ? <CheckCircle2 className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
                                         </button>
@@ -542,11 +542,11 @@ export default function OrgSettingsPage() {
                             placeholder="Search by name, code or info..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-all shadow-sm"
+                            className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
                         />
                     </div>
 
-                    <div className="flex items-center gap-2 text-xs font-bold text-slate-400 bg-white px-4 py-2 rounded-xl border border-slate-200 shadow-sm">
+                    <div className="flex items-center gap-2 text-xs font-bold text-slate-400 bg-white px-4 py-2 rounded-xl border border-slate-200">
                         <Info className="w-4 h-4" />
                         Showing {data[activeTab === 'business-units' ? 'businessUnits' : activeTab === 'teams' ? 'teams' : activeTab === 'designations' ? 'designations' : activeTab === 'banks' ? 'banks' : 'costCenters']?.length || 0} total records
                     </div>
@@ -564,7 +564,7 @@ export default function OrgSettingsPage() {
                 </div>
             </EnterpriseSectionCard>
 
-            <div className="bg-gradient-to-r from-indigo-900 to-blue-900 rounded-3xl p-8 relative overflow-hidden shadow-xl">
+            <div className="bg-gradient-to-r from-indigo-900 to-blue-900 rounded-3xl p-8 relative overflow-hidden">
                 <div className="relative z-10 flex flex-col md:flex-row items-center gap-8 text-white">
                     <div className="w-20 h-20 bg-white/10 backdrop-blur-xl rounded-2xl flex items-center justify-center shrink-0 border border-white/20">
                         <Building className="w-10 h-10 text-white" />
@@ -577,7 +577,7 @@ export default function OrgSettingsPage() {
                         </p>
                     </div>
                     <div className="md:ml-auto">
-                        <button className="px-6 py-3 bg-white text-indigo-900 font-extrabold rounded-xl hover:bg-indigo-50 transition-colors shadow-lg active:scale-95 text-sm">
+                        <button className="px-6 py-3 bg-white text-indigo-900 font-extrabold rounded-xl hover:bg-indigo-50 transition-colors active:scale-95 text-sm">
                             Download Hierarchy Report
                         </button>
                     </div>
@@ -589,7 +589,7 @@ export default function OrgSettingsPage() {
             {/* CREATE/EDIT MODAL */}
             {isModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
-                    <div className="bg-white rounded-3xl shadow-xl w-full max-w-lg overflow-hidden border border-slate-100">
+                    <div className="bg-white rounded-3xl w-full max-w-lg overflow-hidden border border-slate-200">
                         <div className="px-6 py-5 border-b border-slate-100 flex items-center justify-between bg-slate-50">
                             <div className="flex items-center gap-4">
                                 <EnterpriseIconContainer icon={editingItem ? Edit2 : Plus} color="indigo" size="md" />

@@ -228,7 +228,7 @@
 //               >
 //                 <ArrowLeft className="w-5 h-5" />
 //               </button>
-//               <div className="w-11 h-11 bg-yellow-500 rounded-xl flex items-center justify-center shadow-sm">
+//               <div className="w-11 h-11 bg-yellow-500 rounded-xl flex items-center justify-center">
 //                 <Calculator className="w-6 h-6 text-white" />
 //               </div>
 //               <div>
@@ -252,7 +252,7 @@
 //         <div className="max-w-7xl mx-auto px-6 py-8">
 //           <div className="space-y-8">
 //             {/* Progress Indicator */}
-//             <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+//             <div className="bg-white p-6 rounded-xl border border-slate-200">
 //               <div className="flex items-center justify-between mb-4">
 //                 <h3 className="text-lg font-semibold text-slate-900">Calculation Progress</h3>
 //                 <div className="flex items-center space-x-2">
@@ -280,7 +280,7 @@
 //             <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
 //               {/* Employee Information */}
 //               <div className="xl:col-span-2 space-y-8">
-//                 <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+//                 <div className="bg-white rounded-xl border border-slate-200">
 //                   <div className="p-6 border-b border-slate-200">
 //                     <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
 //                       <div className="w-8 h-8 bg-yellow-50 rounded-lg flex items-center justify-center border border-yellow-100">
@@ -422,7 +422,7 @@
 //                 </div>
 
 //                 {/* Tax Details */}
-//                 <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+//                 <div className="bg-white rounded-xl border border-slate-200">
 //                   <div className="p-6 border-b border-slate-200">
 //                     <div className="flex items-center justify-between">
 //                       <div>
@@ -509,7 +509,7 @@
 //                 </div>
 
 //                 {/* Notes */}
-//                 <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+//                 <div className="bg-white rounded-xl border border-slate-200">
 //                   <div className="p-6">
 //                     <label className="block text-sm font-semibold text-slate-700 mb-3">Additional Notes</label>
 //                     <textarea
@@ -527,7 +527,7 @@
 //               {/* Calculation Summary Sidebar */}
 //               <div className="xl:col-span-1">
 //                 <div className="sticky top-6 space-y-6">
-//                   <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+//                   <div className="bg-white rounded-xl border border-slate-200">
 //                     <div className="p-6 border-b border-slate-200">
 //                       <h3 className="text-lg font-semibold text-slate-900 flex items-center gap-2">
 //                         <TrendingUp className="w-5 h-5 text-green-600" />
@@ -582,7 +582,7 @@
 //                     <button
 //                       type="submit"
 //                       disabled={loading || employeesLoading}
-//                       className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg font-semibold transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+//                       className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
 //                     >
 //                       {loading ? (
 //                         <>
@@ -1139,7 +1139,7 @@ export default function TaxCalculator() {
               >
                 <ArrowLeft className="w-5 h-5" />
               </button>
-              <div className="w-11 h-11 bg-yellow-600 rounded-xl flex items-center justify-center shadow-sm">
+              <div className="w-11 h-11 bg-yellow-600 rounded-xl flex items-center justify-center">
                 <Calculator className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -1163,7 +1163,7 @@ export default function TaxCalculator() {
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="space-y-8">
             {/* Tax Regime Selection */}
-            <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+            <div className="bg-white p-6 rounded-xl border border-slate-200">
               <h3 className="text-lg font-semibold text-slate-900 mb-4">Tax Regime Selection</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <label className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-colors ${formData.taxRegime === 'new'
@@ -1220,7 +1220,7 @@ export default function TaxCalculator() {
               {/* Left Column - Inputs */}
               <div className="xl:col-span-2 space-y-8">
                 {/* Employee Information */}
-                <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+                <div className="bg-white rounded-xl border border-slate-200">
                   <div className="p-6 border-b border-slate-200">
                     <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                       <div className="w-8 h-8 bg-yellow-50 rounded-lg flex items-center justify-center border border-yellow-100">
@@ -1299,7 +1299,7 @@ export default function TaxCalculator() {
                 </div>
 
                 {/* Salary Components */}
-                <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+                <div className="bg-white rounded-xl border border-slate-200">
                   <div className="p-6 border-b border-slate-200">
                     <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                       <div className="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center border border-green-100">
@@ -1379,7 +1379,7 @@ export default function TaxCalculator() {
                 </div>
 
                 {/* Statutory Deductions */}
-                <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+                <div className="bg-white rounded-xl border border-slate-200">
                   <div className="p-6 border-b border-slate-200">
                     <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                       <div className="w-8 h-8 bg-red-50 rounded-lg flex items-center justify-center border border-red-100">
@@ -1417,7 +1417,7 @@ export default function TaxCalculator() {
 
                 {/* Deductions (Only for Old Regime) */}
                 {formData.taxRegime === 'old' && (
-                  <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+                  <div className="bg-white rounded-xl border border-slate-200">
                     <div className="p-6 border-b border-slate-200">
                       <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-3">
                         <div className="w-8 h-8 bg-slate-50 rounded-lg flex items-center justify-center border border-blue-100">
@@ -1477,7 +1477,7 @@ export default function TaxCalculator() {
               <div className="xl:col-span-1">
                 <div className="sticky top-6 space-y-6">
                   {/* Calculation Summary */}
-                  <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+                  <div className="bg-white rounded-xl border border-slate-200">
                     <div className="p-6 border-b border-slate-200">
                       <h3 className="text-lg font-semibold text-slate-900 flex items-center gap-2">
                         <TrendingUp className="w-5 h-5 text-green-600" />
@@ -1553,7 +1553,7 @@ export default function TaxCalculator() {
 
                       {/* Final Result */}
                       <div className="pt-6 border-t border-slate-200">
-                        <div className="bg-yellow-500 text-white p-4 rounded-xl shadow-lg shadow-yellow-100">
+                        <div className="bg-yellow-500 text-white p-4 rounded-xl">
                           <div className="text-xs uppercase font-bold opacity-80 mb-1">Total Annual Tax</div>
                           <div className="text-3xl font-black">
                             {formatCurrency(calculatedValues.finalTax)}
@@ -1571,7 +1571,7 @@ export default function TaxCalculator() {
                     <button
                       type="submit"
                       disabled={loading || employeesLoading}
-                      className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 bg-yellow-500 hover:bg-yellow-600 text-white rounded-xl font-bold transition-all shadow-lg shadow-yellow-100 disabled:opacity-50 disabled:cursor-not-allowed transform hover:-translate-y-1"
+                      className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 bg-yellow-500 hover:bg-yellow-600 text-white rounded-xl font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed transform hover:-translate-y-1"
                     >
                       {loading ? (
                         <>

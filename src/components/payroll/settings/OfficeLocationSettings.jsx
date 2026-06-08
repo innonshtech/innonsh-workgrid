@@ -149,7 +149,7 @@ export default function OfficeLocationSettings({ organizationId }) {
 
     return (
         <div className="space-y-6">
-            <div className="flex justify-between items-center bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+            <div className="flex justify-between items-center bg-white p-4 rounded-xl border border-slate-200">
                 <div>
                     <h2 className="text-lg font-bold text-slate-900">Office Locations & Geo-fencing</h2>
                     <p className="text-sm text-slate-500">Manage office coordinates for attendance validation</p>
@@ -166,7 +166,7 @@ export default function OfficeLocationSettings({ organizationId }) {
             </div>
 
             {isAdding && (
-                <div className="bg-white p-6 rounded-xl border border-indigo-100 shadow-lg space-y-6 animate-in fade-in slide-in-from-top-4">
+                <div className="bg-white p-6 rounded-xl border border-slate-200 space-y-6 animate-in fade-in slide-in-from-top-4">
                     <div className="flex justify-between items-center mb-4">
                         <h3 className="font-bold text-slate-800">{editingId ? 'Edit Location' : 'New Office Location'}</h3>
                         <button onClick={resetForm} className="text-slate-400 hover:text-slate-600">
@@ -308,7 +308,7 @@ export default function OfficeLocationSettings({ organizationId }) {
                     </div>
                 ) : (
                     locations.map((loc) => (
-                        <div key={loc._id} className="bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition overflow-hidden group">
+                        <div key={loc._id} className="bg-white rounded-xl border border-slate-200 hover: transition overflow-hidden group">
                             <div className="p-5">
                                 <div className="flex justify-between items-start mb-3">
                                     <h3 className="font-bold text-slate-800 text-lg">{loc.name}</h3>

@@ -154,7 +154,7 @@ export default function DashboardPage() {
     return (
       <div className="max-w-7xl mx-auto space-y-6 sm:space-y-8 animate-fade-in p-4 sm:p-6">
         {/* Header Banner Section (Staffing Hub Style) */}
-        <div className="relative overflow-hidden bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-xl shadow-indigo-950/20 border border-slate-800">
+        <div className="relative overflow-hidden bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-2xl sm:rounded-3xl p-5 sm:p-8 border border-slate-800">
           <div className="absolute -right-16 -top-16 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl"></div>
           <div className="absolute -left-16 -bottom-16 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl"></div>
           
@@ -174,7 +174,7 @@ export default function DashboardPage() {
             <div className="flex flex-wrap gap-3">
               <button
                 onClick={() => router.push("/admin/employees/new")}
-                className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs sm:text-sm px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl shadow-lg shadow-indigo-600/35 transition-all active:scale-[0.98]"
+                className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs sm:text-sm px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl transition-all active:scale-[0.98]"
               >
                 <UserPlus className="w-4 h-4" /> Add Employee
               </button>
@@ -195,10 +195,10 @@ export default function DashboardPage() {
             <div
               key={card.title}
               onClick={() => router.push(card.href)}
-              className="group relative bg-white hover:bg-slate-50/50 rounded-2xl p-5 border border-slate-100 shadow-sm hover:shadow-md transition-all cursor-pointer overflow-hidden active:scale-[0.99]"
+              className="group relative bg-white hover:bg-slate-50/50 rounded-2xl p-5 border border-slate-200 hover: transition-all cursor-pointer overflow-hidden active:scale-[0.99]"
             >
               <div className="space-y-4">
-                <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${card.color} text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform`}>
+                <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${card.color} text-white flex items-center justify-center group-hover:scale-110 transition-transform`}>
                   <card.icon className="w-5 h-5" />
                 </div>
                 <div>
@@ -220,7 +220,7 @@ export default function DashboardPage() {
           {/* Main Area: Feeds and Widgets */}
           <div className="lg:col-span-2 space-y-6 sm:space-y-8">
             {/* Recent Activity Feed */}
-            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 space-y-6">
+            <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-6">
               <div className="flex items-center justify-between border-b border-slate-50 pb-4">
                 <div className="space-y-1">
                   <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
@@ -264,7 +264,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Active Projects Tracker */}
-            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 space-y-6">
+            <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-6">
               <div className="flex items-center justify-between border-b border-slate-50 pb-4">
                 <div className="space-y-1">
                   <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
@@ -281,7 +281,7 @@ export default function DashboardPage() {
                 {stats.topProjects.map((project, idx) => (
                   <div key={idx} className="bg-slate-50 hover:bg-slate-100/70 border border-slate-100 rounded-2xl p-4 flex items-center justify-between transition-all duration-200">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center border border-slate-200/50 shadow-sm">
+                      <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center border border-slate-200/50">
                         <Briefcase className="w-5 h-5 text-indigo-600" />
                       </div>
                       <div>
@@ -307,7 +307,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Resource Utilization Widget */}
-            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 overflow-hidden">
+            <div className="bg-white rounded-2xl border border-slate-200 p-6 overflow-hidden">
               <div className="border-b border-slate-50 pb-4 mb-6">
                 <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
                   <BarChart3 className="w-5 h-5 text-indigo-600" /> Resource Management
@@ -321,14 +321,14 @@ export default function DashboardPage() {
           {/* Right Sidebar: Controls and Feeds */}
           <div className="space-y-6 sm:space-y-8">
             {/* Quick Actions Panel */}
-            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 space-y-4">
+            <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
               <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
                 <Zap className="w-5 h-5 text-indigo-600" /> {t("quickActions")}
               </h3>
               <div className="grid grid-cols-1 gap-3">
                 {quickActions.map((action, i) => (
                   <Link key={i} href={action.href}>
-                    <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 hover:border-indigo-200 hover:bg-indigo-50/50 transition-all group cursor-pointer shadow-sm hover:shadow-md active:scale-[0.99]">
+                    <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-200 hover:border-indigo-200 hover:bg-indigo-50/50 transition-all group cursor-pointer hover: active:scale-[0.99]">
                       <div className={`w-10 h-10 ${action.color} rounded-lg flex items-center justify-center text-white`}>
                         <action.icon className="w-5 h-5" />
                       </div>
@@ -344,7 +344,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Team Contributions Card */}
-            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 space-y-6">
+            <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-6">
               <div className="border-b border-slate-50 pb-4">
                 <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
                   <Users className="w-5 h-5 text-indigo-600" /> Team Contributions
@@ -357,7 +357,7 @@ export default function DashboardPage() {
                   <div key={idx} className="flex flex-col gap-2">
                     <div className="flex items-center justify-between text-xs">
                       <div className="flex items-center gap-2.5">
-                        <div className="w-6.5 h-6.5 bg-gradient-to-br from-indigo-500 to-indigo-600 text-white rounded-full flex items-center justify-center text-[10px] font-black uppercase shadow-sm">
+                        <div className="w-6.5 h-6.5 bg-gradient-to-br from-indigo-500 to-indigo-600 text-white rounded-full flex items-center justify-center text-[10px] font-black uppercase">
                           {contributor.name.charAt(0)}
                         </div>
                         <span className="text-slate-700 font-bold">{contributor.name}</span>
@@ -380,7 +380,7 @@ export default function DashboardPage() {
 
             {/* Operations ATS Integration Promo Banner */}
             <div 
-              className="bg-gradient-to-br from-indigo-600 to-violet-700 rounded-2xl p-6 text-white shadow-lg overflow-hidden relative group cursor-pointer" 
+              className="bg-gradient-to-br from-indigo-600 to-violet-700 rounded-2xl p-6 text-white overflow-hidden relative group cursor-pointer" 
               onClick={() => router.push('/admin/recruitment')}
             >
               <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform">

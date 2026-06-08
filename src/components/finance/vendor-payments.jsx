@@ -170,21 +170,21 @@ export default function VendorPayments() {
                         });
                         setShowModal(true);
                     }}
-                    className="flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-[1.2rem] text-[10px] font-black uppercase tracking-widest hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100"
+                    className="flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-[1.2rem] text-[10px] font-black uppercase tracking-widest hover:bg-indigo-700 transition-all"
                 >
                     <Plus className="w-4 h-4" /> Record Payment
                 </button>
             </div>
 
             {/* List Table */}
-            <div className="bg-white rounded-[2rem] border border-slate-200 shadow-sm overflow-hidden">
+            <div className="bg-white rounded-[2rem] border border-slate-200 overflow-hidden">
                 <div className="p-8 border-b border-slate-50 bg-slate-50/30 flex justify-between items-center">
                     <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] flex items-center gap-2">
                         <Clock className="w-4 h-4" /> Settlement History
                     </h4>
                     <div className="flex gap-2">
-                        <button className="px-5 py-2 bg-white border border-slate-200 rounded-xl text-[9px] font-black uppercase tracking-widest text-slate-500 hover:text-indigo-600 shadow-sm transition-all">This Month</button>
-                        <button className="px-5 py-2 bg-white border border-slate-200 rounded-xl text-[9px] font-black uppercase tracking-widest text-slate-500 hover:text-indigo-600 shadow-sm transition-all">All Time</button>
+                        <button className="px-5 py-2 bg-white border border-slate-200 rounded-xl text-[9px] font-black uppercase tracking-widest text-slate-500 hover:text-indigo-600 transition-all">This Month</button>
+                        <button className="px-5 py-2 bg-white border border-slate-200 rounded-xl text-[9px] font-black uppercase tracking-widest text-slate-500 hover:text-indigo-600 transition-all">All Time</button>
                     </div>
                 </div>
 
@@ -269,17 +269,17 @@ export default function VendorPayments() {
             {/* Record Payment Modal */}
             {showModal && (
                 <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
-                    <div className="bg-white rounded-[2.5rem] w-full max-w-xl overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-300 border border-slate-100">
+                    <div className="bg-white rounded-[2.5rem] w-full max-w-xl overflow-hidden animate-in fade-in zoom-in duration-300 border border-slate-200">
                         <div className="p-8 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
                             <div>
                                 <h2 className="text-2xl font-black text-slate-900 flex items-center gap-3 uppercase tracking-tight">
-                                    <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-100">
+                                    <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center">
                                         <CheckCircle2 className="w-6 h-6 text-white" />
                                     </div>
                                     Clear Vendor Dues
                                 </h2>
                             </div>
-                            <button onClick={() => setShowModal(false)} className="p-3 hover:bg-white hover:shadow-md rounded-2xl transition-all text-slate-400 hover:text-slate-900">
+                            <button onClick={() => setShowModal(false)} className="p-3 hover:bg-white hover: rounded-2xl transition-all text-slate-400 hover:text-slate-900">
                                 <X className="w-6 h-6" />
                             </button>
                         </div>
@@ -412,7 +412,7 @@ export default function VendorPayments() {
                                 <button
                                     type="submit"
                                     disabled={submitting || pendingInvoices.length === 0}
-                                    className="px-10 py-4 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl shadow-emerald-100 flex items-center gap-2 disabled:opacity-70"
+                                    className="px-10 py-4 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black uppercase tracking-widest rounded-2xl transition-all flex items-center gap-2 disabled:opacity-70"
                                 >
                                     {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <ArrowUpRight className="w-4 h-4" />}
                                     {submitting ? "Settling..." : "Confirm Settlement"}

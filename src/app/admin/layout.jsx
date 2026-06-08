@@ -536,10 +536,10 @@ function DashboardLayoutContent({ children }) {
     <div className="min-h-screen bg-slate-50">
       <div
         className={`${sidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-xl border-r border-indigo-100 transition-transform duration-300 ease-in-out lg:translate-x-0 flex flex-col h-screen`}
+          } fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-slate-200 transition-transform duration-300 ease-in-out lg:translate-x-0 flex flex-col h-screen`}
       >
-        <div className="flex-shrink-0 p-6 border-b border-indigo-50 bg-white">
-          <div className="flex items-center space-x-3 justify-center">
+        <div className="flex-shrink-0 px-4 py-6 border-b border-slate-200 bg-white">
+          <div className="flex items-center px-3">
             <Link
               href={
                 role === "admin" ? "/admin/dashboard" :
@@ -547,9 +547,9 @@ function DashboardLayoutContent({ children }) {
                     role === 'attendance_only' ? '/payroll/attendance' :
                       '/dashboard'
               }
-              className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+              className="flex items-center hover:opacity-80 transition-opacity"
             >
-              <Image src="/name_logo.png" alt="WorkGrid Logo" width={32} height={32} className="rounded-lg shrink-0 object-contain bg-indigo-600" />
+              <Image src="/name_logo.png" alt="WorkGrid Logo" width={32} height={32} className="rounded-lg shrink-0 object-contain bg-indigo-600 mr-3" />
               <span className="text-xl font-bold text-slate-900 tracking-tight">WorkGrid</span>
             </Link>
           </div>
@@ -563,7 +563,7 @@ function DashboardLayoutContent({ children }) {
                   <button
                     onClick={() => toggleMenu(item.name)}
                     className={`flex items-center w-full p-3 rounded-xl text-sm font-semibold transition-all duration-200 group ${isParentActive(item)
-                      ? "bg-indigo-50 text-indigo-700 shadow-sm ring-1 ring-indigo-200"
+                      ? "bg-indigo-50 text-indigo-700 ring-1 ring-indigo-200"
                       : "text-slate-600 hover:bg-slate-50 hover:text-indigo-600"
                       }`}
                     aria-expanded={openMenu === item.name}
@@ -614,7 +614,7 @@ function DashboardLayoutContent({ children }) {
                 <Link
                   href={item.href}
                   className={`flex items-center p-3 rounded-xl text-sm font-semibold transition-all duration-200 group ${isActive(item.href)
-                    ? "bg-indigo-50 text-indigo-700 shadow-sm ring-1 ring-indigo-200"
+                    ? "bg-indigo-50 text-indigo-700 ring-1 ring-indigo-200"
                     : "text-slate-600 hover:bg-slate-50 hover:text-indigo-600"
                     }`}
                 >
@@ -636,7 +636,7 @@ function DashboardLayoutContent({ children }) {
         <div className="flex-shrink-0 p-4 border-t border-slate-200 bg-slate-50/50">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className="w-9 h-9 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-full flex items-center justify-center shadow-md shadow-indigo-200">
+              <div className="w-9 h-9 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-full flex items-center justify-center">
                 <User className="w-5 h-5 text-white" />
               </div>
               <div>
@@ -663,7 +663,7 @@ function DashboardLayoutContent({ children }) {
       </div>
 
       <div className="lg:ml-64">
-        <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md shadow-sm border-b border-indigo-100">
+        <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-200">
           <div className="px-4 sm:px-6 py-3 sm:py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
@@ -679,20 +679,7 @@ function DashboardLayoutContent({ children }) {
                   )}
                 </button>
 
-                <div className="flex flex-col items-start gap-1 ml-2">
-                  <h2 className="text-base sm:text-xl font-bold text-slate-800 leading-none">
-                    {{
-                      '/': t("dashboard"),
-                      '/employees': t("employeeManagement")
-                    }[pathname] || (pathname || "").split('/').filter(Boolean).slice(-1)[0]?.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ') || t("overview")}
-                  </h2>
-                  <div className="hidden sm:flex items-center gap-2 text-xs font-medium text-slate-500">
-                    <Calendar className="w-3.5 h-3.5" />
-                    <span suppressHydrationWarning>
-                      {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
-                    </span>
-                  </div>
-                </div>
+                
               </div>
               <div className="flex items-center space-x-2 sm:space-x-4">
                 <DropdownMenu>
@@ -735,7 +722,7 @@ function DashboardLayoutContent({ children }) {
                         </p>
                         <p className="text-xs text-slate-500 capitalize">{role}</p>
                       </div>
-                      <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-full flex items-center justify-center shadow-md shadow-indigo-200 ring-2 ring-white group-hover:ring-indigo-100 transition-all">
+                      <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-full flex items-center justify-center ring-2 ring-white group-hover:ring-indigo-100 transition-all">
                         <span className="text-white font-bold text-sm">
                           {user?.personalDetails?.firstName
                             ?.charAt(0)

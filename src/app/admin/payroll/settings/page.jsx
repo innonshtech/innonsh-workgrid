@@ -103,7 +103,7 @@ const EditPayrollSettings = ({ organizationId, onBack }) => {
     return (
         <div className="space-y-6">
             {/* Header with Back Button */}
-            <div className="flex items-center justify-between bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+            <div className="flex items-center justify-between bg-white p-4 rounded-xl border border-slate-200">
                 <div className="flex items-center gap-4">
                     <button 
                         onClick={onBack}
@@ -121,7 +121,7 @@ const EditPayrollSettings = ({ organizationId, onBack }) => {
                     <button
                         onClick={handleSave}
                         disabled={saving || !selectedEmployee}
-                        className="px-6 py-2 bg-indigo-600 text-white rounded-lg text-sm font-bold shadow-lg shadow-indigo-100 hover:bg-indigo-700 transition-all flex items-center gap-2 disabled:opacity-50"
+                        className="px-6 py-2 bg-indigo-600 text-white rounded-lg text-sm font-bold hover:bg-indigo-700 transition-all flex items-center gap-2 disabled:opacity-50"
                     >
                         {saving ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <Save size={16} />}
                         Save Changes
@@ -132,7 +132,7 @@ const EditPayrollSettings = ({ organizationId, onBack }) => {
             <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
                 {/* Left Column: Employee Selection (Matches Screenshot) */}
                 <div className="xl:col-span-4 space-y-6">
-                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
                         <div className="p-5 border-b border-slate-100 bg-slate-50/50 flex items-center gap-3">
                             <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center text-blue-600 border border-blue-100">
                                 <User size={18} />
@@ -194,7 +194,7 @@ const EditPayrollSettings = ({ organizationId, onBack }) => {
 
                     {/* Salary Summary Card */}
                     {selectedEmployee && (
-                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
                             <div className="p-5 border-b border-slate-100 bg-slate-50/50 flex items-center gap-3">
                                 <div className="w-8 h-8 bg-emerald-50 rounded-lg flex items-center justify-center text-emerald-600 border border-emerald-100">
                                     <TrendingUp size={18} />
@@ -224,7 +224,7 @@ const EditPayrollSettings = ({ organizationId, onBack }) => {
                     {selectedEmployee ? (
                         <>
                             {/* Basic Salary & Attendance (Matching Look) */}
-                            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                            <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
                                 <div className="p-5 border-b border-slate-100 bg-slate-50/50 flex items-center gap-3">
                                     <div className="w-8 h-8 bg-slate-50 rounded-lg flex items-center justify-center text-slate-600 border border-slate-200">
                                         <CreditCard size={18} />
@@ -276,7 +276,7 @@ const EditPayrollSettings = ({ organizationId, onBack }) => {
                                                         const newVal = selectedEmployee[item.key] === item.val ? (typeof item.val === 'boolean' ? false : 'no') : item.val;
                                                         setSelectedEmployee({...selectedEmployee, [item.key]: newVal});
                                                     }}
-                                                    className={`w-full py-1.5 rounded-lg text-[10px] font-bold transition-all ${selectedEmployee[item.key] === item.val ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-100' : 'bg-slate-200 text-slate-500'}`}
+                                                    className={`w-full py-1.5 rounded-lg text-[10px] font-bold transition-all ${selectedEmployee[item.key] === item.val ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-500'}`}
                                                 >
                                                     {selectedEmployee[item.key] === item.val ? 'ENABLED' : 'DISABLED'}
                                                 </button>
@@ -287,7 +287,7 @@ const EditPayrollSettings = ({ organizationId, onBack }) => {
                             </div>
 
                             {/* Earnings & Allowances */}
-                            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                            <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
                                 <div className="p-5 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
                                     <div className="flex items-center gap-3">
                                         <div className="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center text-green-600 border border-green-100">
@@ -363,7 +363,7 @@ const EditPayrollSettings = ({ organizationId, onBack }) => {
                                                                     type="number" 
                                                                     value={earning.calculationType === 'percentage' ? ((selectedEmployee.payslipStructure.basicSalary * earning.percentage) / 100).toFixed(0) : earning.fixedAmount} 
                                                                     disabled
-                                                                    className="w-full pl-7 pr-3 py-1.5 bg-slate-50/50 border border-emerald-50 rounded-lg text-sm font-bold text-slate-500 cursor-not-allowed shadow-inner"
+                                                                    className="w-full pl-7 pr-3 py-1.5 bg-slate-50/50 border border-emerald-50 rounded-lg text-sm font-bold text-slate-500 cursor-not-allowed"
                                                                 />
                                                             </div>
                                                         </div>
@@ -405,7 +405,7 @@ const EditPayrollSettings = ({ organizationId, onBack }) => {
                             </div>
 
                             {/* Deductions */}
-                            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                            <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
                                 <div className="p-5 border-b border-slate-100 bg-slate-50/50 flex items-center gap-3">
                                     <div className="w-8 h-8 bg-red-50 rounded-lg flex items-center justify-center text-red-600 border border-red-100">
                                         <Minus size={18} />
@@ -522,7 +522,7 @@ const EditPayrollSettings = ({ organizationId, onBack }) => {
                                                                     type="number" 
                                                                     value={deduction.calculationType === 'percentage' ? ((selectedEmployee.payslipStructure.basicSalary * deduction.percentage) / 100).toFixed(0) : deduction.fixedAmount} 
                                                                     disabled
-                                                                    className="w-full pl-7 pr-3 py-1.5 bg-slate-50/50 border border-red-50 rounded-lg text-sm font-bold text-slate-500 cursor-not-allowed shadow-inner"
+                                                                    className="w-full pl-7 pr-3 py-1.5 bg-slate-50/50 border border-red-50 rounded-lg text-sm font-bold text-slate-500 cursor-not-allowed"
                                                                 />
                                                             </div>
                                                         </div>
@@ -681,7 +681,7 @@ export default function ComplianceSettingsPage() {
                 {!isEditPayroll && (
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
                         <div className="flex items-center gap-4">
-                            <div className="w-14 h-14 bg-indigo-600 rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-200">
+                            <div className="w-14 h-14 bg-indigo-600 rounded-2xl flex items-center justify-center">
                                 <Shield className="w-7 h-7 text-white" />
                             </div>
                             <div>
@@ -694,7 +694,7 @@ export default function ComplianceSettingsPage() {
                             </div>
                         </div>
 
-                        <div className="flex items-center gap-4 bg-white p-2 rounded-2xl border border-slate-200 shadow-sm">
+                        <div className="flex items-center gap-4 bg-white p-2 rounded-2xl border border-slate-200">
                             <div className="flex items-center gap-3 px-4 py-2 border-r border-slate-100">
                                 <Building2 className="w-5 h-5 text-slate-400" />
                                 <select
@@ -712,7 +712,7 @@ export default function ComplianceSettingsPage() {
                             <button
                                 onClick={() => handleSave(config)}
                                 disabled={saving}
-                                className="flex items-center gap-2 bg-indigo-600 text-white px-6 py-2.5 rounded-xl font-bold hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100 disabled:opacity-50"
+                                className="flex items-center gap-2 bg-indigo-600 text-white px-6 py-2.5 rounded-xl font-bold hover:bg-indigo-700 transition-all disabled:opacity-50"
                             >
                                 {saving ? (
                                     <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
@@ -729,7 +729,7 @@ export default function ComplianceSettingsPage() {
                     {/* Sidebar Navigation - Hidden when isEditPayroll is true */}
                     {!isEditPayroll && (
                         <div className="col-span-12 lg:col-span-3 space-y-4">
-                            <div className="bg-white rounded-3xl border border-slate-200 p-3 shadow-sm sticky top-8">
+                            <div className="bg-white rounded-3xl border border-slate-200 p-3 sticky top-8">
                                 <div className="space-y-1">
                                     {[
                                         { id: "general", label: "General & Statutory", icon: Shield, desc: "Organization-wide rules" },
@@ -743,7 +743,7 @@ export default function ComplianceSettingsPage() {
                                             onClick={() => setActiveTab(tab.id)}
                                             className={`w-full flex items-center gap-4 p-4 rounded-2xl transition-all group ${
                                                 activeTab === tab.id
-                                                    ? "bg-indigo-600 text-white shadow-xl shadow-indigo-100 translate-x-2"
+                                                    ? "bg-indigo-600 text-white translate-x-2"
                                                     : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
                                             }`}
                                         >
@@ -775,10 +775,10 @@ export default function ComplianceSettingsPage() {
                     <div className={`${isEditPayroll ? 'col-span-12' : 'col-span-12 lg:col-span-9'} transition-all duration-500`}>
                         {activeTab === "general" && config && (
                             <form onSubmit={(e) => { e.preventDefault(); handleSave(config); }} className="space-y-6">
-                                <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+                                <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden">
                                     <div className="p-8 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
                                         <div className="flex items-center gap-4">
-                                            <div className="w-12 h-12 bg-indigo-600 rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-100">
+                                            <div className="w-12 h-12 bg-indigo-600 rounded-2xl flex items-center justify-center">
                                                 <Shield className="w-6 h-6 text-white" />
                                             </div>
                                             <div>
@@ -838,7 +838,7 @@ export default function ComplianceSettingsPage() {
                                             <select
                                                 value={config?.paymentFrequency || 'Monthly'}
                                                 onChange={(e) => setConfig({ ...config, paymentFrequency: e.target.value })}
-                                                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none shadow-inner"
+                                                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none"
                                             >
                                                 <option value="Monthly">Monthly (Default)</option>
                                                 <option value="Weekly">Weekly</option>
@@ -870,7 +870,7 @@ export default function ComplianceSettingsPage() {
                                             <select
                                                 value={config?.overtimeCalculationType || 'Multiplier'}
                                                 onChange={(e) => setConfig({ ...config, overtimeCalculationType: e.target.value })}
-                                                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none shadow-inner"
+                                                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none"
                                             >
                                                 <option value="Multiplier">Salary Multiplier (e.g. 1.5x)</option>
                                                 <option value="Fixed">Fixed Amount / Hour (e.g. ₹500)</option>
@@ -898,7 +898,7 @@ export default function ComplianceSettingsPage() {
                                             <select
                                                 value={config?.paymentDay || 1}
                                                 onChange={(e) => setConfig({ ...config, paymentDay: parseInt(e.target.value) || 1 })}
-                                                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none shadow-inner"
+                                                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none"
                                             >
                                                 {[...Array(31)].map((_, i) => (
                                                     <option key={i + 1} value={i + 1}>{i + 1}th of Month</option>
@@ -929,7 +929,7 @@ export default function ComplianceSettingsPage() {
                                     <button
                                         type="submit"
                                         disabled={saving}
-                                        className="px-10 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-bold shadow-lg shadow-indigo-100 hover:bg-indigo-700 transition-all flex items-center gap-2 group disabled:opacity-50"
+                                        className="px-10 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-bold hover:bg-indigo-700 transition-all flex items-center gap-2 group disabled:opacity-50"
                                     >
                                         {saving ? (
                                             <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -961,7 +961,7 @@ export default function ComplianceSettingsPage() {
                         )}
 
                         <div className="mt-8 bg-indigo-50 border border-indigo-100 rounded-2xl p-6 flex gap-4">
-                            <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center shrink-0">
+                            <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shrink-0">
                                 <AlertCircle className="w-6 h-6 text-indigo-600" />
                             </div>
                             <div>

@@ -101,14 +101,14 @@ export default function HelpdeskPage() {
                 </div>
                 <button
                     onClick={() => setIsCreateModalOpen(true)}
-                    className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all font-medium shadow-sm hover:shadow-indigo-200"
+                    className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all font-medium hover:"
                 >
                     <Plus size={18} />
                     {t("raiseTicket")}
                 </button>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
                 <div className="p-4 border-b border-slate-200 flex items-center gap-4">
                     <div className="relative flex-1 max-w-sm">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
@@ -125,7 +125,7 @@ export default function HelpdeskPage() {
                             onClick={() => setAssignmentFilter("all")}
                             className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-all duration-200 ${
                                 assignmentFilter === "all"
-                                    ? "bg-white text-slate-900 shadow-sm"
+                                    ? "bg-white text-slate-900"
                                     : "text-slate-500 hover:text-slate-700"
                             }`}
                         >
@@ -135,7 +135,7 @@ export default function HelpdeskPage() {
                             onClick={() => setAssignmentFilter("assigned")}
                             className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-all duration-200 ${
                                 assignmentFilter === "assigned"
-                                    ? "bg-white text-slate-900 shadow-sm"
+                                    ? "bg-white text-slate-900"
                                     : "text-slate-500 hover:text-slate-700"
                             }`}
                         >

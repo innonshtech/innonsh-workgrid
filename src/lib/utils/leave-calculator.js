@@ -8,10 +8,11 @@ export async function calculateEffectiveLeaveDays(employeeId, startDate, endDate
     const start = new Date(startDate);
     const end = new Date(endDate);
     
-    start.setHours(0, 0, 0, 0);
-    end.setHours(0, 0, 0, 0);
+    // Normalize to UTC midnight to avoid local timezone offsets shifting dates
+    const startUTC = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate()));
+    const endUTC = new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), end.getUTCDate()));
 
-    if (start > end) {
+    if (startUTC > endUTC) {
         throw new Error("Start date must be before end date");
     }
 
@@ -41,7 +42,7 @@ export async function calculateEffectiveLeaveDays(employeeId, startDate, endDate
     const holidays = holidayList ? holidayList.holidays : [];
     const mandatoryHolidays = holidays.filter(h => !h.isRestricted && h.status === 'Active');
 
-    const year = start.getFullYear();
+    const year = startUTC.getUTCFullYear();
     const claims = await RestrictedHolidayClaim.find({
         employeeId: employee._id,
         year: year,
@@ -50,15 +51,18 @@ export async function calculateEffectiveLeaveDays(employeeId, startDate, endDate
 
     const claimedHolidays = claims.map(c => c.holidayId);
 
-    let currentDate = new Date(start);
+    let currentDate = new Date(startUTC);
     const details = [];
     let totalEffectiveDays = 0;
 
     const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
-    while (currentDate <= end) {
-        const dateStr = currentDate.toISOString().split("T")[0];
-        const dayOfWeekName = dayNames[currentDate.getDay()];
+    while (currentDate <= endUTC) {
+        const yyyy = currentDate.getUTCFullYear();
+        const mm = String(currentDate.getUTCMonth() + 1).padStart(2, '0');
+        const dd = String(currentDate.getUTCDate()).padStart(2, '0');
+        const dateStr = `${yyyy}-${mm}-${dd}`;
+        const dayOfWeekName = dayNames[currentDate.getUTCDay()];
         
         let isDeductable = true;
         let reason = "Working Day";
@@ -100,7 +104,7 @@ export async function calculateEffectiveLeaveDays(employeeId, startDate, endDate
             reason
         });
 
-        currentDate.setDate(currentDate.getDate() + 1);
+        currentDate.setUTCDate(currentDate.getUTCDate() + 1);
     }
 
     return {

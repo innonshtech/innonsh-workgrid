@@ -734,7 +734,11 @@ employeeSchema.methods.calculateSalaryComponents = async function (statutoryConf
     try {
       const PayrollConfigModel = mongoose.models.PayrollConfig || mongoose.model("PayrollConfig");
       const payrollConfig = await PayrollConfigModel.findOne({ company: this.jobDetails?.organizationId });
-      const monthlyQuota = payrollConfig?.annualPaidLeaveQuota || 20;
+      
+      // Use the pre-computed balance from Leave which includes rollover, fallback to config
+      const monthlyQuota = leaveRecord?.annualLeaveBalance?.balanceAtMonthStart || 
+                           payrollConfig?.annualPaidLeaveQuota || 
+                           20;
 
       let remainingQuota = Math.max(0, monthlyQuota - this._tempPaidLeaves);
       

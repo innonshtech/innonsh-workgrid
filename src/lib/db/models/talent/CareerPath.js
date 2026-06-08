@@ -12,10 +12,11 @@ const careerPathSchema = new mongoose.Schema({
     milestones: [{
         title: String,
         description: String,
+        date: String,
         targetDate: Date,
         status: {
             type: String,
-            enum: ['Planned', 'Achieved', 'Missed'],
+            enum: ['Planned', 'In Progress', 'Achieved', 'Missed'],
             default: 'Planned'
         },
         completionDate: Date,

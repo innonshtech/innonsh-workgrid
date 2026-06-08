@@ -261,6 +261,10 @@ const AttendanceStatusBadge = ({ status }) => {
       color: "bg-yellow-50 text-yellow-700 border-yellow-200",
       icon: Clock,
     },
+    WFH: {
+      color: "bg-teal-50 text-teal-700 border-teal-200",
+      icon: Clock,
+    },
     Leave: {
       color: "bg-slate-50 text-blue-700 border-blue-200",
       icon: Calendar,

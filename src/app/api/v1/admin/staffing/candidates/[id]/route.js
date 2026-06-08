@@ -1,4 +1,6 @@
 import { NextResponse } from 'next/server';
+import fs from 'fs/promises';
+import path from 'path';
 import dbConnect from '@/lib/db/connect';
 import StaffingCandidate from '@/lib/db/models/staffing/StaffingCandidate';
 import StaffingSubmission from '@/lib/db/models/staffing/StaffingSubmission';
@@ -68,6 +70,17 @@ export async function DELETE(request, { params }) {
 
     if (!candidate) {
       return NextResponse.json({ success: false, error: "Candidate not found" }, { status: 404 });
+    }
+
+    // Clean up local resume file if exists
+    if (candidate.resumeUrl && candidate.resumeUrl.startsWith('/uploads/resumes/')) {
+      try {
+        const filePath = path.join(process.cwd(), 'public', candidate.resumeUrl);
+        await fs.unlink(filePath);
+        console.log("Deleted local resume file:", filePath);
+      } catch (err) {
+        console.error("Failed to delete local resume file:", err);
+      }
     }
 
     // Cascade Delete: Clean up all pipeline submissions associated with this candidate

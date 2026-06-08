@@ -19,6 +19,19 @@ export default function ESSLeaveManagement({ employeeId, payrollConfig }) {
     // Determine leave quota from payroll config, defaulting to 20
     const leaveQuota = payrollConfig?.annualPaidLeaveQuota || 20;
     
+    // Automatic Overdraft Split (Option 1 logic)
+    const approvedPaidLeaves = applications
+        .filter(a => a.status === 'Approved' && a.leaveType !== 'Unpaid' && a.leaveCategory !== 'Unpaid')
+        .reduce((acc, curr) => acc + curr.totalDays, 0);
+
+    const approvedExplicitUnpaidLeaves = applications
+        .filter(a => a.status === 'Approved' && (a.leaveType === 'Unpaid' || a.leaveCategory === 'Unpaid'))
+        .reduce((acc, curr) => acc + curr.totalDays, 0);
+
+    const leavesTaken = Math.min(approvedPaidLeaves, leaveQuota);
+    const remainingBalance = Math.max(0, leaveQuota - approvedPaidLeaves);
+    const unpaidLeaves = approvedExplicitUnpaidLeaves + Math.max(0, approvedPaidLeaves - leaveQuota);
+    
     // New Calculation State
     const [calculationResult, setCalculationResult] = useState(null);
     const [calculating, setCalculating] = useState(false);
@@ -35,7 +48,8 @@ export default function ESSLeaveManagement({ employeeId, payrollConfig }) {
     const [actionRemark, setActionRemark] = useState('');
 
     const [formData, setFormData] = useState({
-        leaveType: 'Casual',
+        leaveType: 'Full Day Leave',
+        leaveCategory: 'Casual',
         startDate: '',
         endDate: '',
         reason: '',
@@ -229,7 +243,8 @@ export default function ESSLeaveManagement({ employeeId, payrollConfig }) {
                         body: JSON.stringify({
                             employeeId: employeeProfile?._id || employeeId,
                             startDate: formData.startDate,
-                            endDate: formData.endDate
+                            endDate: formData.endDate,
+                            leaveType: formData.leaveType
                         })
                     });
                     const data = await res.json();
@@ -249,7 +264,7 @@ export default function ESSLeaveManagement({ employeeId, payrollConfig }) {
         } else {
             setCalculationResult(null);
         }
-    }, [formData.startDate, formData.endDate, employeeId]);
+    }, [formData.startDate, formData.endDate, formData.leaveType, employeeId]);
 
     const calculateTotalDays = () => {
         return calculationResult?.totalEffectiveDays || 0;
@@ -258,7 +273,7 @@ export default function ESSLeaveManagement({ employeeId, payrollConfig }) {
     const handleApplyLeave = async (e) => {
         e.preventDefault();
         const totalDays = calculateTotalDays();
-        if (totalDays <= 0) {
+        if (formData.leaveType !== 'WFH' && totalDays <= 0) {
             toast.error("Invalid date range");
             return;
         }
@@ -281,7 +296,8 @@ export default function ESSLeaveManagement({ employeeId, payrollConfig }) {
             setActiveView('list');
             fetchMyLeaves();
             setFormData({
-                leaveType: 'Casual',
+                leaveType: 'Full Day Leave',
+                leaveCategory: 'Casual',
                 startDate: '',
                 endDate: '',
                 reason: '',
@@ -329,21 +345,43 @@ export default function ESSLeaveManagement({ employeeId, payrollConfig }) {
                 <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
                     <form onSubmit={handleApplyLeave} className="p-8 space-y-8">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            <div className="space-y-2">
-                                <label className="text-xs font-bold text-slate-500 uppercase">Leave Type</label>
-                                <select
-                                    name="leaveType"
-                                    value={formData.leaveType}
-                                    onChange={handleInputChange}
-                                    className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500/20 outline-none"
-                                    required
-                                >
-                                    <option value="Casual">Casual Leave</option>
-                                    <option value="Sick">Sick Leave</option>
-                                    <option value="Earned">Earned Leave</option>
-                                    <option value="Unpaid">Unpaid Leave</option>
-                                    <option value="Other">Other</option>
-                                </select>
+                            <div className="space-y-4">
+                                <div className="space-y-2">
+                                    <label className="text-xs font-bold text-slate-500 uppercase">Leave Type</label>
+                                    <select
+                                        name="leaveType"
+                                        value={formData.leaveType}
+                                        onChange={handleInputChange}
+                                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500/20 outline-none"
+                                        required
+                                    >
+                                        <option value="Full Day Leave">Full Day Leave</option>
+                                        <option value="Half Day">Half Day</option>
+                                        <option value="WFH">WFH</option>
+                                    </select>
+                                </div>
+                                {(formData.leaveType === 'Full Day Leave' || formData.leaveType === 'Half Day') && (
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold text-slate-500 uppercase">Leave Category</label>
+                                        <select
+                                            name="leaveCategory"
+                                            value={formData.leaveCategory}
+                                            onChange={handleInputChange}
+                                            className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500/20 outline-none"
+                                            required
+                                        >
+                                            <option value="Casual">Casual Leave</option>
+                                            <option value="Sick">Sick Leave</option>
+                                            <option value="Earned">Earned Leave</option>
+                                            <option value="Unpaid">Unpaid Leave</option>
+                                            <option value="Maternity">Maternity Leave</option>
+                                            <option value="Paternity">Paternity Leave</option>
+                                            <option value="Bereavement">Bereavement Leave</option>
+                                            <option value="Compensatory">Compensatory Leave</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+                                )}
                             </div>
 
                             <div className="space-y-2">
@@ -670,8 +708,8 @@ export default function ESSLeaveManagement({ employeeId, payrollConfig }) {
                             </button>
                             <button
                                 type="submit"
-                                disabled={submitLoading || calculating || calculateTotalDays() <= 0}
-                                className="flex-[2] py-4 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 disabled:text-slate-500 disabled: text-white rounded-xl text-sm font-black transition-all flex items-center justify-center gap-2"
+                                disabled={submitLoading || calculating || !calculationResult || (formData.leaveType !== 'WFH' && calculateTotalDays() <= 0)}
+                                className="flex-[2] py-4 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 disabled:text-slate-500 disabled:shadow-none text-white rounded-xl text-sm font-black transition-all flex items-center justify-center gap-2"
                             >
                                 {submitLoading ? (
                                     <Loader2 className="w-5 h-5 animate-spin" />
@@ -701,7 +739,7 @@ export default function ESSLeaveManagement({ employeeId, payrollConfig }) {
                         onClick={() => setActiveView('list')}
                         className={`text-sm font-bold px-5 py-2 rounded-lg transition-all ${activeView === 'list' ? 'bg-white text-slate-900' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'}`}
                     >
-                        My Leaves
+                        My Leave & WFH
                     </button>
                     <button
                         onClick={() => setActiveView('approvals')}
@@ -807,7 +845,7 @@ export default function ESSLeaveManagement({ employeeId, payrollConfig }) {
                 <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
                     {/* LEAVE BALANCES WIDGETS */}
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                        <div className="p-6 bg-white border border-slate-200 rounded-3xl flex flex-col justify-between hover: transition-all">
+                        <div className="p-6 bg-white border border-slate-200 rounded-3xl flex flex-col justify-between  transition-all">
                             <div className="flex items-center gap-3 mb-2">
                                 <div className="p-2 bg-slate-50 rounded-xl">
                                     <CalendarDays className="w-5 h-5 text-slate-400" />
@@ -820,7 +858,7 @@ export default function ESSLeaveManagement({ employeeId, payrollConfig }) {
                             </div>
                         </div>
 
-                        <div className="p-6 bg-indigo-50 border border-slate-200 rounded-3xl flex flex-col justify-between hover: transition-all">
+                        <div className="p-6 bg-indigo-50 border border-indigo-100 rounded-3xl flex flex-col justify-between  transition-all">
                             <div className="flex items-center gap-3 mb-2">
                                 <div className="p-2 bg-indigo-100 rounded-xl">
                                     <CheckCircle2 className="w-5 h-5 text-indigo-500" />
@@ -829,13 +867,13 @@ export default function ESSLeaveManagement({ employeeId, payrollConfig }) {
                             </div>
                             <div>
                                 <p className="text-3xl font-black text-indigo-700">
-                                    {applications.filter(a => a.status === 'Approved' && a.leaveType !== 'Unpaid').reduce((acc, curr) => acc + curr.totalDays, 0)}
+                                    {leavesTaken}
                                 </p>
                                 <p className="text-xs text-indigo-500/80 font-medium mt-1">Approved paid leaves</p>
                             </div>
                         </div>
 
-                        <div className="p-6 bg-emerald-50 border border-emerald-100 rounded-3xl flex flex-col justify-between hover: transition-all">
+                        <div className="p-6 bg-emerald-50 border border-emerald-100 rounded-3xl flex flex-col justify-between  transition-all">
                             <div className="flex items-center gap-3 mb-2">
                                 <div className="p-2 bg-emerald-100 rounded-xl">
                                     <Calendar className="w-5 h-5 text-emerald-500" />
@@ -844,13 +882,13 @@ export default function ESSLeaveManagement({ employeeId, payrollConfig }) {
                             </div>
                             <div>
                                 <p className="text-3xl font-black text-emerald-700">
-                                    {leaveQuota - applications.filter(a => a.status === 'Approved' && a.leaveType !== 'Unpaid').reduce((acc, curr) => acc + curr.totalDays, 0)}
+                                    {remainingBalance}
                                 </p>
                                 <p className="text-xs text-emerald-600/80 font-medium mt-1">Available to use</p>
                             </div>
                         </div>
 
-                        <div className="p-6 bg-amber-50 border border-amber-100 rounded-3xl flex flex-col justify-between hover: transition-all">
+                        <div className="p-6 bg-amber-50 border border-amber-100 rounded-3xl flex flex-col justify-between  transition-all">
                             <div className="flex items-center gap-3 mb-2">
                                 <div className="p-2 bg-amber-100 rounded-xl">
                                     <AlertCircle className="w-5 h-5 text-amber-500" />
@@ -859,7 +897,7 @@ export default function ESSLeaveManagement({ employeeId, payrollConfig }) {
                             </div>
                             <div>
                                 <p className="text-3xl font-black text-amber-700">
-                                    {applications.filter(a => a.status === 'Approved' && a.leaveType === 'Unpaid').reduce((acc, curr) => acc + curr.totalDays, 0)}
+                                    {unpaidLeaves}
                                 </p>
                                 <p className="text-xs text-amber-600/80 font-medium mt-1">Loss of pay days</p>
                             </div>
@@ -908,9 +946,11 @@ export default function ESSLeaveManagement({ employeeId, payrollConfig }) {
                                         <td className="p-4">
                                             <div className="flex items-center gap-3">
                                                 <div className="w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center text-indigo-600 font-bold text-xs">
-                                                    {app.leaveType[0]}
+                                                    {app.leaveType === 'WFH' ? 'W' : (app.leaveCategory?.[0] || 'L')}
                                                 </div>
-                                                <span className="text-sm font-semibold text-slate-900">{app.leaveType}</span>
+                                                <span className="text-sm font-semibold text-slate-900">
+                                                    {app.leaveType === 'WFH' ? 'WFH' : `${app.leaveCategory || 'Leave'} (${app.leaveType === 'Half Day' ? 'Half Day' : 'Full Day'})`}
+                                                </span>
                                             </div>
                                         </td>
                                         <td className="p-4">
@@ -996,3 +1036,4 @@ export default function ESSLeaveManagement({ employeeId, payrollConfig }) {
         </div>
     );
 }
+

@@ -54,7 +54,7 @@ export default function RosterPlanning() {
             const empData = await empRes.json();
             const shiftData = await shiftRes.json();
 
-            if (empData.success) setEmployees(empData.employees || []);
+            if (empData.success) setEmployees(empData.data || empData.employees || []);
             if (shiftData.success) setShifts(shiftData.shifts || []);
 
         } catch (error) {
@@ -84,15 +84,28 @@ export default function RosterPlanning() {
     );
 
     const getShiftForDate = (employeeId, date) => {
-        return roster.find(r =>
-            r.employeeId?._id === employeeId &&
-            isSameDay(new Date(r.date), date)
-        )?.shiftId;
+        return roster.find(r => {
+            const empId = r.employeeId?._id || r.employeeId;
+            return empId && String(empId) === String(employeeId) && isSameDay(new Date(r.date), date);
+        })?.shiftId;
     };
 
     const handleShiftChange = async (employeeId, date, shiftId) => {
         if (!shiftId) {
-            // Logic for unassigning if needed
+            try {
+                const response = await fetch(`/api/v1/admin/payroll/roster?employeeId=${employeeId}&date=${date.toISOString()}`, {
+                    method: 'DELETE'
+                });
+                const data = await response.json();
+                if (data.success) {
+                    toast.success("Shift removed");
+                    fetchRoster();
+                } else {
+                    toast.error(data.error || "Failed to remove shift");
+                }
+            } catch (error) {
+                toast.error("Failed to remove shift");
+            }
             return;
         }
 
@@ -102,13 +115,13 @@ export default function RosterPlanning() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     assignments: [{ employeeId, date, shiftId }]
-                    // organizationId and assignedBy are securely handled by the backend
                 })
             });
             const data = await response.json();
             if (data.success) {
-                // Refresh local state or optimistic update
                 fetchRoster();
+            } else {
+                toast.error(data.error || "Failed to update shift");
             }
         } catch (error) {
             toast.error("Failed to update shift");
@@ -307,7 +320,7 @@ export default function RosterPlanning() {
                                                             color: assignedShift.color,
                                                         } : { color: '#cbd5e1' }}
                                                     >
-                                                        <option value="" disabled>Off</option>
+                                                        <option value="">Off</option>
                                                         {shifts.map(s => <option key={s._id} value={s._id} style={{ color: s.color }}>{s.name}</option>)}
                                                     </select>
                                                 </td>

@@ -93,12 +93,7 @@ export async function POST(request) {
       return NextResponse.json({ success: false, error: "No resume file provided" }, { status: 400 });
     }
 
-    if (!process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_SECRET) {
-      return NextResponse.json({
-        success: false,
-        error: "Cloudinary credentials are not configured. Please add CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET in your Vercel Project Environment Variables."
-      }, { status: 500 });
-    }
+
 
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
@@ -155,28 +150,51 @@ export async function POST(request) {
       }, { status: 409 });
     }
 
-    // 3. Save PDF file to Cloudinary
-    console.log("Uploading resume to Cloudinary...");
-    const uploadResult = await new Promise((resolve, reject) => {
-      const stream = cloudinary.uploader.upload_stream(
-        { 
-          folder: "staffing/resumes",
-          resource_type: "auto",
-          public_id: `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '_').split('.')[0]}`
-        },
-        (error, result) => {
-          if (error) {
-            console.error("Cloudinary upload stream error:", error);
-            reject(error);
-          } else {
-            resolve(result);
-          }
-        }
-      );
-      stream.end(buffer);
-    });
+    // 3. Save PDF file locally
+    const fileName = `resume_${Date.now()}_${(parsedData.name || file.name.split('.')[0]).replace(/[^a-zA-Z0-9.-]/g, '_').replace(/\s+/g, '_').toLowerCase()}.pdf`;
+    const uploadDir = path.join(process.cwd(), 'public', 'uploads', 'resumes');
+    const filePath = path.join(uploadDir, fileName);
+    let resumeUrl = `/uploads/resumes/${fileName}`;
 
-    const resumeUrl = uploadResult.secure_url;
+    try {
+      await fs.mkdir(uploadDir, { recursive: true });
+      await fs.writeFile(filePath, buffer);
+      console.log("Resume saved locally at:", resumeUrl);
+    } catch (fsErr) {
+      console.error('Failed to save resume locally:', fsErr?.message || fsErr);
+    }
+
+    // Optional: Save PDF file to Cloudinary (background/backup)
+    if (process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_SECRET) {
+      try {
+        console.log("Uploading resume to Cloudinary as backup...");
+        const uploadResult = await new Promise((resolve, reject) => {
+          const stream = cloudinary.uploader.upload_stream(
+            { 
+              folder: "staffing/resumes",
+              resource_type: "auto",
+              public_id: `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '_').split('.')[0]}`
+            },
+            (error, result) => {
+              if (error) {
+                console.error("Cloudinary backup upload error:", error);
+                reject(error);
+              } else {
+                resolve(result);
+              }
+            }
+          );
+          stream.end(buffer);
+        });
+        
+        if (uploadResult && uploadResult.secure_url) {
+          resumeUrl = uploadResult.secure_url;
+          console.log("Using Cloudinary URL for resume:", resumeUrl);
+        }
+      } catch (cloudinaryErr) {
+        console.warn("Cloudinary backup upload failed, continuing with local storage:", cloudinaryErr);
+      }
+    }
 
     // 4. Create StaffingCandidate in DB
     const candidate = await StaffingCandidate.create({

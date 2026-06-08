@@ -264,13 +264,21 @@ export async function GET(request) {
             let notes = "Auto-marked Absent (Shift End)";
             
             if (approvedLeave) {
-              defaultStatus = "Leave";
-              notes = `Approved Leave: ${approvedLeave.leaveType}`;
+              if (approvedLeave.leaveType === 'WFH') {
+                defaultStatus = "WFH";
+                notes = "Work From Home (Approved)";
+              } else if (approvedLeave.leaveType === 'Half Day') {
+                defaultStatus = "Half-day";
+                notes = "Approved Half Day Leave";
+              } else {
+                defaultStatus = "Leave";
+                notes = `Approved Leave: ${approvedLeave.leaveType}`;
+              }
             } else if (holiday) {
               defaultStatus = "Holiday";
               notes = `Holiday: ${holiday.name}`;
             } else if (isWeekend) {
-              defaultStatus = "Weekly Off";
+              defaultStatus = "Weekend";
               notes = "Weekly Off";
             }
 
@@ -421,13 +429,21 @@ export async function GET(request) {
           let notes = "Expected Absent (No Clock-In Yet)";
           
           if (approvedLeave) {
-            defaultStatus = "Leave";
-            notes = `Approved Leave: ${approvedLeave.leaveType}`;
+            if (approvedLeave.leaveType === 'WFH') {
+              defaultStatus = "WFH";
+              notes = "Work From Home (Approved)";
+            } else if (approvedLeave.leaveType === 'Half Day') {
+              defaultStatus = "Half-day";
+              notes = "Approved Half Day Leave";
+            } else {
+              defaultStatus = "Leave";
+              notes = `Approved Leave: ${approvedLeave.leaveType}`;
+            }
           } else if (holiday) {
             defaultStatus = "Holiday";
             notes = `Holiday: ${holiday.name}`;
           } else if (isWeekend) {
-            defaultStatus = "Weekly Off";
+            defaultStatus = "Weekend";
             notes = "Weekly Off";
           }
 

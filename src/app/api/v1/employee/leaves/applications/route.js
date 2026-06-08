@@ -61,6 +61,7 @@ export async function POST(request) {
         const body = await request.json();
         const {
             leaveType,
+            leaveCategory,
             startDate,
             endDate,
             reason,
@@ -93,7 +94,13 @@ export async function POST(request) {
 
         // 3. Force Recalculate Actual Deductible Days using correct Employee _id
         const calcResult = await calculateEffectiveLeaveDays(employee._id, startDate, endDate);
-        const actualLeaveDays = calcResult.totalEffectiveDays;
+        let actualLeaveDays = calcResult.totalEffectiveDays;
+
+        if (leaveType === 'WFH') {
+            actualLeaveDays = 0;
+        } else if (leaveType === 'Half Day') {
+            actualLeaveDays = actualLeaveDays * 0.5;
+        }
         
         // 3. Build Approval Chain based on selection
         const approvalChain = [];
@@ -151,6 +158,7 @@ export async function POST(request) {
         const application = await LeaveApplication.create({
             employee: employee._id,
             leaveType,
+            leaveCategory: leaveCategory || undefined,
             startDate: new Date(startDate),
             endDate: new Date(endDate),
             totalDays: actualLeaveDays,
@@ -191,7 +199,7 @@ export async function POST(request) {
         const emailContent = `
             <h2>New Leave Application Pending</h2>
             <p><strong>Employee:</strong> ${employee?.personalDetails?.firstName} ${employee?.personalDetails?.lastName}</p>
-            <p><strong>Type:</strong> ${leaveType}</p>
+            <p><strong>Type:</strong> ${leaveCategory ? `${leaveCategory} (${leaveType})` : leaveType}</p>
             <p><strong>Dates:</strong> ${new Date(startDate).toDateString()} to ${new Date(endDate).toDateString()}</p>
             <p><strong>Deductible Days:</strong> ${actualLeaveDays}</p>
             <p><strong>Reason:</strong> ${reason}</p>

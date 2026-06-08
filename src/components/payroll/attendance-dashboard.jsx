@@ -37,6 +37,7 @@ import AttendanceAnalytics from "./attendance/AttendanceAnalytics";
 import AttendanceInsights from "./attendance/AttendanceInsights";
 import AttendanceFilters from "./attendance/AttendanceFilters";
 import AttendanceTable from "./attendance/AttendanceTable";
+import MonthlyAttendanceTable from "./attendance/MonthlyAttendanceTable";
 import EmployeeDetailsDrawer from "./attendance/EmployeeDetailsDrawer";
 import { useSession } from "@/context/SessionContext";
 import { exportToExcel } from "@/utils/exportToExcel";
@@ -236,70 +237,6 @@ export default function AttendanceDashboard() {
       setLoading(false);
     }
   };
-  //const
-  // const fetchAttendance = async () => {
-  //   try {
-  //     setLoading(true);
-  //     const params = new URLSearchParams();
-
-  //     if (viewMode === "daily") {
-  //       params.append("date", selectedDate);
-  //     } else {
-  //       // Monthly view
-  //       const startDate = new Date(selectedYear, selectedMonth - 1, 1);
-  //       const endDate = new Date(selectedYear, selectedMonth, 0, 23, 59, 59);
-  //       params.append("startDate", startDate.toISOString());
-  //       params.append("endDate", endDate.toISOString());
-  //     }
-
-  //     if (selectedOrganization) {
-  //       params.append("organizationId", selectedOrganization);
-  //     }
-
-  //     const response = await fetch(
-  //       `/api/v1/admin/payroll/attendance?${params.toString()}`
-  //     );
-  //     const data = await response.json();
-
-  //     if (user?.role === "admin") {
-  //        const filteredAttendance = data.attendance || [];
-  //         console.log("Fetched attendance:", filteredAttendance);
-  //       setAttendance(filteredAttendance);
-  //     } else if (user?.role === "supervisor") {
-  //       const supervisedAttendance = data.attendance || []
-  //       console.log(supervisedAttendance);
-
-  //      const supervisedAttendanceRecord =  supervisedAttendance.filter((record) => {
-  //         const emp = record.employee;
-  //         if (!emp) return false;
-  //       console.log("stttttt");
-
-  //         const isShift1Supervisor =
-  //           emp.attendanceApproval?.shift1Supervisor === user.id ||
-  //           emp.attendanceApproval?.shift1Supervisor === user.name;
-  //         const isShift2Supervisor =
-  //           emp.attendanceApproval?.shift2Supervisor === user.id ||
-  //           emp.attendanceApproval?.shift2Supervisor === user.name;
-  //         const isSameDepartment =
-  //           emp.jobDetails?.department === user?.department;
-
-  //           console.log("ennnnn");
-
-  //         return isShift1Supervisor || isShift2Supervisor || isSameDepartment;
-  //       });
-  //       console.log("Fetched attendance:", supervisedAttendanceRecord);
-  //       setAttendance(supervisedAttendanceRecord);
-  //     }else{
-  //        setAttendance([]);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching attendance:", error);
-  //     setAttendance([]);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
 
   useEffect(() => {
     fetchOrganizations();
@@ -869,70 +806,29 @@ export default function AttendanceDashboard() {
     <div className="min-h-screen bg-slate-50">
       <Toaster />
       <div className="max-w-7xl mx-auto px-6 py-8">
-        {/* Header Banner */}
-        <div className="relative overflow-hidden bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-xl shadow-indigo-950/20 border border-slate-800 mb-8">
-          <div className="absolute -right-16 -top-16 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl"></div>
-          <div className="absolute -left-16 -bottom-16 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl"></div>
-          
-          <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-            <div className="space-y-2">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
-                <Cpu className="w-3.5 h-3.5 animate-pulse" /> Operations & Attendance Intelligence
-              </div>
-              <h1 className="text-xl sm:text-3xl font-extrabold text-white tracking-tight">
-                {isAdminView ? "Attendance Management" : "My Attendance Dashboard"}
-              </h1>
-              <p className="text-slate-500 text-sm mt-1">
-                {isAdminView 
-                  ? "Track and manage employee attendance records, handle status corrections, and export complete statutory logs." 
-                  : "View clock-in schedules, analyze monthly hours, and submit regularization requests instantly."
-                }
-              </p>
-            </div>
+        {/* Simple Text Header matching Image 2 */}
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8">
+          <div className="space-y-1">
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+              {isAdminView ? "Attendance Management" : "My Attendance Dashboard"}
+            </h1>
+            <p className="text-slate-500 text-sm">
+              {isAdminView 
+                ? "Track and manage employee attendance records, handle status corrections, and export complete statutory logs." 
+                : "View clock-in schedules, analyze monthly hours, and submit regularization requests instantly."
+              }
+            </p>
+          </div>
 
-            <div className="flex flex-wrap gap-3">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button
-                    disabled={exportLoading}
-                    className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-indigo-400 hover:text-white font-semibold text-sm px-5 py-3 rounded-xl border border-slate-700 transition-all active:scale-[0.98]"
-                  >
-                    {exportLoading ? (
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                    ) : (
-                      <Download className="w-4 h-4 text-indigo-400" />
-                    )}
-                    Export Report
-                    <ChevronDown className="w-4 h-4" />
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48 bg-slate-900 border border-slate-800 text-slate-300">
-                  <DropdownMenuItem className="hover:bg-slate-800 hover:text-white focus:bg-slate-800 focus:text-white" onClick={() => handleExport('excel')}>Excel Format</DropdownMenuItem>
-                  <DropdownMenuItem className="hover:bg-slate-800 hover:text-white focus:bg-slate-800 focus:text-white" onClick={() => handleExport('csv')}>CSV Format</DropdownMenuItem>
-                  <DropdownMenuItem className="hover:bg-slate-800 hover:text-white focus:bg-slate-800 focus:text-white" onClick={() => handleExport('pdf')}>PDF Document</DropdownMenuItem>
-                  <DropdownMenuSeparator className="border-slate-800" />
-                  <DropdownMenuItem className="hover:bg-slate-800 hover:text-white focus:bg-slate-800 focus:text-white" onClick={() => window.print()}>Print Report</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-
-              {user?.role === "admin" && (
-                <button
-                  onClick={() => router.push("/admin/attendance/import-attendance")}
-                  className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-indigo-400 hover:text-white font-semibold text-sm px-5 py-3 rounded-xl border border-slate-700 transition-all active:scale-[0.98]"
-                >
-                  <Upload className="w-4 h-4" /> Bulk Import
-                </button>
-              )}
-
-              <button
-                onClick={() =>
-                  router.push(isEmployeeView ? '/employee/attendance/add-attendance' : "/admin/attendance/add-attendance")
-                }
-                className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm px-5 py-3 rounded-xl shadow-lg shadow-indigo-600/35 transition-all active:scale-[0.98]"
-              >
-                <Plus className="w-4 h-4" /> Add Entry
-              </button>
-            </div>
+          <div className="flex flex-wrap gap-3">
+            <button
+              onClick={() =>
+                router.push(isEmployeeView ? "/employee/attendance/add-attendance" : "/admin/attendance/add-attendance")
+              }
+              className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm px-4 py-2.5 rounded-lg transition-colors"
+            >
+              <Plus className="w-4 h-4" /> Add Attendance Record
+            </button>
           </div>
         </div>
 
@@ -944,147 +840,6 @@ export default function AttendanceDashboard() {
         )}
 
 
-        {/* View Mode Toggle */}
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm mb-8 overflow-hidden">
-          <div className="border-b border-slate-50 bg-slate-50/30 p-2 sm:p-3">
-            <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
-              {isAdminView && (
-                <button
-                  onClick={() => setViewMode("weekly")}
-                  className={`flex items-center gap-2 py-2.5 px-4 rounded-xl text-xs font-bold transition-all ${viewMode === "weekly"
-                    ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/25 scale-102"
-                    : "bg-transparent text-slate-500 hover:text-slate-700 hover:bg-slate-100/50"
-                    }`}
-                >
-                  <Clock className="w-3.5 h-3.5" />
-                  Weekly Rollup
-                </button>
-              )}
-              <button
-                onClick={() => setViewMode("monthly")}
-                className={`flex items-center gap-2 py-2.5 px-4 rounded-xl text-xs font-bold transition-all ${viewMode === "monthly"
-                  ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/25 scale-102"
-                  : "bg-transparent text-slate-500 hover:text-slate-700 hover:bg-slate-100/50"
-                  }`}
-              >
-                <Layers className="w-3.5 h-3.5" />
-                Monthly Summary
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Professional Attendance Analytics */}
-        <AttendanceAnalytics stats={stats} viewMode={viewMode} role={isAdminView ? "admin" : "employee"} />
-
-        {/* Organization Grouping Toggle */}
-        {organizations.length > 1 && (
-          <div
-            className={`bg-white rounded-2xl border transition-all ${groupByOrganization
-              ? "border-indigo-200 bg-gradient-to-r from-indigo-50/40 via-blue-50/20 to-slate-50/10"
-              : "border-slate-100"
-              } shadow-sm mb-8`}
-          >
-            <div className="p-4 sm:p-5">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div className="flex items-center space-x-3.5">
-                  <div
-                    className={`w-11 h-11 rounded-xl flex items-center justify-center shadow-md transition-all ${groupByOrganization ? "bg-indigo-600 text-white shadow-indigo-600/20 scale-105" : "bg-slate-50 text-slate-400 border border-slate-100"
-                      }`}
-                  >
-                    <Layers className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-extrabold text-slate-800">
-                      Organization Grouping Rollup
-                    </h3>
-                    <p className="text-xs font-semibold text-slate-400 mt-0.5">
-                      {groupByOrganization
-                        ? "Active: Attendance records are aggregated and grouped by Organization"
-                        : "Click switch to collapse records by Organization"}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-end space-x-3">
-                  {groupByOrganization && (
-                    <div className="flex items-center gap-1.5">
-                      <button
-                        onClick={
-                          viewMode === "monthly"
-                            ? expandAllEmployees
-                            : expandAllOrganizations
-                        }
-                        className="px-3 py-1.5 text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 rounded-xl transition-all border border-indigo-100/60"
-                      >
-                        Expand All
-                      </button>
-                      <button
-                        onClick={
-                          viewMode === "monthly"
-                            ? collapseAllEmployees
-                            : collapseAllOrganizations
-                        }
-                        className="px-3 py-1.5 text-xs font-bold text-slate-600 bg-slate-50 hover:bg-slate-100 rounded-xl transition-all border border-slate-100"
-                      >
-                        Collapse All
-                      </button>
-                    </div>
-                  )}
-
-                  <button
-                    onClick={handleGroupToggle}
-                    className={`relative inline-flex h-6.5 w-12 shrink-0 items-center rounded-full transition-colors focus:outline-none ${groupByOrganization ? "bg-indigo-600" : "bg-slate-200"
-                      }`}
-                  >
-                    <span
-                      className={`inline-block h-4.5 w-4.5 transform rounded-full bg-white shadow-md transition-transform ${groupByOrganization ? "translate-x-6" : "translate-x-1.5"
-                        }`}
-                    />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Professional Filters */}
-        <AttendanceFilters 
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
-          selectedOrganization={selectedOrganization}
-          setSelectedOrganization={setSelectedOrganization}
-          organizations={organizations}
-          viewMode={viewMode}
-          selectedDate={selectedDate}
-          setSelectedDate={setSelectedDate}
-          selectedMonth={selectedMonth}
-          setSelectedMonth={setSelectedMonth}
-          selectedYear={selectedYear}
-          setSelectedYear={setSelectedYear}
-          months={months}
-          years={years}
-          departments={uniqueDepartments}
-          selectedDepartment={selectedDepartment}
-          setSelectedDepartment={setSelectedDepartment}
-          selectedStatus={selectedStatus}
-          setSelectedStatus={setSelectedStatus}
-          role={user?.role}
-        />
-
-        {/* Attendance Table */}
-        {viewMode !== "monthly" && viewMode !== "weekly" && (
-          <AttendanceTable 
-            attendance={filteredAttendance}
-            onViewDetails={handleViewDetails}
-            onRegularize={(record) => {
-              setRegData({ ...regData, date: record.date, type: 'Absent Correction' });
-              setShowRegModal(true);
-            }}
-            userRole={user?.role}
-            loading={loading}
-          />
-        )}
 
         {/* Employee Details Side Drawer */}
         <EmployeeDetailsDrawer 
@@ -1093,434 +848,33 @@ export default function AttendanceDashboard() {
           record={selectedRecord}
         />
 
-        {/* WEEKLY VIEW CONTENT */}
-        {viewMode === "weekly" && (
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
-            <div className="p-6 border-b border-slate-200">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h2 className="text-xl font-semibold text-slate-900">
-                    Weekly Attendance
-                  </h2>
-                  <p className="text-sm text-slate-600 mt-1">
-                    {(() => {
-                      const curr = new Date(selectedDate);
-                      const day = curr.getDay();
-                      const diff = curr.getDate() - day + (day === 0 ? -6 : 1);
-                      const start = new Date(curr.setDate(diff));
-                      const end = new Date(curr.setDate(diff + 6));
-                      return `${start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${end.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
-                    })()}
-                  </p>
-                </div>
-                <div className="flex items-center gap-3">
-                  <button
-                    onClick={() => {
-                      const d = new Date(selectedDate);
-                      d.setDate(d.getDate() - 7);
-                      setSelectedDate(d.toISOString().split('T')[0]);
-                    }}
-                    className="p-2 border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors"
-                  >
-                    <ChevronLeft className="w-4 h-4" />
-                  </button>
-                  <button
-                    onClick={() => {
-                      const d = new Date(selectedDate);
-                      d.setDate(d.getDate() + 7);
-                      setSelectedDate(d.toISOString().split('T')[0]);
-                    }}
-                    className="p-2 border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors"
-                  >
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div className="divide-y divide-slate-200">
-              {getGroupedMonthlyAttendance().length === 0 ? (
-                <div className="text-center py-16">
-                  <div className="w-16 h-16 bg-slate-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                    <Calendar className="w-8 h-8 text-slate-400" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-slate-900 mb-2">
-                    No records for this week
-                  </h3>
-                </div>
-              ) : (
-                getGroupedMonthlyAttendance().map((org) => (
-                  <div key={org.name}>
-                    <div
-                      onClick={() => toggleOrganization(org.name)}
-                      className="px-6 py-4 bg-gradient-to-r from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 cursor-pointer transition-colors"
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-3">
-                          <div className="w-8 h-8 bg-slate-500 rounded-lg flex items-center justify-center">
-                            <Building2 className="w-4 h-4 text-white" />
-                          </div>
-                          <div>
-                            <h3 className="text-base font-semibold text-slate-900">
-                              {org.name}
-                            </h3>
-                            <p className="text-xs text-slate-600 mt-1">
-                              {org.count} employee{org.count !== 1 ? "s" : ""} tracked this week
-                            </p>
-                          </div>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          {expandedOrgs[org.name] ? (
-                            <ChevronUp className="w-5 h-5 text-slate-500" />
-                          ) : (
-                            <ChevronDown className="w-5 h-5 text-slate-500" />
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                    {expandedOrgs[org.name] && (
-                      <div className="p-6 space-y-4">
-                        {org.employees.map((empData) => (
-                          <div 
-                            key={empData.employee._id} 
-                            onClick={() => toggleEmployee(empData.employee._id)}
-                            className="border border-slate-200 rounded-xl overflow-hidden cursor-pointer"
-                          >
-                            <div className="px-4 py-3 bg-slate-50 hover:bg-slate-100 transition-colors">
-                              <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-3">
-                                  <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-lg flex items-center justify-center">
-                                    <User className="w-5 h-5 text-white" />
-                                  </div>
-                                  <div>
-                                    <h4 className="font-semibold text-slate-900 text-sm">
-                                      {empData.employee.personalDetails?.firstName} {empData.employee.personalDetails?.lastName}
-                                    </h4>
-                                    <p className="text-xs text-slate-500">ID: {empData.employee.employeeId}</p>
-                                  </div>
-                                </div>
-                                <div className="flex items-center gap-6">
-                                  <div className="text-right">
-                                    <p className="text-xs text-slate-600">Present</p>
-                                    <p className="text-sm font-bold text-green-700">{empData.stats.totalPresent}</p>
-                                  </div>
-                                  <div className="text-right">
-                                    <p className="text-xs text-slate-600">Total Hrs</p>
-                                    <p className="text-sm font-bold text-blue-700">{empData.stats.totalHours.toFixed(1)}h</p>
-                                  </div>
-                                  {expandedEmployees[empData.employee._id] ? (
-                                    <ChevronUp className="w-4 h-4 text-slate-500" />
-                                  ) : (
-                                    <ChevronDown className="w-4 h-4 text-slate-500" />
-                                  )}
-                                </div>
-                              </div>
-                            </div>
-
-                            {expandedEmployees[empData.employee._id] && (
-                              <div className="bg-slate-50 border-t border-slate-100 p-1">
-                                <EmployeeAttendanceInline 
-                                  employeeData={empData}
-                                  viewMode={viewMode}
-                                  selectedMonth={selectedMonth}
-                                  selectedYear={selectedYear}
-                                  selectedDate={selectedDate}
-                                />
-                              </div>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
-        )}
-
-
-        {/* MONTHLY VIEW CONTENT */}
-        {viewMode === "monthly" && (
-
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
-            <div className="p-6 border-b border-slate-200">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h2 className="text-xl font-semibold text-slate-900">
-                    Monthly Attendance -{" "}
-                    {months.find((m) => m.value === selectedMonth)?.label}{" "}
-                    {selectedYear}
-                  </h2>
-                  <p className="text-sm text-slate-600 mt-1">
-                    {getMonthlyAttendanceByEmployee().length} employee
-                    {getMonthlyAttendanceByEmployee().length !== 1 ? "s" : ""}{" "}
-                    tracked
-                  </p>
-                </div>
-                <div className="flex items-center gap-3">
-                  <button
-                    onClick={() => handleMonthChange("prev")}
-                    className="p-2 border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors"
-                  >
-                    <ChevronLeft className="w-4 h-4" />
-                  </button>
-                  <button
-                    onClick={() => handleMonthChange("next")}
-                    className="p-2 border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors"
-                  >
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {getMonthlyAttendanceByEmployee().length === 0 ? (
-              <div className="text-center py-16">
-                <div className="w-16 h-16 bg-slate-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <Calendar className="w-8 h-8 text-slate-400" />
-                </div>
-                <h3 className="text-lg font-semibold text-slate-900 mb-2">
-                  No attendance records
-                </h3>
-                <p className="text-slate-600">
-                  No attendance has been marked for this month yet.
-                </p>
-              </div>
-            ) : groupByOrganization ? (
-              // Grouped by Organization
-              <div className="divide-y divide-slate-200">
-                {getGroupedMonthlyAttendance().map((org) => (
-                  <div key={org.name}>
-                    <div
-                      onClick={() => toggleOrganization(org.name)}
-                      className="px-6 py-4 bg-gradient-to-r from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 cursor-pointer transition-colors"
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-3">
-                          <div className="w-8 h-8 bg-slate-500 rounded-lg flex items-center justify-center">
-                            <Building2 className="w-4 h-4 text-white" />
-                          </div>
-                          <div>
-                            <h3 className="text-base font-semibold text-slate-900">
-                              {org.name}
-                            </h3>
-                            <div className="flex items-center space-x-4 mt-1">
-                              <p className="text-xs text-slate-600">
-                                {org.count} employee{org.count !== 1 ? "s" : ""}
-                              </p>
-                              <span className="text-xs text-green-600 font-medium">
-                                {org.totalPresent} present days
-                              </span>
-                              <span className="text-xs text-blue-600 font-medium">
-                                {org.totalHours.toFixed(1)} total hours
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="flex items-center space-x-2">
-                          {expandedOrgs[org.name] ? (
-                            <ChevronUp className="w-5 h-5 text-slate-500" />
-                          ) : (
-                            <ChevronDown className="w-5 h-5 text-slate-500" />
-                          )}
-                        </div>
-                      </div>
-                    </div>
-
-                    {expandedOrgs[org.name] && (
-                      <div className="p-6 space-y-4">
-                        {org.employees.map((empData) => {
-                          const daysInMonth = getDaysInMonth(
-                            selectedMonth,
-                            selectedYear
-                          );
-
-                          return (
-                            <div
-                              key={empData.employee._id}
-                              className="border border-slate-200 rounded-xl overflow-hidden"
-                            >
-                              <div
-                                onClick={() => toggleEmployee(empData.employee._id)}
-                                className="px-4 py-3 bg-slate-50 hover:bg-slate-100 cursor-pointer transition-colors"
-                              >
-                                <div className="flex items-center justify-between">
-                                  <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
-                                      <User className="w-5 h-5 text-white" />
-                                    </div>
-                                    <div>
-                                      <h4 className="font-semibold text-slate-900 text-sm">
-                                        {
-                                          empData.employee.personalDetails
-                                            ?.firstName
-                                        }{" "}
-                                        {
-                                          empData.employee.personalDetails
-                                            ?.lastName
-                                        }
-                                      </h4>
-                                      <p className="text-xs text-slate-500">
-                                        ID: {empData.employee.employeeId}
-                                      </p>
-                                    </div>
-                                  </div>
-                                  <div className="flex items-center gap-6">
-                                    <div className="text-right">
-                                      <p className="text-xs text-slate-600">
-                                        Present
-                                      </p>
-                                      <p className="text-sm font-bold text-green-700">
-                                        {empData.stats.totalPresent}
-                                      </p>
-                                    </div>
-                                    <div className="text-right">
-                                      <p className="text-xs text-slate-600">
-                                        Total Hours
-                                      </p>
-                                      <p className="text-sm font-bold text-blue-700">
-                                        {empData.stats.totalHours.toFixed(1)}h
-                                      </p>
-                                    </div>
-                                    <div className="text-right">
-                                      <p className="text-xs text-slate-600">
-                                        Overtime
-                                      </p>
-                                      <p className="text-sm font-bold text-purple-700">
-                                        {empData.stats.totalOvertime.toFixed(1)}
-                                        h
-                                      </p>
-                                    </div>
-                                    {expandedEmployees[empData.employee._id] ? (
-                                      <ChevronUp className="w-4 h-4 text-slate-500" />
-                                    ) : (
-                                      <ChevronDown className="w-4 h-4 text-slate-500" />
-                                    )}
-                                  </div>
-                                </div>
-                              </div>
-
-                              {expandedEmployees[empData.employee._id] && (
-                                <div className="bg-slate-50 border-t border-slate-100 p-1">
-                                  <EmployeeAttendanceInline 
-                                    employeeData={empData}
-                                    viewMode={viewMode}
-                                    selectedMonth={selectedMonth}
-                                    selectedYear={selectedYear}
-                                    selectedDate={selectedDate}
-                                  />
-                                </div>
-                              )}
-                            </div>
-                          );
-                        })}
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            ) : (
-              // Flat List View
-              <div className="p-6 space-y-4">
-                {getMonthlyAttendanceByEmployee()
-                  .filter((empData) => {
-                    const fullName =
-                      `${empData.employee.personalDetails?.firstName} ${empData.employee.personalDetails?.lastName}`.toLowerCase();
-                    const employeeId =
-                      empData.employee.employeeId?.toLowerCase() || "";
-                    return (
-                      fullName.includes(searchTerm.toLowerCase()) ||
-                      employeeId.includes(searchTerm.toLowerCase())
-                    );
-                  })
-                  .map((empData) => {
-                    const daysInMonth = getDaysInMonth(
-                      selectedMonth,
-                      selectedYear
-                    );
-
-                    return (
-                      <div
-                        key={empData.employee._id}
-                        className="border border-slate-200 rounded-xl overflow-hidden"
-                      >
-                        <div
-                          onClick={() => handleOpenCalendarModal(empData)}
-                          className="px-4 py-3 bg-slate-50 hover:bg-slate-100 cursor-pointer transition-colors"
-                        >
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
-                                <User className="w-5 h-5 text-white" />
-                              </div>
-                              <div>
-                                <h4 className="font-semibold text-slate-900 text-sm">
-                                  {empData.employee.personalDetails?.firstName}{" "}
-                                  {empData.employee.personalDetails?.lastName}
-                                </h4>
-                                <div className="flex items-center gap-3 mt-0.5">
-                                  <p className="text-xs text-slate-500">
-                                    ID: {empData.employee.employeeId}
-                                  </p>
-                                  <p className="text-xs text-slate-500">
-                                    {empData.organization}
-                                  </p>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="flex items-center gap-6">
-                              <div className="text-right">
-                                <p className="text-xs text-slate-600">
-                                  Present
-                                </p>
-                                <p className="text-sm font-bold text-green-700">
-                                  {empData.stats.totalPresent}
-                                </p>
-                              </div>
-                              <div className="text-right">
-                                <p className="text-xs text-slate-600">
-                                  Total Hours
-                                </p>
-                                <p className="text-sm font-bold text-blue-700">
-                                  {empData.stats.totalHours.toFixed(1)}h
-                                </p>
-                              </div>
-                              <div className="text-right">
-                                <p className="text-xs text-slate-600">
-                                  Overtime
-                                </p>
-                                <p className="text-sm font-bold text-purple-700">
-                                  {empData.stats.totalOvertime.toFixed(1)}h
-                                </p>
-                              </div>
-                              {expandedEmployees[empData.employee._id] ? (
-                                <ChevronUp className="w-4 h-4 text-slate-500" />
-                              ) : (
-                                <ChevronDown className="w-4 h-4 text-slate-500" />
-                              )}
-                            </div>
-                          </div>
-                        </div>
-
-                        {expandedEmployees[empData.employee._id] && (
-                          <div className="bg-slate-50 border-t border-slate-100 p-1">
-                            <EmployeeAttendanceInline 
-                              employeeData={empData}
-                              viewMode={viewMode}
-                              selectedMonth={selectedMonth}
-                              selectedYear={selectedYear}
-                              selectedDate={selectedDate}
-                            />
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-              </div>
-            )}
-          </div>
+        {/* WEEKLY, MONTHLY & DAILY VIEW CONTENT */}
+        {(viewMode === "monthly" || viewMode === "weekly" || viewMode === "daily") && (
+          <MonthlyAttendanceTable
+            employeeData={getMonthlyAttendanceByEmployee()}
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            viewMode={viewMode}
+            setViewMode={setViewMode}
+            selectedMonth={selectedMonth}
+            setSelectedMonth={setSelectedMonth}
+            selectedYear={selectedYear}
+            setSelectedYear={setSelectedYear}
+            selectedDate={selectedDate}
+            setSelectedDate={setSelectedDate}
+            months={months}
+            years={years}
+            onRefresh={fetchAttendance}
+            refreshing={loading}
+            onViewDetails={(empData) => {
+              setSelectedRecord(empData.records?.[0] || null);
+              setIsDrawerOpen(true);
+            }}
+            onRegularize={(empData) => {
+              setRegData({ ...regData, type: 'Absent Correction' });
+              setShowRegModal(true);
+            }}
+          />
         )}
 
       {isEmployeeView && (
@@ -1588,84 +942,8 @@ export default function AttendanceDashboard() {
           </div>
       )}
 
-      {user?.role === 'employee' && (
-        <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden mb-8">
-            <div className="p-6 border-b border-slate-100 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600">
-                        <Sparkles className="w-5 h-5" />
-                    </div>
-                    <div>
-                        <h2 className="text-lg font-black text-slate-900">Overtime Earnings</h2>
-                        <p className="text-[10px] uppercase tracking-widest font-bold text-slate-500">Track approved OT hours and estimated pay</p>
-                    </div>
-                </div>
-                <div className="text-right">
-                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Total Earned (Current Month)</p>
-                    <p className="text-2xl font-black text-emerald-600">
-                        ₹{otRequests
-                            .filter(r => r.status === 'Approved' && new Date(r.date).getMonth() === new Date().getMonth())
-                            .reduce((sum, r) => sum + (r.earnedAmount || 0), 0)
-                            .toLocaleString()}
-                    </p>
-                </div>
-            </div>
-            <div className="p-0 overflow-x-auto">
-                {loadingOT ? (
-                    <div className="p-8 flex justify-center"><Loader2 className="w-6 h-6 animate-spin text-indigo-600" /></div>
-                ) : otRequests.length === 0 ? (
-                    <div className="p-8 text-center text-sm font-medium text-slate-500">No overtime records found.</div>
-                ) : (
-                    <table className="w-full text-left border-collapse">
-                        <thead>
-                            <tr className="bg-slate-50/50 border-b border-slate-100">
-                                <th className="p-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Date</th>
-                                <th className="p-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Type</th>
-                                <th className="p-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Hours</th>
-                                <th className="p-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Details</th>
-                                <th className="p-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Earned Amount</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-slate-50">
-                            {otRequests.map((req) => (
-                                <tr key={req._id} className="hover:bg-slate-50/50 transition-colors group">
-                                    <td className="p-4">
-                                        <p className="text-sm font-bold text-slate-900">{new Date(req.date).toDateString()}</p>
-                                    </td>
-                                    <td className="p-4">
-                                        <span className="text-[10px] font-black bg-indigo-50 px-2 py-1 rounded-md text-indigo-600 border border-indigo-100 uppercase tracking-wider">Overtime</span>
-                                    </td>
-                                    <td className="p-4">
-                                        <div className="flex items-center gap-2">
-                                              <span className="text-sm font-black text-slate-700">{req.hours}</span>
-                                              <span className="text-[10px] font-bold text-slate-400 uppercase">Hrs</span>
-                                        </div>
-                                    </td>
-                                    <td className="p-4">
-                                        <p className="text-xs text-slate-500 font-medium truncate max-w-[150px]" title={req.reason}>{req.reason}</p>
-                                        <p className={`text-[9px] font-black uppercase mt-1 tracking-widest ${
-                                            req.status === 'Approved' ? 'text-emerald-500' :
-                                            req.status === 'Rejected' ? 'text-rose-500' : 'text-amber-500'
-                                        }`}>{req.status}</p>
-                                    </td>
-                                    <td className="p-4 text-right">
-                                        <div className="flex flex-col items-end">
-                                            <span className={`text-sm font-black ${req.status === 'Approved' ? 'text-emerald-600' : 'text-slate-400'}`}>
-                                                ₹{(req.earnedAmount || 0).toLocaleString()}
-                                            </span>
-                                            {req.status === 'Pending' && (
-                                                <span className="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">ESTIMATED</span>
-                                            )}
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                )}
-            </div>
-        </div>
-      )}
+
+
 
       {showRegModal && (
 

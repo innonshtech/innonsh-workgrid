@@ -49,7 +49,6 @@ export default function LeaveManagement() {
     pages: 0,
   });
 
-  const [organizationTypes, setOrganizationTypes] = useState([]);
   const [selectedOrganization, setSelectedOrganization] = useState("");
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
@@ -62,9 +61,7 @@ export default function LeaveManagement() {
     totalDays: 0,
   });
 
-  // Organization grouping state
-  const [groupByOrganization, setGroupByOrganization] = useState(false);
-  const [expandedOrgs, setExpandedOrgs] = useState({});
+
 
   // Modal state for add/edit
   const [showModal, setShowModal] = useState(false);
@@ -136,31 +133,7 @@ export default function LeaveManagement() {
     { value: "Half-Day Unpaid", label: "Half-Day Unpaid", color: "orange" },
   ];
 
-  const fetchOrganizationTypes = async () => {
-    try {
-      const response = await fetch("/api/v1/admin/crm/organizations?limit=1000");
-      const data = await response.json();
 
-      if (response.ok) {
-        const orgsData = data.data || data.organizations || [];
-        const orgs = orgsData
-          .filter((org) => org?.name)
-          .map((org) => ({
-            value: org._id,
-            label: org.name,
-            name: org.name,
-          }));
-        setOrganizationTypes(orgs);
-        
-        // Auto-select first org if none selected to trigger config fetch
-        if (orgs.length > 0 && !selectedOrganization) {
-          setSelectedOrganization(orgs[0].value);
-        }
-      }
-    } catch (error) {
-      console.error("Error fetching organizations:", error);
-    }
-  };
 
   const fetchEmployees = async (orgId = "") => {
     try {
@@ -362,15 +335,7 @@ export default function LeaveManagement() {
       });
       calculateStats(processedLeaves);
 
-      // Auto-expand all organizations when grouping is enabled
-      if (groupByOrganization) {
-        const orgs = {};
-        processedLeaves.forEach(leave => {
-          const orgName = leave.organizationType || 'Unassigned';
-          orgs[orgName] = true;
-        });
-        setExpandedOrgs(orgs);
-      }
+
 
     } catch (error) {
       console.error("❌ Error fetching leaves:", error);
@@ -410,14 +375,6 @@ export default function LeaveManagement() {
         if (orgId) {
           setSelectedOrganization(orgId);
           fetchEmployees(orgId);
-        } else if (data.organizationType) {
-          const org = organizationTypes.find(
-            (o) => o.name === data.organizationType
-          );
-          if (org) {
-            setSelectedOrganization(org.value);
-            fetchEmployees(org.value);
-          }
         }
       } else {
         console.error("Error fetching leave record:", data.error);
@@ -450,66 +407,7 @@ export default function LeaveManagement() {
     setStats(stats);
   };
 
-  const getGroupedLeaves = () => {
-    const grouped = {};
-    leaves.forEach((leave) => {
-      const orgName = leave.organizationType || "Unassigned";
-      if (!grouped[orgName]) {
-        grouped[orgName] = {
-          name: orgName,
-          leaves: [],
-          count: 0,
-          paidLeaves: 0,
-          unpaidLeaves: 0,
-          totalDays: 0,
-        };
-      }
-      grouped[orgName].leaves.push(leave);
-      grouped[orgName].count++;
-      grouped[orgName].paidLeaves +=
-        (leave.summary.paidLeaves || 0) +
-        (leave.summary.halfDayPaidLeaves || 0) * 0.5;
-      grouped[orgName].unpaidLeaves +=
-        (leave.summary.unpaidLeaves || 0) +
-        (leave.summary.halfDayUnpaidLeaves || 0) * 0.5;
-      grouped[orgName].totalDays += leave.summary.totalDays || 0;
-    });
 
-    return Object.values(grouped).sort((a, b) => {
-      if (a.name === "Unassigned") return 1;
-      if (b.name === "Unassigned") return -1;
-      return a.name.localeCompare(b.name);
-    });
-  };
-
-  const toggleOrganization = (orgName) => {
-    setExpandedOrgs((prev) => ({
-      ...prev,
-      [orgName]: !prev[orgName],
-    }));
-  };
-
-  const expandAllOrganizations = () => {
-    const allExpanded = {};
-    getGroupedLeaves().forEach((org) => {
-      allExpanded[org.name] = true;
-    });
-    setExpandedOrgs(allExpanded);
-  };
-
-  const collapseAllOrganizations = () => {
-    setExpandedOrgs({});
-  };
-
-  const handleGroupToggle = () => {
-    const newGroupState = !groupByOrganization;
-    setGroupByOrganization(newGroupState);
-    if (newGroupState) {
-      setTimeout(() => {
-        expandAllOrganizations();
-      }, 100);
-    }
-  };
 
   const handlePageChange = (newPage) => {
     setPagination((prev) => ({ ...prev, page: newPage }));
@@ -527,10 +425,10 @@ export default function LeaveManagement() {
       status: "Draft",
     });
     setSelectedEmployee(null);
-    setSelectedOrganization("");
+    setSelectedOrganization(user?.organizationId || "");
     setDateRange({ fromDate: "", toDate: "", leaveType: "Paid", reason: "" });
     setErrors({});
-    fetchEmployees();
+    fetchEmployees(user?.organizationId || "");
     setShowModal(true);
   };
 
@@ -630,14 +528,14 @@ export default function LeaveManagement() {
   };
 
   const clearFilters = () => {
-    setSelectedOrganization("");
+    setSelectedOrganization(user?.organizationId || "");
     setSelectedStatus("");
     setSearchQuery("");
     setPagination((prev) => ({ ...prev, page: 1 }));
   };
 
   const hasActiveFilters =
-    selectedOrganization || selectedStatus || searchQuery;
+    selectedStatus || searchQuery;
 
   const getStatusBadge = (status) => {
     const badges = {
@@ -885,8 +783,11 @@ export default function LeaveManagement() {
   const summary = calculateSummary();
 
   useEffect(() => {
-    fetchOrganizationTypes();
-  }, []);
+    if (user?.organizationId) {
+      setSelectedOrganization(user.organizationId);
+      fetchPayrollConfig(user.organizationId);
+    }
+  }, [user?.organizationId]);
 
   useEffect(() => {
     fetchLeaves();
@@ -922,13 +823,7 @@ export default function LeaveManagement() {
             </div>
           </div>
         </td>
-        {!groupByOrganization && (
-          <td className="px-6 py-4">
-            <span className="inline-flex px-2 py-0.5 bg-slate-50 border border-slate-100 rounded-lg text-xs font-bold text-slate-650">
-              {leave.organizationType}
-            </span>
-          </td>
-        )}
+
         <td className="px-6 py-4">
           <span className="text-xs font-semibold text-slate-655">
             {leave.department}
@@ -1221,24 +1116,6 @@ export default function LeaveManagement() {
             <form onSubmit={handleSubmit}>
               <div className="p-6 space-y-6 max-h-[70vh] overflow-y-auto">
                 {/* Employee Selection */}
-                <div className="space-y-2">
-                  <label className="block text-sm font-semibold text-slate-700">
-                    Select Organization <span className="text-red-500">*</span>
-                  </label>
-                  <select
-                    value={selectedOrganization}
-                    onChange={handleOrganizationChange}
-                    className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors bg-white"
-                  >
-                    <option value="">All Organizations</option>
-                    {organizationTypes.map((org) => (
-                      <option key={org.value} value={org.value}>
-                        {org.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div className="space-y-2">
                     <label className="block text-sm font-semibold text-slate-700">
@@ -1815,6 +1692,7 @@ export default function LeaveManagement() {
           </div>
         )}
 
+
         {/* Filters */}
         <div className="bg-white rounded-2xl border border-slate-200">
           <div className="p-5 sm:p-6 border-b border-slate-50">
@@ -1845,31 +1723,7 @@ export default function LeaveManagement() {
           </div>
           <div className="p-5 sm:p-6 bg-slate-50/30 rounded-b-2xl">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-4 sm:gap-5">
-              {organizationTypes.length > 1 && (
-                <div className="lg:col-span-3 space-y-1.5">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-                    Organization
-                  </label>
-                  <select
-                    value={selectedOrganization}
-                    onChange={(e) => {
-                      const orgId = e.target.value;
-                      setSelectedOrganization(orgId);
-                      fetchPayrollConfig(orgId);
-                      setPagination((prev) => ({ ...prev, page: 1 }));
-                    }}
-                    className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-800 placeholder-slate-400 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all cursor-pointer"
-                  >
-                    <option value="">All Organizations</option>
-                    {organizationTypes.map((org) => (
-                      <option key={org.value} value={org.value}>
-                        {org.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              )}
-              <div className={`lg:col-span-2 space-y-1.5 ${organizationTypes.length > 1 ? "" : "lg:col-span-3"}`}>
+              <div className="lg:col-span-3 space-y-1.5">
                 <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">
                   Month
                 </label>
@@ -1966,7 +1820,7 @@ export default function LeaveManagement() {
               <div className="space-y-1">
                 <div className="flex items-center gap-3">
                   <h2 className="text-lg font-extrabold text-slate-800 tracking-tight">
-                    {groupByOrganization ? "Organization Rollup Feeds" : "Statutory Leave Logs"} —{" "}
+                    Statutory Leave Logs —{" "}
                     {formatMonthYear(selectedMonth, selectedYear)}
                   </h2>
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-50/60 border border-blue-100 rounded-full">
@@ -2026,88 +1880,6 @@ export default function LeaveManagement() {
                 </button>
               )}
             </div>
-          ) : groupByOrganization ? (
-            <div className="divide-y divide-slate-100">
-              {getGroupedLeaves().map((org) => (
-                <div key={org.name} className="overflow-hidden">
-                  <div
-                    onClick={() => toggleOrganization(org.name)}
-                    className="px-6 py-4.5 bg-gradient-to-r from-indigo-50/40 via-blue-50/20 to-slate-50/10 hover:from-indigo-100/30 hover:to-indigo-50/20 cursor-pointer border-b border-slate-100/50 transition-colors"
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-3.5">
-                        <div className="w-10 h-10 bg-indigo-50 rounded-xl flex items-center justify-center text-indigo-600">
-                          <Building2 className="w-5 h-5" />
-                        </div>
-                        <div>
-                          <h3 className="font-extrabold text-slate-800 text-sm">
-                            {org.name}
-                          </h3>
-                          <div className="flex flex-wrap items-center gap-2 mt-1.5">
-                            <span className="inline-flex px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-100 text-slate-650 border border-slate-200">
-                              {org.count} employee{org.count !== 1 ? "s" : ""}
-                            </span>
-                            <span className="inline-flex px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-100">
-                              {org.paidLeaves.toFixed(1)} paid taken
-                            </span>
-                            <span className="inline-flex px-2 py-0.5 rounded-md text-[10px] font-bold bg-rose-50 text-rose-600 border border-rose-100">
-                              {org.unpaidLeaves.toFixed(1)} unpaid taken
-                            </span>
-                            <span className="inline-flex px-2 py-0.5 rounded-md text-[10px] font-bold bg-indigo-50 text-indigo-600 border border-indigo-100">
-                              {org.totalDays.toFixed(1)} total taken
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        {expandedOrgs[org.name] ? (
-                          <ChevronUp className="w-5 h-5 text-slate-400" />
-                        ) : (
-                          <ChevronDown className="w-5 h-5 text-slate-400" />
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                  {expandedOrgs[org.name] && (
-                    <div className="overflow-x-auto">
-                      <table className="w-full">
-                        <thead className="bg-slate-50/50 border-b border-slate-100 text-slate-450 text-[10px] font-extrabold uppercase tracking-wider">
-                          <tr>
-                            <th className="text-left px-6 py-3.5 font-bold">
-                              Employee
-                            </th>
-                            <th className="text-left px-6 py-3.5 font-bold">
-                              Department
-                            </th>
-                            <th className="text-center px-6 py-3.5 font-bold">
-                              Paid Leaves
-                            </th>
-                            <th className="text-center px-6 py-3.5 font-bold">
-                              Unpaid Leaves
-                            </th>
-                            <th className="text-center px-6 py-3.5 font-bold">
-                              Total Days
-                            </th>
-                            <th className="text-center px-6 py-3.5 font-bold">
-                              Opening Balance
-                            </th>
-                            <th className="text-center px-6 py-3.5 font-bold">
-                              Status
-                            </th>
-                            <th className="text-right px-6 py-3.5 font-bold">
-                              Actions
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody className="bg-white divide-y divide-slate-100">
-                          {org.leaves.map((leave) => renderLeaveRow(leave))}
-                        </tbody>
-                      </table>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full">
@@ -2116,9 +1888,7 @@ export default function LeaveManagement() {
                     <th className="text-left px-6 py-4 font-bold">
                       Employee
                     </th>
-                    <th className="text-left px-6 py-4 font-bold">
-                      Organization
-                    </th>
+
                     <th className="text-left px-6 py-4 font-bold">
                       Department
                     </th>

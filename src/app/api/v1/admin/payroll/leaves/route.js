@@ -318,20 +318,10 @@ export async function POST(request) {
     console.log(`✅ Leave record created: ${leaveRecord._id}`);
     console.log(`   Total leaves: ${leaveRecord.leaves.length}`);
     
-    // Update annual balance if there are unpaid leaves (automatic deduction)
-    const hasUnpaidLeaves = leaveRecord.leaves.some(leave => 
-      leave.leaveType === 'Unpaid' || leave.leaveType === 'Half-Day Unpaid'
-    );
-    
-    if (hasUnpaidLeaves) {
-      console.log("📊 Record has unpaid leaves - updating annual balance...");
-      await leaveRecord.updateAnnualBalance();
-      await leaveRecord.save(); // Save again to persist the updated balance
-    } else if (status === "Approved") {
-      console.log("📊 Status is Approved - updating annual balance...");
-      await leaveRecord.updateAnnualBalance();
-      await leaveRecord.save(); // Save again to persist the updated balance
-    }
+    // Always update annual balance to ensure correct balance calculation on creation
+    console.log("📊 Updating annual balance...");
+    await leaveRecord.updateAnnualBalance();
+    await leaveRecord.save(); // Save again to persist the updated balance
 
     // Populate references before returning
     await leaveRecord.populate("employeeId", "personalDetails employeeId status");

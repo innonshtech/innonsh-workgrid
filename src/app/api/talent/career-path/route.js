@@ -21,7 +21,9 @@ export async function GET(request) {
         const employeeId = searchParams.get('employeeId');
 
         if (!employeeId) {
-            return NextResponse.json({ error: "Employee ID is required" }, { status: 400 });
+            const careerPaths = await CareerPath.find({})
+                .populate('employee', 'personalDetails employeeId jobDetails');
+            return NextResponse.json({ careerPaths });
         }
 
         const careerPath = await CareerPath.findOne({ employee: employeeId });

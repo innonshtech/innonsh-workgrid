@@ -22,7 +22,8 @@ import {
     Users,
     AlertCircle,
     Info,
-    CheckCircle
+    CheckCircle,
+    Edit3
 } from "lucide-react";
 import { toast } from "sonner";
 import { format, startOfWeek, addDays, isSameDay, parseISO } from "date-fns";
@@ -87,7 +88,9 @@ export default function TimesheetsPage() {
     const [timesheet, setTimesheet] = useState(null);
     const [timesheetEntries, setTimesheetEntries] = useState([]);
     const [isSavingTimesheet, setIsSavingTimesheet] = useState(false);
+    const [isSavingEntry, setIsSavingEntry] = useState(false);
     const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
+    const [editingEntryIndex, setEditingEntryIndex] = useState(null);
     
     // Employee details & manager selection
     const [currentUserEmployee, setCurrentUserEmployee] = useState(null);
@@ -200,7 +203,12 @@ export default function TimesheetsPage() {
             toast.error(`Cannot edit timesheet in ${timesheet?.status} status.`);
             return;
         }
+        if (editingEntryIndex !== null) {
+            toast.error("Please save or cancel your current edit before adding a new log.");
+            return;
+        }
 
+        const newIndex = timesheetEntries.length;
         setTimesheetEntries([
             ...timesheetEntries,
             {
@@ -210,6 +218,7 @@ export default function TimesheetsPage() {
                 description: ''
             }
         ]);
+        setEditingEntryIndex(newIndex);
         toast.success(`Entry added for ${format(date, 'EEEE')}`);
     };
 
@@ -219,9 +228,59 @@ export default function TimesheetsPage() {
         setTimesheetEntries(updated);
     };
 
-    const handleRemoveEntry = (index) => {
+    const handleRemoveEntry = async (index) => {
+        if (timesheet?.status === 'Approved' || timesheet?.status === 'Submitted') {
+            toast.error(`Cannot edit timesheet in ${timesheet?.status} status.`);
+            return;
+        }
+
         const updated = timesheetEntries.filter((_, i) => i !== index);
         setTimesheetEntries(updated);
+
+        setIsSavingEntry(true);
+        try {
+            const res = await fetch('/api/v1/employee/tasks/timesheets', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    employee: user.id,
+                    weekStartDate: weekStartDate.toISOString(),
+                    entries: updated,
+                    status: 'Draft',
+                    submittedTo: selectedManagerId || null
+                })
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                if (data.success) {
+                    toast.success('Entry deleted successfully!');
+                    fetchTimesheet(user.id, weekStartDate);
+                } else {
+                    toast.error(data.error || "Failed to delete entry.");
+                }
+            } else {
+                toast.error("Failed to delete entry.");
+            }
+        } catch (error) {
+            console.error("Error deleting entry:", error);
+            toast.error("An error occurred while deleting.");
+        } finally {
+            setIsSavingEntry(false);
+        }
+    };
+
+    const handleCancelEdit = (index) => {
+        const entry = timesheetEntries[index];
+        if (!entry || !entry._id) {
+            // Remove the unsaved entry entirely
+            const updated = timesheetEntries.filter((_, i) => i !== index);
+            setTimesheetEntries(updated);
+        } else {
+            // Revert changes by refetching from db
+            fetchTimesheet(user.id, weekStartDate);
+        }
+        setEditingEntryIndex(null);
     };
 
     // Save as Draft or Submit
@@ -282,6 +341,48 @@ export default function TimesheetsPage() {
             toast.error("An error occurred while saving.");
         } finally {
             setIsSavingTimesheet(false);
+        }
+    };
+
+    // Save a single entry (saves entire timesheet but scoped UX to one entry)
+    const handleSaveEntry = async (entryIndex) => {
+        const entry = timesheetEntries[entryIndex];
+        if (!entry.project || !entry.date || !entry.hours) {
+            toast.error("Please ensure the entry has a project, date, and hours.");
+            return;
+        }
+
+        setIsSavingEntry(true);
+        try {
+            const res = await fetch('/api/v1/employee/tasks/timesheets', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    employee: user.id,
+                    weekStartDate: weekStartDate.toISOString(),
+                    entries: timesheetEntries,
+                    status: 'Draft',
+                    submittedTo: selectedManagerId || null
+                })
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                if (data.success) {
+                    toast.success('Entry saved successfully!');
+                    setEditingEntryIndex(null);
+                    fetchTimesheet(user.id, weekStartDate);
+                } else {
+                    toast.error(data.error || "Failed to save entry.");
+                }
+            } else {
+                toast.error("Failed to save entry.");
+            }
+        } catch (error) {
+            console.error("Error saving entry:", error);
+            toast.error("An error occurred while saving.");
+        } finally {
+            setIsSavingEntry(false);
         }
     };
 
@@ -443,14 +544,7 @@ export default function TimesheetsPage() {
                             <Users className="w-4 h-4" /> Timesheet Approvals
                         </button>
 
-                        <button
-                            onClick={() => handleSaveTimesheet(false)}
-                            disabled={isSavingTimesheet || timesheet?.status === 'Approved' || timesheet?.status === 'Submitted'}
-                            className="flex items-center gap-2 px-5 py-2.5 bg-white border border-slate-200 text-slate-700 hover:text-slate-900 rounded-xl text-xs font-extrabold hover:bg-slate-50 active:scale-[0.98] transition-all disabled:opacity-50"
-                        >
-                            <Save className="w-4 h-4" /> Save Weekly Draft
-                        </button>
-                        
+
                         <button
                             onClick={() => setIsSubmitModalOpen(true)}
                             disabled={isSavingTimesheet || timesheet?.status === 'Approved' || timesheet?.status === 'Submitted'}
@@ -501,7 +595,7 @@ export default function TimesheetsPage() {
                                         </span>
                                         <button
                                             onClick={() => handleAddEntryForDay(day)}
-                                            disabled={timesheet?.status === 'Approved' || timesheet?.status === 'Submitted'}
+                                            disabled={timesheet?.status === 'Approved' || timesheet?.status === 'Submitted' || editingEntryIndex !== null}
                                             className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-extrabold text-indigo-600 bg-indigo-50 hover:bg-indigo-100/80 rounded-xl transition-all disabled:opacity-50"
                                         >
                                             <Plus className="w-3.5 h-3.5" /> Log Hours
@@ -527,7 +621,7 @@ export default function TimesheetsPage() {
                                                     <select
                                                         value={entry.project?._id || entry.project || ''}
                                                         onChange={(e) => handleUpdateEntry(entry.index, 'project', e.target.value)}
-                                                        disabled={timesheet?.status === 'Approved' || timesheet?.status === 'Submitted'}
+                                                        disabled={timesheet?.status === 'Approved' || timesheet?.status === 'Submitted' || editingEntryIndex !== entry.index}
                                                         className="w-full p-2.5 bg-white border border-slate-200/80 rounded-xl text-xs font-bold text-slate-700 focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all disabled:opacity-70"
                                                     >
                                                         <option value="">Select a Project</option>
@@ -545,7 +639,7 @@ export default function TimesheetsPage() {
                                                         max="24"
                                                         value={entry.hours}
                                                         onChange={(e) => handleUpdateEntry(entry.index, 'hours', e.target.value)}
-                                                        disabled={timesheet?.status === 'Approved' || timesheet?.status === 'Submitted'}
+                                                        disabled={timesheet?.status === 'Approved' || timesheet?.status === 'Submitted' || editingEntryIndex !== entry.index}
                                                         className="w-full p-2.5 bg-white border border-slate-200/80 rounded-xl text-xs font-bold text-slate-700 focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all disabled:opacity-70"
                                                     />
                                                 </div>
@@ -558,20 +652,51 @@ export default function TimesheetsPage() {
                                                         placeholder="What deliverables did you work on?"
                                                         value={entry.description}
                                                         onChange={(e) => handleUpdateEntry(entry.index, 'description', e.target.value)}
-                                                        disabled={timesheet?.status === 'Approved' || timesheet?.status === 'Submitted'}
+                                                        disabled={timesheet?.status === 'Approved' || timesheet?.status === 'Submitted' || editingEntryIndex !== entry.index}
                                                         className="w-full p-2.5 bg-white border border-slate-200/80 rounded-xl text-xs font-bold text-slate-700 focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all disabled:opacity-70"
                                                     />
                                                 </div>
 
-                                                {/* Action Button */}
-                                                <div className="flex items-end justify-end shrink-0 pt-2 lg:pt-4">
-                                                    <button
-                                                        onClick={() => handleRemoveEntry(entry.index)}
-                                                        disabled={timesheet?.status === 'Approved' || timesheet?.status === 'Submitted'}
-                                                        className="p-2.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all disabled:opacity-50 border border-transparent hover:border-rose-100"
-                                                    >
-                                                        <Trash2 className="w-4.5 h-4.5" />
-                                                    </button>
+                                                {/* Action Buttons */}
+                                                <div className="flex items-end justify-end shrink-0 pt-2 lg:pt-4 gap-1.5">
+                                                    {editingEntryIndex === entry.index ? (
+                                                        <>
+                                                            <button
+                                                                onClick={() => handleSaveEntry(entry.index)}
+                                                                disabled={isSavingEntry}
+                                                                className="p-2.5 text-emerald-600 hover:bg-emerald-50 rounded-xl transition-all border border-transparent hover:border-emerald-100 disabled:opacity-50"
+                                                                title="Save"
+                                                            >
+                                                                <Save className="w-4.5 h-4.5" />
+                                                            </button>
+                                                            <button
+                                                                onClick={() => handleCancelEdit(entry.index)}
+                                                                className="p-2.5 text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-xl transition-all border border-transparent hover:border-slate-100"
+                                                                title="Cancel"
+                                                            >
+                                                                <X className="w-4.5 h-4.5" />
+                                                            </button>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <button
+                                                                onClick={() => setEditingEntryIndex(entry.index)}
+                                                                disabled={timesheet?.status === 'Approved' || timesheet?.status === 'Submitted' || editingEntryIndex !== null}
+                                                                className="p-2.5 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-all disabled:opacity-50 border border-transparent hover:border-indigo-100"
+                                                                title="Edit"
+                                                            >
+                                                                <Edit3 className="w-4.5 h-4.5" />
+                                                            </button>
+                                                            <button
+                                                                onClick={() => handleRemoveEntry(entry.index)}
+                                                                disabled={timesheet?.status === 'Approved' || timesheet?.status === 'Submitted' || editingEntryIndex !== null}
+                                                                className="p-2.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all disabled:opacity-50 border border-transparent hover:border-rose-100"
+                                                                title="Delete"
+                                                            >
+                                                                <Trash2 className="w-4.5 h-4.5" />
+                                                            </button>
+                                                        </>
+                                                    )}
                                                 </div>
                                             </div>
                                         ))}

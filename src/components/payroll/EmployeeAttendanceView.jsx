@@ -513,6 +513,8 @@ export default function EmployeeAttendanceView() {
         return "bg-violet-50/50 border-violet-200 text-violet-800 hover:bg-violet-50 ring-1 ring-violet-100";
       case "Absent":
         return "bg-rose-50/50 border-rose-200 text-rose-800 hover:bg-rose-50 ring-1 ring-rose-100";
+      case "WFH":
+        return "bg-teal-50/50 border-teal-200 text-teal-800 hover:bg-teal-50 ring-1 ring-teal-100";
       case "Weekend":
         return "bg-slate-100/60 border-slate-200 text-slate-500 cursor-default";
       case "Holiday":
@@ -846,6 +848,7 @@ export default function EmployeeAttendanceView() {
                           record.status === "Present" ? "bg-emerald-50 text-emerald-700 border-emerald-100" :
                           record.status === "Absent" ? "bg-rose-50 text-rose-700 border-rose-100" :
                           record.status === "Half-day" ? "bg-amber-50 text-amber-700 border-amber-100" :
+                          record.status === "WFH" ? "bg-teal-50 text-teal-700 border-teal-100" :
                           "bg-slate-50 text-slate-600 border-slate-100"
                         }`}>
                           {record.status}

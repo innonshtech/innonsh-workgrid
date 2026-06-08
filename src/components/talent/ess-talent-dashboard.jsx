@@ -277,7 +277,17 @@ export default function ESSTalentDashboard({ employeeId }) {
                                         <div className="flex-1 pb-4">
                                             <div className="flex justify-between items-center">
                                                 <h5 className="text-sm font-black text-slate-900">{ms.title}</h5>
-                                                <span className="text-[10px] font-bold text-slate-400">{format(new Date(ms.date), 'MMM yyyy')}</span>
+                                                <span className="text-[10px] font-bold text-slate-400">
+                                                    {(() => {
+                                                        if (!ms.date) return '';
+                                                        try {
+                                                            const d = new Date(ms.date);
+                                                            return isNaN(d.getTime()) ? '' : format(d, 'MMM yyyy');
+                                                        } catch {
+                                                            return '';
+                                                        }
+                                                    })()}
+                                                </span>
                                             </div>
                                             <p className="text-[10px] text-slate-500 mt-1">{t("designationGoal") || "Designation goal"}: {careerPath.targetDesignation}</p>
                                             {ms.status === 'Achieved' && (

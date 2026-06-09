@@ -268,14 +268,6 @@ const ProjectManagement = () => {
                                     </td>
                                     <td className="p-5">
                                         <div className="flex items-center justify-center gap-2">
-                                            <button 
-                                                onClick={() => router.push(isAdmin ? `/admin/tasks/projects/${project._id}` : `/employee/projects/${project._id}`)} 
-                                                className="p-2 text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-all"
-                                                title="View Board"
-                                            >
-                                                <LayoutDashboard size={16} />
-                                            </button>
-                                            
                                             {(() => {
                                                 const projectManagerId = typeof project.projectManager === 'object' ? project.projectManager?._id : project.projectManager;
                                                 const isProjectManager = projectManagerId === user?.id;

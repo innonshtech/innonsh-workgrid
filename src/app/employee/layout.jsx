@@ -347,15 +347,7 @@ function DashboardLayoutContent({ children }) {
   let employeeNavigation = [
     { name: t("dashboard") || "Dashboard", href: "/employee/dashboard", icon: Eye },
     { name: t("myTimesheet"), href: "/employee/timesheets", icon: ListTodo },
-    {
-      name: t("projectTracking"),
-      href: "/employee/projects",
-      icon: Briefcase,
-      children: [
-        { name: t("myTasks") || "My Tasks", href: "/employee/tasks/my-tasks", icon: ListTodo },
-        { name: t("allProjects") || "All Projects", href: "/employee/projects", icon: Briefcase },
-      ],
-    },
+    { name: t("projectTracking") || "Projects", href: "/employee/projects", icon: Briefcase },
     { name: t("myPayslip"), href: "/employee/my-payslip", icon: Receipt },
     { name: t("myLoans"), href: "/employee/loans", icon: BanknoteArrowUp },
     { name: t("myAttendance"), href: "/employee/attendance", icon: UserCheck },

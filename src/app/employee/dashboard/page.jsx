@@ -37,7 +37,7 @@ import { useSession } from "@/context/SessionContext";
 import { useLanguage } from "@/context/LanguageContext";
 import ESSLeaveManagement from "@/components/payroll/ess-leave-management";
 import ESSTalentDashboard from "@/components/talent/ess-talent-dashboard";
-import MyTasks from "@/components/tasks/my-tasks";
+
 import { CheckSquare } from "lucide-react";
 
 /* ═══ Premium Tab Button ═══ */
@@ -647,7 +647,6 @@ function ESSDashboardContent() {
                         <TabButton active={activeTab === "talent"} label={t("talentMatrix")} icon={Trophy} onClick={() => setActiveTab("talent")} />
                         <TabButton active={activeTab === 'shifts'} onClick={() => setActiveTab('shifts')} icon={Clock} label={t("myShifts")} />
                         <TabButton active={activeTab === 'ot-coff'} onClick={() => setActiveTab('ot-coff')} icon={History} label={t("otAndCOff")} />
-                        <TabButton active={activeTab === 'tasks'} onClick={() => setActiveTab('tasks')} icon={CheckSquare} label={t("myTasks") || "My Tasks"} />
                     </nav>
                 </div>
 
@@ -918,14 +917,7 @@ function ESSDashboardContent() {
                     </div>
                 )}
 
-                {/* ═══════════════════════════════════════════ */}
-                {/*              TASKS TAB                      */}
-                {/* ═══════════════════════════════════════════ */}
-                {activeTab === 'tasks' && (
-                    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                        <MyTasks />
-                    </div>
-                )}
+
 
                 {/* ═══════════════════════════════════════════ */}
                 {/*           PAYSLIPS GALLERY TAB              */}

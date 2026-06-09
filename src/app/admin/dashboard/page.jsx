@@ -115,7 +115,7 @@ export default function DashboardPage() {
         icon: CheckSquare,
         color: "from-rose-500 to-pink-600",
         description: "Pending operational tasks",
-        href: '/admin/tasks'
+        href: '/admin/tasks/projects'
       },
       {
         title: t("pendingApprovals"),

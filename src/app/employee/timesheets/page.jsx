@@ -23,7 +23,9 @@ import {
     AlertCircle,
     Info,
     CheckCircle,
-    Edit3
+    Edit3,
+    Search,
+    RefreshCcw
 } from "lucide-react";
 import { toast } from "sonner";
 import { format, startOfWeek, addDays, isSameDay, parseISO } from "date-fns";
@@ -78,6 +80,56 @@ const StatusBadge = ({ status }) => {
     );
 };
 
+
+/* ─── Hours Input Formatter ─── */
+const HoursInput = ({ value, onChange, disabled }) => {
+    const [localValue, setLocalValue] = React.useState('');
+    
+    React.useEffect(() => {
+        if (value == null || value === '') {
+            setLocalValue('');
+            return;
+        }
+        const num = parseFloat(value);
+        if (isNaN(num)) return;
+        const h = Math.floor(num);
+        const m = Math.round((num - h) * 60);
+        setLocalValue(`${h}h ${m.toString().padStart(2, '0')}m`);
+    }, [value]);
+
+    const handleBlur = () => {
+        let parsed = parseFloat(localValue);
+        if (typeof localValue === 'string' && localValue.includes('h')) {
+            const parts = localValue.split('h');
+            const h = parseFloat(parts[0]) || 0;
+            const mPart = parts[1] ? parts[1].replace('m', '').trim() : '0';
+            const m = parseFloat(mPart) || 0;
+            parsed = h + (m / 60);
+        }
+        if (!isNaN(parsed)) {
+            onChange(parsed);
+            const h = Math.floor(parsed);
+            const m = Math.round((parsed - h) * 60);
+            setLocalValue(`${h}h ${m.toString().padStart(2, '0')}m`);
+        } else {
+            setLocalValue('');
+            onChange(0);
+        }
+    };
+
+    return (
+        <input
+            type="text"
+            value={localValue}
+            onChange={(e) => setLocalValue(e.target.value)}
+            onBlur={handleBlur}
+            disabled={disabled}
+            placeholder="0h 00m"
+            className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:border-indigo-500 text-center"
+        />
+    );
+};
+
 export default function TimesheetsPage() {
     const { user, loading: sessionLoading } = useSession();
     const { t } = useLanguage();
@@ -91,6 +143,7 @@ export default function TimesheetsPage() {
     const [isSavingEntry, setIsSavingEntry] = useState(false);
     const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
     const [editingEntryIndex, setEditingEntryIndex] = useState(null);
+    const [searchQuery, setSearchQuery] = useState("");
     
     // Employee details & manager selection
     const [currentUserEmployee, setCurrentUserEmployee] = useState(null);
@@ -408,373 +461,285 @@ export default function TimesheetsPage() {
             .filter(e => isSameDay(new Date(e.date), date));
     };
 
+    const filteredWeekDays = weekDays.filter(day => {
+        if (!searchQuery) return true;
+        const query = searchQuery.toLowerCase();
+        
+        const dateStr1 = format(day, 'dd MMM').toLowerCase();
+        const dateStr2 = format(day, 'd MMMM').toLowerCase();
+        const dateStr3 = format(day, 'EEEE').toLowerCase();
+        if (dateStr1.includes(query) || dateStr2.includes(query) || dateStr3.includes(query)) return true;
+        
+        const dayEntries = getEntriesForDay(day);
+        return dayEntries.some(entry => {
+            const projectName = projects.find(p => p._id === (entry.project?._id || entry.project))?.name?.toLowerCase() || '';
+            const desc = (entry.description || '').toLowerCase();
+            return projectName.includes(query) || desc.includes(query);
+        });
+    });
+
+    const formatTotalHoursDisplay = (decimal) => {
+        if (!decimal) return '0h 00m';
+        const h = Math.floor(decimal);
+        const m = Math.round((decimal - h) * 60);
+        return `${h}h ${m.toString().padStart(2, '0')}m`;
+    };
+
+    const handleAddEntryWithData = (date, field, value) => {
+        if (timesheet?.status === 'Approved' || timesheet?.status === 'Submitted') return;
+        const newEntry = {
+            project: field === 'project' ? value : '',
+            date: date.toISOString(),
+            hours: field === 'hours' ? value : 0,
+            description: field === 'description' ? value : ''
+        };
+        setTimesheetEntries([...timesheetEntries, newEntry]);
+        setEditingEntryIndex(timesheetEntries.length);
+    };
+
     return (
         <div className="max-w-7xl mx-auto space-y-8 animate-fade-in p-6 bg-slate-50/30 min-h-screen">
             
-            {/* Header Banner - Staff Augmentation Premium Style */}
-            <div className="relative overflow-hidden bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-3xl p-8 border border-slate-800">
-                <div className="absolute -right-16 -top-16 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl"></div>
-                <div className="absolute -left-16 -bottom-16 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl"></div>
-                
-                <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-                    <div className="space-y-2">
-                        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
-                            <Clock className="w-3.5 h-3.5" /> Timesheet Hub v2.0
-                        </div>
-                        <h1 className="text-3xl font-extrabold text-white tracking-tight">
-                            Weekly Timesheet Workspace
-                        </h1>
-                        <p className="text-slate-400 text-sm max-w-xl">
-                            Log hours daily, tag active client projects, and submit weekly timesheets directly to your reporting manager or admin for review.
-                        </p>
-                    </div>
-
-                    <div className="flex items-center gap-4 bg-slate-800/80 backdrop-blur border border-slate-700/60 p-3 rounded-2xl">
-                        <button 
-                            onClick={() => changeWeek(-1)} 
-                            className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-xl transition-all"
-                        >
-                            <ChevronLeft className="w-5 h-5" />
-                        </button>
-                        <div className="text-center min-w-[150px]">
-                            <p className="text-[10px] font-black uppercase text-indigo-400 tracking-wider">Week of</p>
-                            <p className="text-sm font-bold text-white mt-0.5">
-                                {format(weekStartDate, 'MMM dd')} - {format(addDays(weekStartDate, 6), 'MMM dd, yyyy')}
-                            </p>
-                        </div>
-                        <button 
-                            onClick={() => changeWeek(1)} 
-                            className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-xl transition-all"
-                        >
-                            <ChevronRight className="w-5 h-5" />
-                        </button>
-                    </div>
+            {/* Header */}
+            <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 mb-6">
+                <div>
+                    <h1 className="text-2xl sm:text-3xl font-extrabold text-[#1E1B4B] tracking-tight">
+                        My Timesheet
+                    </h1>
+                    <p className="text-sm text-slate-500 mt-1">
+                        Log and track your daily work hours and activities.
+                    </p>
                 </div>
             </div>
 
-            {/* Rejection alert banner */}
-            {timesheet?.status === 'Rejected' && (
-                <div className="bg-rose-50 border border-rose-200 rounded-2xl p-5 flex items-start gap-4 animate-pulse-subtle">
-                    <div className="p-2.5 bg-rose-100 text-rose-600 rounded-xl">
-                        <AlertCircle className="w-5 h-5" />
-                    </div>
-                    <div className="space-y-1">
-                        <h4 className="font-extrabold text-rose-950 text-sm">Timesheet Rejected</h4>
-                        <p className="text-xs text-rose-700 font-medium">
-                            {timesheet.rejectionReason 
-                                ? `Feedback from supervisor: "${timesheet.rejectionReason}"` 
-                                : "Your timesheet was returned by your supervisor. Please review details, update hours, and resubmit."}
-                        </p>
-                    </div>
-                </div>
-            )}
-
-            {/* Approved notification banner */}
-            {timesheet?.status === 'Approved' && (
-                <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-5 flex items-start gap-4">
-                    <div className="p-2.5 bg-emerald-100 text-emerald-600 rounded-xl">
-                        <CheckCircle className="w-5 h-5" />
-                    </div>
-                    <div className="space-y-1">
-                        <h4 className="font-extrabold text-emerald-950 text-sm">Timesheet Approved</h4>
-                        <p className="text-xs text-emerald-700 font-medium">
-                            This weekly timesheet is finalized and verified by the manager. Changes are locked.
-                        </p>
-                    </div>
-                </div>
-            )}
-
-            {/* KPI Cards Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <StatCard 
-                    title="Total Logged Hours" 
-                    value={`${totalHours} Hrs`} 
-                    subText="Mon - Sun total logged"
-                    icon={Clock} 
-                    color="indigo" 
-                />
-                <StatCard 
-                    title="Active Projects" 
-                    value={projectsCount} 
-                    subText="Distinct tagged projects"
-                    icon={Building} 
-                    color="amber" 
-                />
-                <Card className="p-6">
-                    <div className="space-y-2">
-                        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Weekly Progress</p>
-                        <div className="flex items-end justify-between">
-                            <p className="text-3xl font-extrabold text-slate-800 tracking-tight">{progressPercent}%</p>
-                            <p className="text-xs font-bold text-slate-400 mb-1">Target: 40 hrs</p>
+            {/* Timesheet Table Container */}
+            <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+                {/* Table Toolbar */}
+                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 px-5 py-4 border-b border-slate-100 bg-white">
+                    <div className="flex items-center gap-3">
+                        <select className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs text-slate-700 focus:outline-none focus:border-slate-300 transition-colors cursor-pointer min-w-[120px]">
+                            <option value="weekly">Weekly</option>
+                        </select>
+                        <div className="flex items-center justify-between border border-slate-200 rounded-lg px-2 py-1 bg-white min-w-[160px]">
+                            <button onClick={() => changeWeek(-1)} className="p-1 hover:bg-slate-50 rounded text-slate-500 transition-colors"><ChevronLeft className="w-3.5 h-3.5"/></button>
+                            <span className="text-xs font-medium text-slate-700">
+                                {format(weekStartDate, 'MMM dd')} - {format(addDays(weekStartDate, 6), 'MMM dd')}
+                            </span>
+                            <button onClick={() => changeWeek(1)} className="p-1 hover:bg-slate-50 rounded text-slate-500 transition-colors"><ChevronRight className="w-3.5 h-3.5"/></button>
                         </div>
-                        <div className="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden border border-slate-200/40">
-                            <div 
-                                className={`h-full rounded-full bg-gradient-to-r from-indigo-500 to-violet-600 transition-all duration-500`}
-                                style={{ width: `${progressPercent}%` }}
-                            ></div>
-                        </div>
-                    </div>
-                </Card>
-                <Card className="p-6 flex flex-col justify-between">
-                    <div className="flex items-center justify-between">
-                        <div className="space-y-1">
-                            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Timesheet Status</p>
-                            <div className="pt-2">
-                                <StatusBadge status={timesheet?.status || 'Draft'} />
-                            </div>
-                        </div>
-                        <div className="w-12 h-12 rounded-2xl border bg-slate-50 border-slate-100 flex items-center justify-center">
-                            <CheckCircle2 className="w-5 h-5 text-slate-500" />
-                        </div>
-                    </div>
-                    {timesheet?.submittedTo && (
-                        <div className="text-[10px] text-slate-400 font-medium flex items-center gap-1 mt-2 border-t border-slate-50 pt-2">
-                            <User className="w-3 h-3 text-indigo-500" />
-                            Submitted to: <span className="font-extrabold text-slate-600">{`${timesheet.submittedTo.personalDetails?.firstName} ${timesheet.submittedTo.personalDetails?.lastName}`}</span>
-                        </div>
-                    )}
-                </Card>
-            </div>
-
-            {/* Premium Day Cards View (Redesigned from simple tables) */}
-            <div className="space-y-6">
-                <div className="flex justify-between items-center border-b border-slate-200/60 pb-3">
-                    <div>
-                        <h2 className="text-xl font-black text-slate-800">Weekly Entries</h2>
-                        <p className="text-xs font-medium text-slate-400">Review log logs mapped to daily schedules</p>
                     </div>
                     
-                    <div className="flex items-center gap-3">
-                        <button
-                            onClick={() => router.push('/employee/timesheet-approvals')}
-                            className="flex items-center gap-2 px-5 py-2.5 bg-indigo-50 border border-indigo-100 text-indigo-700 hover:bg-indigo-100 rounded-xl text-xs font-extrabold active:scale-[0.98] transition-all"
+                    <div className="flex flex-wrap items-center gap-2 lg:gap-3">
+                        <div className="relative">
+                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
+                            <input 
+                                type="text" 
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                placeholder="Search by project, task, or date (e.g. 7 Jun)..." 
+                                className="w-full sm:w-[240px] bg-white border border-slate-200 rounded-lg pl-9 pr-3 py-1.5 text-xs text-slate-700 placeholder-slate-400 focus:outline-none focus:border-slate-300 transition-colors" 
+                            />
+                        </div>
+                        <button 
+                            onClick={async () => {
+                                const toastId = toast.loading("Refreshing timesheet...");
+                                await fetchTimesheet(user.id, weekStartDate);
+                                toast.success("Timesheet refreshed!", { id: toastId });
+                            }} 
+                            className="flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 text-slate-700 text-xs rounded-lg hover:bg-slate-50 transition-colors"
                         >
-                            <Users className="w-4 h-4" /> Timesheet Approvals
+                            <RefreshCcw className="w-3.5 h-3.5" /> Refresh
                         </button>
+                    </div>
+                </div>
 
-
+                <table className="w-full text-left">
+                    <thead className="bg-slate-50/50 border-b border-slate-100">
+                        <tr className="">
+                            <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest w-16 text-center">#</th>
+                            <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest w-32 text-left">DATE</th>
+                            <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left">PROJECT</th>
+                            <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest w-32 text-left">HOURS</th>
+                            <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left">ACTIVITY / TASK DETAILS</th>
+                            <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest w-32 text-center">ACTIONS</th>
+                        </tr>
+                    </thead>
+                    <tbody className="">
+                        {filteredWeekDays.map((day, dayIndex) => {
+                            const dayEntries = getEntriesForDay(day);
+                            const entriesToRender = dayEntries.length > 0 ? dayEntries : [{ _isPlaceholder: true, date: day.toISOString() }];
+                            
+                            return (
+                                <React.Fragment key={day.toISOString()}>
+                                    {entriesToRender.map((entry, entryIdx) => {
+                                        const isLastEntry = entryIdx === entriesToRender.length - 1;
+                                        const showBottomBorder = dayEntries.length === 0 || (isLastEntry && dayEntries.length > 0);
+                                        return (
+                                        <tr key={entry.index ?? `placeholder-${entryIdx}`} className={`hover:bg-slate-50/30 transition-colors ${showBottomBorder && dayEntries.length === 0 ? 'border-b border-slate-100' : ''}`}>
+                                            {entryIdx === 0 ? (
+                                                <>
+                                                    <td className="px-6 py-5 align-middle">
+                                                        <span className="font-bold text-slate-800 text-sm">{dayIndex + 1}</span>
+                                                    </td>
+                                                    <td className="px-6 py-5 align-middle">
+                                                        <div className="flex items-center gap-3">
+                                                            <div className="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-sm border border-blue-100/50">
+                                                                {format(day, 'dd')}
+                                                            </div>
+                                                            <div>
+                                                                <p className="text-sm font-bold text-slate-800">{format(day, 'EEE')}</p>
+                                                                <p className="text-[11px] font-medium text-slate-500">{format(day, 'MMM')}</p>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <td className="px-6 py-3"></td>
+                                                    <td className="px-6 py-3"></td>
+                                                </>
+                                            )}
+                                            
+                                            <td className="px-6 py-3 align-middle w-64">
+                                                <div className="space-y-1">
+                                                    <select
+                                                        value={entry.project?._id || entry.project || ''}
+                                                        onChange={(e) => {
+                                                            if(entry._isPlaceholder) {
+                                                                handleAddEntryWithData(day, 'project', e.target.value);
+                                                            } else {
+                                                                handleUpdateEntry(entry.index, 'project', e.target.value);
+                                                            }
+                                                        }}
+                                                        disabled={timesheet?.status === 'Approved' || timesheet?.status === 'Submitted' || (!entry._isPlaceholder && editingEntryIndex !== entry.index)}
+                                                        className="w-full px-3 py-2.5 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:border-indigo-500 appearance-none bg-white"
+                                                    >
+                                                        <option value="">Select Project</option>
+                                                        {projects.map(p => <option key={p._id} value={p._id}>{p.name}</option>)}
+                                                    </select>
+                                                    {entry.project && projects.find(p => p._id === (entry.project?._id || entry.project))?.projectId && (
+                                                        <p className="text-[10px] text-slate-400 font-semibold px-1">
+                                                            {projects.find(p => p._id === (entry.project?._id || entry.project))?.projectId}
+                                                        </p>
+                                                    )}
+                                                </div>
+                                            </td>
+                                            
+                                            <td className="px-6 py-3 align-middle w-32">
+                                                <HoursInput
+                                                    value={entry.hours}
+                                                    onChange={(val) => {
+                                                        if(entry._isPlaceholder) {
+                                                            handleAddEntryWithData(day, 'hours', val);
+                                                        } else {
+                                                            handleUpdateEntry(entry.index, 'hours', val);
+                                                        }
+                                                    }}
+                                                    disabled={timesheet?.status === 'Approved' || timesheet?.status === 'Submitted' || (!entry._isPlaceholder && editingEntryIndex !== entry.index)}
+                                                />
+                                            </td>
+                                            
+                                            <td className="px-6 py-3 align-middle">
+                                                <textarea
+                                                    rows={1}
+                                                    placeholder="What did you work on?"
+                                                    value={entry.description || ''}
+                                                    onInput={(e) => {
+                                                        e.target.style.height = 'auto';
+                                                        e.target.style.height = `${e.target.scrollHeight}px`;
+                                                    }}
+                                                    onFocus={(e) => {
+                                                        e.target.style.height = 'auto';
+                                                        e.target.style.height = `${e.target.scrollHeight}px`;
+                                                    }}
+                                                    onChange={(e) => {
+                                                        const sanitizedValue = e.target.value.replace(/[^a-zA-Z0-9\s.,?!'-]/g, '');
+                                                        if(entry._isPlaceholder) {
+                                                            handleAddEntryWithData(day, 'description', sanitizedValue);
+                                                        } else {
+                                                            handleUpdateEntry(entry.index, 'description', sanitizedValue);
+                                                        }
+                                                    }}
+                                                    disabled={timesheet?.status === 'Approved' || timesheet?.status === 'Submitted' || (!entry._isPlaceholder && editingEntryIndex !== entry.index)}
+                                                    className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-xs font-medium text-slate-600 focus:outline-none focus:border-indigo-500 resize-none overflow-hidden min-h-[44px] break-words"
+                                                    style={{ height: 'auto' }}
+                                                />
+                                            </td>
+                                            
+                                            <td className="px-6 py-3 align-middle">
+                                                <div className="flex items-center justify-center gap-2 mt-1">
+                                                    {!entry._isPlaceholder && editingEntryIndex !== entry.index ? (
+                                                        <button 
+                                                            onClick={() => setEditingEntryIndex(entry.index)}
+                                                            disabled={timesheet?.status === 'Approved' || timesheet?.status === 'Submitted'}
+                                                            className={`p-1.5 text-indigo-500 hover:bg-indigo-50 border border-indigo-100 rounded transition-colors ${timesheet?.status === 'Approved' || timesheet?.status === 'Submitted' ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                                            title="Edit"
+                                                        >
+                                                            <Edit3 className="w-4 h-4" />
+                                                        </button>
+                                                    ) : (
+                                                        <button 
+                                                            onClick={() => !entry._isPlaceholder && handleSaveEntry(entry.index)}
+                                                            disabled={entry._isPlaceholder || isSavingEntry}
+                                                            className="p-1.5 text-emerald-500 hover:bg-emerald-50 border border-emerald-100 rounded transition-colors disabled:opacity-50"
+                                                            title="Save"
+                                                        >
+                                                            <Save className="w-4 h-4" />
+                                                        </button>
+                                                    )}
+                                                    <button 
+                                                        onClick={() => !entry._isPlaceholder && handleRemoveEntry(entry.index)}
+                                                        disabled={entry._isPlaceholder || timesheet?.status === 'Approved' || timesheet?.status === 'Submitted'}
+                                                        className="p-1.5 text-rose-500 hover:bg-rose-50 border border-rose-100 rounded transition-colors disabled:opacity-50"
+                                                        title="Delete"
+                                                    >
+                                                        <Trash2 className="w-4 h-4" />
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        );
+                                    })}
+                                    
+                                    {/* Add Another Project Button */}
+                                    {dayEntries.length > 0 && (
+                                        <tr className="border-b border-slate-100">
+                                            <td colSpan={2} className="px-6 pb-4"></td>
+                                            <td colSpan={4} className="px-6 pb-4">
+                                                <button 
+                                                    onClick={() => handleAddEntryForDay(day)}
+                                                    className="w-full py-2 flex items-center justify-center gap-2 border border-dashed border-slate-300 text-blue-500 rounded-xl text-xs font-bold hover:bg-slate-50 transition-colors"
+                                                >
+                                                    <Plus className="w-3.5 h-3.5" /> Add Another Project
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    )}
+                                </React.Fragment>
+                            );
+                        })}
+                    </tbody>
+                </table>
+                
+                {/* Table Footer */}
+                <div className="p-4 bg-white border-t border-slate-100 flex items-center justify-between">
+                    <p className="text-xs text-slate-500 font-semibold">
+                        Showing {filteredWeekDays.length > 0 ? 1 : 0} to {filteredWeekDays.length} of 7 days
+                    </p>
+                    <div className="flex items-center gap-6">
+                        <p className="text-sm text-slate-600 font-semibold">
+                            Total Hours: <span className="text-[#3B82F6] font-bold">{formatTotalHoursDisplay(totalHours)}</span>
+                        </p>
                         <button
                             onClick={() => setIsSubmitModalOpen(true)}
                             disabled={isSavingTimesheet || timesheet?.status === 'Approved' || timesheet?.status === 'Submitted'}
-                            className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-xl text-xs font-extrabold hover:from-indigo-500 hover:to-violet-500 active:scale-[0.98] transition-all disabled:opacity-50"
+                            className="flex items-center gap-2 px-6 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-semibold hover:bg-indigo-700 transition-all disabled:opacity-50 shadow-sm"
                         >
                             <Send className="w-4 h-4" /> Submit Timesheet
                         </button>
                     </div>
                 </div>
-
-                {/* Day-by-Day Cards Layout */}
-                <div className="grid grid-cols-1 gap-6">
-                    {weekDays.map((day) => {
-                        const dayEntries = getEntriesForDay(day);
-                        const isWeekend = day.getDay() === 0 || day.getDay() === 6;
-                        const formattedDateStr = format(day, 'EEE, MMM dd');
-
-                        return (
-                            <div 
-                                key={day.toISOString()}
-                                className={`rounded-2xl border p-6 transition-all bg-white ${
-                                    isWeekend 
-                                        ? 'border-dashed border-slate-200/80 bg-slate-50/20' 
-                                        : 'border-slate-100 hover:border-indigo-100'
-                                }`}
-                            >
-                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4 mb-4">
-                                    <div className="flex items-center gap-3">
-                                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-black text-xs ${
-                                            isWeekend 
-                                                ? 'bg-slate-100 text-slate-500' 
-                                                : 'bg-indigo-50 text-indigo-600'
-                                        }`}>
-                                            {format(day, 'dd')}
-                                        </div>
-                                        <div>
-                                            <h3 className="font-extrabold text-slate-800 text-sm flex items-center gap-2">
-                                                {format(day, 'EEEE')}
-                                                {isWeekend && <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 bg-slate-100 text-slate-500 rounded">Weekend</span>}
-                                            </h3>
-                                            <p className="text-[11px] font-semibold text-slate-400 mt-0.5">{formattedDateStr}</p>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="flex items-center gap-4">
-                                        <span className="text-xs font-bold text-slate-400">
-                                            Total: <span className="text-slate-700 font-extrabold">{dayEntries.reduce((s, e) => s + parseFloat(e.hours || 0), 0)} hrs</span>
-                                        </span>
-                                        <button
-                                            onClick={() => handleAddEntryForDay(day)}
-                                            disabled={timesheet?.status === 'Approved' || timesheet?.status === 'Submitted' || editingEntryIndex !== null}
-                                            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-extrabold text-indigo-600 bg-indigo-50 hover:bg-indigo-100/80 rounded-xl transition-all disabled:opacity-50"
-                                        >
-                                            <Plus className="w-3.5 h-3.5" /> Log Hours
-                                        </button>
-                                    </div>
-                                </div>
-
-                                {dayEntries.length === 0 ? (
-                                    <div className="py-8 text-center text-slate-400 border border-dashed border-slate-100 rounded-xl bg-slate-50/20">
-                                        <Clock className="w-6 h-6 mx-auto mb-2 opacity-30 text-slate-400" />
-                                        <p className="text-xs font-medium text-slate-400">No entries logged for this day</p>
-                                    </div>
-                                ) : (
-                                    <div className="space-y-4">
-                                        {dayEntries.map((entry) => (
-                                            <div 
-                                                key={entry.index}
-                                                className="flex flex-col lg:flex-row items-stretch lg:items-center gap-4 p-4 bg-slate-50/40 hover:bg-slate-50 border border-slate-100 rounded-2xl transition-all"
-                                            >
-                                                {/* Project Dropdown */}
-                                                <div className="flex-1 min-w-[200px]">
-                                                    <label className="text-[10px] font-black uppercase text-slate-400 block mb-1">Project</label>
-                                                    <select
-                                                        value={entry.project?._id || entry.project || ''}
-                                                        onChange={(e) => handleUpdateEntry(entry.index, 'project', e.target.value)}
-                                                        disabled={timesheet?.status === 'Approved' || timesheet?.status === 'Submitted' || editingEntryIndex !== entry.index}
-                                                        className="w-full p-2.5 bg-white border border-slate-200/80 rounded-xl text-xs font-bold text-slate-700 focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all disabled:opacity-70"
-                                                    >
-                                                        <option value="">Select a Project</option>
-                                                        {projects.map(p => <option key={p._id} value={p._id}>{p.name}</option>)}
-                                                    </select>
-                                                </div>
-
-                                                {/* Hours Input */}
-                                                <div className="w-full lg:w-28">
-                                                    <label className="text-[10px] font-black uppercase text-slate-400 block mb-1">Hours</label>
-                                                    <input
-                                                        type="number"
-                                                        min="0.5"
-                                                        step="0.5"
-                                                        max="24"
-                                                        value={entry.hours}
-                                                        onChange={(e) => handleUpdateEntry(entry.index, 'hours', e.target.value)}
-                                                        disabled={timesheet?.status === 'Approved' || timesheet?.status === 'Submitted' || editingEntryIndex !== entry.index}
-                                                        className="w-full p-2.5 bg-white border border-slate-200/80 rounded-xl text-xs font-bold text-slate-700 focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all disabled:opacity-70"
-                                                    />
-                                                </div>
-
-                                                {/* Description Input */}
-                                                <div className="flex-[2] min-w-[250px]">
-                                                    <label className="text-[10px] font-black uppercase text-slate-400 block mb-1">Activity Log / Task Details</label>
-                                                    <input
-                                                        type="text"
-                                                        placeholder="What deliverables did you work on?"
-                                                        value={entry.description}
-                                                        onChange={(e) => handleUpdateEntry(entry.index, 'description', e.target.value)}
-                                                        disabled={timesheet?.status === 'Approved' || timesheet?.status === 'Submitted' || editingEntryIndex !== entry.index}
-                                                        className="w-full p-2.5 bg-white border border-slate-200/80 rounded-xl text-xs font-bold text-slate-700 focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all disabled:opacity-70"
-                                                    />
-                                                </div>
-
-                                                {/* Action Buttons */}
-                                                <div className="flex items-end justify-end shrink-0 pt-2 lg:pt-4 gap-1.5">
-                                                    {editingEntryIndex === entry.index ? (
-                                                        <>
-                                                            <button
-                                                                onClick={() => handleSaveEntry(entry.index)}
-                                                                disabled={isSavingEntry}
-                                                                className="p-2.5 text-emerald-600 hover:bg-emerald-50 rounded-xl transition-all border border-transparent hover:border-emerald-100 disabled:opacity-50"
-                                                                title="Save"
-                                                            >
-                                                                <Save className="w-4.5 h-4.5" />
-                                                            </button>
-                                                            <button
-                                                                onClick={() => handleCancelEdit(entry.index)}
-                                                                className="p-2.5 text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-xl transition-all border border-transparent hover:border-slate-100"
-                                                                title="Cancel"
-                                                            >
-                                                                <X className="w-4.5 h-4.5" />
-                                                            </button>
-                                                        </>
-                                                    ) : (
-                                                        <>
-                                                            <button
-                                                                onClick={() => setEditingEntryIndex(entry.index)}
-                                                                disabled={timesheet?.status === 'Approved' || timesheet?.status === 'Submitted' || editingEntryIndex !== null}
-                                                                className="p-2.5 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-all disabled:opacity-50 border border-transparent hover:border-indigo-100"
-                                                                title="Edit"
-                                                            >
-                                                                <Edit3 className="w-4.5 h-4.5" />
-                                                            </button>
-                                                            <button
-                                                                onClick={() => handleRemoveEntry(entry.index)}
-                                                                disabled={timesheet?.status === 'Approved' || timesheet?.status === 'Submitted' || editingEntryIndex !== null}
-                                                                className="p-2.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all disabled:opacity-50 border border-transparent hover:border-rose-100"
-                                                                title="Delete"
-                                                            >
-                                                                <Trash2 className="w-4.5 h-4.5" />
-                                                            </button>
-                                                        </>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
-                        );
-                    })}
-                </div>
             </div>
-
-            {/* Timesheet Approval workflow timeline footer */}
-            <Card className="p-6 bg-slate-900 border-none text-white overflow-hidden relative mt-8">
-                <div className="absolute right-0 top-0 w-32 h-32 bg-indigo-500/5 rounded-full blur-2xl"></div>
-                <div className="relative z-10 space-y-4">
-                    <div>
-                        <h4 className="text-xs font-black uppercase tracking-wider text-indigo-400">Approval Workflow Status</h4>
-                        <p className="text-[11px] text-slate-400 mt-0.5">Track the verification timeline for this weekly report</p>
-                    </div>
-
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-10 pt-4 border-t border-slate-800">
-                        {/* Step 1 */}
-                        <div className="flex items-center gap-2.5">
-                            <div className="w-6 h-6 rounded-full bg-indigo-500 text-white flex items-center justify-center text-[10px] font-black">
-                                1
-                            </div>
-                            <div>
-                                <p className="text-xs font-bold">Draft Saved</p>
-                                <p className="text-[9px] text-slate-400">Weekly entries editable</p>
-                            </div>
-                        </div>
-
-                        <div className="hidden sm:block text-slate-600 font-black">→</div>
-
-                        {/* Step 2 */}
-                        <div className="flex items-center gap-2.5">
-                            <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black ${
-                                timesheet?.status === 'Submitted' || timesheet?.status === 'Approved'
-                                    ? 'bg-indigo-500 text-white' 
-                                    : 'bg-slate-800 text-slate-500 border border-slate-700'
-                            }`}>
-                                2
-                            </div>
-                            <div>
-                                <p className="text-xs font-bold">Submitted</p>
-                                <p className="text-[9px] text-slate-400">Locks entries, routing notification sent</p>
-                            </div>
-                        </div>
-
-                        <div className="hidden sm:block text-slate-600 font-black">→</div>
-
-                        {/* Step 3 */}
-                        <div className="flex items-center gap-2.5">
-                            <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black ${
-                                timesheet?.status === 'Approved'
-                                    ? 'bg-emerald-500 text-white' 
-                                    : timesheet?.status === 'Rejected'
-                                        ? 'bg-rose-500 text-white'
-                                        : 'bg-slate-800 text-slate-500 border border-slate-700'
-                            }`}>
-                                3
-                            </div>
-                            <div>
-                                <p className="text-xs font-bold">Manager Review</p>
-                                <p className="text-[9px] text-slate-400">Verify hours or request corrections</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </Card>
 
             {/* Submission Modal with Manager Selection */}
             {isSubmitModalOpen && (

@@ -155,7 +155,7 @@ const ProjectManagement = () => {
     }
 
     return (
-        <div className="p-6 space-y-8 animate-in fade-in duration-500">
+        <div className="w-full space-y-8 animate-in fade-in duration-500 py-2">
             {/* Header Section */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
                 <div className="space-y-1">

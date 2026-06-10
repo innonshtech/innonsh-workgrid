@@ -891,7 +891,7 @@ export default function LeaveManagement() {
           </span>
         </td>
         <td className="px-4 py-3 text-center">
-          <div className="inline-flex flex-col items-center justify-center bg-slate-50/50 border border-slate-100 rounded-xl p-2 min-w-[5.5rem]">
+          <div className="inline-flex flex-col items-center justify-center bg-slate-50/50 border border-slate-100 rounded-xl p-2.5 min-w-[8.5rem]">
             <div>
               <p className={`text-base font-extrabold tracking-tight ${(leave.annualLeaveBalance.remaining || 0) < 5
                 ? 'text-rose-600'
@@ -908,15 +908,15 @@ export default function LeaveManagement() {
             <span className="text-[9px] font-bold text-slate-400 uppercase mt-0.5 tracking-wider">Remaining</span>
 
             {/* Detailed breakdown */}
-            <div className="space-y-0.5 pt-1.5 border-t border-slate-100 w-full mt-1.5">
-              <div className="flex items-center justify-between text-[9px] font-bold text-slate-500">
-                <span>Quota:</span>
-                <span>{leave.annualLeaveBalance.totalEntitled || payrollConfig?.annualPaidLeaveQuota || 31}</span>
-              </div>
-              <div className="flex items-center justify-between text-[9px] font-bold">
-                <span className="text-slate-500">YTD Used:</span>
-                <span className="text-rose-500">{(leave.annualLeaveBalance.used || 0).toFixed(1)}</span>
-              </div>
+            <div className="grid grid-cols-[1fr_auto] gap-x-2 gap-y-1 pt-2 border-t border-slate-100 w-full mt-2 text-[9px] font-bold">
+              <span className="text-slate-500 text-left whitespace-nowrap">Quota:</span>
+              <span className="text-slate-700 text-right whitespace-nowrap font-extrabold">
+                {Number(leave.annualLeaveBalance.totalEntitled || payrollConfig?.annualPaidLeaveQuota || 31).toFixed(1)}
+              </span>
+              <span className="text-slate-500 text-left whitespace-nowrap">YTD Used:</span>
+              <span className="text-rose-500 text-right whitespace-nowrap font-extrabold">
+                {(leave.annualLeaveBalance.used || 0).toFixed(1)}
+              </span>
             </div>
           </div>
         </td>
@@ -1535,7 +1535,7 @@ export default function LeaveManagement() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="px-6 py-2.5 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                  className="btn-primary"
                 >
                   {loading && <Loader2 className="w-4 h-4 animate-spin" />}
                   {isEdit ? "Update Leave Record" : "Create Leave Record"}
@@ -1546,7 +1546,7 @@ export default function LeaveManagement() {
         </div>
       )}
 
-      <div className="max-w-7xl mx-auto p-4 sm:p-6 space-y-6 sm:space-y-8 animate-fade-in">
+      <div className="w-full space-y-6 sm:space-y-8 animate-fade-in py-2">
         {/* Header Banner */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-14">
           <div className="space-y-1">

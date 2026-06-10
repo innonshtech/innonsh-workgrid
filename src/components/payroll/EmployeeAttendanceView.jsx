@@ -546,9 +546,9 @@ export default function EmployeeAttendanceView() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 font-['Inter',sans-serif] pb-16">
+    <div className="w-full font-['Inter',sans-serif]">
       <Toaster position="top-right" richColors closeButton />
-      <div className="max-w-7xl mx-auto px-6 py-8 space-y-10">
+      <div className="w-full space-y-10">
 
         {/* Module Hero */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-4 mt-2">
@@ -591,7 +591,7 @@ export default function EmployeeAttendanceView() {
             {/* Clock Widget + Quick Info */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Glass Clock Widget */}
-              <div className="lg:col-span-2 bg-gradient-to-br from-slate-900 to-indigo-950 rounded-[2.5rem] p-8 lg:p-10 text-white relative overflow-hidden flex flex-col justify-between min-h-[350px]">
+              <div className="lg:col-span-2 bg-gradient-to-br from-slate-900 to-indigo-950 rounded-[2.5rem] p-6 lg:p-8 text-white relative overflow-hidden flex flex-col justify-between min-h-[290px] h-full">
                 <div className="absolute top-0 right-0 w-80 h-80 bg-indigo-500/10 rounded-full -mr-40 -mt-40 blur-3xl"></div>
                 <div className="absolute bottom-0 left-0 w-80 h-80 bg-emerald-500/5 rounded-full -ml-40 -mb-40 blur-3xl"></div>
 
@@ -614,13 +614,13 @@ export default function EmployeeAttendanceView() {
 
                   <div className="text-right">
                     <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Logged Today</p>
-                    <p className="text-4xl font-mono font-black mt-2 text-indigo-3000_0_15px_rgba(129,140,248,0.3)]">
+                    <p className="text-4xl font-mono font-black mt-2 text-indigo-300">
                       {elapsedTime}
                     </p>
                   </div>
                 </div>
 
-                <div className="relative z-10 flex flex-wrap gap-4 items-center justify-between mt-12 pt-6 border-t border-white/5">
+                <div className="relative z-10 flex flex-wrap gap-4 items-center justify-between mt-6 pt-5 border-t border-white/5">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
                       <MapPin className={`w-5 h-5 ${clockStatus === "checked-in" ? "text-emerald-400" : "text-slate-400"}`} />
@@ -668,7 +668,7 @@ export default function EmployeeAttendanceView() {
               </div>
 
               {/* Insights Card */}
-              <div className="bg-white rounded-[2.5rem] border border-slate-200/60 p-8 flex flex-col justify-between">
+              <div className="bg-white rounded-[2.5rem] border border-slate-200/60 p-6 flex flex-col justify-between min-h-[290px] h-full">
                 <div>
                   <span className="px-3 py-1 bg-indigo-50 border border-indigo-100 rounded-full text-[9px] font-black uppercase text-indigo-600 tracking-wider">
                     Monthly Compliance
@@ -677,7 +677,7 @@ export default function EmployeeAttendanceView() {
                   <p className="text-xs text-slate-400 mt-1 font-medium">Review your status logs for the current calendar period.</p>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 mt-8">
+                <div className="grid grid-cols-2 gap-4 mt-4">
                   <div className="p-4 bg-slate-50 border border-slate-100 rounded-2xl">
                     <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Active Hours</p>
                     <p className="text-2xl font-black text-slate-950 mt-1">{metrics.totalHours}h</p>
@@ -688,7 +688,7 @@ export default function EmployeeAttendanceView() {
                   </div>
                 </div>
 
-                <div className="flex gap-2 items-center text-[10px] font-bold text-slate-400 mt-6 bg-slate-50 p-3.5 rounded-2xl border border-slate-100/60">
+                <div className="flex gap-2 items-center text-[10px] font-bold text-slate-400 mt-4 bg-slate-50 p-3.5 rounded-2xl border border-slate-100/60">
                   <Info className="w-4 h-4 text-indigo-500 shrink-0" />
                   <span>Maintain 8 hours average shift time to avoid late deductions.</span>
                 </div>

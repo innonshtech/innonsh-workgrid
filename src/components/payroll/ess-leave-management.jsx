@@ -709,7 +709,7 @@ export default function ESSLeaveManagement({ employeeId, payrollConfig }) {
                             <button
                                 type="submit"
                                 disabled={submitLoading || calculating || !calculationResult || (formData.leaveType !== 'WFH' && calculateTotalDays() <= 0)}
-                                className="flex-[2] py-4 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 disabled:text-slate-500 disabled:shadow-none text-white rounded-xl text-sm font-black transition-all flex items-center justify-center gap-2"
+                                className="flex-[2] py-4 bg-slate-900 hover:bg-slate-800 disabled:bg-slate-300 disabled:text-slate-500 disabled:shadow-none text-white rounded-xl text-sm font-black transition-all flex items-center justify-center gap-2"
                             >
                                 {submitLoading ? (
                                     <Loader2 className="w-5 h-5 animate-spin" />
@@ -749,7 +749,7 @@ export default function ESSLeaveManagement({ employeeId, payrollConfig }) {
                     </button>
                     <button
                         onClick={() => setActiveView('apply')}
-                        className="flex items-center gap-2 px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-bold transition-all ml-4"
+                        className="flex items-center gap-2 px-5 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-sm font-bold transition-all ml-4"
                     >
                         <Plus className="w-4 h-4" /> Apply Leave
                     </button>

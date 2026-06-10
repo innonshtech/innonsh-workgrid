@@ -265,3 +265,52 @@ body, h1, h2, h3, h4, h5, h6, p, span, a, label, .label, .text-xs, .text-sm, div
 }
 *, ::before, ::after { border-color: #E5E7EB; }
 
+/* ========== Standard Primary Button Component Rules ========== */
+.btn-primary,
+button.bg-indigo-600,
+button.bg-indigo-500,
+button.bg-blue-600 {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.5rem !important; /* gap-2 */
+  background-color: #0466c8 !important; /* Brand Corporate Blue (same as Add Leave Record) */
+  color: #ffffff !important;
+  font-weight: 600 !important; /* font-semibold */
+  font-size: 0.875rem !important; /* text-sm */
+  padding-left: 1.25rem !important; /* px-5 */
+  padding-right: 1.25rem !important; /* px-5 */
+  padding-top: 0.625rem !important; /* py-2.5 */
+  padding-bottom: 0.625rem !important; /* py-2.5 */
+  border-radius: 0.75rem !important; /* rounded-xl (12px) */
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+  border: 1px solid transparent !important;
+  cursor: pointer !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+  text-transform: none !important; /* remove uppercase constraints from old code */
+  letter-spacing: normal !important; /* remove custom tracking */
+}
+
+.btn-primary:hover:not(:disabled),
+button.bg-indigo-600:hover:not(:disabled),
+button.bg-indigo-500:hover:not(:disabled),
+button.bg-blue-600:hover:not(:disabled) {
+  background-color: #0353a4 !important; /* Brand Hover Blue */
+}
+
+.btn-primary:active:not(:disabled),
+button.bg-indigo-600:active:not(:disabled),
+button.bg-indigo-500:active:not(:disabled),
+button.bg-blue-600:active:not(:disabled) {
+  transform: scale(0.98) !important;
+}
+
+.btn-primary:disabled,
+button.bg-indigo-600:disabled,
+button.bg-indigo-500:disabled,
+button.bg-blue-600:disabled {
+  opacity: 0.55 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+}
+

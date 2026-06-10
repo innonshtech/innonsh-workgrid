@@ -661,7 +661,11 @@ function DashboardLayoutContent({ children }) {
           </div>
         </header>
 
-        <main className="bg-slate-50 min-h-[calc(100vh-80px)]">{children}</main>
+        <main className="bg-slate-50 min-h-[calc(100vh-80px)]">
+          <div className="container mx-auto max-w-[1440px] px-4 lg:px-6 py-6 sm:py-8">
+            {children}
+          </div>
+        </main>
       </div>
 
       {sidebarOpen && (

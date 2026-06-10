@@ -498,7 +498,7 @@ export default function TimesheetsPage() {
     };
 
     return (
-        <div className="max-w-7xl mx-auto space-y-8 animate-fade-in p-6 bg-slate-50/30 min-h-screen">
+        <div className="w-full space-y-8 animate-fade-in py-2">
             
             {/* Header */}
             <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 mb-6">
@@ -845,7 +845,7 @@ export default function TimesheetsPage() {
                             <button
                                 onClick={() => handleSaveTimesheet(true)}
                                 disabled={isSavingTimesheet}
-                                className="flex-1 py-3 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-extrabold rounded-2xl text-xs transition-all active:scale-[0.98]"
+                                className="flex-1 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold rounded-2xl text-xs transition-all active:scale-[0.98]"
                             >
                                 Confirm Submission
                             </button>

@@ -621,8 +621,8 @@ function ESSDashboardContent() {
     };
 
     return (
-        <div className="p-4 md:p-8 bg-gradient-to-br from-slate-50 via-white to-indigo-50/30 min-h-screen">
-            <div className="max-w-7xl mx-auto space-y-6">
+        <div className="w-full">
+            <div className="w-full space-y-6">
 
                 {/* Standard Hero */}
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-4 mt-2">

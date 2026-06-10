@@ -155,17 +155,28 @@ export default function EmployeeClaimsManager({ employeeId }) {
     };
 
     return (
-        <div className="bg-white rounded-xl border border-slate-200 p-6 max-w-[1400px] mx-auto animate-in fade-in duration-500">
-            
-            {/* Header */}
-            <div className="flex justify-end mb-8">
-                <button 
-                    onClick={() => { setEditData(null); setShowModal(true); }}
-                    className="bg-[#2563eb] hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors"
-                >
-                    <Plus className="w-4 h-4" /> New Expense Claim
-                </button>
+        <div className="space-y-6 animate-in fade-in duration-500">
+            {/* Header row with Title and Button aligned on same line */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 mt-2">
+                <div className="space-y-1">
+                    <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+                        Expense Claims
+                    </h1>
+                    <p className="text-slate-500 text-sm mt-1 max-w-xl">
+                        Submit reimbursement requests, track approvals and claim history.
+                    </p>
+                </div>
+                <div className="flex shrink-0">
+                    <button 
+                        onClick={() => { setEditData(null); setShowModal(true); }}
+                        className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2.5 rounded-xl transition-colors font-medium text-sm shadow-sm"
+                    >
+                        <Plus className="w-4 h-4" /> New Expense Claim
+                    </button>
+                </div>
             </div>
+
+            <div className="bg-white rounded-xl border border-slate-200 p-6 max-w-[1400px] mx-auto">
 
             {/* Tabs */}
             <div className="flex border-b border-slate-200 mb-6">
@@ -317,16 +328,16 @@ export default function EmployeeClaimsManager({ employeeId }) {
                 
                 <div className="overflow-x-auto">
                     <table className="w-full text-left text-sm text-slate-600">
-                        <thead className="bg-white border-b border-slate-200 text-slate-900 font-bold">
+                        <thead className="bg-slate-50/50 border-b border-slate-100">
                             <tr>
-                                <th className="px-6 py-4">Date</th>
-                                {activeTab === 'Team' && <th className="px-6 py-4">Employee</th>}
-                                <th className="px-6 py-4">Category</th>
-                                <th className="px-6 py-4">Description</th>
-                                <th className="px-6 py-4">Amount (₹)</th>
-                                <th className="px-6 py-4">Receipt</th>
-                                <th className="px-6 py-4">Status</th>
-                                <th className="px-6 py-4">Action</th>
+                                <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left">Date</th>
+                                {activeTab === 'Team' && <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left">Employee</th>}
+                                <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left">Category</th>
+                                <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left">Description</th>
+                                <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left">Amount (₹)</th>
+                                <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left">Receipt</th>
+                                <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left">Status</th>
+                                <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left">Action</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">
@@ -496,6 +507,7 @@ export default function EmployeeClaimsManager({ employeeId }) {
                     }}
                 />
             )}
+            </div>
         </div>
     );
 }

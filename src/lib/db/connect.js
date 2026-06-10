@@ -19,6 +19,20 @@ import '@/lib/db/models/staffing/StaffingRequirement';
 import '@/lib/db/models/staffing/StaffingCandidate';
 import '@/lib/db/models/staffing/StaffingSubmission';
 
+// Fix for Node.js SRV DNS resolution failure (querySrv ECONNREFUSED) on local DNS configurations
+if (typeof window === 'undefined') {
+  try {
+    const dns = require('dns');
+    const servers = dns.getServers();
+    if (servers.includes('127.0.0.1') || servers.includes('::1') || servers.length === 0) {
+      dns.setServers(['8.8.8.8', '8.8.4.4']);
+      console.log('🔧 Local DNS detected. Fallback DNS servers set to Google DNS (8.8.8.8, 8.8.4.4)');
+    }
+  } catch (e) {
+    // Ignore error if dns module is not available (e.g. edge runtime)
+  }
+}
+
 const MONGODB_URI = process.env.MONGODB_URI;
 
 if (!MONGODB_URI) {
@@ -35,6 +49,20 @@ if (!cached) {
 
 async function dbConnect() {
   console.log('🔄 dbConnect() called');
+
+  if (typeof window === 'undefined') {
+    try {
+      const dns = await import('dns');
+      const servers = dns.getServers();
+      console.log('🔍 Current DNS servers inside dbConnect:', servers);
+      if (servers.includes('127.0.0.1') || servers.includes('::1') || servers.length === 0 || servers.includes('127.0.0.53')) {
+        dns.setServers(['8.8.8.8', '8.8.4.4']);
+        console.log('🔧 DNS fallback: successfully set Node.js DNS servers to Google DNS (8.8.8.8) inside dbConnect');
+      }
+    } catch (e) {
+      console.warn('⚠️ Could not configure DNS fallback inside dbConnect:', e);
+    }
+  }
   
   if (cached.conn) {
     console.log('✅ Using cached MongoDB connection');

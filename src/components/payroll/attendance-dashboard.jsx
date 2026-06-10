@@ -803,9 +803,9 @@ export default function AttendanceDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="w-full">
       <Toaster />
-      <div className="max-w-7xl mx-auto px-6 py-8">
+      <div className="w-full">
         {/* Simple Text Header matching Image 2 */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8">
           <div className="space-y-1">

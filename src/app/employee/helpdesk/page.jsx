@@ -162,17 +162,17 @@ export default function HelpdeskPage() {
 
                 <div className="overflow-x-auto">
                     <table className="w-full text-left text-sm text-slate-600">
-                        <thead className="bg-slate-50 text-slate-700 font-semibold border-b border-slate-200">
+                        <thead className="bg-slate-50/50 border-b border-slate-100">
                             <tr>
-                                <th className="px-6 py-3">{t("subject")}</th>
+                                <th className="px-6 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left">{t("subject")}</th>
                                 {assignmentFilter === "assigned" && (
-                                    <th className="px-6 py-3">{t("raisedBy") || "Raised By"}</th>
+                                    <th className="px-6 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left">{t("raisedBy") || "Raised By"}</th>
                                 )}
-                                <th className="px-6 py-3">{t("category")}</th>
-                                <th className="px-6 py-3">{t("priority")}</th>
-                                <th className="px-6 py-3">{t("status")}</th>
-                                <th className="px-6 py-3">{t("created")}</th>
-                                <th className="px-6 py-3 text-right">{t("actions")}</th>
+                                <th className="px-6 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left">{t("category")}</th>
+                                <th className="px-6 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left">{t("priority")}</th>
+                                <th className="px-6 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left">{t("status")}</th>
+                                <th className="px-6 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left">{t("created")}</th>
+                                <th className="px-6 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-right">{t("actions")}</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">

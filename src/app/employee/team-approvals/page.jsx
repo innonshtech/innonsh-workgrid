@@ -25,7 +25,7 @@ export default function TeamApprovalsPage() {
     const [activeTab, setActiveTab] = useState('timesheets'); // Default to timesheets to show our work!
 
     return (
-        <div className="max-w-7xl mx-auto space-y-8 animate-fade-in p-6 bg-slate-50/20 min-h-screen">
+        <div className="w-full space-y-8 animate-fade-in py-2">
             {/* Header Banner */}
             <div className="relative overflow-hidden bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-3xl p-8 border border-slate-800">
                 <div className="absolute -right-16 -top-16 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl"></div>

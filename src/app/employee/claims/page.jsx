@@ -20,17 +20,7 @@ export default function EmployeeClaimsPage() {
     }
 
     return (
-        <div className="p-6 md:p-8 max-w-7xl mx-auto">
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8 mt-2">
-                <div className="space-y-1">
-                    <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
-                        Expense Claims
-                    </h1>
-                    <p className="text-slate-500 text-sm mt-1 max-w-xl">
-                        Submit reimbursement requests, track approvals and claim history.
-                    </p>
-                </div>
-            </div>
+        <div className="w-full">
             <EmployeeClaimsManager employeeId={user.id} />
         </div>
     );

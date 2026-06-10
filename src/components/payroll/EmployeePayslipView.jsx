@@ -270,9 +270,9 @@ export default function EmployeePayslipView() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 font-['Inter',sans-serif] pb-16">
+    <div className="w-full font-['Inter',sans-serif]">
       <Toaster position="top-right" richColors closeButton />
-      <div className="max-w-7xl mx-auto px-6 py-8 space-y-10">
+      <div className="w-full space-y-10">
 
 
         {/* Tab Navigation Menu */}

@@ -83,7 +83,8 @@ export default function LoanManagementPage() {
 
     return (
         <div className="p-6 space-y-6">
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-4 mt-2">
+            {/* Header row with Title and Button aligned on same line */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 mt-2">
                 <div className="space-y-1">
                     <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
                         Employee Loans
@@ -92,15 +93,15 @@ export default function LoanManagementPage() {
                         Track loan applications, approvals, repayment schedules and balances.
                     </p>
                 </div>
-            </div>
-            <div className="flex justify-end">
-                <button
-                    onClick={() => setIsRequestModalOpen(true)}
-                    className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
-                >
-                    <Plus size={18} />
-                    {t("requestLoan")}
-                </button>
+                <div className="flex shrink-0">
+                    <button
+                        onClick={() => setIsRequestModalOpen(true)}
+                        className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2.5 rounded-xl hover:bg-indigo-700 transition-colors font-medium text-sm shadow-sm"
+                    >
+                        <Plus size={18} />
+                        {t("requestLoan") || "Request Loan/Advance"}
+                    </button>
+                </div>
             </div>
 
             {/* Tabs for Admin */}
@@ -127,24 +128,51 @@ export default function LoanManagementPage() {
                 </div>
             )}
 
-            {/* Stats Cards (Optional) */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="bg-white p-4 rounded-xl border border-slate-200 flex items-center gap-4">
-                    <div className="p-3 bg-blue-50 text-blue-600 rounded-lg"><Banknote size={24} /></div>
-                    <div>
-                        <p className="text-sm text-slate-500">Active Loans</p>
-                        <p className="text-2xl font-bold text-slate-900">
+            {/* Redesigned Stats Cards (matching 4th image theme & 1st image layout) */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                {/* Active Loans Card */}
+                <div className="bg-white p-5 rounded-3xl border border-slate-200/70 shadow-sm flex flex-col justify-between min-h-[160px] transition-all hover:shadow-md">
+                    <div className="flex items-center justify-between">
+                        <div className="w-10 h-10 bg-blue-50/80 text-blue-600 rounded-2xl flex items-center justify-center">
+                            <Banknote size={20} />
+                        </div>
+                        <span className="bg-slate-100 text-slate-500 font-bold uppercase tracking-wider text-[9px] px-2.5 py-1 rounded-full">
+                            ACTIVE LOANS
+                        </span>
+                    </div>
+                    <div className="mt-4">
+                        <p className="text-3xl font-bold text-slate-900 leading-none">
                             {(activeTab === 'manage-requests' ? allLoans : myLoans).filter(l => l.status === 'Approved').length}
                         </p>
+                        <p className="text-[11px] text-slate-400 mt-1.5 font-medium">Active Loan Accounts</p>
+                    </div>
+                    <div className="border-t border-slate-100 mt-3 pt-3 flex items-center justify-between text-xs text-slate-400 font-medium">
+                        <span>Total Active</span>
+                        <span className="font-semibold text-slate-700">{(activeTab === 'manage-requests' ? allLoans : myLoans).filter(l => l.status === 'Approved').length}</span>
                     </div>
                 </div>
-                <div className="bg-white p-4 rounded-xl border border-slate-200 flex items-center gap-4">
-                    <div className="p-3 bg-yellow-50 text-yellow-600 rounded-lg"><Clock size={24} /></div>
-                    <div>
-                        <p className="text-sm text-slate-500">Pending Requests</p>
-                        <p className="text-2xl font-bold text-slate-900">
+
+                {/* Pending Requests Card */}
+                <div className="bg-white p-5 rounded-3xl border border-slate-200/70 shadow-sm flex flex-col justify-between min-h-[160px] transition-all hover:shadow-md">
+                    <div className="flex items-center justify-between">
+                        <div className="w-10 h-10 bg-amber-50/80 text-amber-600 rounded-2xl flex items-center justify-center">
+                            <Clock size={20} />
+                        </div>
+                        <span className="bg-slate-100 text-slate-500 font-bold uppercase tracking-wider text-[9px] px-2.5 py-1 rounded-full">
+                            PENDING REQUESTS
+                        </span>
+                    </div>
+                    <div className="mt-4">
+                        <p className="text-3xl font-bold text-slate-900 leading-none">
                             {(activeTab === 'manage-requests' ? allLoans : myLoans).filter(l => l.status === 'Pending').length}
                         </p>
+                        <p className="text-[11px] text-slate-400 mt-1.5 font-medium">Awaiting Admin Approval</p>
+                    </div>
+                    <div className="border-t border-slate-100 mt-3 pt-3 flex items-center justify-between text-xs text-slate-400 font-medium">
+                        <span>Total: {(activeTab === 'manage-requests' ? allLoans : myLoans).filter(l => l.status === 'Pending').length}</span>
+                        <span className="text-blue-600 hover:underline flex items-center gap-1 cursor-pointer">
+                            viewAll <ChevronRight size={12} />
+                        </span>
                     </div>
                 </div>
             </div>
@@ -153,15 +181,15 @@ export default function LoanManagementPage() {
             <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
                 <div className="overflow-x-auto">
                     <table className="w-full text-left text-sm">
-                        <thead className="bg-slate-50 text-slate-600 border-b border-slate-200">
+                        <thead className="bg-slate-50/50 border-b border-slate-100">
                             <tr>
-                                {activeTab === 'manage-requests' && <th className="px-6 py-4 font-semibold">Employee</th>}
-                                <th className="px-6 py-4 font-semibold">Type</th>
-                                <th className="px-6 py-4 font-semibold">Amount</th>
-                                <th className="px-6 py-4 font-semibold">Reason</th>
-                                <th className="px-6 py-4 font-semibold">Date</th>
-                                <th className="px-6 py-4 font-semibold">Status</th>
-                                {activeTab === 'manage-requests' && <th className="px-6 py-4 font-semibold">Actions</th>}
+                                {activeTab === 'manage-requests' && <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left">Employee</th>}
+                                <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left">Type</th>
+                                <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left">Amount</th>
+                                <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left">Reason</th>
+                                <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left">Date</th>
+                                <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left">Status</th>
+                                {activeTab === 'manage-requests' && <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left">Actions</th>}
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">

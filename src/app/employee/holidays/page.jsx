@@ -104,8 +104,8 @@ export default function EmployeeHolidaysPage() {
     }
 
     return (
-        <div className="min-h-screen bg-slate-50 font-sans pb-12">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+        <div className="w-full">
+            <div className="w-full space-y-6">
                 {/* Module Hero */}
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8 mt-2">
                     <div className="space-y-1">
@@ -118,28 +118,6 @@ export default function EmployeeHolidaysPage() {
                     </div>
                 </div>
                 
-                {/* Context Header */}
-                <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-                    <div>
-                        <p className="text-slate-500 flex items-center gap-2 text-sm">
-                            <MapPin className="w-4 h-4" /> 
-                            Showing holidays for <span className="font-semibold text-slate-700">{data.holidayList.name}</span>
-                        </p>
-                    </div>
-                    {data.quota > 0 && (
-                        <div className="flex items-center gap-3 bg-white px-5 py-3 rounded-2xl border border-slate-200">
-                            <div className="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center">
-                                <Sun className="w-6 h-6 text-indigo-600" />
-                            </div>
-                            <div>
-                                <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest">Optional Quota</p>
-                                <p className="text-xl font-bold text-slate-800">
-                                    <span className="text-indigo-600">{remainingQuota}</span> <span className="text-slate-400 text-base font-medium">/ {data.quota} remaining</span>
-                                </p>
-                            </div>
-                        </div>
-                    )}
-                </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     
@@ -192,91 +170,115 @@ export default function EmployeeHolidaysPage() {
                         )}
                     </div>
 
-                    {/* Restricted Holidays - Spans 1 col */}
-                    <div className="space-y-4">
-                        <div className="flex items-center gap-2 mb-2">
-                            <div className="w-2 h-6 bg-amber-500 rounded-full"></div>
-                            <h2 className="text-lg font-bold text-slate-800">Restricted Holidays</h2>
-                            <div className="group relative ml-1 cursor-help">
-                                <Info className="w-4 h-4 text-slate-400" />
-                                <div className="absolute bottom-full mb-2 -left-1/2 w-48 p-2 bg-slate-800 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
-                                    You can pick and claim holidays from this list up to your allowed quota.
+                    {/* Restricted & Optional Column */}
+                    <div className="space-y-6">
+                        {/* Restricted Holidays */}
+                        <div className="space-y-4">
+                            <div className="flex items-center gap-2 mb-2">
+                                <div className="w-2 h-6 bg-amber-500 rounded-full"></div>
+                                <h2 className="text-lg font-bold text-slate-800">Restricted Holidays</h2>
+                                <div className="group relative ml-1 cursor-help">
+                                    <Info className="w-4 h-4 text-slate-400" />
+                                    <div className="absolute bottom-full mb-2 -left-1/2 w-48 p-2 bg-slate-800 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
+                                        You can pick and claim holidays from this list up to your allowed quota.
+                                    </div>
                                 </div>
                             </div>
+
+                            {data.quota === 0 ? (
+                                <div className="bg-white p-6 rounded-2xl border border-slate-200 text-center">
+                                    <div className="w-12 h-12 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-3">
+                                        <AlertCircle className="w-6 h-6 text-slate-400" />
+                                    </div>
+                                    <h3 className="font-bold text-slate-700 mb-1">No Optional Quota</h3>
+                                    <p className="text-xs text-slate-500">Your holiday list does not allow optional holidays this year.</p>
+                                </div>
+                            ) : data.restrictedHolidays.length === 0 ? (
+                                <div className="bg-white p-6 rounded-2xl border border-slate-200 text-center text-slate-500">
+                                    No restricted holidays configured.
+                                </div>
+                            ) : (
+                                <div className="space-y-3">
+                                    {data.restrictedHolidays.map((holiday, idx) => {
+                                        const claim = getClaimStatus(holiday._id);
+                                        const isClaimed = !!claim && claim.status !== 'Rejected';
+                                        const isAutoApproved = claim?.status === 'Approved';
+                                        const dateObj = new Date(holiday.date);
+                                        const isPast = dateObj < new Date(new Date().setHours(0,0,0,0));
+
+                                        return (
+                                            <motion.div 
+                                                initial={{ opacity: 0, x: 20 }}
+                                                animate={{ opacity: 1, x: 0 }}
+                                                transition={{ delay: idx * 0.1 }}
+                                                key={holiday._id}
+                                                className={`p-4 rounded-2xl border transition-all ${isClaimed ? 'bg-indigo-50/50 border-indigo-200' : 'bg-white border-slate-200 hover:border-slate-300'}`}
+                                            >
+                                                <div className="flex items-center justify-between gap-4">
+                                                    <div>
+                                                        <h3 className="font-bold text-slate-800">{holiday.name}</h3>
+                                                        <p className="text-sm text-slate-500 mt-0.5">
+                                                            {dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} • {dateObj.toLocaleDateString('en-US', { weekday: 'short' })}
+                                                        </p>
+                                                    </div>
+
+                                                    <div>
+                                                        {isClaimed ? (
+                                                            <div className="flex flex-col items-end gap-1.5">
+                                                                <span className="flex items-center gap-1.5 px-2.5 py-1 bg-white border border-indigo-200 text-indigo-700 text-xs font-bold rounded-lg">
+                                                                    <CheckCircle className="w-3.5 h-3.5" />
+                                                                    {isAutoApproved ? 'Claimed' : 'Pending'}
+                                                                </span>
+                                                                {!isPast && (
+                                                                    <button
+                                                                        onClick={() => handleCancelClaim(claim._id)}
+                                                                        disabled={processingId === claim._id}
+                                                                        className="text-[10px] uppercase font-bold text-slate-400 hover:text-red-500 transition-colors"
+                                                                    >
+                                                                        Cancel
+                                                                    </button>
+                                                                )}
+                                                            </div>
+                                                        ) : isPast ? (
+                                                            <span className="text-xs font-medium text-slate-400 px-3 py-1.5 bg-slate-50 rounded-lg">Past</span>
+                                                        ) : remainingQuota > 0 ? (
+                                                            <button 
+                                                                onClick={() => handleClaim(holiday._id)}
+                                                                disabled={processingId === holiday._id}
+                                                                className="px-4 py-1.5 bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold rounded-lg transition-all active:scale-95 disabled:opacity-50"
+                                                            >
+                                                                {processingId === holiday._id ? '...' : 'Claim'}
+                                                            </button>
+                                                        ) : (
+                                                            <span className="text-xs font-medium text-amber-600 px-3 py-1.5 bg-amber-50 rounded-lg border border-amber-100">Quota Full</span>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </motion.div>
+                                        );
+                                    })}
+                                </div>
+                            )}
                         </div>
 
-                        {data.quota === 0 ? (
-                            <div className="bg-white p-6 rounded-2xl border border-slate-200 text-center">
-                                <div className="w-12 h-12 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-3">
-                                    <AlertCircle className="w-6 h-6 text-slate-400" />
+                        {/* Optional Quota Section */}
+                        {data.quota > 0 && (
+                            <div className="space-y-4">
+                                <div className="flex items-center gap-2 mb-2">
+                                    <div className="w-2 h-6 bg-indigo-500 rounded-full"></div>
+                                    <h2 className="text-lg font-bold text-slate-800">Optional quota</h2>
                                 </div>
-                                <h3 className="font-bold text-slate-700 mb-1">No Optional Quota</h3>
-                                <p className="text-xs text-slate-500">Your holiday list does not allow optional holidays this year.</p>
-                            </div>
-                        ) : data.restrictedHolidays.length === 0 ? (
-                            <div className="bg-white p-6 rounded-2xl border border-slate-200 text-center text-slate-500">
-                                No restricted holidays configured.
-                            </div>
-                        ) : (
-                            <div className="space-y-3">
-                                {data.restrictedHolidays.map((holiday, idx) => {
-                                    const claim = getClaimStatus(holiday._id);
-                                    const isClaimed = !!claim && claim.status !== 'Rejected';
-                                    const isAutoApproved = claim?.status === 'Approved';
-                                    const dateObj = new Date(holiday.date);
-                                    const isPast = dateObj < new Date(new Date().setHours(0,0,0,0));
-
-                                    return (
-                                        <motion.div 
-                                            initial={{ opacity: 0, x: 20 }}
-                                            animate={{ opacity: 1, x: 0 }}
-                                            transition={{ delay: idx * 0.1 }}
-                                            key={holiday._id}
-                                            className={`p-4 rounded-2xl border transition-all ${isClaimed ? 'bg-indigo-50/50 border-indigo-200' : 'bg-white border-slate-200 hover:border-slate-300'}`}
-                                        >
-                                            <div className="flex items-center justify-between gap-4">
-                                                <div>
-                                                    <h3 className="font-bold text-slate-800">{holiday.name}</h3>
-                                                    <p className="text-sm text-slate-500 mt-0.5">
-                                                        {dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} • {dateObj.toLocaleDateString('en-US', { weekday: 'short' })}
-                                                    </p>
-                                                </div>
-
-                                                <div>
-                                                    {isClaimed ? (
-                                                        <div className="flex flex-col items-end gap-1.5">
-                                                            <span className="flex items-center gap-1.5 px-2.5 py-1 bg-white border border-indigo-200 text-indigo-700 text-xs font-bold rounded-lg">
-                                                                <CheckCircle className="w-3.5 h-3.5" />
-                                                                {isAutoApproved ? 'Claimed' : 'Pending'}
-                                                            </span>
-                                                            {!isPast && (
-                                                                <button
-                                                                    onClick={() => handleCancelClaim(claim._id)}
-                                                                    disabled={processingId === claim._id}
-                                                                    className="text-[10px] uppercase font-bold text-slate-400 hover:text-red-500 transition-colors"
-                                                                >
-                                                                    Cancel
-                                                                </button>
-                                                            )}
-                                                        </div>
-                                                    ) : isPast ? (
-                                                        <span className="text-xs font-medium text-slate-400 px-3 py-1.5 bg-slate-50 rounded-lg">Past</span>
-                                                    ) : remainingQuota > 0 ? (
-                                                        <button 
-                                                            onClick={() => handleClaim(holiday._id)}
-                                                            disabled={processingId === holiday._id}
-                                                            className="px-4 py-1.5 bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold rounded-lg transition-all active:scale-95 disabled:opacity-50"
-                                                        >
-                                                            {processingId === holiday._id ? '...' : 'Claim'}
-                                                        </button>
-                                                    ) : (
-                                                        <span className="text-xs font-medium text-amber-600 px-3 py-1.5 bg-amber-50 rounded-lg border border-amber-100">Quota Full</span>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        </motion.div>
-                                    );
-                                })}
+                                <div className="flex items-center gap-3 bg-white px-5 py-3.5 rounded-2xl border border-slate-200">
+                                    <div className="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center">
+                                        <Sun className="w-6 h-6 text-indigo-600" />
+                                    </div>
+                                    <div>
+                                        <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest">Optional Quota</p>
+                                        <p className="text-xl font-bold text-slate-800 mt-0.5">
+                                            <span className="text-indigo-600">{remainingQuota}</span> <span className="text-slate-400 text-base font-medium">/ {data.quota} remaining</span>
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         )}
                     </div>

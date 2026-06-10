@@ -152,7 +152,7 @@ export default function DashboardPage() {
     ];
 
     return (
-      <div className="max-w-7xl mx-auto space-y-6 sm:space-y-8 animate-fade-in p-4 sm:p-6">
+      <div className="w-full space-y-6 sm:space-y-8 animate-fade-in py-2">
         {/* Header Banner Section (Staffing Hub Style) */}
         <div className="relative overflow-hidden bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-2xl sm:rounded-3xl p-5 sm:p-8 border border-slate-800">
           <div className="absolute -right-16 -top-16 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl"></div>
@@ -190,7 +190,7 @@ export default function DashboardPage() {
         </div>
 
         {/* KPI Cards Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6">
           {adminStats.map((card) => (
             <div
               key={card.title}
@@ -216,9 +216,9 @@ export default function DashboardPage() {
         </div>
 
         {/* Quick Access & Operations Dashboard Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
           {/* Main Area: Feeds and Widgets */}
-          <div className="lg:col-span-2 space-y-6 sm:space-y-8">
+          <div className="xl:col-span-2 space-y-6 sm:space-y-8">
             {/* Recent Activity Feed */}
             <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-6">
               <div className="flex items-center justify-between border-b border-slate-50 pb-4">

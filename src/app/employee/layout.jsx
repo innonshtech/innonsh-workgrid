@@ -465,7 +465,7 @@ function DashboardLayoutContent({ children }) {
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         } fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-slate-200 transition-transform duration-300 ease-in-out lg:translate-x-0 flex flex-col h-screen`}
       >
-        <div className="flex-shrink-0 px-4 py-6 border-b border-slate-200 bg-white">
+        <div className="flex-shrink-0 px-4 h-[72px] flex items-center border-b border-slate-200 bg-white">
           <div className="flex items-center px-3">
             <Link
               href={
@@ -590,8 +590,8 @@ function DashboardLayoutContent({ children }) {
       </div>
 
       <div className="lg:ml-64">
-        <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-200">
-          <div className="px-4 sm:px-6 py-3 sm:py-4">
+        <header className="sticky top-0 z-40 h-[72px] flex items-center bg-white/80 backdrop-blur-md border-b border-slate-200">
+          <div className="w-full px-4 sm:px-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
                 <button
